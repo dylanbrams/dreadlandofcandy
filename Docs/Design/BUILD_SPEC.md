@@ -130,7 +130,7 @@ Three layers. Dependencies point downward only.
 3. First fallback (Dylan, Nov 11), if the generators do not deliver: **bought or free packs from Fab, Synty or similar**. A Synty-style low-poly pack suits the bright kiddie side; a rigged dark-fantasy knight with animations from Fab would also remove the hero rigging risk. Rules: Dylan chooses and downloads (the engine's Fab plugin is disabled in the `.uproject` because it breaks UBT on this install, so assets come in through the launcher or a manual import, not the in-editor plugin); every pack gets a line with its licence in `Docs/Declared.md` under third-party assets and in the submission; import only the meshes used, since the zip must stay under 1 GB; at least one shipped prop still comes from Rodin for the Hyper3D pool.
 4. Last fallback, for single missing pieces late on: **cardboard flats** (a 2D image on a plane with a plywood edge and a stick), which the film-with-no-budget fiction excuses. A few deliberate flats as gags (`Jokes.md`) are fine either way.
 
-**The hero** is the riskiest asset. Time-box the Meshy rig-and-animate route to two hours on day 2. If it fails: a rigged knight from Fab; failing that, a static knight mesh that glides and bobs, with one Fenella line about the animation budget. Needed animations if it works: idle, walk, one sword-raise. Set the camera close enough that a high-poly hero is worth having (see section 11, question 5).
+**The hero** is the riskiest asset. Time-box the Meshy rig-and-animate route to two hours on day 2. If it fails: a rigged knight from Fab; failing that, a static knight mesh that glides and bobs, with one Fenella line about the animation budget. Needed animations if it works: idle, walk, one sword-raise. Set the camera close enough that a high-poly hero is worth having (see section 11, answer 6).
 
 **Lecture presentation is the brand moment and gets real time on day 3:** sword up (0.3 s, no swing), inhale, cone flash, two or three jagged bubbles from `Jokes.md`, targets recoil. Total wind-up under 0.4 s so it still plays well.
 
@@ -235,9 +235,9 @@ Answered Nov 11:
 4. **Voice:** tabled; fallback is a paid generator, decided later. Captions ship.
 5. **Art:** dark fantasy high poly for the hero, bright kiddie low poly for everything else, through the generators. In `styles.json`.
 
-Open, only Dylan can answer:
+6. **Camera:** Dylan considered a Fortnite-style over-the-shoulder camera and left the choice to whichever is easiest. Decision: **fixed three-quarter camera, pulled in close** (start at about 1100 uu arm length, 50 degree pitch, no player camera control; tune in T01 so the hero fills roughly a sixth of the screen height). Reasons: every screenshot shows the whole set from a known angle, which is how sessions verify their work; no camera collision, mouse-look, sensitivity or invert settings to build; Fenella and her camera stay in frame; nuisances cannot hide behind the player; strafing and backpedal animations are not needed. Do not revisit.
 
-5a. **Camera.** This spec locks a fixed three-quarter top-down camera (readable cone, Fenella in frame, forgiving of animation). A high-poly hero argues for something closer. Default until told otherwise: three-quarter, pulled in close. If you want an over-the-shoulder third-person camera, say so before T01, because it changes aiming and input.
+Open, only Dylan can answer:
 
 6. Is the forced "Perfect. Again." retake in Scene 1 acceptable? It is the best theme joke per hour and it makes the player repeat 20 seconds.
 7. Is the hero's one spoken word at the Premiere in or out (`Jokes.md`, set piece 12)?
