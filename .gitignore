@@ -39,3 +39,10 @@ Thumbs.db
 
 # Tripo outputs: only the manifests are tracked
 ImportSource/*/*.glb
+
+# Asset generation runner scratch (state.json and review.html are kept)
+ImportSource/_gen/logs/
+ImportSource/_gen/run.lock
+ImportSource/_gen/state.json.part
+Assets/Incoming/2D/_drop/
+*.part

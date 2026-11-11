@@ -18,6 +18,9 @@ Everything below was made before Nov 12, 2026. None of it is gameplay. Paste thi
 | Design briefs (the Dread Land of Candy pitch, combat/VFX/quest companion), drafted with ChatGPT | `Docs/Design/` | Written for the jam (Nov 11); design text only, no game code |
 | Build spec (scope, architecture, task backlog) and joke/line sheet, written with Claude Code | `Docs/Design/BUILD_SPEC.md`, `Docs/Design/Jokes.md` | Written for the jam (Nov 11); design text only, no game code or assets |
 | Style prompt prefixes and suffixes for the mesh generators | `Docs/styles.json` | Written for the jam (Nov 11); prompts only, nothing generated |
+| Generation tooling: parallel job runner with approval gate, Meshy rigging/animation client, OpenAI image client and image ingest (key, trim), retries and safer downloads in the shared helpers | `Scripts/gen_batch.py`, `meshy_rig.py`, `openai_image.py`, `genlib.py`, `meshy.py`, `rodin.py` | Written for the jam (Nov 11), with Claude Code; tools only, nothing generated |
+| Generation job list: one prompt subject per planned asset, and the two 2D style paragraphs | `Assets/Generation/jobs.json` | Written for the jam (Nov 11), with Claude Code; prompts only, nothing generated |
+| Asset list, generation map and runbook | `Docs/Design/ASSETS.md`, `Docs/GenerationMap.md`, `Docs/GenerationRunbook.md` | Written for the jam (Nov 11), with Claude Code; planning text only |
 
 ## Ability layer test template (Nov 11, 2026, before the jam)
 

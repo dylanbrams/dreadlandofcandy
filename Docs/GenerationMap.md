@@ -1,6 +1,6 @@
 # Generation map (2D and 3D)
 
-Written 2026-11-11 for Dylan to hand to ChatGPT, which writes the provider prompts. Condensed from `Docs/Design/ASSETS.md` (the full list, with fallbacks and triangle budgets) and `Docs/styles.json` (the locked style words). Music is done; voice is tabled. Nothing here has been generated yet.
+Written 2026-11-11. **To run generation, hand an agent `Docs/GenerationRunbook.md`.** Every asset below is already a job with its prompt in `Assets/Generation/jobs.json`, and `Scripts/gen_batch.py` runs them: 3D in parallel through the Meshy and Rodin APIs, 2D through the agent's own image generation (Codex/ChatGPT). This page is the human-readable map. Condensed from `Docs/Design/ASSETS.md` (the full list, with fallbacks and triangle budgets) and `Docs/styles.json` (the locked style words). Music is done; voice is tabled. Nothing here has been generated yet.
 
 **Priority:** `MUST` = the game does not ship without it (or its fallback). `SHOULD` = makes it good. `STRETCH` = only if ahead.
 
@@ -27,7 +27,7 @@ The clash is the joke: the hero and his gear are grim dark fantasy, everything e
 | **prop** (everything in the world) | *Cute low-poly cartoon game prop,* [subject] *, bright saturated candy colours, chunky rounded shapes, flat hand-painted colours, matte, single object, no baked lighting* |
 | **particle** (tiny effect meshes) | *Cute low-poly cartoon game prop,* [subject] *, bright saturated candy colours, very simple chunky shape, flat colours, matte, single small object, no baked lighting* |
 
-If you run a prompt through `Scripts/meshy.py` or `Scripts/rodin.py` with `--type`, the scripts add these words themselves: give the script the subject only. In the web apps, paste the full sentence.
+The scripts add these words themselves (`--type`), so `jobs.json` holds the subject only. To make something by hand in a web app, paste the full sentence.
 
 Creatures and props get recoloured and resized in the game (pink, mint, gold, grey, purple; half size to triple size), so ask for **light base colours** on creatures.
 
@@ -40,7 +40,7 @@ Creatures and props get recoloured and resized in the game (pink, mint, gold, gr
 | # | Asset | Subject for the prompt | Pri |
 | --- | --- | --- | --- |
 | H1 | `SK_Hero` the knight | *a towering knight in scorched black plate armour with a tattered dark tabard, closed great helm with a narrow visor slit, broad pauldrons, gauntlets, no cape, empty hands* ("no cape" is a joke payoff; empty hands because the sword is separate) | MUST |
-| H2 | Hero rig + animations | Meshy auto-rig on H1, then preset animations: **idle, walk, sword-raise** (raise held, about 0.3 s) | MUST (idle, walk) |
+| H2 | Hero rig + animations | Meshy auto-rig on H1 (UE5 mannequin skeleton), then library presets **Idle (0), Casual_Walk (30), Proud_Strut (114), Cheer_with_One_Hand_Up (306)**. Then text-to-motion clips: **SwordRaise** (raise overhead and hold), **Scrub** (brushing), **Sigh**. The library has no real sword raise (102 Sword_Judgment is a jumping spin attack), so SwordRaise is generated from a description, with 306 as the backup | MUST (idle, walk) |
 
 Target 30k to 50k triangles, 2K textures. If rigging fails: a rigged dark knight from Fab.
 

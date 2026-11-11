@@ -34,7 +34,11 @@ def main():
     p.add_argument("--name", required=True)
     p.add_argument("--type", choices=["character", "npc", "equipment", "terrain_piece", "particle_mesh"],
                    help="wrap the prompt in the locked style for this type (Docs/styles.json)")
-    p.add_argument("--tier", default="Gen-2.5-Low")
+    p.add_argument("--tier", default="Gen-2.5-Low",
+                   choices=["Gen-2.5-Extreme-Low", "Gen-2.5-Low", "Gen-2.5-Medium", "Gen-2.5-High",
+                            "Gen-2.5-Extreme-High"])
+    p.add_argument("--field", action="append", default=[], metavar="KEY=VALUE",
+                   help="extra form field sent as-is, e.g. --field quality_override=20000")
     p.add_argument("--timeout", type=int, default=900)
     p.add_argument("--allow-host", default=None, help="extra download host to trust after you've checked it")
     p.add_argument("--dry-run", action="store_true")
@@ -43,6 +47,11 @@ def main():
     a.prompt = g.apply_style(a.prompt, a.type)
 
     fields = {"prompt": a.prompt, "tier": a.tier, "geometry_file_format": "glb"}
+    for kv in a.field:
+        k, sep, v = kv.partition("=")
+        if not sep or not k:
+            sys.exit(f"--field wants KEY=VALUE, got {kv!r}")
+        fields[k] = v
     if a.dry_run:
         print("POST", BASE + "/rodin (multipart)", json.dumps(fields, indent=2))
         return
@@ -80,6 +89,15 @@ def main():
                  "; names: " + ", ".join(str(i.get("name")) for i in items if isinstance(i, dict)))
     dest = g.ROOT / "ImportSource" / "Hyper3D" / f"{a.name}.glb"
     g.safe_download(glb["url"], dest, HOSTS, a.allow_host)
+    for i in items:
+        nm = str(i.get("name", "")).split("?")[0].lower() if isinstance(i, dict) else ""
+        ext = next((e for e in (".png", ".jpg", ".webp") if nm.endswith(e)), None)
+        if ext and i.get("url"):
+            try:
+                g.safe_download(i["url"], dest.with_suffix(ext), HOSTS, a.allow_host)
+                break
+            except SystemExit as e:
+                print("preview skipped:", e)
     g.log_manifest("Hyper3D", {"file": dest.name, "prompt": a.prompt, "tier": a.tier,
                                "task_uuid": task_uuid, "credits": sub.get("consumed")})
     print("saved", dest)

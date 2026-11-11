@@ -1,4 +1,5 @@
-"""Shared helpers for the asset-generation clients (meshy.py, rodin.py). Not run directly.
+"""Shared helpers for the asset-generation clients (meshy.py, meshy_rig.py, rodin.py,
+openai_image.py). Not run directly.
 
 Safety rules every client follows: keys come from the environment or the git-ignored
 project-root .env and are never printed; downloads only from allowed hosts over HTTPS,
@@ -35,7 +36,9 @@ def env_value(*names):
     sys.exit(f"No key found (looked for {', '.join(names)} in the environment and project-root .env).")
 
 
-def request(method, url, key, *, json_body=None, raw_body=None, content_type=None, scheme="Bearer"):
+def request(method, url, key, *, json_body=None, raw_body=None, content_type=None, scheme="Bearer",
+            timeout=90, retries=4):
+    """Send a request and return parsed JSON. Retries 429 (always) and 5xx (GET only), honouring Retry-After."""
     data = raw_body
     headers = {"Authorization": f"{scheme} {key}", "User-Agent": "jam-asset-client"}
     if json_body is not None:
@@ -43,20 +46,39 @@ def request(method, url, key, *, json_body=None, raw_body=None, content_type=Non
         headers["Content-Type"] = "application/json"
     elif content_type:
         headers["Content-Type"] = content_type
-    req = urllib.request.Request(url, data=data, method=method, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=90) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        sys.exit(f"HTTP {e.code} from {urlparse(url).hostname}: {e.read().decode(errors='replace')[:400]}")
+    for attempt in range(retries + 1):
+        req = urllib.request.Request(url, data=data, method=method, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return json.load(r)
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="replace")[:400]
+            retryable = e.code == 429 or (e.code >= 500 and method == "GET")
+            if retryable and attempt < retries:
+                wait_s = e.headers.get("Retry-After")
+                wait_s = int(wait_s) if wait_s and wait_s.isdigit() else 10 * (attempt + 1)
+                print(f"  HTTP {e.code}, retrying in {wait_s}s")
+                time.sleep(min(wait_s, 120))
+                continue
+            sys.exit(f"HTTP {e.code} from {urlparse(url).hostname}: {body}")
+        except (urllib.error.URLError, TimeoutError) as e:
+            if method == "GET" and attempt < retries:
+                print(f"  network error ({e}), retrying")
+                time.sleep(10)
+                continue
+            sys.exit(f"network error talking to {urlparse(url).hostname}: {e}")
 
 
-def multipart(fields):
-    """Encode text fields as multipart/form-data. Returns (body, content_type)."""
+def multipart(fields, files=()):
+    """Encode multipart/form-data. fields: {name: text}; files: [(field, filename, bytes, mime)].
+    Returns (body, content_type)."""
     b = uuid.uuid4().hex
     out = []
     for k, v in fields.items():
         out.append(f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
+    for field, filename, blob, mime in files:
+        out.append(f'--{b}\r\nContent-Disposition: form-data; name="{field}"; filename="{filename}"\r\n'
+                   f'Content-Type: {mime}\r\n\r\n'.encode() + blob + b"\r\n")
     out.append(f"--{b}--\r\n".encode())
     return b"".join(out), f"multipart/form-data; boundary={b}"
 
@@ -86,11 +108,32 @@ def validate_glb(path):
             sys.exit(f"glb references an external file ({uri[:60]}); discarded")
 
 
+def validate_fbx(path):
+    head = path.read_bytes()[:32]
+    if not (head.startswith(b"Kaydara FBX Binary") or head.lstrip().startswith(b"; FBX")):
+        sys.exit("not an FBX file; discarded")
+
+
+def validate_image(path):
+    head = path.read_bytes()[:16]
+    if not (head.startswith(b"\x89PNG\r\n\x1a\n") or head.startswith(b"\xff\xd8\xff")
+            or (head[:4] == b"RIFF" and head[8:12] == b"WEBP")):
+        sys.exit("not a PNG, JPEG or WebP image; discarded")
+
+
+VALIDATORS = {".glb": validate_glb, ".fbx": validate_fbx, ".png": validate_image, ".jpg": validate_image,
+              ".webp": validate_image}
+
+
 def safe_download(url, dest, suffixes, extra_host=None):
-    """Download to dest (a .glb path) after host, size and format checks."""
+    """Download to dest after host, size and format checks. The format check follows dest's
+    extension: .glb, .fbx, or an image (.png/.jpg/.webp)."""
+    validator = VALIDATORS.get(dest.suffix.lower())
+    if not validator:
+        sys.exit(f"no validator for {dest.suffix} files")
     check_url(url, suffixes, extra_host)
     dest.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dest.with_suffix(".glb.part")
+    tmp = dest.with_name(dest.name + ".part")
     n = 0
     with urllib.request.urlopen(url, timeout=120) as r, open(tmp, "wb") as f:
         while chunk := r.read(1 << 16):
@@ -99,11 +142,27 @@ def safe_download(url, dest, suffixes, extra_host=None):
                 f.close(); tmp.unlink(); sys.exit("download over the size cap; discarded")
             f.write(chunk)
     try:
-        validate_glb(tmp)
+        validator(tmp)
     except SystemExit:
         tmp.unlink(missing_ok=True)
         raise
     tmp.replace(dest)
+
+
+def find_manifest(service, name):
+    """Last manifest record for a file named <name>.glb, or None."""
+    f = ROOT / "ImportSource" / service / "manifest.jsonl"
+    if not f.is_file():
+        return None
+    hit = None
+    for line in f.read_text(encoding="utf-8").splitlines():
+        try:
+            rec = json.loads(line)
+        except ValueError:
+            continue
+        if rec.get("file") == f"{name}.glb":
+            hit = rec
+    return hit
 
 
 def log_manifest(service, record):
@@ -127,4 +186,5 @@ def apply_style(prompt, kind):
     if not f.is_file():
         return prompt
     st = json.loads(f.read_text(encoding="utf-8")).get(kind) or {}
-    return " ".join(x for x in (st.get("prefix", ""), prompt, st.get("suffix", "")) if x).strip()
+    parts = [x.strip().strip(",").strip() for x in (st.get("prefix", ""), prompt.rstrip(". "), st.get("suffix", ""))]
+    return ", ".join(x for x in parts if x)

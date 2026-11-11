@@ -2,7 +2,8 @@
 """Generate a 3D model with Meshy (text-to-3D, preview then textured refine); save the .glb.
 
 Key: MESHY_API_KEY (environment or git-ignored project-root .env). Never printed.
-Output: ImportSource/Meshy/<name>.glb plus a line in ImportSource/Meshy/manifest.jsonl.
+Output: ImportSource/Meshy/<name>.glb, a preview <name>.png, and a line in ImportSource/Meshy/manifest.jsonl
+(the line holds refine_task, which Scripts/meshy_rig.py rigs from).
 
   python -I Scripts/meshy.py "a rusty vending machine, stylised game prop" --name vending
   python -I Scripts/meshy.py "..." --name rock --preview-only      # untextured, cheaper
@@ -44,6 +45,8 @@ def main():
     p.add_argument("--polycount", type=int, default=None, help="target faces (turns on remeshing)")
     p.add_argument("--preview-only", action="store_true")
     p.add_argument("--no-pbr", action="store_true")
+    p.add_argument("--pose", choices=["a-pose", "t-pose"], default=None,
+                   help="force a pose (default: a-pose for --type character, so it can be rigged)")
     p.add_argument("--timeout", type=int, default=900)
     p.add_argument("--allow-host", default=None)
     p.add_argument("--dry-run", action="store_true")
@@ -56,6 +59,9 @@ def main():
     preview = {"mode": "preview", "prompt": a.prompt, "ai_model": a.ai_model}
     if a.polycount:
         preview.update(should_remesh=True, target_polycount=a.polycount)
+    pose = a.pose or ("a-pose" if a.type == "character" else None)
+    if pose:
+        preview["pose_mode"] = pose
     refine = {"mode": "refine", "preview_task_id": "<preview id>", "enable_pbr": not a.no_pbr}
     if a.dry_run:
         print("POST", BASE, json.dumps(preview, indent=2))
@@ -68,6 +74,7 @@ def main():
     print("preview task", pid)
     task = wait(pid, key, a.timeout)
     credits = task.get("consumed_credits") or 0
+    rid = None
     if not a.preview_only:
         refine["preview_task_id"] = pid
         rid = g.request("POST", BASE, key, json_body=refine)["result"]
@@ -80,8 +87,15 @@ def main():
         sys.exit("task finished but has no glb url")
     dest = g.ROOT / "ImportSource" / "Meshy" / f"{a.name}.glb"
     g.safe_download(url, dest, HOSTS, a.allow_host)
+    thumb = task.get("thumbnail_url")
+    if thumb:
+        try:
+            g.safe_download(thumb, dest.with_suffix(".png"), HOSTS, a.allow_host)
+        except SystemExit as e:
+            print("thumbnail skipped:", e)
     g.log_manifest("Meshy", {"file": dest.name, "prompt": a.prompt, "ai_model": a.ai_model,
-                             "preview_task": pid, "credits": credits, "textured": not a.preview_only})
+                             "preview_task": pid, "refine_task": rid, "pose": pose,
+                             "credits": credits, "textured": not a.preview_only})
     print("saved", dest, "credits", credits)
 
 
