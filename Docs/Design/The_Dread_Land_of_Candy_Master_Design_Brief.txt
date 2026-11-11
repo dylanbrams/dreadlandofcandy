@@ -1,16 +1,17 @@
 THE DREAD LAND OF CANDY — SUGARBOROUGH
 EPIC AI MEGAJAM 2026 — UNIFIED PRE-JAM DESIGN AND AI IMPLEMENTATION BRIEF
-Version 0.3 | Planning draft 2026-11-11 | Status: DESIGN ONLY / NOT IMPLEMENTED
+Version 0.4 | Planning draft 2026-11-11 | Status: DESIGN ONLY / NOT IMPLEMENTED
+THEME REVEALED 2026-11-11: "DIRECTOR'S CUT". See APPENDIX C (before the end marker) for the Production Faerie, the ACTION!/CUT!/RETAKE! quest-edit mechanic and the reward split. Appendix C governs wherever it conflicts with text above that still says the theme is unknown.
 
 DOCUMENT STATUS AND USE
 =======================
 This MASTER document consolidates the earlier architecture brief, the combat/VFX/quest companion, and the later art-direction decision. Read this single file before assigning implementation tasks. Earlier standalone files remain optional references. Everything below is a proposal unless explicitly identified as developer-provided existing infrastructure. Never infer a working UE gameplay system, packaged build, AI asset, server contract or tested feature from this text.
 
 PREFERRED CREATIVE IDENTITY
-- Working title: THE DREAD LAND OF CANDY.
+- Working title: THE DREAD LAND OF CANDY: DIRECTOR'S CUT (subtitle: "The Definitive Edition of a Game That Never Existed").
 - Hub village: SUGARBOROUGH.
 - Concept: grim high-fantasy adventurers use apocalyptically spectacular abilities to resolve tiny, mostly nonviolent problems in a cheerful confectionery world.
-- Brand, fiction, abilities and environment remain contingent on the actual jam theme reveal.
+- Theme "Director's Cut" is now known: the hero is being filmed. A bossy low-budget Production Faerie directs the quests, edits them mid-take, and skims the rewards. The candy brand stays; the theme lens is Appendix C.
 
 READING/CONFLICT RULES
 - Master architecture below governs technical scope, persistence, multiplayer and jam restrictions.
@@ -46,6 +47,7 @@ DESIGN PILLARS
 5. Solo complete, co-op additive: no objective requires two players to function.
 6. Fail gracefully: API unreachable, AI dialogue slow, second player absent, or generation rejects content must not end play.
 7. The theme is a filter: rename/repaint the comedy and central mechanic after reveal instead of forcing a mismatched entry.
+8. DIRECTOR'S CUT (theme, locked 2026-11-11): the quest system is a film set. The player edits scenes with CUT!, a bossy Production Faerie directs and harasses, and she keeps most of the pay. See Appendix C.
 
 1. EXISTING CAPABILITIES / ASSUMPTIONS
 ====================================
@@ -136,7 +138,7 @@ IMPORTANT: quest generator must never produce a stage impossible with the chosen
 ========================================
 The Candy Rock is a pocket-sized magical sweet stone; it provides instant voice/text communication with ALL relevant quest NPCs, even if they are visible 10 meters away. Its invention makes roads, town visits, and traditional quest turn-ins appear absurdly redundant. NPCs behave as if this is an astounding technological feat, despite it merely being a rock.
 
-UX: hotkey R or toolbar icon opens rock 'contacts'; choose NPC; dialogue begins from anywhere unless in a restricted quest moment. Persistent contact unlocks once NPC introduced (or all visible immediately for faster jam experience). Show contact portrait, current relationship (-100..+100), quest availability, urgent messages. NPC physically exists in town to provide place identity and visual comedy; remote dialogue uses identical dialogue/quest interface. The rock should make ridiculous modem/telepathy sounds. No API availability should be required to open rock and accept at least one fallback quest.
+UX: hotkey R or toolbar icon opens rock 'contacts'; choose NPC; dialogue begins from anywhere unless in a restricted quest moment. Persistent contact unlocks once NPC introduced (or all visible immediately for faster jam experience). Show contact portrait, current relationship (-100..+100), quest availability, urgent messages. NPC physically exists in town to provide place identity and visual comedy; remote dialogue uses identical dialogue/quest interface. The rock should make ridiculous modem/telepathy sounds. The Candy Rock is also the Production Faerie's channel when she is not on screen (Appendix C). No API availability should be required to open rock and accept at least one fallback quest.
 
 8. DYNAMIC QUEST ENGINE — SPECIFICATION
 ======================================
@@ -376,7 +378,7 @@ AGENT FIRST PROMPT (TO USE ONLY WHEN THE JAM OPENS)
 
 22. OPEN DECISIONS TO MAKE AFTER THEME REVEAL
 ============================================
-- Theme interpretation: what specifically makes Candy Rock and NPC village fit the official theme?
+- Theme interpretation: RESOLVED 2026-11-11, "Director's Cut" = Appendix C (Production Faerie, ACTION!/CUT!/RETAKE!, the reward split). Still open: exact numbers in C.4 and which two quest families get CUT! variants.
 - Art camera/control: top-down click-to-move, WASD isometric or third-person; commit to one.
 - Session connectivity: LAN only, EOS, Steam or other already-working solution; test before promising Internet joins.
 - Four class skill silhouette: keep 1 unique active and shared basic interaction if short on time.
@@ -879,5 +881,212 @@ ART/ASSET INTEGRITY AND ACCESSIBILITY
 
 DECISION PRIORITY IF THE JAM THEME CONFLICTS
 - Keep the core contrast and serious-vs-ridiculous delivery only if the actual theme supports them. Adapt Sugarborough's props and the title as needed. No hard commitment to candy branding is a requirement for eligibility.
+
+======================================================================
+APPENDIX C — DIRECTOR'S CUT (JAM THEME), THE PRODUCTION FAERIE, THE CUT
+======================================================================
+
+STATUS: DESIGN PROPOSAL, NOT IMPLEMENTED. Added 2026-11-11 after the theme reveal. Where this appendix conflicts with
+earlier text that treats the theme as unknown, this appendix wins. Scope rules, cut order and the "solo complete"
+pillar still apply.
+
+C.1 THE THEME IN ONE PARAGRAPH
+==============================
+THE DREAD LAND OF CANDY: DIRECTOR'S CUT. The grim hero is being filmed. A small, bossy, very low-budget faerie
+declares herself the Director and floats behind the hero with a toy camera, a megaphone and a clapperboard,
+"shooting a movie" out of the villagers' ordinary problems. She gives notes, demands retakes, rewrites quests
+mid-scene, yells at the hero for dying, wandering off or ignoring her, and then collects most of the pay from the
+villagers for being "in charge", leaving the hero a cut. The subtitle is "The Definitive Edition of a Game That
+Never Existed": the uncompromising artistic vision of a project nobody greenlit.
+
+The theme is also the mechanic: the player has a limited, real power to edit scenes (CUT!), and the Director's
+interference is the procedural-quest system made visible.
+
+C.2 THE PRODUCTION FAERIE (CHARACTER)
+=====================================
+Working name: FENELLA FLICKER (provisional; any original name is fine). She is an ORIGINAL character.
+- Do not use any existing franchise's fairy name, catchphrases or lines (in particular nothing from the Zelda
+  series). A distant genre nod is fine; copied or near-copied lines are not. Write every line fresh.
+- Personality: relentlessly upbeat, self-important, thinks in film jargon, takes credit, never apologises,
+  treats the hero as "talent". Tone rule: the cynicism lives in her cheerfulness (a sleazy producer who is sure
+  she is helping), not in the hero or the game being bitter. Whichever phrasing is funnier wins.
+- Look (cheap on purpose): small glowing faerie, tiny beret or visor, a toy camera or megaphone, a mini
+  clapperboard. A static AI-generated mesh or a billboard sprite is enough: bob, glow, flap via material or a
+  simple rotation. No skeleton, no navmesh. She trails the hero by interpolating to a shoulder offset.
+- She is diegetic dressing. The gameplay camera stays the one locked camera chosen in section 12; she never
+  blocks it, never moves it, and never overlaps the objective HUD. A subtle "REC" dot, a slate card and a slightly
+  handheld framing wobble sell "she is the camera crew"; the wobble obeys the accessibility toggle (reduce
+  screenshake).
+- When off screen she speaks through the Candy Rock (the rock is her walkie-talkie).
+- She is not an enemy and cannot be hit. Her harassment is voice + text + the quest edits below.
+
+Her reactions (all of them are plain event triggers, see C.7):
+  Trigger                     Example original lines (tone guide only; final lines are authored text)
+  scene start (ACTION!)       "Places, everyone! And by everyone I mean you."
+  idle, no progress           "Why are you standing there? The audience is bored. I am the audience."
+  strayed from the objective  "This is a closed set! Get back in frame!"
+  failed take                 "That was a take. Technically. RETAKE!"
+  ignored her option          "Fine. Do it your way. It will be worse, and I will say so in the credits."
+  CUT! prompt                 "CUT! The rats have no motivation. Options, darling."
+  wrap, reward split          "You're gonna be a big star! My cut is the star part."
+  level-7 intro               "You start at level seven. Don't ask. Continuity."
+  low Composure/overwhelmed   "Do not die on my budget!"
+Rule: no profanity, no abuse of real-world groups, nothing that targets the player's person; she is rude to the
+hero's performance, never cruel.
+
+C.3 ACTION! / CUT! / RETAKE! (THE QUEST-EDIT MECHANIC)
+======================================================
+Three commands, each built on the existing quest-stage system (section 8). No new subsystem is required beyond a
+take counter and a stage-variant table.
+
+SCENE / TAKE: each quest instance is a SCENE (number shown on the quest card). Each attempt at a stage is a TAKE
+(number shown). Example label: "SCENE 4 - TAKE 2".
+
+ACTION!  Activates the next stage (spawns its targets, starts its timer if it has one). Presentation: a big
+         ACTION! card and the slate. Mechanically it is just "stage becomes ACTIVE".
+CUT!     Replaces the NEXT stage with another variant from a compatible set, chosen by the player. It is the
+         player's Director's Cut. Offered only at designated stage transitions, never mid-encounter
+         (restarting combat, despawning actors and syncing clients mid-fight is exactly the nightmare the cut
+         matrix already warns about). The Director proposes; the player may also pick "Ignore the Director" =
+         keep the original stage.
+RETAKE!  After a failed stage (timer expiry or too many mishaps), restart the stage: counters and its spawned
+         actors reset, take number +1, optionally with a small reputation or ledger cost. Also the answer to
+         "die/run away": the game has no death, so failure is a failed take.
+
+Variant rules:
+- Every variant of a stage type is built only from mechanics that already exist: PACIFY_TARGET (with more or
+  fewer Resolve), INTERACT_TARGET, COLLECT, a countdown timer, a higher or lower count. Variants change
+  parameters, text and presentation, not verbs. (Section 8 rule: never vary objective verbs into unsupported
+  mechanics.)
+- A variant set is authored and validated: every variant can be finished solo by every class with no status or
+  class gate, and has enough spawned targets for its count.
+- Frozen-plan rule (section 8) still holds: the plan is frozen per take. A CUT! creates a new frozen plan for the
+  remaining stages from a logged seed; it never reshuffles an active stage.
+- Disconnect, menu time and network faults never count as a failed take.
+
+Example (A BALANCED DIET, Scene 4):
+  Original:  Enter the field -> pacify 5 giant rats -> feed them celery.
+  CUT! options at the transition before the last stage:
+    "Training montage"          3 INTERACT objectives, each with an exaggerated title card. Gross reward x1.25
+    "Dramatic confrontation"    pacify one Rat King (high Resolve) then one giant celery. Gross reward x1.5
+    "Ignore the Director"       original stage. Gross reward x1.0
+Further examples (only if parameter-only): Fort Toothache "needs a stronger antagonist" = one high-Resolve
+goblin, "where is the tension" = add a countdown, "more spectacle" = bigger count. NOT for the jam:
+follow-the-leader choreography and new escape sequences (new mechanics).
+
+The knight fakeout is explained by this: the knight draws the sword, the Director yells "CUT! Less violence, more
+character development!", and the lecture begins. Same mechanic as before, now with a reason.
+
+C.4 THE CUT (REWARD SPLIT)
+==========================
+She is "in charge", so she keeps most of the pay. Visible, funny, never punishing.
+
+Production Ledger, shown on the "That's a Wrap!" card:
+  Gross reward (from the quest, scaled by the chosen CUT! variant)
+  - Director's fee   (she takes a percentage, with a line of justification)
+  = Hero's cut       (what the player actually receives)
+
+Starting numbers (PLACEHOLDERS to tune; the goal is that no CUT! option strictly dominates):
+- Hero's cut starts at 40% of the gross currency/loot value. The Director's fee is the remaining 60%.
+- Villager reputation is NOT skimmed. The villager still thanks the hero by the exact reputation numbers in
+  section 9 (visible consequence stays clear), while the dialogue makes it obvious the villagers also thank the
+  Director. Keep the reputation system legible.
+- Currency: the hero's cut applies as a percentage after rounding up.
+- Loot: the quest drops 2-4 pickups (section 11). The Director keeps one, the highest-rarity roll, as the
+  "producer's pick for the sequel", but never takes the only drop.
+- FLOOR (never cut the reward loop): the hero always receives at least one item and a minimum currency
+  amount per completed scene, and the Director never takes more than what leaves the floor.
+- Comeback lever: loot affixes can raise the hero's cut, for example "of Fair Compensation" (+X percentage
+  points to Hero's Cut, hard-capped, for example at 70%). This ties the skim into the loot and affix system
+  already planned. Class and quest completion never depend on it.
+- Obey-or-ignore tension: preferring the Director's more dramatic variant raises the gross but she also
+  takes a bigger fee; ignoring her keeps the fee lower but the gross small and she sulks. Tune so both are
+  viable.
+- Showcase option: in a final "Final Cut" scene, the hero keeps the full reward (a payoff the player earns).
+  Optional; cut first if behind.
+
+Ledger math is a pure function (gross, variant, affix bonuses, floor in; fee, hero's cut, which loot item is
+kept out) and is unit-tested headless. The reward commit applies it once and is idempotent like every other
+reward (section 8 step 9).
+
+C.5 PRESENTATION: THE LOW-BUDGET SET
+====================================
+Cheap, readable, funny. None of it may hide the objective or break controls.
+- ACTION! card and SCENE n - TAKE m slate when a stage begins; a huge CUT! comic bubble at the CUT! prompt; a
+  "That's a Wrap!" card with the ledger. (Reuses the comic-bubble system, Appendix A section 6.)
+- Budget gags: occasional on-screen production notes ("This scene was restored for the Director's Cut"),
+  "VFX budget exceeded" captions, cardboard-looking props on a few set pieces.
+- The "37% more dental hygiene" style jokes live in the quest card and loading text.
+- Slow-motion on a particularly ridiculous finishing hit, spotlight cues and slate claps are polish for the
+  last days.
+- Accessibility: reduce screenshake/flash/bubble size toggles also cover the wobble and the big cards.
+
+C.6 VOICE AND WRITING
+=====================
+- Voice lines are generated by Dylan with ACE Studio after the jam opens (not before 2026-11-12), then
+  declared in Docs/Declared.md with the date and tool. Every line is authored text first; the audio realises it.
+- Content: roughly 30-40 short clips across the C.2 trigger categories, plus 3 or more variants for the common
+  triggers so repeats are rare.
+- Every line is also shown as a comic-bubble caption (works with sound off, and for accessibility).
+- No lines or names from other franchises; keep her tone rule (cheerful, self-important, never cruel).
+- Missing audio must not block gameplay: the line still shows as text with a sound-less bubble.
+
+C.7 THE NAG SCHEDULER (HEADLESS LOGIC)
+======================================
+Plain C++, no world, no audio, unit-tested. Input: a state snapshot (stage state, time since last progress,
+distance from objective, take number, last-spoken lines, per-trigger cooldowns, seed). Output: at most one
+(trigger, line_id) or none.
+Rules:
+- Triggers: scene_start, idle, strayed, failed_take, ignored_option, cut_prompt, wrap, level7_intro, overwhelmed.
+- Global minimum gap between lines (for example 8 s); per-trigger cooldowns; never repeat a line within the last
+  N spoken; deterministic for a given seed.
+- She never talks over dialogue, menus or the CUT! prompt itself.
+- idle and strayed have thresholds (for example 20 s without progress, 25 m from the objective for 6 s).
+- No trigger can change quest state, rewards or reputation. She nags; the stage machine decides.
+
+C.8 JAM ORDER AND CUT PRIORITIES (REPLACES THE ORDER IN SECTION 18 WHERE IT CONFLICTS)
+=====================================================================================
+Build order:
+ 1. Stage state machine as plain C++ with tests: stage list, take counter, variant choice at a transition, RETAKE
+    reset, once-only outcome.
+ 2. Ledger math, tests.
+ 3. Scene/Take label, ACTION!/CUT!/RETAKE!/That's a Wrap! UI overlays on the existing screen framework.
+ 4. Faerie actor (sprite or static mesh), the nag scheduler, placeholder text bubbles.
+ 5. Voice clips, dialed in; then the polish list in C.5.
+Never cut: the CUT! choice at a transition, the Scene/Take label, the Production Ledger joke on the wrap card,
+and at least some voice or text for the faerie.
+Cut in this order when behind: slow motion and spotlight polish, budget gags, extra variants (down to two on one
+quest family), the Final Cut payoff, the AI-generated lines idea (see C.9), generalising to more quest families.
+Multiplayer (section 13 stays a day-3 gated maybe): the host chooses the cut for a shared scene; each player's
+ledger and reputation are separate.
+
+C.9 OPTIONAL AI LAYER (STRETCH ONLY)
+====================================
+If time allows after the loop is packaged: LLM-generated Director notes with authored fallbacks and a short
+timeout, never able to change a stage, reward or reputation (sections 8 and 9 rules). Everything ships fine
+without it.
+
+C.10 ACCEPTANCE TESTS (HEADLESS WHERE POSSIBLE)
+===============================================
+ A. A CUT! at a transition replaces only the next stage, with a variant from its compatible set; counters and
+    plan for earlier stages are unchanged.
+ B. CUT! is refused outside a transition.
+ C. RETAKE! after a failure resets counters and spawned-actor lists, increments the take, and never double-applies
+    a ledger or reputation cost.
+ D. The ledger never drops the hero below the floor, never takes the only loot drop, honours the affix bonus up
+    to its cap, and is idempotent when the outcome is committed twice.
+ E. The nag scheduler respects the minimum gap, per-trigger cooldown and no-repeat window, is deterministic for
+    a seed, and stays silent during dialogue or the CUT! prompt.
+ F. Every variant can be completed by a class that has no special status.
+ G. Missing audio or a missing faerie mesh does not block play.
+
+C.11 RISKS
+==========
+- Variant content is content: keep to two variants per transition on one or two quest families.
+- The skim must read as a joke, not a punishment: the floor, the visible ledger and the comeback affix exist for
+  that reason.
+- Cheap-looking on purpose can read as unfinished: the framing (slate, REC, production notes) is what tells the
+  player it is deliberate.
+- The faerie must never block the camera view or the objective HUD.
 
 END OF UNIFIED MASTER BRIEF

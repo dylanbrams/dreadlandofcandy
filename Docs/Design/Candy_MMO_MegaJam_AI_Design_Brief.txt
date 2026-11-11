@@ -1,5 +1,6 @@
 CANDY MMO / ANTI-FANTASY MMO — EPIC AI MEGAJAM 2026
 PRE-JAM DESIGN AND AI IMPLEMENTATION BRIEF
+NOTE 2026-11-11: SUPERSEDED. The theme "Director's Cut" is now known. Read The_Dread_Land_of_Candy_Master_Design_Brief.txt, especially Appendix C; this standalone file is an older reference.
 Version: 0.1 planning draft | Prepared 2026-11-11 | Status: NOT IMPLEMENTED
 
 READ FIRST — AUTHORITY AND INTENT

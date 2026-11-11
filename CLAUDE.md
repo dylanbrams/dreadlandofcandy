@@ -4,6 +4,10 @@
 
 Commit only when Dylan asks. This session may be streamed: never `cat`, print or open credentials, config with tokens, or anything outside this folder that could hold secrets.
 
+## Start here
+
+Read `Docs/STATUS.md` (what exists, decisions, next steps) and the design briefs in `Docs/Design/` (Appendix C of the master brief is the theme, "Director's Cut"). The briefs are proposals, not evidence that anything works.
+
 ## Declared pre-jam work
 
 Everything that existed before Nov 12 is listed in `Docs/Declared.md`. Anything copied in from another project during the jam gets a line there too, the same day.
@@ -46,3 +50,6 @@ Game flags: `-shotat=<s> -shotname=<n>` (in-engine screenshot), `-quitat=<s>` (`
 - Subsystems need a `UGameInstance` outer, even in tests.
 - Save structs: every field must be a `UPROPERTY`, or loading silently drops it.
 - PowerShell 5.1 `Get-Content` reads UTF-8 files without a BOM as ANSI; writing them back garbles non-ASCII text. Edit text files with the Edit tool or Python.
+- GAS: 5.8 ensures on `SetIsReplicated` in a component constructor, use `SetIsReplicatedByDefault`. `FGameplayAbilitySpecHandle` is in `GameplayAbilitySpecHandle.h`. Needs the `GameplayAbilities` plugin in the `.uproject` and `GameplayAbilities`, `GameplayTags`, `GameplayTasks` in `Build.cs`. Attribute sets made as default subobjects register with the ASC automatically.
+- `IMPLEMENT_SIMPLE_AUTOMATION_TEST` flags must be an inline expression or a macro; a `constexpr EAutomationTestFlags::Type` does not compile.
+- The editor writes an Android file server `SecurityToken` into `Config/DefaultEngine.ini` when it runs. Never commit that diff.

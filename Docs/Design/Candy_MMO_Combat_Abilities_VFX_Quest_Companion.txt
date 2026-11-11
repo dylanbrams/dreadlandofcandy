@@ -1,4 +1,5 @@
 CANDY MMO / SUGARBOROUGH
+NOTE 2026-11-11: SUPERSEDED as a standalone. The theme "Director's Cut" is now known. Read The_Dread_Land_of_Candy_Master_Design_Brief.txt (this file is its Appendix A), especially its Appendix C.
 COMBAT, ABILITIES, VFX, AND QUEST ENCOUNTERS — AI IMPLEMENTATION COMPANION
 Version 0.1 | 2026-11-11 | DESIGN ONLY / NOT IMPLEMENTED
 Companion to: Candy_MMO_MegaJam_AI_Design_Brief.txt
