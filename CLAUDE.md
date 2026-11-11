@@ -2,7 +2,7 @@
 
 2026 Epic AI MegaJam entry, UE 5.8 C++. Jam: build Nov 12 to Nov 15, deadline **Nov 15, 5:59 PM PST**. Submit a packaged **Windows Development** build as `TeamName_GameName.zip`, under 1 GB, through the jam's itch.io page (https://itch.io/jam/2026-epic-ai-megajam). Unpackaged projects are not accepted.
 
-Commit only when Dylan asks. This session may be streamed: never `cat`, print or open credentials, config with tokens, or anything outside this folder that could hold secrets.
+Commit at the end of every task once the build and tests pass, and at green checkpoints inside a long task; never push unless Dylan asks. The whole jam is streamed: never `cat`, print or open credentials, config with tokens, or anything outside this folder that could hold secrets.
 
 ## Start here
 

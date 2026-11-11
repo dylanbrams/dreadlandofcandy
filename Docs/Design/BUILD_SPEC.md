@@ -29,9 +29,9 @@ A complete eight-minute comedy with a beginning and an end. Solo, offline, one m
 
 **Flow:** Title -> opening narration (interrupted) -> Scene 1 -> walk -> Scene 2 -> walk -> Scene 3 -> Premiere (ending card) -> Credits -> back to title.
 
-**Verbs:** move, Lecture (cone), Interact (E), and answering Fenella's note (take it / refuse it). Nothing else.
+**Verbs:** move, up to four skills (section 3c; Scene 1 starts with the Lecture alone), Interact (E), and answering the note (take it, refuse it, or type your own). Nothing else.
 
-**Camera and controls (locked):** fixed three-quarter top-down camera on a spring arm, no camera control. Keyboard and mouse: WASD moves, hero faces the cursor, LMB or Space lectures, E interacts, Esc pauses. Gamepad: left stick moves, right stick aims (falls back to move direction), RT or X lectures, A interacts, Start pauses. Top-down hides weak animation, keeps the cone readable and keeps Fenella in frame.
+**Camera and controls (locked):** fixed three-quarter top-down camera on a spring arm, no camera control. Keyboard and mouse: WASD moves, hero faces the cursor, LMB / RMB / Q / R are skills 1 to 4, E interacts, Esc pauses. Gamepad: left stick moves, right stick aims (falls back to move direction), RT / RB / LB / Y are skills 1 to 4, A interacts, Start pauses. Top-down hides weak animation, keeps the cone readable and keeps Fenella in frame.
 
 **The map:** Sugarborough as a film backlot. Three sets (a field, Fort Toothache's one room, an orchard) joined by a short village street. Each set is a flat arena with blocking edges, so nuisances steer without a navmesh. Walking between sets takes about 15 seconds and is where signs, the plywood house backs and the deleted-scene door live. One level, no streaming, no travel.
 
@@ -62,7 +62,7 @@ A complete eight-minute comedy with a beginning and an end. Solo, offline, one m
 
 ### Not building (do not start any of these without Dylan saying so)
 
-Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no persistence, no Postgres). Save games. Quest generator, seeds, stage weights. Classes other than the knight. Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, statuses, resistances. New GAS attributes, GameplayCues, cost effects. Auto-cast. Level 1 restart. Procedural terrain.
+Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no player persistence). Save games. Quest generator, seeds, stage weights. Classes other than the knight. Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, resistances, any status other than Flustered. GAS beyond what section 3c needs (no new attribute sets, GameplayCues or cost effects). Skill trees, respec, talents. Auto-cast. Level 1 restart. Procedural terrain.
 
 (Dylan, Nov 11: no multiplayer feature work in the jam plan, but keep the preparation: no architectural choice that makes adding it miserable later.)
 
@@ -82,9 +82,42 @@ Dylan's pitch for "Ambition and innovation" (Nov 11): an RPG the player directs 
 - No keys in the client. The client knows one URL; the server holds the model key, rate-limits per session and per address, refuses abusive input and is told to keep everything in the game's tone. The title screen says in one line that typed notes are sent to a server.
 - The server has to stay up for the whole judging period. That is Dylan's to guarantee, and the reason the offline path must be good.
 
-**Backend:** OneMore's word server already does the hard part (a typed player answer sent from Unreal to FastAPI, judged by a language model, returned as structured JSON: `/judge-definition`, `chatgpt_service.py`, and `WordServerClient` on the Unreal side). Reuse that pattern: two new endpoints, `POST /v1/director/note` and `POST /v1/director/premiere`, either in that service or a small new one beside it. Anything copied gets a `Docs/Declared.md` line. This is a separate lane that does not compile Unreal, so it can run in parallel with the code session.
+**Backend (Dylan, Nov 11):** a **second Gunicorn service on its own port** on the existing AWS box, with a **second database on the existing Postgres server**. OneMore's word server is the pattern to copy (a typed player answer sent from Unreal to FastAPI, judged by a language model, returned as structured JSON: `/judge-definition`, and `WordServerClient` on the Unreal side) but its service and database are not touched. Two endpoints: `POST /v1/director/note` and `POST /v1/director/premiere`. Anything copied gets a `Docs/Declared.md` line. This lane does not compile Unreal, so it runs in parallel with the code session. The stream is live: that session never prints environment variables, keys, connection strings or config files.
+
+**Model and spend (Dylan, Nov 11): Claude Haiku, and it must be hard to spend money.** Target: about 50 dollars covers a great deal of play.
+
+- **The database answers first.** Cache key: prompt version, scene, stage, motif, and the note after normalising (lower case, trimmed, whitespace collapsed, punctuation stripped). An identical request returns the stored response and never reaches the model. The three suggested-note buttons per prompt are pre-warmed, so they are always hits.
+- **Carry-forward without breaking the cache:** the model returns a `motif` of at most three words with each note ("taxes"). Later requests send the current motif, not the whole notes log, so the key stays small and repeats still hit.
+- Note input hard-capped at 80 characters on the client and again on the server; output capped by `max_tokens` sized to the form.
+- **A daily request budget in the database.** When the day's model calls reach the limit, the endpoint serves cache hits only and tells the client to fall back. Spend is then bounded by design, not by hope. Also set a spend limit on the API key itself.
+- Per-session and per-address rate limits.
+- The premiere call is one uncached request per finished run; it counts against the same budget and has the authored endings as its fallback.
+- The B1 session loads the `claude-api` skill for the current Haiku model id, structured output and pricing, and sizes the daily budget from real prices, not from memory.
 
 **Gate:** typed notes work in a packaged build against the live server by the end of day 2, or the text box ships hidden and the suggested-note buttons stay.
+
+## 3c. Levels, stats and skills (Dylan, Nov 11: standard RPG progression, MOBA-simple)
+
+The hero levels up and the player puts a point into a skill, the way a MOBA does it. One hero, the knight.
+
+**Levels:** start at level 7, end at level 10. XP comes from pacifying, treating and wrapping; thresholds are set so the levels land on cards: level 8 on Scene 1's wrap, level 9 on Scene 2's wrap, level 10 at the CUT! before Scene 3's final stage. Each level gives **one skill point**, spent on the card where it is earned (blocking, gamepad-friendly, never mid-fight). An XP bar and the level sit on the HUD.
+
+**The six points already spent:** the skill panel shows levels 1 to 6 pre-spent on passives that do nothing (Brooding III, Cape Maintenance II, Standing I; see `Jokes.md`). That is the level-seven joke as a UI element.
+
+**Skills** (each is the existing area ability with a different shape from the AoE library, a rank table, and at most the one status):
+
+| Slot | Skill | Shape | Does | Ranks |
+| --- | --- | --- | --- | --- |
+| 1 | The Lecture | cone | Resolve damage | 1 to 4: damage and radius up. Owned at start |
+| 2 | Form A Line! | long narrow line | lower damage, Flusters (stops) targets | 1 to 3: longer stop. Unlocked with a point |
+| 3 | The Disappointed Sigh | ring around the hero | small damage, slows fleeing targets | 1 to 3: bigger ring. Unlocked with a point |
+| 4 | The Last Judgment | large ring, long cooldown | heavy damage; the full sword fakeout plays here at its grandest | Unlocks automatically at level 10, for the finale |
+
+Three points across levels 8 to 10, so the player cannot have everything: that is the build choice. The Lecture alone must still be able to finish every stage.
+
+**Stats** (four, all real, shown on a small character sheet on the wrap card): Lecture Power, Radius, Cooldown Recovery, Move Speed. Loot changes them; ranks change skills.
+
+**How it is built:** `FJamProgression` is headless (xp, level, points, ranks, stat totals from base plus loot plus ranks) with tests, and lives on the PlayerState. Skill rank is the GAS ability level; each ability reads its numbers from a rank table. Flustered is one duration effect that grants a tag the nuisance already reacts to. Spending a point goes through a request function like every other input. The autoplay bot spends points by a fixed policy.
 
 ## 3b. Widening after the slice works
 
@@ -130,7 +163,7 @@ Three layers. Dependencies point downward only.
 - `AJamHero : ACharacter`: avatar for the PlayerState's ASC, spring-arm camera, input. Create Enhanced Input actions and the mapping context in C++ at runtime so there are no input assets to cook or lose; verify this against the 5.8 headers before relying on it, and add the `EnhancedInput` module.
 - `AJamNuisance : APawn`: ASC, Resolve, the five states above, an interact entry point. Reports pacified/treated to the game mode, which calls `ReportProgress`.
 - `AJamFaerie`: cosmetic only. Interpolates to a shoulder offset, bobs, faces what she is filming. No collision, no skeleton.
-- The existing GAS layer is used as is, for Resolve and the Lecture. Do not extend it.
+- The existing GAS layer carries Resolve and the skills. Extend it only as section 3c says: three more area abilities, ability level as rank, one Flustered effect.
 
 **Multiplayer-ready rules** (cost almost nothing now, save a rewrite later; write no replication code, RPCs or session code during the jam):
 
@@ -207,6 +240,14 @@ Take the first unblocked task. One task per session. Sizes are guesses. "Model" 
 | T17 | Asset lane (Dylan plus a side session): fill `styles.json`, hero test asset, rat, goblin, one house, one Rodin prop | either | One approved asset per type in the game camera |
 | T18 | Audio lane (Dylan): the three music pieces, first eight sounds | Dylan | In the build, with the volume slider |
 
+Progression (section 3c), day 2:
+
+| ID | Task | Model | Done when |
+| --- | --- | --- | --- |
+| T04a | `FJamProgression` + rank tables + tests (thresholds land on the cards, points never exceed levels, stats total correctly) | Sonnet | `Jam.Film.Progression.*` pass |
+| T05a | Skills 2 to 4 as area abilities with rank tables, the Flustered effect, input slots | Opus | `-abilitytest`-style scene shows each shape; tests for line and ring hits |
+| T14a | Skill bar with cooldowns and ranks, XP bar, point spend on the wrap and CUT! cards, character sheet, the pre-spent passives panel; autoplay spends points | Opus | Screenshot of each; autoplay ends at level 10 |
+
 Typed notes (section 3a), days 1 and 2. B-tasks run in the backend repo in parallel with the Unreal session:
 
 | ID | Task | Model | Done when |
@@ -235,7 +276,7 @@ End of day 2: package, smoke, and **have someone who has not seen it play it**. 
 
 ## 8. Cut order when behind
 
-Drop from the top. 1) Commentary track. 2) Street gags beyond signs. 3) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
+Drop from the top. 1) Commentary track. 2) Street gags beyond signs. 3) Skill 3, the Disappointed Sigh (two skills and the ultimate still give a choice). 3a) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
 
 Typed notes are outside this order: they are decided by their own gate at the end of day 2 (section 3a), and if they pass they rank above everything in the list except Scene 3 entirely.
 
@@ -249,6 +290,7 @@ Never cut: the sword fakeout, the forced "Perfect. Again.", one CUT! choice, the
 4. Rewrite `Docs/STATUS.md` in place (what exists, what is broken, next task). Keep it under 80 lines; it is a snapshot, not a history.
 5. Append three to six lines to `Docs/DEVLOG.md`: date and time, what was built, what went wrong, one screenshot path. This is the Glass Box entry and the source for the submission's tool list. Be candid; failures make a better log.
 6. Anything brought in from another project or generated by a tool: a line in `Docs/Declared.md` the same session.
+6a. **Commit at the end of every task** once the build and tests pass (Dylan, Nov 11), and at any green checkpoint inside a long task. Small commits are the rollback points. Never push without Dylan asking. Never commit the `Config/DefaultEngine.ini` token diff. The whole jam is streamed: nothing with a secret is ever printed, opened or committed.
 7. **One session builds at a time.** UBT and the editor lock the same binaries; a second code session will fail or corrupt the first one's build. Parallel sessions are for lanes that do not compile: asset generation, text, audio, the dev log.
 8. Do not add a system that is not in section 3 or 5. If something seems to need one, stop and write the question in STATUS.
 9. Never mark a task done on the strength of tests alone when its "done when" is a screenshot or a played run.
@@ -278,6 +320,12 @@ Answered Nov 11:
 5. **Art:** dark fantasy high poly for the hero, bright kiddie low poly for everything else, through the generators. In `styles.json`.
 
 6. **Camera:** Dylan considered a Fortnite-style over-the-shoulder camera and left the choice to whichever is easiest. Decision: **fixed three-quarter camera, pulled in close** (start at about 1100 uu arm length, 50 degree pitch, no player camera control; tune in T01 so the hero fills roughly a sixth of the screen height). Reasons: every screenshot shows the whole set from a known angle, which is how sessions verify their work; no camera collision, mouse-look, sensitivity or invert settings to build; Fenella and her camera stay in frame; nuisances cannot hide behind the player; strafing and backpedal animations are not needed. Do not revisit.
+
+7. **Backend:** second Gunicorn service and second Postgres database; Haiku; database cache first; about 50 dollars must go a long way (section 3a).
+8. **Commits:** regularly, at the end of each green task (section 9).
+9. **RPG:** levels, stats and MOBA-style skill points (section 3c). One hero.
+10. **Game name: The Dread Land of Candy.** Zip: `ImaginaryComponent_TheDreadLandOfCandy.zip`. "Director's Cut" stays as the stamp on the title screen.
+11. **Dev log:** yes. The jam is streamed; `Docs/DEVLOG.md` is the written log and carries the stream links. Outside playtester for the end of day 2: Dylan is looking for one.
 
 Open, only Dylan can answer:
 

@@ -227,6 +227,32 @@ Rarity labels, in order: Common, Uncommon, Rare, Legendary, **Director's Persona
 
 Stamp on her pick, one of: RESERVED FOR SEQUEL / PRODUCER'S PICK / EVIDENCE.
 
+## Skills and levels
+
+**The six points already spent** (greyed-out panel, levels 1 to 6, cannot be refunded):
+
+| Passive | Rank | Tooltip |
+| --- | --- | --- |
+| Brooding | III | "Stand near a cliff 15% more meaningfully." |
+| Cape Maintenance | II | "Your cape is 10% less damp." (You have no cape.) |
+| Standing | I | "You may now stand." |
+
+Footer on the panel: "Respec unavailable. Levels one to six tested poorly."
+
+**Skill tooltips:**
+- The Lecture: "Deals Resolve damage in a cone. Has never once been brief."
+- Form A Line!: "Targets in a line stop and reconsider. Queueing is the foundation of civilisation."
+- The Disappointed Sigh: "Everyone nearby slows down. They heard it. They know."
+- The Last Judgment: "The sword rises. The heavens darken. Then you say what you came to say."
+
+**Rank-up text:** "The Lecture II: now with examples." / "The Lecture III: now with slides." / "The Lecture IV: now with a question-and-answer session nobody may leave."
+
+**Level-up card:** "LEVEL 8. You feel no different. You are, by 4%." Fenella: "A level! That's character growth. I'm billing for it."
+
+**Level 10:** "LEVEL 10. Ultimate unlocked." Fenella: "Save it for the finale. I've already cut the trailer."
+
+**Character sheet stat names:** Lecture Power, Radius, Cooldown Recovery, Move Speed, and one greyed-out row: "Strength: not applicable."
+
 ## Lecture bubbles
 
 Default pool (jagged, all caps):
