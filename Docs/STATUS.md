@@ -1,6 +1,6 @@
 # STATUS (handoff, written 2026-11-11, the night before the jam)
 
-Read this first, then `Docs/Design/The_Dread_Land_of_Candy_Master_Design_Brief.txt` (Appendix C is the theme), then `CLAUDE.md`.
+Read this first, then `Docs/Design/BUILD_SPEC.md`, then `CLAUDE.md`. **BUILD_SPEC.md governs** (added Nov 11 by a design review): it narrows the game to a solo eight-minute film with three scenes and an ending, replaces the build order and "First steps tomorrow" below with a task backlog (T01 onward), and lists questions for Dylan in its section 11. Authored text and jokes: `Docs/Design/Jokes.md`. The three briefs are reference only; do not read them unless a task names a section.
 Everything under `Docs/Design/` except Appendix C was drafted with ChatGPT before the jam and is a proposal, not evidence that anything works. Appendix C was written in a Claude session the same night.
 
 ## The game in one paragraph
@@ -47,8 +47,6 @@ Anything copied into this project gets a `Docs/Declared.md` line the same day.
 
 ## First steps tomorrow
 
-1. Read `Docs/Declared.md`; the jam rules say the build starts Nov 12.
-2. Stage/take state machine + tests (Appendix C.3, C.10 A-C).
-3. Ledger math + tests (C.4, C.10 D).
-4. Faerie nag scheduler + tests (C.7, C.10 E).
-5. Get the packaged build and smoke test working early (`Scripts\package.ps1`, `Scripts\smoke-packaged.ps1`).
+Superseded by `Docs/Design/BUILD_SPEC.md` section 7. Start at T01 (hero on screen) and T02 (package it), then T03 onward. Read `Docs/Declared.md` first; the jam rules say the build starts Nov 12.
+
+Where the "Decisions made" above disagree with BUILD_SPEC (multiplayer gate, reward split numbers, build order), BUILD_SPEC wins until Dylan says otherwise.

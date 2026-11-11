@@ -16,6 +16,8 @@ Everything below was made before Nov 12, 2026. None of it is gameplay. Paste thi
 | Meshy, Hyper3D Rodin clients, shared helpers, API balance check | `Scripts/meshy.py`, `rodin.py`, `genlib.py`, `check-balances.py` | Written for the jam |
 | Agent instructions, including a list of UE 5.8 pitfalls | `CLAUDE.md` | Adapted from Cafeteria Battler |
 | Design briefs (the Dread Land of Candy pitch, combat/VFX/quest companion), drafted with ChatGPT | `Docs/Design/` | Written for the jam (Nov 11); design text only, no game code |
+| Build spec (scope, architecture, task backlog) and joke/line sheet, written with Claude Code | `Docs/Design/BUILD_SPEC.md`, `Docs/Design/Jokes.md` | Written for the jam (Nov 11); design text only, no game code or assets |
+| Style prompt prefixes and suffixes for the mesh generators | `Docs/styles.json` | Written for the jam (Nov 11); prompts only, nothing generated |
 
 ## Ability layer test template (Nov 11, 2026, before the jam)
 

@@ -1,23 +1,23 @@
 {
   "character": {
-    "prefix": "",
-    "suffix": ""
+    "prefix": "Dark fantasy hero, high poly, highly detailed,",
+    "suffix": "grim and imposing, heavy worn dark metal armour, aged leather, desaturated palette, realistic proportions, strong readable silhouette, neutral A-pose, full body, no gore, no baked lighting"
   },
   "npc": {
-    "prefix": "",
-    "suffix": ""
+    "prefix": "Cute low-poly cartoon character for a children's game,",
+    "suffix": "bright saturated candy colours, chunky rounded shapes, big head, simple friendly face, flat hand-painted colours, matte, neutral A-pose, full body, no baked lighting"
   },
   "equipment": {
-    "prefix": "",
-    "suffix": ""
+    "prefix": "Dark fantasy, high poly, highly detailed,",
+    "suffix": "worn dark metal, aged leather, desaturated palette, oversized and menacing, single object, no baked lighting"
   },
   "terrain_piece": {
-    "prefix": "",
-    "suffix": ""
+    "prefix": "Cute low-poly cartoon game prop,",
+    "suffix": "bright saturated candy colours, chunky rounded shapes, flat hand-painted colours, matte, single object, no baked lighting"
   },
   "particle_mesh": {
-    "prefix": "",
-    "suffix": ""
+    "prefix": "Cute low-poly cartoon game prop,",
+    "suffix": "bright saturated candy colours, very simple chunky shape, flat colours, matte, single small object, no baked lighting"
   },
-  "_readme": "Fill in after the theme reveal. prefix/suffix are added around every prompt of that --type by meshy.py and rodin.py. Keep the style words identical within a type."
+  "_readme": "Locked 2026-11-11 from Dylan's direction: dark fantasy high poly for the hero and the hero's gear (character, equipment); bright kiddie low poly for NPCs, nuisances, environment and effects (npc, terrain_piece, particle_mesh). prefix/suffix are added around every prompt of that --type by meshy.py and rodin.py. Keep the style words identical within a type; adjust once after the first test asset per type, then leave them."
 }

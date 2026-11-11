@@ -6,7 +6,9 @@ Commit only when Dylan asks. This session may be streamed: never `cat`, print or
 
 ## Start here
 
-Read `Docs/STATUS.md` (what exists, decisions, next steps) and the design briefs in `Docs/Design/` (Appendix C of the master brief is the theme, "Director's Cut"). The briefs are proposals, not evidence that anything works.
+Read `Docs/STATUS.md` (what exists, what is broken, next task), then `Docs/Design/BUILD_SPEC.md`, which governs: the game we ship, the architecture, the task backlog, the cut order and the session protocol. Authored text comes from `Docs/Design/Jokes.md`. The three older briefs in `Docs/Design/` are reference only (the master brief is about 40k tokens and mostly describes an MMO we are not building); open one only when a task names a section. None of these documents is evidence that anything works.
+
+Every session ends by rewriting `Docs/STATUS.md` and appending a few lines to `Docs/DEVLOG.md`. Only one session builds at a time.
 
 ## Declared pre-jam work
 
