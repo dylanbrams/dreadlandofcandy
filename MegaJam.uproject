@@ -1,0 +1,13 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Category": "",
+	"Description": "2026 Epic AI MegaJam entry",
+	"Modules": [
+		{ "Name": "MegaJam", "Type": "Runtime", "LoadingPhase": "Default", "AdditionalDependencies": [ "Engine" ] }
+	],
+	"Plugins": [
+		{ "Name": "Fab", "Enabled": false },
+		{ "Name": "ModelContextProtocol", "Enabled": true, "TargetAllowList": [ "Editor" ] }
+	]
+}

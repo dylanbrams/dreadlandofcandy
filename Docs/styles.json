@@ -1,0 +1,23 @@
+{
+  "character": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "npc": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "equipment": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "terrain_piece": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "particle_mesh": {
+    "prefix": "",
+    "suffix": ""
+  },
+  "_readme": "Fill in after the theme reveal. prefix/suffix are added around every prompt of that --type by meshy.py and rodin.py. Keep the style words identical within a type."
+}

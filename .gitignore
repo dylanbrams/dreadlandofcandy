@@ -1,0 +1,41 @@
+# Credentials: never commit
+AccessKeys/
+*.pem
+.env
+
+# Unreal generated folders
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+Build/
+Builds/
+Plugins/*/Binaries/
+Plugins/*/Intermediate/
+
+# IDE and solution files
+.vs/
+.vscode/
+.idea/
+*.sln
+*.slnx
+*.suo
+*.VC.db
+*.VC.opendb
+compile_commands.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Claude Code session state
+**/.claude/scheduled_tasks.lock
+**/.claude/settings.local.json
+
+# Tripo outputs: only the manifests are tracked
+ImportSource/*/*.glb

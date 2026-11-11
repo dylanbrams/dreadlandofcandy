@@ -1,0 +1,43 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//MegaJam2026//cancel reminders//EN
+BEGIN:VEVENT
+UID:megajam2026-cancel-0@local
+DTSTAMP:20261111T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:Cancel Meshy Pro (jam perk)
+DESCRIPTION:Meshy auto-renews after the free month (credits reset ~Dec 11). Cancel in Meshy account settings, then confirm the cancellation email.
+BEGIN:VALARM
+TRIGGER:PT9H
+ACTION:DISPLAY
+DESCRIPTION:Cancel Meshy Pro (jam perk)
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:megajam2026-cancel-1@local
+DTSTAMP:20261111T000000Z
+DTSTART;VALUE=DATE:20261116
+DTEND;VALUE=DATE:20261117
+SUMMARY:Check Hyper3D Rodin Business + Tripo Pro + Rokoko for auto-renew
+DESCRIPTION:Hyper3D benefits expire Nov 20, Tripo Pro Nov 18 12:00AM PST, Rokoko Basic is a 1-month voucher. Confirm none will bill. Cancel anything that offers renewal.
+BEGIN:VALARM
+TRIGGER:PT9H
+ACTION:DISPLAY
+DESCRIPTION:Check Hyper3D Rodin Business + Tripo Pro + Rokoko for auto-renew
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:megajam2026-cancel-2@local
+DTSTAMP:20261111T000000Z
+DTSTART;VALUE=DATE:20261208
+DTEND;VALUE=DATE:20261209
+SUMMARY:BACKUP: confirm Meshy Pro is cancelled
+DESCRIPTION:Meshy renews around Dec 11. If you did not get a cancellation email, cancel today and check the card statement.
+BEGIN:VALARM
+TRIGGER:PT9H
+ACTION:DISPLAY
+DESCRIPTION:BACKUP: confirm Meshy Pro is cancelled
+END:VALARM
+END:VEVENT
+END:VCALENDAR
