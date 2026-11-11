@@ -15,6 +15,22 @@ Everything below was made before Nov 12, 2026. None of it is gameplay. Paste thi
 | Tripo API client (text to 3D, saves .glb + manifest) | `Scripts/tripo.py` | Written for the jam |
 | Meshy, Hyper3D Rodin clients, shared helpers, API balance check | `Scripts/meshy.py`, `rodin.py`, `genlib.py`, `check-balances.py` | Written for the jam |
 | Agent instructions, including a list of UE 5.8 pitfalls | `CLAUDE.md` | Adapted from Cafeteria Battler |
+| Design briefs (the Dread Land of Candy pitch, combat/VFX/quest companion), drafted with ChatGPT | `Docs/Design/` | Written for the jam (Nov 11); design text only, no game code |
+
+## Ability layer test template (Nov 11, 2026, before the jam)
+
+A GAS test harness, not gameplay: no map, no art, no quest or class content. Ported from Dylan's own earlier project **Spirits of Yendor** (UE 5.5, `Source/SpiritsOfYendor/*/AbilitySystem`), renamed `SOY*` to `Jam*`, retargeted to UE 5.8 and adapted.
+
+| What | Where | Origin / what changed |
+| --- | --- | --- |
+| Ability system component, native tags | `Source/MegaJam/*/Gas/JamAbilitySystemComponent.*`, `JamGameplayTags.*` | Yendor `SOYAbilitySystemComponent`, `SOYGameplayTags`; 5.8 replication-default fix; tags trimmed and renamed |
+| Resolve attribute set | `JamResolveAttributeSet.*` | Yendor `SOYHealthAttributeSet`; health became Resolve, death became a once-only `State.Pacified`; pacifist-mode knockback removed |
+| Damage effect and magnitude calc | `JamGameplayEffects.*`, `JamResolveCalculation.*` | Yendor `SOYGE_Damage`, `SOYDamageCalculation`; renamed |
+| Lecture cooldown effect | `JamGameplayEffects.*` | New |
+| Area ability base and Lecture cone | `JamGameplayAbility.*` | Yendor `SOYGA_AoeAttack`, `SOYGameplayAbility`; now commits (cooldown), skips pacified targets; Mass damage queue, telegraph footprint actor and Niagara/decal cosmetics removed. `UJamGA_LectureCone` is new |
+| AoE shape math | `JamAoePattern.h`, `JamAoePatternLibrary.*` | Yendor `SOYAoePattern`, `SOYAoePatternLibrary`; renamed, VFX slots removed |
+| Test pawn, self-running test scene, `-abilitytest` flag | `Source/MegaJam/*/Testing/JamAbilityTestRig.*` | New |
+| Automation tests `Jam.Gas.*` | `Source/MegaJam/Private/Tests/GasTests.cpp` | New |
 
 ## Copied in during the jam
 
@@ -35,5 +51,6 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 
 | Tool | Used for |
 | --- | --- |
-| Claude Code | Code, scripts, docs |
+| Claude Code | Code, scripts, docs, the ability layer port and test scene |
+| ChatGPT | Pre-jam design briefs in `Docs/Design/` |
 | Unreal MCP + PCG and Niagara toolsets (engine plugins, Experimental) | Lets the agent drive the editor, build PCG graphs and Niagara systems |

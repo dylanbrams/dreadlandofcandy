@@ -1,0 +1,883 @@
+THE DREAD LAND OF CANDY — SUGARBOROUGH
+EPIC AI MEGAJAM 2026 — UNIFIED PRE-JAM DESIGN AND AI IMPLEMENTATION BRIEF
+Version 0.3 | Planning draft 2026-11-11 | Status: DESIGN ONLY / NOT IMPLEMENTED
+
+DOCUMENT STATUS AND USE
+=======================
+This MASTER document consolidates the earlier architecture brief, the combat/VFX/quest companion, and the later art-direction decision. Read this single file before assigning implementation tasks. Earlier standalone files remain optional references. Everything below is a proposal unless explicitly identified as developer-provided existing infrastructure. Never infer a working UE gameplay system, packaged build, AI asset, server contract or tested feature from this text.
+
+PREFERRED CREATIVE IDENTITY
+- Working title: THE DREAD LAND OF CANDY.
+- Hub village: SUGARBOROUGH.
+- Concept: grim high-fantasy adventurers use apocalyptically spectacular abilities to resolve tiny, mostly nonviolent problems in a cheerful confectionery world.
+- Brand, fiction, abilities and environment remain contingent on the actual jam theme reveal.
+
+READING/CONFLICT RULES
+- Master architecture below governs technical scope, persistence, multiplayer and jam restrictions.
+- The combat appendix adds detailed implementation suggestions; if it proposes additional stage types or attacks beyond the minimal schedule, those remain optional.
+- The visual addendum is the preferred style guide, not a requirement to build every art element.
+- Only propose/use APIs, plugin features, assets or UE types found in the actual project or verified documentation. Inspect first.
+
+CANDY MMO / ANTI-FANTASY MMO — EPIC AI MEGAJAM 2026
+PRE-JAM DESIGN AND AI IMPLEMENTATION BRIEF
+Version: 0.1 planning draft | Prepared 2026-11-11 | Status: NOT IMPLEMENTED
+COMBAT/VFX SPECIFICATION: included later in this unified document. No separate file is required.
+
+READ FIRST — AUTHORITY AND INTENT
+=================================
+This is a design/planning document for AI coding agents and the human developer, NOT evidence that any implementation exists. Do not create game content or source files until the jam's permitted start. Pre-jam preparation, existing infrastructure, and all pre-existing prompts/scripts/assets should be declared as required by the official rules. The theme is unknown at document creation time; do not lock the theme narrative until reveal. Check full official rules, submission requirements, and eligibility before relying on this document.
+
+Event: 2026 Epic AI MegaJam, November 12–15, 2026. Official jam listing: https://itch.io/jam/2026-epic-ai-megajam . Jam start: Nov 12, 00:00 US Eastern = Nov 12, 07:00 Israel. Deadline: Nov 15, 20:59 US Eastern = Nov 16, 03:59 Israel. Theme livestream Nov 11 11:00 PST = Nov 11 21:00 Israel. Verify any changed rules on official page.
+
+0. THE PITCH AND THE ACTUAL SCOPE
+================================
+Working title: THE DREAD LAND OF CANDY (provisional until theme reveal). Starting village: SUGARBOROUGH.
+Genre: isometric/third-person-lite comedic, non-violent action RPG that borrows the systems, presentation, and absurd escalation of MMOs.
+Promise: 'All the loot, classes, reputation, raids and heroic destiny of a fantasy MMO, applied to problems that absolutely do not warrant them.'
+Player experience: choose one of four silly classes; start at LEVEL SEVEN with six earned-looking ability choices already equipped; visit compact village; pick a personal crisis from ridiculous NPC; communicate via a blatantly silly Magic Candy Rock that calls NPCs remotely; travel through a small semi-procedural overworld to one of several highly readable themed instances; solve 2–4 procedural quest stages with tactile abilities; obtain delightfully overpowered loot; alter NPC opinion of you; optionally invite a friend into the session. Playable offline/local first, with joinable session as a stretch of the core, not a blocker for all features.
+
+IMPORTANT CONTRADICTION TO RESOLVE: 'MMO' normally implies persistent dedicated authoritative shards and many concurrent players. This design is a CO-OP MMO-LIKE VERTICAL SLICE: 1–4 people, listen-server world, persisted individual accounts and progression. Do not advertise as a working massively multiplayer server. Architect data boundaries so dedicated servers/sharding can be added later.
+
+DESIGN PILLARS
+1. A normal MMO's gratification loop: powers, impact, loot, progression, visible status, gear comparison.
+2. A radically unheroic, nonviolent fiction: inconvenience is epic; the game never needs enemies to die.
+3. Fast access: Candy Rock avoids quest-giver commutes and is intentionally an awful concept.
+4. Procedural variety, authored legibility: remix a few polished places and objective types instead of generating an untestable world.
+5. Solo complete, co-op additive: no objective requires two players to function.
+6. Fail gracefully: API unreachable, AI dialogue slow, second player absent, or generation rejects content must not end play.
+7. The theme is a filter: rename/repaint the comedy and central mechanic after reveal instead of forcing a mismatched entry.
+
+1. EXISTING CAPABILITIES / ASSUMPTIONS
+====================================
+Provided by developer:
+- Unreal Engine 5.8 with MCP configured.
+- AWS compute with FastAPI service.
+- AWS PostgreSQL instance/service.
+- Client-side UE code already calling FastAPI.
+- Some familiarity with integrating multiplayer/game systems but NO assumption that UE session transport or GAS is already implemented.
+
+Assume NO existing: Unreal replicated character, sessions/OnlineSubsystem, GAS AbilitySystemComponent, class animations, UMG inventory, game-specific DB schema, quest generator, merchant, navmesh, minimap, world generation, dedicated server, authority/security model. Verify before coding. The AWS services are separate from Unreal's real-time game server.
+
+First agent task AT JAM START: inspect repo, engine plugins, existing networking/service access, build system and existing API, then produce an implementation map of reusable parts. Do NOT overwrite existing working backend/client code.
+
+2. ABSOLUTE MINIMUM PLAYABLE DEMONSTRATION
+========================================
+A player starts at lvl 7 in an authored village with a colorful equipment silhouette and four classes selectable. One NPC has a visible problem. Candy Rock can call that NPC from anywhere. Accept quest and travel to one nearby instance. Complete three stages of at least TWO types using one satisfying ability and a simple interaction. Receive one generated item with at least one affix; equip it and see numbers/cosmetics change. Quest completion changes relationship by a visible amount. Return to village automatically/quickly. Two players can see each other and contribute in a host/join session if networking is ready. A player can restart at lvl 1; this choice is never accidentally forced. Show working end-to-end loop in under 5 minutes.
+
+One-day 'bones' target (roughly a working day, not guaranteed): single-map village + one instance + one class + 1 NPC + 2 quest stage types + loot/inventory + level 7 + optional LAN join. FOUR-DAY SHOWCASE target: four distinct classes with a shared ability framework, 4–6 NPCs, 3 location shells, full quest type set, stash, map/minimap, more polish, packaged build and 30–60s video.
+
+Do NOT build: genuine open world, hundreds of agents, PvP, guilds, mail, crafting economy, auctions, character trading, global matchmaking, MMO-scale server clusters, fully general procedural terrain, voice chat, host migration, meaningful persistent player-to-player commerce. These are post-jam items.
+
+3. FOUR CLASSES — SERIOUS MECHANICS / ABSURD PURPOSES
+=====================================================
+Keep recognizability; reinterpret after theme. Distinct silhouettes and strong feedback matter more than ability counts.
+
+A. MAGE / THE CONFECTIONER
+Fantasy grammar: magical elemental caster.
+Nonviolent purpose: changes the state of candy, temperature, texture, and mood.
+Starter skills: Sugar Spark (ranged projectile that 'activates'/sweetens targets); Glaze Field (area treatment); Frosting Nova (area slow/freeze of runaway objects); Ultimate: Fondant Catastrophe (spectacular area conversion). Fire/ice/lightning become caramelization/chilling/static sprinkles, without literal violence.
+
+B. ARCHER / THE PRECISION DECORATOR
+Fantasy grammar: ranged accuracy, ricochet, traps.
+Nonviolent purpose: fires marshmallow pins, piping-bag darts, icing ribbons.
+Skills: Icing Shot (targeted application); Pinball Sprinkle (ricochets); Taffy Snare (stops rolling target); Ultimate: Bullseye Banquet (large synchronized decoration). Great for aim/sequence stages.
+
+C. KNIGHT / THE ETIQUETTE PALADIN
+Fantasy grammar: armored defender, shield bash, auras.
+Nonviolent purpose: enforces line order and stability; holds things in place.
+Skills: Polite Shield (block/push, no HP damage); Queue Formation (area buff); Ceremonial Shove (displace runaway baked goods); Ultimate: Royal Table Setting (stabilizes region). Good for escorts and crowd organization.
+
+D. BARBARIAN / THE DOUGH BERSERKER
+Fantasy grammar: strength, leaps, whirlwind.
+Nonviolent purpose: kneads, mashes, stirs, unsticks.
+Skills: Ferocious Knead (close-range repeated impacts); Rolling-Pin Spin (area action); Rage of the Baker (temporary haste); Ultimate: Unreasonable Mixing (huge comedic physical rearrangement). Good for heavy objects and timed sequences.
+
+Implementation economy: One common ASC, GameplayEffects and targeting vocabulary. Four DataAssets selecting different visual/feedback settings; four basic active skills total at minimum, and use modifiers/passives to fill out the six 'prior level' picks. Avoid writing four independent deep combat systems. All classes can complete all quests; class-specific bonus solutions only if time permits.
+
+4. LEVEL SEVEN START, OPTIONAL LEVEL ONE
+======================================
+Default new character level=7. Background fiction: 'You have already completed the mandatory six hours of onboarding. Congratulations.' Show compact 'PRE-APPROVED HERO' ability selection at first launch, OR generate a viable default build with six prior level unlocks and let users respec freely at village. Avoid a six-step setup burden before gameplay.
+
+Level-1 opt-in is an explicit NEW CHARACTER / RESET PROGRESSION action; never silently reset level-7 character. In production account design, create another character slot; for jam, a confirmable separate character profile is fine.
+
+Data: level, xp, six allocated skill points (or 6 unlocks), selected class, respec flag, health-like resource (rename to 'Composure' or 'Stamina' to support nonviolence), energy, selected skills, passive modifiers. Make all action abilities available solo. Level affects numbers but should not gate completion of the showcase.
+
+5. CORE LOOP AND NONVIOLENT GAMEPLAY
+===================================
+Village -> Candy Rock or direct NPC -> accept procedural multi-stage quest -> map picks destination -> instance performs typed objectives -> outcome (success, partial, failure, abandon) -> NPC opinion changes -> item reward/explosion -> equipping and maybe new quest. Each loop 3–6 min.
+
+Use 'problems', 'obstacles', 'hazards', and 'runaway objects', not attackable people. Numbers can be 'progress', 'stability', 'flavor', 'tidiness', 'temperature', 'sweetness'. 'Defeat' becomes 'resolve', 'settle', 'sort', or 'convince'. A mission can fail from timer expiry or too many mishaps without implying killing. Skills must LOOK and SOUND punchy anyway.
+
+6. VILLAGE NPCS AND PURPOSES
+============================
+At least 4 implemented; 6 available design templates. Each has a role, problem, personality, relationship meter, dialogue, and a reason to keep generating quests. Their role drives their quest type weights and reward pools.
+
+NPC 1 — MAYOR MERINGUE, self-elected mayor of a village no one has elected to govern.
+Village purpose: keeps census, signs permits, and announces emergencies. Primary problem: someone keeps filing official complaints about 'unlicensed whimsy'. Quest archetype: find stamps, deliver documents, enforce nonsensical rules. Values orderly, fast solutions; dislikes spectacle. Reputation rewards: permits/title labels, civic loot.
+
+NPC 2 — BRIGADIER BRITTLE, head of the village's ceremonial defense force.
+Village purpose: protects it from meteorological embarrassment and rebellious pastries. Primary problem: the annual parade formation disintegrates. Quest archetype: escort, hold zones, intercept rolling objects, timed formation. Values reliable completion; dislikes abandoned escorts. Rewards: knightish gear, shields, badges.
+
+NPC 3 — MADAME GANACHE, candy engineer and wildly irresponsible 'safety' officer.
+Village purpose: operates the village's main sugar boiler. Primary problem: her prototypes escaped into an abandoned workshop. Quest archetype: stabilize mechanisms, tune objects, collect unstable samples, sequence switches. Values experimentation; forgives messy outcomes. Rewards: mage gear, affixes.
+
+NPC 4 — ARCHIVIST TART, archivist of recipes that have not yet been invented.
+Village purpose: maintains alternate futures of snacks. Primary problem: an important recipe is missing from tomorrow. Quest archetype: scan, find, arrange, choose evidence, solve patterns. Values curiosity/novelty; dislikes copied solutions. Rewards: maps, puzzle loot.
+
+NPC 5 — COACH CRUMBLE, fitness instructor for baked goods.
+Village purpose: trains gingerbread citizens in obstacle courses. Primary problem: a star competitor refuses to roll. Quest archetype: race/timed checkpoints, movement, rescue stuck dough. Values speed, precision. Rewards: archer/barbarian equipment.
+
+NPC 6 — DUCHESS TAFFETA, unofficial minister of adhesives and social cohesion.
+Village purpose: makes sure nobody can leave a conversation. Primary problem: several residents have detached from their social obligations. Quest archetype: deliveries, conversation, connect terminals, escort. Values diplomacy; dislikes blunt solutions. Rewards: accessories, social effects.
+
+IMPORTANT: quest generator must never produce a stage impossible with the chosen class, an absent second player, or unavailable props. Every stage has a generic interaction route, with ability-specific shortcuts or enhancements.
+
+7. MAGIC CANDY ROCK (INTENTIONALLY STUPID)
+========================================
+The Candy Rock is a pocket-sized magical sweet stone; it provides instant voice/text communication with ALL relevant quest NPCs, even if they are visible 10 meters away. Its invention makes roads, town visits, and traditional quest turn-ins appear absurdly redundant. NPCs behave as if this is an astounding technological feat, despite it merely being a rock.
+
+UX: hotkey R or toolbar icon opens rock 'contacts'; choose NPC; dialogue begins from anywhere unless in a restricted quest moment. Persistent contact unlocks once NPC introduced (or all visible immediately for faster jam experience). Show contact portrait, current relationship (-100..+100), quest availability, urgent messages. NPC physically exists in town to provide place identity and visual comedy; remote dialogue uses identical dialogue/quest interface. The rock should make ridiculous modem/telepathy sounds. No API availability should be required to open rock and accept at least one fallback quest.
+
+8. DYNAMIC QUEST ENGINE — SPECIFICATION
+======================================
+Architecture: QUEST DEFINITIONS are parameterized templates. QUEST INSTANCES are seeded, frozen plans with current state. Generate the plan once when offered/accepted; do not reshuffle stage sequence while an instance is active. Backend generates/persists seed and stage sequence if online, but offline uses local deterministic generator. Never rely on freeform LLM to determine authoritative objective completion.
+
+Quest definition fields:
+quest_family_id, npc_id, npc_problem_id, title_tokens, location_tags, min_stages, max_stages, weighted_stage_types, difficulty_band, time_budget_optional, reputation_gain_range, reputation_loss_range, available_objectives, reward_table, allowed_story_flags, theme_tags.
+
+Quest instance fields:
+quest_id UUID, character_id, npc_id, seed int, generator_version, quest_template_id, stage_count, stages[] snapshot, current_stage_index, state [offered|active|succeeded|failed|abandoned], accepted_at, outcome_at, selected_destination, reward_commit_id, rep_delta_committed, version, participation_mode. If truly shared, define party_quest_id + each player's participant record separately.
+
+Stage fields:
+stage_id, stage_type, stage_order, destination/location_id, target_tags, objective_count, success_metric, failure_trigger, duration_optional, spawn_spec_id, hint, objective_id, optional_comedy_line, stage_state, progress.
+
+Generation algorithm:
+1. Choose NPC problem based on uncompleted flags and relationship; prevent repeated same NPC/problem/template for last N assignments.
+2. Seed a deterministic PRNG from quest UUID+generation version (or server-secure seed). Use one authoritative outcome.
+3. Stage count weighted: 2 stages 25%, 3 stages 55%, 4 stages 20% (tunable); use 2–3 in first build.
+4. Select stage types with NPC-specific weights and constraint: at least two distinct types, no three identical consecutive stages, final stage allowed as climax.
+5. Select one of available instance shells that supports all required stage props. Only use approved stage type + location pairs.
+6. Select parameters from bounded, tested ranges. Ensure a stage cannot require more targets than are spawned.
+7. Determine success reputation from challenge and duration: base +6, plus +2 per additional stage after two, plus optional +2 perfect bonus, cap +14.
+8. Failure reputation loss: base -3, plus -1 per stage, cap -7; abandonment -1 or 0 (choose policy explicitly). NPC personality modifies by -2..+2 within caps. Never alter reputation merely for a transient network error.
+9. Snapshot quest plan in storage. Give rewards at most once on success. Any failure action must be idempotent.
+10. Use generated dialogue flavor from safe approved templates; optional LLM can rephrase text but may not modify quest plan/state/rewards.
+
+SUGGESTED STAGE TYPES (IMPLEMENT FIRST 3, EXPAND LATER):
+COLLECT: grab N scattered items; completion validated on authoritative objective actors.
+INTERACT_SEQUENCE: activate 2–4 stations in order, with resetting when incorrect.
+STABILIZE_ZONE: fill progress by standing/using abilities near target while avoiding moving hazards.
+ESCORT: accompany a slow wandering confection to checkpoint; never require second player.
+DELIVER: collect a prop and carry it between stations; player slowed modestly.
+TIMED_CLEANUP: clear/sort N targets before clock ends.
+FIND_CLUE: locate distinct marked clue props; optional simple dialogue choice.
+ALIGN_OBJECTS: rotate or slide N objects toward clearly marked target positions.
+
+Stage examples:
+- 'Retrieve the Mayor's emergency stamps from an avalanche of envelopes' = COLLECT.
+- 'Recalibrate the boiler: Vanilla, Salt, Vanilla' = INTERACT_SEQUENCE.
+- 'Keep the parade marshmallow in its lane for 20 seconds' = STABILIZE_ZONE / ESCORT.
+- 'Convince a rolling croissant to stop' = skill-enhanced STABILIZE_ZONE.
+
+Stage transition rules: one stage ACTIVE at a time; authority broadcasts objective progress. Completion displays satisfying banner and starts next stage in same map or opens portal. On failure: mark FAILED exactly once, calculate NPC-specific loss, optionally grant tiny consolation loot. No random failure from unloaded actors, disconnects, or time spent in menus. Stage timer starts only when physically active/spawn ready.
+
+PARTY: simplest jam design is host-owned world quest, optionally shared participation. Party members automatically participate if in active instance; give per-player rewards, and reputation adjustments ONLY to eligible participating characters. A guest joining halfway needs explicit participation rule (e.g. eligible after completing ≥1 interaction or ≥20% active time). If not robust, restrict shared progression to host, label guests as assistants and give them cosmetic loot; do not falsely promise all players persistent shared quests.
+
+9. REPUTATION AND NPC DIALOGUE
+=============================
+Per character per NPC reputation integer range -100 to +100, start 0. Band labels: Furious <= -40, Unimpressed -39..-10, Neutral -9..19, Fond 20..49, Obsessively Supportive >=50. Maintain exact numeric relation for visible feedback. Personality modifies greeting and quest reactions. Optional relationships gate cosmetic title or a quest flavor, NOT critical gameplay. Low-rep NPC still supplies essential quests via grudging dialogue. To avoid grinding, jam slice rep changes after each completed quest and can be seen on Candy Rock UI and in town NPC reaction.
+
+Dialogue design: one UI for in-person NPCs and Candy Rock; show NPC portrait/name, line, 2–3 player replies, one 'Accept' and 'Not now', one quest progress summary. Dialogue states: greeting, problem intro, quest offer, active reminder, stage completion reaction, success, failure, low/high reputation variant, rock interruption. Content delivered from authored text templates, optionally POST /dialogue/generate with {npc_id, character_id, quest_id, stage_state, reputation_band, player_choice, conversation_history_bounded}. API returns structured JSON with line, allowed reply IDs, humor tag; clamp response length and timeout. Server should never accept LLM output as arbitrary gameplay code, SQL, actions, item grants or reputation delta. Fallback to local text on slow/error response.
+
+10. WORLD / INSTANCES / MAPS
+===========================
+Practical design: one POLISHED village level (hub), one OVERWORLD containing authored landmarks and procedurally arranged path/decor/encounter chunks, and 1–3 small INSTANCED POI levels. Avoid runtime full terrain synthesis. Seeded layout of prebuilt tiles/PCG props is sufficient to feel variable while preserving navigation/lighting.
+
+Hub: 100–200m readable village, 4–6 NPC spots, stash, optional vendor, class statue, portal/map board. Strong landmarks; avoid long traversal; visually pleasant camera framing.
+
+Overworld: 4–8 recognizable tile/chunk variants; pick seed; 3 exits/POI approach corridors; navigation baked where possible, streaming complexity avoided if time-critical. Use deterministic PCG for prop scatter only where robust; static landscapes and authored collision/NavMesh for routing.
+
+POI A — ICING CAVE: climb a snowy sugar slope; interior meringue cavern with moving chilled obstacles; supports collect/stabilize/sequence.
+POI B — LICORICE THICKET: dense purple candy forest, distinct silhouette and lighting; supports clues, cleanup, escorts.
+POI C — SUBMERGED SYRUP GROTTO: water/riverside portal that magically dives to bubble cave; no actual underwater movement physics; a transition cut and bubble VFX suffice; supports alignment/delivery.
+POI D — FONDANT FORT: big intimidating fort built to protect a single spoon; supports timed cleanup, sequence, escort. Post-jam or use as a reskin of same gameplay shell.
+
+Day-one rule: only one destination must work. Day-two: 2 destinations with same core mechanics but distinct lighting, props, and stage mixes. Day-three: third destination if everything else stable.
+
+MINIMAP: top-down SceneCapture2D to RenderTarget is convenient but can be costly and awkward; static texture plus transformed player/NPC/objective icons is also valid for bounded authored map. Overworld map: full-screen simplified 2D world texture with village, POI icons, currently active objective, player position; no need for fog-of-war unless already available. If procedural layout rearranges landmarks, compute icons from actual placed world locations rather than a static hardcoded image.
+
+11. INVENTORY / LOOT / STASH
+===========================
+Diablo FEEL, not Diablo complexity. Each character has an inventory grid or 20-slot list; equipment slots: weapon/tool, off-hand/tool, hat, body, boots, trinket (cut to 3 equipment slots day one). Shared per-ACCOUNT stash only if account auth exists; otherwise per-CHARACTER stash. Do not call stash per-player if all guests read host's local data. Store ownership explicitly.
+
+Loot fields: item_instance_id UUID, item_definition_id, seed, item_level, rarity [common, magic, rare, legendary], equipment_slot, base_stats, affixes[], display_name, optional icon/model id, owner_character_id, location [inventory|equipped|stash|ground], stack_count, binding/version. Rarity probabilities example: 65/25/9/1%, with guaranteed rare at end of showcase. Rarity gives 0/1/2/3 affixes. Keep bounded random values and a deterministic roll from seed. Equipment affects metrics you can see (ability cooldown -%, movement speed +%, interaction power +%, sparkle radius +%); no meaningless +17 STR if strength has no game effect.
+
+Example affixes: 'of Unnecessary Urgency' (+5% move), 'Glazed' (+10% sugar abilities), 'Immaculately Polite' (+7% shield radius), 'Questionably Fresh' (+5% cooldown recovery). Loot names assembled from authored parts; avoid unchecked LLM text for fundamental labels. Make item comparison show two to three meaningful stat differences. On stage/quest success, burst 2–4 physical pickups, with unmistakable audio, rarity beam, nameplates and simple pickup radius. Ownership in multiplayer: instanced per-player loot or clear reservation; never silently duplicate shared pickups across clients.
+
+Stash: village interactable chest and Candy Rock remote stash only if this becomes part of joke; stash accessible in village first. 12–20 slots. Equip/unequip/stash transfers are authoritative and transactional. Database constraints prevent one item occupying multiple locations. For offline solo, local save owns these, later sync must resolve conflicts carefully rather than blindly overwriting remote state.
+
+12. INPUT / HUD / ABILITIES / AUTOMATION
+=======================================
+Recommended camera: top-down/three-quarter action RPG camera with mouse targeting, WASD movement as easiest option for third-person template; choose ONE and lock it. Hybrid movement/aim can get complex. Suggested controls: WASD move; mouse camera/aim; left mouse primary action; 1–4 active skills; Space dodge/movement burst; E interact; I inventory; M overworld map; Tab minimap; R Candy Rock; Esc menu. Gamepad only if readily supported.
+
+HUD: player level/class; 1–4 skill slots with cooldown masks; resource meter; current stage objective/progress/timer; minimap; quest/reputation toast; inventory and Candy Rock overlays. A clear skill auto-use toggle may exist per slot, OFF by default. Auto-activation only fires when (a) valid target and range, (b) resource available, (c) cooldown ready, (d) player not in menu/cutscene, (e) server authority passes. Never have auto-casting spam abilities against no valid target or burn resources while AFK. Auto-target nearby eligible OBJECTIVE ACTORS, not all NPCs. If multi-class auto-use is too much, implement exactly one demo toggle and defer generalized automation.
+
+Unreal GAS: ASC on PlayerState for player persistence across pawn respawn, or character if simpler; pick one implementation and use it consistently with correct replication/owner setup. Give ability sets through class PrimaryDataAsset. Attributes: MaxComposure, Composure, MaxEnergy, Energy, MoveSpeed, InteractionPower, CooldownMultiplier, maybe Luck. GameplayTags: State.Interacting, State.InMenu, Ability.SugarProjectile, Ability.Shield, Objective.Stabilizable, etc. Server grants abilities once; clients predict/receive animation where safe; server validates effects. Avoid promising all GAS prediction/network behavior works until tested in a packaged client and two processes. Damage framework can be repurposed as progress on objective actors.
+
+13. MULTIPLAYER / BACKEND AUTHORITY — DON'T CONFUSE SYSTEMS
+==========================================================
+UNREAL LISTEN SERVER handles real-time movement, nearby interactions, gameplay ability execution, objective actors, stage progress, scene transitions, and physical loot pickups. Unreal's replicated actors and RPCs are NOT replaced by FastAPI. Players need a working session discovery/transport solution, such as LAN direct IP for same network or a configured online subsystem (EOS/Steam/etc). A random public IP on the host behind NAT generally is NOT joinable without relay, port forwarding, or a dedicated accessible server. The existing AWS API does not by itself punch through NAT.
+
+FASTAPI + POSTGRES handle account/character identity, persistent inventory/quest/reputation, deterministic quest plans, rewards and dialogue. They are not per-frame combat servers. All writes carry authenticated per-player identity. Never embed long-lived AWS or Postgres credentials in the packaged UE client. HTTPS and scoped authentication; do not expose Postgres directly to game clients. Use idempotency keys for item/reward grants and outcome commits.
+
+CAVEAT: If a listen-server host's UE process is deemed authoritative for quest outcome, a malicious host could fabricate success. This is acceptable for a tiny noncompetitive jam prototype only if the trust boundary is documented. Later use authoritative dedicated server/signed events. In the jam do not pretend the persistence API can validate every physics/movement event.
+
+SESSION FLOW
+1. Boot menu: Play Solo / Host Game / Join Game. Solo ideally reuses listen-server code or standalone state path. Save continues to work offline.
+2. Host loads village, opens session; guest joins via transport; their chosen class/character state is replicated/loaded.
+3. Guests appear at hub safe spawn; see player avatars, names, skills, and objective markers.
+4. Shared quest state belongs to authoritative world; all players see current objective; participation tracked separately.
+5. Guest disconnect: host keeps playing; guest can reconnect if session exists, without duplicate rewards.
+6. Host closes: no host migration. Guests return to menu, save any committed persistent progress. Warn clearly.
+
+FIRST MULTIPLAYER MILESTONE: two packaged (or two PIE separate-process) clients can host/join, move, see one another, and interact with one shared object. Do this BEFORE full GAS, not after. If Internet connection is untested, label 'LAN Host/Join' rather than promise worldwide play. For remote tests, choose an existing known-working subsystem or put UE dedicated server on accessible host as a later alternative, but do not introduce third infrastructure piece unless clearly worth it.
+
+14. PROPOSED FASTAPI CONTRACT (NOT CLAIMED TO EXIST)
+===================================================
+Existing FastAPI endpoints MUST be inspected and adapted; names below are aspirational contracts, not instructions to overwrite existing routes. Prefer JSON schemas + versioned API. UUIDs string encoded; UTC timestamps; authorization via token, not user-submitted character_id alone.
+
+POST /v1/characters                 create class, mode [level7_default|level1]
+GET  /v1/characters                 list own characters
+GET  /v1/characters/{id}            character & progression
+POST /v1/characters/{id}/respec     validated skill allocation
+GET  /v1/characters/{id}/inventory  owned items + equipped + stash
+POST /v1/characters/{id}/items/move equip/unequip/stash, expected_version
+GET  /v1/npcs                       NPC definitions/public dialogue summaries
+GET  /v1/characters/{id}/relations  NPC reputations
+POST /v1/characters/{id}/quests/offer  generate or reuse offers for NPC
+POST /v1/quests/{id}/accept         idempotent accept
+GET  /v1/quests/{id}                full immutable plan + current progress
+POST /v1/quests/{id}/commit-outcome authoritative-trust-boundary jam action, idempotency
+POST /v1/dialogue/respond           structured text response + allowed choice IDs
+GET  /healthz                       service status
+
+If offline is required, maintain LOCAL JSON/SaveGame of the equivalent core character and quest data. Decide single source of truth per current play mode. Avoid asynchronous remote merges during jam; use a clear 'offline save' and 'online save' distinction if needed. Cache one fallback NPC/quest plan locally and ensure demo works even without AWS.
+
+Candidate Postgres tables:
+accounts(id, auth_subject, created_at)
+characters(id, account_id, class_id, level, xp, selected_build_json, revision)
+npc_definitions(id, role, archetype, config_json)
+npc_reputation(character_id, npc_id, reputation, revision)
+quest_instances(id, character_id, npc_id, seed, generator_version, plan_json, state, stage_index, revision, timestamps)
+quest_participation(quest_id, character_id, contribution, outcome_granted)
+item_instances(id, owner_character_id, definition_id, seed, rarity, stats_json, affixes_json, location, slot_index, revision)
+reward_commits(idempotency_key UNIQUE, quest_id, character_id, outcome, reward_json, created_at)
+
+Add foreign keys, uniqueness constraints, transactions. Store quest generation version so content remains interpretable after balancing changes. Never store inventory item ONLY as a UI object. Offline prototype can replace DB with simple SaveGame, but backend must not be required for FPS-critical actions.
+
+15. DATA-ASSET / UE ARCHITECTURE
+===============================
+Blueprint + C++ mixture should follow existing developer competence and MCP tool reliability, not theoretical purity. Small reusable Blueprint ActorComponents and PrimaryDataAssets are preferable to sprawling individual Blueprint logic. GAS C++ baseline may be efficient if the repo already supports it; otherwise reuse validated UE template code.
+
+Suggested modules/classes (conceptual names):
+- BP/C++ PlayerCharacter / PlayerController / PlayerState / GameState / GameMode.
+- Player AbilitySystemComponent + AttributeSet; class definition DataAssets; ability definitions.
+- NPCDefinition DA; NPCActor; DialogueComponent; ConversationWidget.
+- QuestTemplate DA/JSON; QuestInstance state; QuestManager on GameState/server; ObjectiveActor base; stage objective subclasses or tag-configurable component.
+- LootDefinition DA; ItemInstance struct; InventoryComponent (server-authoritative); EquipmentComponent; Stash UI.
+- WorldLayoutManager with seeded authored chunks; PortalActor; StageSpawner.
+- CandyRockWidget and contact list.
+- Map POI data and icons; minimap actor/UI.
+- ApiClientSubsystem with request timeouts, typed JSON validation, retry/backoff on reads only, cached fallback data.
+- SessionSubsystem or reliable online session template.
+- SaveGame for solo fallback.
+
+Agent contract: no free-form per-blueprint inventing new state; use a small shared schema and names. Any gameplay feature needs authority, save format, UI representation, failure behavior, and test. Keep persistence, networking and procedural generation separated.
+
+16. AI-GENERATED 3D ASSETS / ART DIRECTION
+=========================================
+Art direction: whimsical handmade candy village, toy-scale heroic silhouette, gloss/wax/fondant materials, candy-rock communication gadget. Nonviolent, funny, high-contrast, readable from gameplay camera. Treat 3D AI models as rough geometry requiring cleanup, pivots, scale, collisions, material coherence, LOD/performance checks. Asset pipeline: generate/import one class silhouette, 2–3 props, NPC heads or simple shared bodies, one environment kit. A consistent material palette is more valuable than a pile of inconsistent unique models.
+
+Epic lists partner tools/credits including Hyper3D, Meshy, Tripo, fal, PBRgen, Reallusion. Check the actual credit terms, account requirements, export formats, usage rights, and submission declarations before importing. Tripo/Hyper3D/Meshy exports may vary. Prefer reliable Fab assets for core skeleton/animations if licensing permits and asset credits declared. Do not assume generated meshes are rigged or game-ready. Aim for <1GB Windows archive unless using approved uploader, and keep build/package test in schedule.
+
+17. AUDIO, FEEDBACK, AND FIRST 60 SECONDS
+========================================
+Game trailer must communicate the joke instantly. Opening title: 'Welcome, Hero. You are already level 7. Please don't ask.' During first 60 seconds player uses skill with oversized VFX on an absurdly minor problem, hears amusing UI stinger, opens Candy Rock to call an NPC 10 meters away, gets quest and sees both the map and loot incentive. The NPC is dead serious. A co-op guest can join and both produce an absurd synchronized ability effect.
+
+SFX priority: button and inventory click, Candy Rock ringtone, one ability impact, progress completion sting, loot rarity drop, quest success fanfare, NPC text bloop. A stylish sound bed and strong feedback may score better than an extra complex instance. Use sources with correct rights; document all external assets.
+
+18. TASK ORDER / DEPENDENCIES (4-DAY JAM)
+=======================================
+BEFORE START: design only; verify jam join, installation, source control, credits/terms, build machine, existing API, MCP; save this brief and preexisting material declaration. NO game build work before official start.
+
+START + 0–3H: theme adaptation; repository inspection; lock pitch, camera, resolution, art style; create project milestone. Implement/run basic controllable pawn in village, initial level 7. Smoke-test Windows packaging.
+START + 3–7H: implement QuestDefinition/QuestInstance schema; one NPC, Candy Rock with local fallback; 2 objective types; stage manager; win/fail and reputation UI. This is a functioning solo loop.
+START + 7–12H: one class and 2 skills, basic loot generation/pickup/equip, simple inventory; first end-to-end playtest. This is a realistic 'one-day bones' cutoff.
+DAY 2: demonstrate two-player replicated movement + interaction; session hosting/join; test packaged networking; GAS integration if not yet present; 4 classes via common mechanics; stash; test packaging again.
+DAY 3: add 2–3 locations/tiles, more NPCs/dialogue, map/minimap, 3–5 objective types, improved procedural quest combinations, backend persistence if stable, 3D asset replacement, sound/polish.
+DAY 4: NO MAJOR NEW SYSTEMS. Fix bugs, UX, input, networking, performance, safe saves, audio, ensure submitted executable runs from unzip; produce 30–60s video + credits + dev log; package/upload early; reserve time for itch upload and submission confirmation.
+
+Actual order of multiplayer/GAS may move earlier if existing components are already battle-tested. Never let persistence integration block local playable loop. Build one capability vertical end-to-end before making it generic.
+
+DEFINITION OF DONE GATES
+G0: packaged project boots to menu.
+G1: solo can complete 3-stage quest, see reputation and loot; restart and recover if intended.
+G2: second client joins host and sees movement/interactions.
+G3: guest interacts with shared objective and outcome consistency tested.
+G4: inventory ownership persists and no duplicated rewards from repeat HTTP requests.
+G5: at least 2 destinations, 4 class choices, 4 NPCs, amusing sound and first-minute hook.
+G6: clean packaged Windows build, video, source credits/declaration, submitted on time.
+
+19. TEST MATRIX / FAILURE INJECTION
+===================================
+Solo offline: API down at launch / midquest; accept local quest, win, receive loot, no unhandled freeze.
+Solo online: launch, fetch character, accept quest, commit outcome once, relaunch with correct rep and inventory.
+Multiplayer: host + guest; guest joins in village and midway through quest; host and guest see objective count; guest disconnect/rejoins; host quits; no duplicated loot; each player's inventory distinct.
+Quest generation: 1000 seeded runs offline automated test: each plan 2–4 stages, at least 2 stage types, valid location supports all objectives, goals reachable, rep delta within bound; never infinite/unspawnable quest.
+Gameplay: each class can complete every required stage solo, with no softlock; run with all classes.
+Persistence: repeat outcome request 2x results in only one reward and one rep delta; item transfer concurrency does not duplicate item.
+Accessibility/UI: text readable at 1080p; key prompts visible; objective direction clear; no forcing color-only cues; disable auto-cast during dialogue.
+Package smoke: clean unzip, launch without editor, controllable, one quest done, no required local Python process or developer AWS secrets.
+
+20. FAILURE / CUT MATRIX — CUT IN THIS ORDER
+===========================================
+If deadline threatened, remove in order:
+1. Live AI dialogue. Use authored lines; keep API as stretch.
+2. Full open-world procedural terrain. Use fixed village + randomized prop placement.
+3. 4 distinct instance maps. Use 1 map with seed/lighting variations.
+4. General auto-casting. Use one demonstrable toggle or omit.
+5. Minimap camera capture. Use compass/objective arrow and static map.
+6. Rich stash/grid UX. Use a separate 12-slot stash list and 10-slot bag.
+7. Full GAS catalog. Use 1 skill per class via common ability class, with passives/unlocks.
+8. Remote public join. Keep LAN, or solo if network genuinely unworkable (but accurately describe features).
+9. Persistent API writes. Use SaveGame locally; never ship a broken distributed state system.
+NEVER CUT: complete satisfying quest loop, funny premise, reliable controls, a reward, visible consequence, working packaged submission.
+
+21. AGENT INSTRUCTIONS: BUILD SAFELY AND VERIFIABLY
+==================================================
+Agent(s): interpret this as target behavior, not a demand to implement everything. At each milestone:
+A. Inspect actual project and list existing files/classes/endpoints/plugins. Record engine version; do not hallucinate APIs.
+B. Propose minimal code/Blueprint change and dependencies; implement only after jam starts.
+C. Compile/open UE and record compiler/log errors; fix them before adding another system.
+D. Test one complete scenario and capture reproducible instructions.
+E. Avoid changing upstream architectural decisions without documenting why.
+F. Every new networked state field has clearly declared authority and replication strategy.
+G. Every persistent reward has idempotency and ownership checks.
+H. No new paid service/usage beyond existing infrastructure without human approval.
+I. No credentials inside build/source control. Supply env examples without secrets.
+J. Prefer deterministic local authored content to LLM-generated mechanics.
+K. Use concise change logs after each step: changed files, rationale, tests, limitations.
+L. If MCP lacks an operation, say so; don't claim to have created Blueprint nodes or run a package build.
+M. Do not create early jam code before the official start. Cite prior prompts/assets in submission per rules.
+
+AGENT FIRST PROMPT (TO USE ONLY WHEN THE JAM OPENS)
+--------------------------------------------------
+'Read Candy_MMO_MegaJam_AI_Design_Brief.txt. Inspect the current UE 5.8 project, MCP capabilities, existing FastAPI client, server contracts, configured plugins and source control. Report what works versus what is only designed. Without touching existing working modules prematurely, create the smallest implementation plan for Gate G1: solo playable 3-stage quest with a level-7 character, one NPC on Candy Rock, and visible reward/reputation. State exactly which files and assets you will create. Follow jam rules and begin only after official start. Implement in milestones; compile and smoke-test each stage; never assert success without actual tests.'
+
+22. OPEN DECISIONS TO MAKE AFTER THEME REVEAL
+============================================
+- Theme interpretation: what specifically makes Candy Rock and NPC village fit the official theme?
+- Art camera/control: top-down click-to-move, WASD isometric or third-person; commit to one.
+- Session connectivity: LAN only, EOS, Steam or other already-working solution; test before promising Internet joins.
+- Four class skill silhouette: keep 1 unique active and shared basic interaction if short on time.
+- Persistence policy: local-only showcase, online account save, or split; never ambiguous.
+- Scale of instances: single seamless map with portals/teleport vs separate maps; choose based on replication complexity.
+- Existing FastAPI auth: if none, do not invent trustworthy identity solely from client-supplied UUIDs.
+- Confirm limits of AI service credit/export licenses and allowed pre-existing assets/scripts.
+- Decide whether quest failures are hard (timer failure) or soft (partial success) to preserve short-session fun.
+- Decide NPC core cast after official theme. Dialogue should be written in their voices, not generic LLM improvisation.
+
+23. TOP RISKS / WHAT IS ACTUALLY HARD
+====================================
+R1: Four-day timeline is not one day; the playable 'bones' can plausibly be done in a day only if a lot is simplified and no integration surprises occur.
+R2: UE sessions + packaging + public join may be the longest unpredictable integration; test as soon as G1 exists.
+R3: GAS setup and replication is nontrivial, especially with 4 classes and a second client; keep a very small shared implementation.
+R4: AI-generated 3D assets often lack rigs, clean UVs, collision and consistent style. Favor modular scenery and static props.
+R5: LLM-driven quests may produce untestable combinations or impossible state. Use finite authored templates and schema constraints.
+R6: The backend can't verify achievements of an untrusted listen-server without trust assumptions. Treat it as prototype persistence, not anti-cheat.
+R7: Full procedural terrain plus navmesh plus multiplayer plus several instanced locations is high risk. Use seeded layouts of handcrafted components.
+R8: Too much systems UI can hide the funny premise. First minute must show the joke and the satisfying gameplay.
+R9: Remote networking may fail through NAT; LAN fallback must be genuinely testable.
+R10: A 1GB packaged limit and a 30–60s video requirement need active time budget; don't postpone to final hour.
+
+24. EXTRA 'MMO BONES' NOT YET MENTIONED IN ORIGINAL IDEA
+=======================================================
+- Identity/login/character ownership, even if guest/local profiles in jam.
+- Dedicated network authority strategy (listen-server now, dedicated server later).
+- Session discovery/invite, join-in-progress, disconnect handling, host loss behavior.
+- Spawn/respawn, checkpoint/portal handling and transitions for guests.
+- Quest state machine with authoritative objective completion and idempotent outcomes.
+- Save/version migrations, recovery from partial saves, offline/online source-of-truth rule.
+- Per-player loot ownership, inventory constraints, stash semantics and transactional moves.
+- NPC and quest state visibility in party; guest participation and reward eligibility.
+- Content schemas and generator validation, deterministic seed/version, basic debugging panel.
+- Hit/interaction detection and feedback; nonviolent progression replaces monster combat.
+- UI basics: title/start/host/join, quest tracker, inventory/equip, dialogue, Candy Rock, settings, controls.
+- Audio, affordances, clarity, performance budget, packaging and external asset rights.
+- Server/API error handling, rate limiting/timeouts (for later scaling), logging without secrets.
+- Short onboarding and demo endpoint; stage pacing/retention.
+- Profile save tested after quitting/relaunching.
+- Admin/test commands (dev build only): give quest, complete stage, roll loot, set NPC rep, teleport POI, connect dummy participant.
+
+25. POSSIBLE COMEDY BEATS (OPTIONAL, SUBJECT TO JAM THEME)
+========================================================
+- Candy Rock charges a monthly 'unlimited talking' fee despite being a rock.
+- Every class is absurdly high-level for simple kitchen tasks.
+- A skeleton summoner's functional equivalent conjures 14 coat hangers or twelve gingerbread interns, but never fights.
+- 'The Forgotten Fortress' protects a missing measuring cup.
+- Legendary loot: 'The Eternally Slightly Damp Napkin' / 'Helm of Respected Queueing' / 'Doom Rolling Pin of Mild Frustration'.
+- NPC verbally announces +7 approval and holds a formal medal ceremony for finding a spoon.
+- Instanced locations are described with catastrophic urgency, but house ordinary civic infrastructure.
+- Game's heroic reputation loop is serious enough that the ridiculousness becomes funnier as it escalates.
+
+26. SOURCES AND VERIFICATION NOTES
+=================================
+Official jam: https://itch.io/jam/2026-epic-ai-megajam
+Epic event announcement: https://www.unrealengine.com/news/2026-epic-ai-megajam
+UE 5.8 existence/release: https://www.unrealengine.com/news/unreal-engine-5-8-is-now-available
+Use official rules linked from jam for full legal eligibility; the event page is a summary. No live build, connectivity, API endpoint, tool credit redemption, or package test has been performed while writing this design document. All schemas, classes, stage weights, timelines and architectural choices above are PROPOSALS.
+
+
+======================================================================
+APPENDIX A — DETAILED COMBAT, ABILITIES, VFX & QUEST ENCOUNTERS
+======================================================================
+CANDY MMO / SUGARBOROUGH
+COMBAT, ABILITIES, VFX, AND QUEST ENCOUNTERS — AI IMPLEMENTATION COMPANION
+Version 0.1 | 2026-11-11 | DESIGN ONLY / NOT IMPLEMENTED
+Included as Appendix A of the unified design document.
+
+READ FIRST
+==========
+This appendix EXTENDS, but does not replace, the preceding architecture/design sections. The master's scope restrictions, jam eligibility/preparation warnings, API ownership boundaries, quest persistence, multiplayer constraints, and development/cut plan take precedence. All examples below are PROPOSED gameplay and aesthetic concepts, not assets already generated, gameplay tested, or Unreal features proven to work in this project. Jam theme is unknown at the time of writing; remap fiction, names, art and examples to the actual theme after reveal.
+
+KEY CROSSWALK WITH MASTER BRIEF
+- Master 'nonviolent gameplay' -> targets have RESOLVE, not mortal HP; reducing resolve produces a context-specific behavior or interaction opportunity, never a death animation.
+- Master stage types -> this companion adds PACIFY_TARGET, CHASE_TARGET, DEFEND_TARGET, and contextual INTERACT_TARGET. These are optional future/expanded types, NOT requirements to implement all of them for the minimum slice.
+- Master classes' original moves are conceptual alternatives. The signature abilities here are the preferred *visual showcase direction*. Build a single common ability foundation; do not duplicate whole gameplay systems.
+- Master quest generation stays deterministic, bounded, and authoritative. LLM/API dialogue can vary language only; not quest completion conditions, rewards, or ability rules.
+- Master networking uses an Unreal host/listen server for real-time authority, FastAPI/PostgreSQL for persistence. Cosmetic VFX may execute on clients; the server decides hits, progress, outcomes and loot.
+
+1. CENTRAL CREATIVE PROMISE
+==========================
+The game has the numerical and audiovisual confidence of an extravagantly overproduced action MMO but is about annoyingly mundane village problems. The barbarian spins dozens of rolling pins in a hurricane. The knight solemnly unsheathes an enormous sword, then refrains from using it and delivers a devastating lecture. A goblin's 'defeat' means it finally agrees to brush its teeth. The player must never feel that attacks are weak or dull simply because the fiction is nonviolent.
+
+Comedy pattern:
+  A. PRESENTATION — deadly serious fantasy telegraph and skill naming.
+  B. REVEAL — household, candy, hygiene, vegetable, or manners-themed payload.
+  C. REACTION — target shows specifically why the attack worked (rat chews celery;
+     goblin reluctantly presents teeth; children line up; bugs scatter).
+  D. REWARD — satisfying numbers, particles, status indicators, loot and reputation.
+
+The game should parody the usual ice/fire/lightning/big-sword/skeleton/druid/barbarian/archer formulas through game mechanics and staging, not merely swap damage textures. Keep the combat readable and fast.
+
+2. SHARED MECHANICAL VOCABULARY
+==============================
+RESOLVE: target's capacity to continue its nuisance behavior, visually analogous to HP. 0 Resolve => PACIFIED / COMPLIANT / DISPERSED, depending on target. No fatal damage, corpse, blood, or lethal finishers.
+
+COMPOSURE: optional player survivability resource. Obstacles and enemies cause disruption, embarrassment, sticky mess, delay, or loss of composure. If empty, player is 'Overwhelmed', knocked back, or returned to checkpoint; no death required. Cut entirely if scope threatens loop.
+
+ENERGY: optional skill expenditure resource; keep global/shared, regenerate quickly; don't implement mana + rage + stamina + focus separately for a jam.
+
+DAMAGE CATEGORIES (for visuals/weaknesses, not four separate subsystems):
+  Damage.Sweetness  — concentrated sugar and sticky candy, pink/red/gold, gumdrops/caramel/peppermint; associated status Sticky.
+  Damage.Nutrition  — vegetables, celery, carrot, broccoli; green/orange; associated status Healthy / ReluctantlyNourished.
+  Damage.Hygiene    — toothbrush foam, mouthwash, floss, soap; white/mint/aqua; associated status SqueakyClean.
+  Damage.Manners    — etiquette, reprimands, stern advice, visible shouted words; blue/gold/black outlines; associated status WellBehaved / Flustered.
+  Damage.Domestic   — rolling pins, whisks, dough, napkins; cream/wood/flour; associated status Dazed / Kneaded. Optional fifth category; consider treating it as ordinary physical-type presentation with no resistance table.
+
+IMPLEMENTATION POLICY: all abilities use one resolve modification pipeline. A damage-category tag selects visual/sound family and optional bounded resistance multiplier. Suggested first-pass multipliers: weak 1.25x, ordinary 1.0x, resistant 0.8x. All classes must have a viable generic route to complete every quest; weaknesses are helpful bonuses, not hard gates. If no resistance system ships, keep tags and visuals only.
+
+EXAMPLE STATUS EFFECTS (implement at most two mechanically for first slice):
+  Sticky: movement speed -25% for 3 seconds (no stacking; refresh duration).
+  Flustered: interrupt current nuisance action for 1.0 second (optional brief immunity afterward).
+  SqueakyClean: display sparkles, allow contextual toothbrush completion at 0 Resolve.
+  WellBehaved: pause misbehavior and visibly snap to orderly posture at 0 Resolve.
+  Encouraged: minor buff to player or ally or a temporarily distracted target; avoid complicated factions.
+  Dazed: simple brief stop/slow; preferred common stun backend.
+  Healthy: thematic visual (celery motifs) unless a quest specifically checks it.
+
+IMPORTANT: '0 Resolve' and 'correct treatment' are distinct. Example goblin: first reduce Resolve by any class, then E interaction brushes teeth. Optional hygiene abilities may accelerate the progress bar, but do not gate quest completion by class. That separation keeps encounter templates class-neutral.
+
+3. HIT, ABILITY, AND FEEDBACK CONTRACT
+=====================================
+Every ability should define:
+  ability_id, display_name, class_id, unlock_level, input_slot,
+  ability_kind [projectile|cone|area|self_aura|melee_arc|target_interact],
+  range, radius_or_angle, windup_ms, active_ms, recovery_ms,
+  cooldown_s, energy_cost, base_resolve_damage, damage_tag,
+  optional_status_tag, status_duration_s, target_filter,
+  animation_cue, vfx_preset_id, sfx_cue_id, camera_cue,
+  gameplay_cue_tag, scaling_modifier_tags, max_targets.
+
+Minimum event path (Unreal host authoritative):
+  1. Owning client issues input / local prediction of windup if supported.
+  2. Server validates class, equipped skill, cooldown, cost, range and targets.
+  3. Server resolves target list and applies Resolve/GameplayEffects/status.
+  4. Server updates target state, quest objective counters and replicated result.
+  5. Clients play cosmetic GameplayCue/Niagara/UMG/sound with compact event data.
+  6. Target reaches 0 -> transition to Pacified once, animation/reaction triggered;
+     contextual interaction enabled if applicable.
+  7. Quest completion/loot/reputation committed on authority, idempotently.
+
+Never allow replicated particles, comic bubbles, VFX collisions, or displayed damage numbers to determine quest progress. VFX is a consequence of an authoritative ability result, not the source of truth. Prefer GAS GameplayEffects + GameplayCues if project's implementation is ready; otherwise build a small explicit ability/Resolve prototype that can later be replaced with GAS, rather than spending whole jam setting up dozens of abilities.
+
+Input/UX default: primary attack + four skill slots (1–4), interact E, Candy Rock R (master brief), dash optional. Default level 7 loads a curated kit plus six unlock points represented by passives/modifiers; do NOT force six complex skill selection screens. Player can respec or opt into level 1 as per master brief. AUTO-ACTIVATION, if implemented, may trigger only eligible cooldown skills within valid target/range; never auto-complete interact/quest decision actions.
+
+Hit feel: short windup, readable hit frame, minor hit pause only if technically safe for multiplayer, impact sound, resolve-number pop, reaction pose, then aftermath. Avoid slowing shared server time for hit-stop; use local animation/VFX timing only.
+
+4. FIVE-LAYER VFX GRAMMAR
+========================
+Layer 1 ANTICIPATION (0.1–0.5 sec): ring, gathering particles, pose, oversize prop, charging audio. Gives enemies telegraph and sells ridiculous severity.
+Layer 2 MAIN IMPACT (~0.1 sec): foam detonation, lecture shock cone, sugar meteor, rolling pin burst, candy splash. Needs ONE easily recognizable silhouette.
+Layer 3 SECONDARY PARTICLES (0.2–1.0 sec): bounced peppermints, crumbs, wrappers, bubble droplets, spinning stars, flying punctuation marks. Effect richness.
+Layer 4 PERSISTENT STATUS (up to status duration): sticky trails, sparkly clean teeth, rotating hygiene icon, visibly orderly stance, embarrassment bubble. Mechanics legible.
+Layer 5 AFTERMATH/CLEANUP (~0.5–2 sec): foam collapses, candies tumble then dissolve, flour settles, paper confetti vanishes. Keep no indefinite clutter.
+
+Not all layers are required for every minor basic attack. Hero abilities use all five; normal skills can use 1+2+3. Keep the screen readable during 2–4 player overlap. Big comic bubbles should be rare enough that they remain funny, and text should not obscure quest objectives.
+
+5. VFX PALETTES AND REUSABLE FAMILIES
+====================================
+VFX.FoamBurst: white/mint/aqua bubbles, high-volume splash then fading puddle; hygienic damage and toothpaste finishers.
+VFX.PeppermintPop: red-white round candies spawn or float above, pop/drop, tiny bounce, fade; sweetness and multi-hit projectiles.
+VFX.CaramelSplash: gold sticky glob, impact fan, short-lived ground decal + sticky motes.
+VFX.LectureCone: blue/gold transparent expanding sound-wave cone, angular black-outline comic placards, lettering and punctuation bits.
+VFX.CeleryVolley: green celery stalk projectiles with orange accents, crunchy leaf burst.
+VFX.FlourCyclone: cream dust cloud and orbiting wooden rolling pins, crumb impacts, final outward throw.
+VFX.CleanSparkle: mint/silver shine bursts, clean teeth shine and star glints.
+VFX.Flustered: jagged comic exclamation, tiny paper scraps, embarrassed wobble.
+VFX.EtiquetteAura: symmetrical heraldic rings, clean geometric shields, tiny floating napkins/placards.
+VFX.FlossSnare: white taut strand arc with clean twang and twinkle points.
+
+Implementation: expose parameters for size/intensity/color/particle_count/duration/seed; reference a single preset per ability plus optional status cue. Prefer Niagara for large particle systems, mesh particles for a small number of candies/rolling pins, billboard cards or UMG for written comic text, decals only where needed, and simple pooled effects where practical. No need for high-cost simulation of real foam or fluid.
+
+Performance caps (initial DESIGN BUDGET, profile and adjust): max ~20 visibly animated 3D rolling pins per hero VFX at once even if fiction implies dozens; use GPU sprites/impostors to imply the remainder. Max ~12 candy bounce meshes, with sprite scatter for additional volume. Max 2 readable speech bubbles per player on screen at once, with non-text punctuation particles elsewhere. Keep cosmetic lifetime <3 seconds unless deliberately marking active status. Do not spawn independent replicated physics actors for decorative candy / utensils. Hero VFX must remain recognizable on low settings.
+
+6. 2D COMIC SPEECH BUBBLE PRESENTATION
+=====================================
+One reusable widget/billboard system, not arbitrary free text rendered in thousands of particles:
+  shape=Jagged (commands/reprimands/taunts);
+  shape=Round (buff/reassurance);
+  shape=Placard (knight civic authority/etiquette).
+Common fields: message_id (preapproved localized string), bubble_shape, palette, size_tier, origin_actor, offset, world_to_screen_or_billboard, in_time, visible_time, out_time, priority.
+
+Text pools (sample, theme-dependent):
+  'DO BETTER!' / 'YOU CAN FIX THIS!' / 'EAT THE CELERY!'
+  'EXCUSE ME!' / 'ABSOLUTELY NOT.' / 'FORM A LINE!'
+  'MIND YOUR TEETH!' / 'THIS IS A PUBLIC SPACE!'
+
+Behavior: pop scale 0.5 -> 1.15 -> 1.0, stagger 0.12–0.25 sec; float/rotate gently, burst into punctuation scraps. Damage is carried by the underlying replicated cone/area event; bubble location is cosmetic and should never be used for targeting. Speech bubble string selection is seeded/cosmetic and may be nonreplicated if harmless. Use static text variants for fast iteration rather than LLM calls at impact time. Provide disable/size-reduction option to avoid obstructing UI.
+
+Audio: exaggerated inhale before lecture, bassy nonviolent 'WHUMP' sound-wave release, papery pop on text, small reactions ('Oh!' / sigh / squeak). Avoid spamming actual spoken voice lines unless produced and licensed.
+
+7. FOUR CLASSES — SIGNATURE ABILITY PACK
+=======================================
+Each class must still have familiar RPG role silhouette (Mage/Archer/Knight/Barbarian). Suggested abilities below are designer proposals, with approximate balance only. Implement 1 basic and 1 signature per class at most during first pass; reuse the same ability kinds, statuses, and collision paths. The level-7 default unlocks can be simple passive modifiers and shared actions rather than building 24 unique activations.
+
+MAGE / CONFECTIONER
+  BASIC: Sugar Spark — ranged sweetness projectile; ordinary pop.
+  HERO 1: Peppermint Popfall — ground target AoE; floating mint candies briefly appear above area, then fall in rhythmic succession, popping and bouncing once before vanishing. Repeated Resolve hits, maximum once per target per wave, clearly marked area. VFX.PeppermintPop. Weakness: enemies exit area before final hit.
+  HERO 2: Arcane Mouthwash — large frontal cone of aqua rinse/foam; quick hygiene Resolve; SqueakyClean status. VFX.FoamBurst + shimmering magic circle.
+  OPTIONAL: Caramel Catastrophe — slow golden orb, sticky area, caramel ground splat. VFX.CaramelSplash. Low implementation priority.
+
+ARCHER / PRECISION DECORATOR
+  BASIC: Celery Shot — fast nutrition projectile; 'crunch' pop on impact.
+  HERO 1: Celery Volley — 3–5 parallel/arcing celery stalks over small spread, overlapping target cap. VFX.CeleryVolley. For solo reliability, at least one can be direct-aim.
+  HERO 2: Floss Snare — ranged single-target status application; white dental floss strand leaps out, target slowed with clean elastic twang. VFX.FlossSnare + Sticky or Dazed. Use one general slow status with a floss skin (do not invent a separate complicated snare solver).
+  OPTIONAL: Sprinkle Barrage — candy pellet rain; can share PeppermintPopfall logic.
+
+KNIGHT / ETIQUETTE PALADIN
+  BASIC: Polite Shield — close cone/arc, pushes or disrupts targets without lethal violence.
+  HERO 1: Sword of Stern Instruction / Formal Reprimand — dramatic unsheathing of absurdly enormous sword; player freezes at the apex and DOES NOT SWING. Sword becomes a lectern pointer. An exaggerated inhalation, then a massive cone of sound-wave 'Manners' Resolve damage and angular 'ABSOLUTELY NOT' comic bubbles. Server applies cone; visual shockwave/words are client cosmetic. VFX.LectureCone. This false threat to spoken lecture is a PRIMARY BRAND MOMENT.
+  HERO 2: Shield of Good Manners — defensive glowing etiquette dome with heraldic rings, tiny napkins, sparkly blocks, 'tsk' on blocked incoming nuisance effects. Mechanics: one temporary shield/composure buff; do not build full reflect/shield system unless ready.
+  OPTIONAL: Polite Intervention — circular interrupt wave; can reuse lecture mechanics with circle radius.
+
+BARBARIAN / DOUGH BERSERKER
+  BASIC: Furious Kneading — close arc Resolve hits, chunky dough/flour thumps.
+  HERO 1: Rolling Pin Cyclone — barbarian winds up with 1–2 orbiting rolling pins; escalates to apparently dozens around a fast rotating body, hidden in an oversized flour cloud; repeated AoE Resolve hits at fixed server ticks; finish releases outward ring of props and flour. Mesh count capped; rest as particles. VFX.FlourCyclone. Avoid physics-driven replicated pin actors.
+  HERO 2: Aggressive Encouragement — chest/mouth-origin bark, jaw-droppingly serious windup, multiple jagged 2D comic bubbles ('DO BETTER', 'YOU CAN FIX THIS', 'EAT THE CELERY'), synchronized sound-wave rings, AoE Manners damage plus optional short Dazed. VFX.LectureCone plus bubble style Jagged.
+  OPTIONAL: Rage of the Baker — brief haste with flour aura; no additional subsystem needed.
+
+GLOBAL BALANCE RULES:
+- Every archetype can hit/pacify every enemy and complete every objective.
+- AoE target counts and repeated-hit cadence are bounded and server-evaluated.
+- More elaborate visual spectacle does not imply strictly stronger numbers.
+- No quest must require a particular status or class; a generic interaction solves it.
+- Equipment/affixes can add resolve, cooldown, radius, category potency, or status duration after core loop works.
+
+8. ENEMY/NUISANCE BEHAVIOR AND PAYOFF
+====================================
+GIANT CANDY RAT: steals candy crops; chases sugary plants; prefers Sweetness-resistant, Nutrition-weak (optional). Pacified reaction: plops down, reluctantly chews celery, tiny green 'healthy' bubbles. For quest 'force-feed' keep treatment comical and cartoonish, not cruel: target accepts celery once subdued; generic E interaction presents celery. May need to collect celery first.
+CANDYGOBLIN: refuses dental care at Fort Toothache; dodges brushes, spits harmless toothpaste/bubbles; Hygiene-weak (optional). At zero Resolve opens mouth; E triggers brush animation + sparkly teeth and SqueakyClean banner. Pacification alone does NOT credit brushing.
+LOLLYPOP BUG: distracts tamed almonds; zips around crop/almond field, weak disruption attack; at zero Resolve swirls upward and leaves. Almonds become gatherable after threat count zero.
+ROWDY FIELD KIDS: trample crop rows and run around. Use nonviolent interaction/escort/dialogue, not physical 'attacks' against children. The player's manners shout can attract attention or halt their run in a harmless, cartoonish way, then E introduces row-walking demonstration. Score/orderly-follow path is objective; never present beating up children as comedy.
+TAMED ALMONDS: animated collectible creatures, distracted until bugs dispersed; then follow or permit harvesting. Don't need advanced companion AI for first slice: toggle from 'distracted' to 'gatherable' and play tiny bounce.
+TREACLE MINERS / TREACLE PUDDLES: environmental mess hazards in mine; can be collected when safe; no combat needed.
+
+Enemy data (proposed): enemy_id, nuisance_behavior_id, base_resolve, movement_speed, aggro_sense_radius, damage_resistance_tags, status_immunities_optional, pacify_animation, post_pacify_interaction_id, quest_target_tags, loot_table_optional, despawn_policy. Start with a single BP nuisance actor that supports modular skins/behaviors and one 0-Resolve reaction, then add variety.
+
+9. USER'S FIVE ANCHOR QUESTS — CANONICAL ENCOUNTERS
+===================================================
+These are intentionally more specific than the master NPC templates. Treat them as hand-authored quest FAMILIES that the generator can remix within validated constraints.
+
+QUEST FAMILY: A BALANCED DIET
+NPC: Candy crop farmer (new village NPC or role merged with existing mayor/coach).
+Problem: 'These giant rats won't stop eating my candy crops. Force-feed them celery.'
+Stage pool: COLLECT celery -> PACIFY 3–5 rats -> INTERACT with rat to offer celery -> RETURN/REPORT.
+Success: rats eating celery; farmer rep +8 to +12; maybe 'Celery of Unreasonable Authority' reward.
+Failure: rat damage to limited crop patches or optional timeout; rep -3 to -6, no loss for disconnect. Avoid impossible state if rat despawns before fed.
+Visual punchline: celery sword projectiles, rat reluctantly chomping, nutritious green confetti.
+
+QUEST FAMILY: MIND THE ROWS
+NPC: Crop-row caretaker or local school principal.
+Problem: 'Four kids keep running through my field. Please teach them to walk nicely between the rows.'
+Stage pool: CHASE/reach 4 harmless kid waypoints -> INTERACT to instruct -> ESCORT/FOLLOW along marked row path -> REPORT.
+Jam fallback: simple interact with four stationary/wandering kids; each snaps to marching line, then one short follow path validated by proximity. No attacking children; dialogue/vocal abilities only optional comic flourish.
+Success: children form overly rigid ceremonial procession; rep +8 to +12.
+Failure: excessive crops trampled / timeout if explicitly shown, rep -3 to -6.
+Visual punchline: strict painted crop lines, giant comic FORM A LINE! placards, precise marching.
+
+QUEST FAMILY: THE CONDENSED TREACLE ERRAND
+NPC: Sugar engineer, baker, or mining foreman.
+Problem: 'I need condensed treacle from the very bottom of the mine.'
+Stage pool: REACH cave entrance -> INTERACT with winch/door -> explore to marked lowest chamber -> COLLECT N treacle clumps -> DELIVER/report.
+No mandatory hostile encounter; risk from slippery treacle/moving platforms if mechanics already exist.
+Jam fallback: single cave shell with entry portal, one descending ramp, 3 treacle pickups, exit portal.
+Success: syrup sample delivered; rep +8 to +12.
+Failure: optional spilled container/collapsing overfilled jar; do not softlock.
+Visual punchline: heroic cavern lore for sticky brown goop, syrup drops and an absurdly official jar seal.
+
+QUEST FAMILY: THE ALMOND AFFAIR
+NPC: Almond herder/almond breeder.
+Problem: 'Lollypop bugs keep distracting my tamed almonds. Drive off the bugs and gather the almonds.'
+Stage pool: REACH thicket/orchard -> PACIFY/DISPERSE 4–6 bugs -> COLLECT 3–5 almonds -> REPORT.
+Invariant: almonds are not collectable before bug dispersal (unless intentional stealth alternative); enough spawn to satisfy objective.
+Success: almonds shuffle back in orderly line; rep +8 to +12.
+Failure: bugs lure almonds beyond boundary if timer exists; rep -3 to -6.
+Visual punchline: glowing candy-winged bugs, tiny serious almond critters, bug candy pop scatter.
+
+QUEST FAMILY: FORT TOOTHACHE
+NPC: village dentist, mayor, or civic hygiene official.
+Problem: 'Fort Toothache is occupied by candygoblins who refuse to brush their teeth. Go get it done.'
+Stage pool: REACH fort -> PACIFY group -> INTERACT brush each compliant goblin -> PACIFY boss -> INTERACT oversized boss toothbrush -> REPORT.
+Boss: The Supreme Plaque Warden (nonviolent); throws bubbles, runs away from toothbrush, has a shield phase that ends via any class-neutral interactable, or simply more Resolve in jam version.
+Success: sparkling goblin teeth and absurdly heroic victory fanfare; rep +10 to +14; mint-themed loot.
+Failure: optional no-clean goblins by challenge timer; rep -4 to -7.
+Jam fallback: ONE room, 3 goblins, one giant toothpaste cloud, one toothbrush interaction per target. No separate boss animation required.
+
+REUSABLE NPC ROLES FROM THIS SET:
+- Candy crop farmer: produces food, protects crops, worries about rats and field rows.
+- Village school principal/caretaker: teaches safe paths and manners.
+- Treacle refiner/mining foreman: provides condensed treacle to candy infrastructure.
+- Almond herder: tends semi-domesticated almonds.
+- Dental marshal / Fort Toothache hygienist: operates mobile dental intervention service.
+These can be added as NPCs or merged into the existing six in the master brief; preserve at least one explicit reason for each NPC to inhabit the village.
+
+10. QUEST STAGE CAPABILITY MODEL AND GENERATOR RULES
+===================================================
+Expanded stage types in this companion:
+  PACIFY_TARGET: lower Resolve of N actor instances to zero; no deaths.
+  INTERACT_TARGET: press E at eligible actor; e.g. feed celery, brush teeth, instruct kid.
+  CHASE_TARGET: get within interact radius of fleeing actor or reach sequential waypoints.
+  DEFEND_TARGET: protect almonds/crops for short bounded window; cut before escort if needed.
+Existing master types retained: COLLECT, INTERACT_SEQUENCE, STABILIZE_ZONE, ESCORT, DELIVER, TIMED_CLEANUP, FIND_CLUE, ALIGN_OBJECTS.
+
+Each stage definition includes:
+  stage_type, required_capabilities, location_tags, target_actor_tag,
+  target_count_bounds, preconditions, postconditions,
+  available_actor_pool, target_spawn_count,
+  completion_event, objective_text_template, required_interaction_id,
+  timeout_policy, failure_policy, support_solo, support_join_in_progress.
+
+Generation constraints:
+- Use a frozen seed + generator version, validated recipe, 2–4 stages; prefer 2–3 for jam.
+- Pick stage sequence only from allowed transitions and available map props.
+- Never spawn fewer target actors than required quantity; include recovery if target unloads/despawns.
+- Only activate interaction after prerequisite (rat pacified, goblin mouth open, bugs dispersed).
+- Ensure every required target can be reached in each class without status-gating.
+- Avoid selecting incompatible location combinations across stages unless portals are implemented.
+- NPC reputation gains/losses follow master formula; do not double-award because effects fired twice.
+- Disconnection, menu pause, network fail, or LLM fail never counts as narrative quest failure.
+- Failures may create follow-up quest families (e.g. sugar-celery rat multiplication) if explicit authored chains exist. Never let a text model invent irreversible quest-state mutations.
+- Quests can have alternate successful routes later, but do not require complex dialogue-based branching in first playable slice.
+
+Optional quest variation slots:
+  actor_species / activity / location_shell / count / adjective / narrative_pretext / reward_affix / humor_line. Do NOT vary objective verbs into unsupported mechanics. Example: 'brush 3 goblins' and 'brush 5 goblins' are valid; 'teach goblins how to file taxes' is invalid unless a compatible E-interact prop has been built.
+
+11. ONE REUSABLE QUEST EXECUTION EXAMPLE
+========================================
+Illustration: 3-stage Fort Toothache quest
+  Step 0: server offers quest_instance Q42, stage list frozen.
+  Step 1: REACH_LOCATION fort entrance; on server overlap -> completed stage 1.
+  Step 2: PACIFY_TARGET 3 goblins; client skill inputs; server Resolve decreases;
+          goblins each transition to Pacified once; progress 0/3 to 3/3.
+  Step 3: INTERACT_TARGET brush 3 pacified goblins; client presses E in range;
+          server validates goblin's Pacified state, not already brushed, quest actor
+          belongs to Q42; commits 1/3, 2/3, 3/3.
+  Quest completed -> rep change/reward exactly once, client VFX and text celebration;
+  target smiles and teeth sparkle; reward appears as inventory item for eligible player.
+
+An attractive compromise is to merge PACIFY and INTERACT into one actor Blueprint implementing both a Resolve component and a contextual interaction. Reuse it for rats (feed), goblins (brush), bugs (shoo) and optional row-walk participants (instruct). Kids can skip Resolve entirely and just interact; no violent target classification.
+
+12. LOOT AND GEAR INTERACTION
+============================
+Keep the master's inventory/stash/loot plan. Themed affixes should feel like fully serious Diablo itemization:
+  +N Hygiene Resolve; +N% Manners radius; -N% FlourCyclone cooldown;
+  +N% Pellet projectile speed; +N seconds Sticky duration (bounded);
+  +N Composure; +N% reward confectionery (only if balanced).
+
+Examples: 'Legendary Toothbrush of Uncompromising Governance';
+'Napkin of Heroic Compliance'; 'Doom Rolling Pin of Mild Frustration';
+'Helm of Respectful Queueing'; 'Celery of Unreasonable Authority'.
+Gear should not modify VFX actor counts indiscriminately or produce unreadable effects. Maybe upgrade effect SIZE tier only for rare loot, under presentation budget. Equipment affixes must remain data-driven and server validated. Rewards are per-player and committed once, consistent with master spec.
+
+13. AUDIO / CAMERA / TEXT AS PART OF ATTACK
+==========================================
+Very short, distinct sounds sell every attack: mouthwash fizz, peppermint 'pop', stiff lecture inhale + bass shock, rolling-pin wooden clack, celery crunch, goblin squeaky clean ding. A nonlethal 'critical hit' can display 'EXCELLENT ADVICE!' or 'EXTREMELY THOROUGH!' instead of gore. Preserve an accessibility option to turn down screenshake, flash and oversized speech UI.
+
+Animation priority: readable anticipation, big silhouette, target stagger/react, celebration. Do not depend on custom full-body mocap for every effect. Use one shared montage or procedural upper-body pose per ability category if necessary. For the sword-lecture fakeout, it is important to clearly STOP before the swing; otherwise the joke is lost.
+
+14. MULTIPLAYER AND PERFORMANCE IMPLEMENTATION RULES
+=====================================================
+- Host/server evaluates all hit volumes, target Resolve, status and stage completion.
+- Never individually replicate hundreds of candies, foam droplets, rolling pins, or paper scraps.
+- Replicate compact skill activation/cue with ID, source, target or position, timing/seed; each client plays particles locally.
+- Ensure join-in-progress reconstructs persistent target states: rats already eating celery, goblins already brushed, almonds already gathered.
+- New players should not see stale VFX; ability activation is transient, status/quest states persist.
+- Do not grant extra Resolve hits from client VFX, ragdoll bodies, or cosmetic projectile impact events.
+- Cap client sounds, translucent effects, and text bubbles to preserve UI readability and network performance.
+- If cosmetic assets are missing, replace with obvious debug circle/cone, number pop and stock sound; gameplay must continue.
+- Minimap/world map should track location and objectives, not thousands of comic debris objects.
+
+15. JAM CUT PRIORITIES / PHASES
+==============================
+PHASE ZERO (pre-jam only): select and document style; sketch data schema; list asset sources/licenses; prepare AI instructions. DO NOT implement game files/assets if rules prohibit pre-jam game creation.
+
+FIRST PLAYABLE:
+  * one class, basic projectile or cone, Resolve component, one 0-Resolve pacification;
+  * single VFX family with windup/impact/aftereffect, one enemy reaction;
+  * one NPC/quest: three rats and a celery E-interact, or three goblins/brush E-interact;
+  * reward + rep change + one replay; test packaged play.
+
+NEXT POLISH:
+  * knight Sword of Stern Instruction or barbarian Aggressive Encouragement,
+    including the jagged bubble system — these uniquely sell the premise;
+  * second enemy behavior and scripted mission (Fort Toothache or Almond Affair);
+  * per-player co-op progress and a basic second-client test.
+
+FOUR-CLASS SHOWCASE:
+  * Mage Peppermint Popfall, Archer Celery Volley,
+    Knight Sword of Stern Instruction, Barbarian Rolling Pin Cyclone;
+  * share damage pipeline, status tags, objective progression and VFX preset data;
+  * alternate move prototypes only if network/save/package loop is stable.
+
+CUT ORDER WHEN BEHIND:
+  1. Unique VFX for every skill; reuse presets with palette and size changes.
+  2. Real 3D flying rolling pin physics; replace with mesh/socket arcs and sprites.
+  3. Speech text randomization; use 3 preauthored jagged cards.
+  4. Multiple status effects; one Slow and one Pacified state are enough.
+  5. Resistance/weakness matrix; tags remain aesthetic only.
+  6. Enemy-specific AI variants; reuse one wander/chase actor with different skins.
+  7. Elaborate branching and fail-state quest chains.
+NEVER cut the recognizable comedy moment AND the complete 1-quest reward loop together. If time is extremely short: one impressive sword-to-lecture effect, one brushable goblin, one loot drop, one rep update wins over 30 empty abilities.
+
+16. ASSET ACQUISITION AND RIGHTS
+================================
+Potential visual generation: AI-created static props (rolling pin, peppermint, celery, toothbrush, goblin silhouettes), but confirm export formats, texture licensing, mesh quality and rights. First implement placeholder cubes/spheres/cards, then replace. Aim for stylized cohesive assets over high fidelity. Record actual model, service, prompt/asset provenance as required by jam rules; do not assume 'free' equals commercial redistribution rights.
+
+Minimum source asset list:
+  1 giant toothbrush (character-held prop or floating magic form);
+  1 giant unreasonably large sword;
+  1 rolling-pin mesh (instanced many times);
+  1 striped peppermint candy mesh or sprite;
+  1 celery stalk mesh;
+  1 simple goblin and 1 rat (can initially use common capsule and icon);
+  foam, sparkle, flour, caramel sprite textures;
+  3 speech bubble silhouettes (jagged, round, placard);
+  optional UI comic font with clear redistribution rights;
+  5 distinctive audio cues.
+
+17. ACCEPTANCE TESTS FOR AI CODING AGENTS
+========================================
+A. Basic: target starts at Resolve=100, server-validated attack lowers it once; cosmetic hit event does not double count.
+B. Pacification: target transitions to Pacified once at <=0; does not die/disappear before contextual action.
+C. Goblin: 0 Resolve but no brush interaction -> quest not done; E brush -> progress +1 only once.
+D. Rat: offer celery only when actor eligible; stage completes by correct count; any class can do it.
+E. Speech: knight sword is unsheathed then NOT swung; lecture cone exists in gameplay even if bubble textures fail.
+F. Cyclone: AoE ticks capped per target; cosmetic rolling pins do not independently deal Resolve.
+G. Bubble presentation: angular bubbles appear at attack time and disappear, not occluding quest tracker longer than specified.
+H. Multiplayer: host and guest see target Resolve/reaction and objective progress consistently; no duplicate rewards.
+I. Rejoin: pacified/brushed state, inventory, quest and rep remain correct; transient particles do not persist.
+J. Performance: 2 clients each cast hero ability simultaneously on multiple targets, with acceptable FPS and screen readability.
+K. Offline failure: API down does not block a valid locally stored quest or its core ability effects.
+L. Packaging: no missing soft references to Niagara systems, bubble widgets, audio, materials, or data assets.
+
+18. RECOMMENDED AGENT IMPLEMENTATION ORDER
+==========================================
+1. Read master doc and this companion. Inspect actual UE project. Identify whether GAS, GameplayCues, Niagara, existing input/replication, quest state and API contract already exist. Do not invent symbols/classes/endpoints.
+2. Select minimal class/ability/target/quest data assets or structs; report what will be implemented and what is deferred.
+3. Implement Resolve + Pacified + Interact with replication and diagnostics.
+4. Implement a single shared skill execution path and simple hit debug cone/projectile.
+5. Connect quest PACIFY_TARGET -> INTERACT_TARGET to real server-authoritative objective events.
+6. Add one layered Niagara effect and appropriate sound, then create speech bubble widget as a reusable skin.
+7. Build and test host + guest (if transport already works); verify rewards/quest progress exactly once.
+8. Implement one hero ability and the corresponding reaction; capture 30-second test footage.
+9. Only then add more classes, loot affix interactions, seeded mission variants, and spectacle.
+
+19. FIRST IMPLEMENTATION PROMPT (DO NOT RUN BEFORE JAM BUILD PERIOD)
+===================================================================
+'You are working on an Unreal Engine 5.8 AI MegaJam project. First read this entire unified design document, including both appendices. Inspect the real project and existing code before proposing modifications. We need a tiny nonviolent, MMO-flavored action RPG slice: targets have Resolve and can become Pacified; abilities resolve server-side; VFX are cosmetic client-side; after pacifying a candygoblin the player presses E to brush its teeth; objective progress, NPC reputation and loot are once-only. Implement only the smallest compilable path first. Prefer reusing existing GAS/GameplayCues if actually configured; otherwise propose a minimal extensible substitute. Do not claim systems already exist. Show exact files touched, compile errors, test steps, and what is deferred. For visual direction: huge sword fakeout into spoken lecture, comic jagged text bubbles, foam explosions, falling peppermint, rolling-pin cyclone. None of this may override gameplay readability or quest authority.'
+
+END OF COMPANION
+
+
+======================================================================
+APPENDIX B — VISUAL CONTRAST, TITLE & ART DIRECTION
+======================================================================
+
+VISUAL DIRECTION ADDENDUM — THE DREAD LAND OF CANDY
+===================================================
+STATUS: DESIGN PROPOSAL, NOT AN IMPLEMENTED OR TESTED ART STYLE. Apply only if it fits the revealed jam theme and legal asset rules. No scene, materials, art, or gameplay assets have been created by this addendum.
+
+NAMES AND WORLDBUILDING
+- Preferred game title: THE DREAD LAND OF CANDY (provisional until jam theme is known).
+- Starting village: SUGARBOROUGH (provisional; use this spelling as the internal world-name key and show a friendly in-world sign).
+- Premise: apocalyptic-looking heroes arrive in a cheerful land whose critical emergencies involve celery, dental care, good manners and candy crops.
+- The characters and NPCs treat this mismatch as perfectly ordinary. DO NOT have the narration wink constantly at the audience. The seriousness is the comic engine.
+- Opening-narration tone (draft, not required): 'Beyond the forsaken mountains lies a land of unspeakable sweetness...'
+
+CORE VISUAL CONTRAST
+1. PLAYER CHARACTERS: 80–90% serious dark fantasy, imposing and world-weary, grim silhouettes, dark metal, aged leather, huge swords, weighty stances. Inspiration is a *general dark-fantasy genre contrast*, not copying any particular game's distinctive armor, characters, emblems, or protected assets. Avoid gore or genuinely monstrous player looks; heroic severity is funnier than horror.
+2. ENVIRONMENT/NPCS: 100% bright, friendly, exaggerated fantasy confectionery. Rounded houses, saturated but readable candy color, approachable villagers and bugs, peppermint and treacle, domestic scale and texture. Sugarborough's civilians act as though these adventurers are normal contractors.
+3. ABILITY VFX: extravagant bridge between the two modes. Dark-fantasy wind-up or ceremonial casting -> ridiculous payload (foam, candy pops, speech bubbles, rolling pins) -> enormous theatrical impact -> context-specific nonviolent reaction.
+4. UI/LOOT: solemn action-RPG presentation and powerful-sounding names, but modifiers are absurdly practical: '+48 Manners Damage', '+12% Lecture Radius', 'Well Behaved duration +2 seconds'. Example legendary: 'The Unforgiving Blade of the Last Judgment' is mechanically a lecture tool, not a lethal blade. These are examples; do not implement stats without balance review.
+5. COLOR/RENDERING COHESION: contrast art DIRECTION, not perceived quality. Share lighting, shadow softness/placement, exposure, material response, scale, atmospheric perspective, and camera conventions across everything. Pink candy-house reflections can be seen on dark metal. Don't make the hero look pasted in from another asset pack.
+6. READABILITY: dark armor can collapse into a black silhouette under top-down/third-person camera. Use readable shapes, restrained colored rim/bounce light and distinct class silhouettes; keep enemy outlines and attack telegraphs clearer than decorative particles.
+7. DON'T SPLIT THE DIFFERENCE BY DEFAULT: do not candy-stripe the knight's armor or replace his serious sword with a gumdrop sword. The fully serious adventurer is the setup; the nonsensical behavior and VFX are the punch line. Secondary accents can be earned by equipment progression later.
+
+THE KNIGHT FAKEOUT: SIGNATURE COMEDY BEAT
+- Wind-up: a knight draws an absurdly huge, terrifying sword with maximum dramatic commitment and a strong anticipatory pose.
+- Reversal: rather than swinging, the knight raises the sword as a lectern/pointer and audibly reprimands the target.
+- Attack: broad sound-wave cone from face/chest, bold angular 2D speech bubbles ('ABSOLUTELY NOT', 'FORM A LINE', 'MIND YOUR TEETH'), impact flashes, and recoil animations.
+- Resolution: enemies become briefly Well Behaved, stunned or pacified as dictated by GAS/authoritative ability effects; no direct sword harm.
+- Do NOT let expensive cinematic framing interfere with ordinary combat timing. The attack must be usable in the standard camera view, with a short telegraph that can be canceled/replicated sensibly.
+
+VISUAL RULE FOR NPCS AND QUESTS
+- NPCs must have legible lives and needs in their own cheerful world. The farmer asks the towering barbarian to feed a rat celery; the dental official sends the knight to brush candygoblins. This dissonance should be visible in framing and relative scale, and the dialogue should deliver the request matter-of-factly.
+- Enemies do not die. Show how the attack changes behavior: reluctantly chewing celery; opening mouth for brushing; tiptoeing between rows; scattered lollypop bugs; tamed almonds resuming their proper routine.
+- Same joke in loot: legendary visuals/rarity + absurd function. A 'terrible' weapon may deliver a lecture or encourage proper queueing, but preserve clarity that this is a nonviolent game.
+
+MINIMUM VISUAL PROOF / JAM IMPLEMENTATION ORDER
+- DO NOT make a test scene or generate art before the permitted build window. Pre-jam, only record this design and reference needs.
+- After start: test ONE dark knight character, ONE cheerful candy house, ONE friendly rat, and ONE toothpaste-foam VFX burst in the actual gameplay camera. Judge not by a standalone beauty screenshot, but legibility under movement, attacks, and UI.
+- Compare the same hero under village lighting against a light-stylized fallback if assets clash. Make a conscious rendering pass: common exposure, reflections, collision, scale, ground contact, shadow resolution.
+- Only after this passes, multiply classes/locations and elaborate VFX. Preserve a low-cost fall-back: stylized serious armor silhouettes rather than photoreal, with shared materials and post-process.
+
+ART/ASSET INTEGRITY AND ACCESSIBILITY
+- Record source, license/terms, attribution requirements, and jam disclosure for each AI or third-party mesh, texture, sound, and effect. Check commercial rights and credits requirements. Do not assume AI-generated output is clear of copyrights; avoid reproducing recognizable proprietary game characters/armor.
+- Keep comic bubble typography large and high contrast; avoid relying solely on color for damage types. Provide reduced camera shake and optional reduced particle density if practical.
+- Avoid networked rigid-body simulation for candy debris and rolling pins. Cosmetic local particles/meshes can be spawned per client from a compact replicated gameplay cue; only authoritative hits/progress/save events count.
+
+DECISION PRIORITY IF THE JAM THEME CONFLICTS
+- Keep the core contrast and serious-vs-ridiculous delivery only if the actual theme supports them. Adapt Sugarborough's props and the title as needed. No hard commitment to candy branding is a requirement for eligibility.
+
+END OF UNIFIED MASTER BRIEF
