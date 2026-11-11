@@ -8,7 +8,7 @@ Commit at the end of every task once the build and tests pass, and at green chec
 
 Read `Docs/STATUS.md` (what exists, what is broken, next task), then `Docs/Design/BUILD_SPEC.md`, which governs: the game we ship, the architecture, the task backlog, the cut order and the session protocol. Authored text comes from `Docs/Design/Jokes.md`. The three older briefs in `Docs/Design/` are reference only (the master brief is about 40k tokens and mostly describes an MMO we are not building); open one only when a task names a section. None of these documents is evidence that anything works.
 
-Every session ends by rewriting `Docs/STATUS.md` and appending a few lines to `Docs/DEVLOG.md`. Only one session builds at a time.
+Work is split across workers (GAME, RULES, BACKEND, ASSETS and others) in `Docs/Design/WORKERS.md`: know which one you are, edit only what it owns. One code session per checkout; only GAME opens the editor. GAME ends each task by rewriting `Docs/STATUS.md` and appending a few lines to `Docs/DEVLOG.md`; other workers write `Docs/Workers/<name>.md`.
 
 ## Declared pre-jam work
 
