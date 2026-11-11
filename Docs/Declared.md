@@ -36,4 +36,4 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | Tool | Used for |
 | --- | --- |
 | Claude Code | Code, scripts, docs |
-| Unreal MCP (engine plugin, Experimental) | Lets the agent drive the editor |
+| Unreal MCP + PCG and Niagara toolsets (engine plugins, Experimental) | Lets the agent drive the editor, build PCG graphs and Niagara systems |
