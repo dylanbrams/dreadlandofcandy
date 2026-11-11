@@ -125,21 +125,28 @@ Targets 10k to 20k (sword), 5k to 10k (toothbrush), 2K textures.
 - Put the same 2D style paragraph at the top of every prompt. After sheet 1 is approved, attach it as the style reference to every later sheet.
 - Save each result to `Assets/Incoming/2D/NN_<sheet>/` (e.g. `Assets/Incoming/2D/01_skill_icons/01_skill_icons.png`). Claude slices them.
 
-Suggested 2D style paragraph: two looks, as in 3D. Hero things (skill icons, loot icons) are *painted dark-fantasy, desaturated, heavy shadows*. Film and candy things (stamps, cards, portraits, posters) are *bright, bold-outlined cartoon, candy colours*.
+**The UI has two layers (decided Nov 11), and every 2D sheet belongs to one:**
 
-| # | Sheet | Cells | Look | Pri |
+- **Knight layer, dark and sharp.** This is how the hero sees himself: a grim RPG. Black iron, hard angular edges, blackletter feel, desaturated, with blood-red and dull-gold accents. It covers skill icons, loot icons, rarity frames, the title logo frame and the frame of the director's-notes card. The clash with the candy world is the joke. *2D style paragraph: "painted dark-fantasy game UI art, black iron and aged leather, sharp angular edges, desaturated, heavy shadows, accents of blood red and dull gold".*
+- **Fenella layer, the film production.** This is a children's film made on no budget: paper, rubber-stamp ink, clapper black-and-white, slightly scrappy and handmade. It covers stamps, film cards, the ledger, the call sheet, portraits, the phone frame and posters. *2D style paragraph: "bright bold-outlined cartoon, thick dark outlines, candy colours, paper and cardboard textures, slightly scrappy handmade film-production props".*
+- **Readability.** The world is bright and busy, so Fenella-layer pieces need a **thick dark outline** baked into the art. The game will also sit them on a dark scrim. Plain cream paper with no outline washes out on a pink meadow.
+- **Where the layers meet:** the director's-notes card is Fenella's paper card held in a dark iron frame, because it's where her notes reach the knight.
+
+Sheets 01 and 02 each lock one layer: approve them first, then attach **01 to every later knight sheet and 02 to every later Fenella sheet** as the style reference. Never attach a sheet from the other layer.
+
+| # | Sheet | Cells | Layer | Pri |
 | --- | --- | --- | --- | --- |
-| 01 | **Skill icons** | 4 skills: Lecture (raised sword with a speech bubble), Form A Line! (queue posts and rope), Disappointed Sigh (grey sigh cloud), Last Judgment (sword in a beam of light). 3 passives, greyed: Brooding (hunched helm), Cape Maintenance (empty cape hook), Standing (planted boots). 256 px cells | dark fantasy | MUST (do first, it locks the style) |
-| 02 | **Rubber stamps** | DIRECTOR'S CUT, RESERVED FOR SEQUEL, PRODUCER'S PICK, EVIDENCE, REFORMED. Red ink, grungy, slightly rotated. **Text allowed here** | cartoon | MUST |
-| 03 | **Film cards** | clapper slate (blank, for ACTION!), jagged comic burst (for CUT!), rewind panel (for RETAKE!), crumpled call-sheet paper (for That's a Wrap!). Text is added live | cartoon | MUST |
-| 04 | **Loot icons** (4x4, 4 spare) | sword, pauldrons, greaves, helm, chest plate ("doomplate"), gauntlets, toothbrush, cloak, damp napkin, amulet, ring, celery stick. All painted as grim legendary loot, including the napkin and celery | dark fantasy | MUST (at least sword, toothbrush, celery) |
-| 05 | **Fenella portraits** | head and shoulders: tiny faerie producer, beret, toy film camera. One neutral, one sulking. Plus one full-body glowing version as a billboard fallback, and one faerie wing (single, translucent) | cartoon | MUST |
-| 06 | **Paper textures** | lined ledger paper with a coffee ring; director's-notes index card; grunge frame for the title logo | cartoon | SHOULD (notes card MUST) |
-| 07 | **Premiere posters** | movie marquee frame; poster "THE DIRECTOR'S CUT"; poster "THE THEATRICAL RELEASE" (posters may carry their title text) | cartoon, a bit epic | SHOULD |
-| 08 | **Villager portraits** | the candy villager as Farmer (straw hat), Dental Marshal (head mirror), Almond Herder (crook) | cartoon | SHOULD |
-| 09 | **Candy Rock phone frame** | a candy boulder used as a mobile phone, with a screen area left empty | cartoon | SHOULD |
-| 10 | **Rarity frames** | 5 card borders, rising in fanciness: Common, Uncommon, Rare, Legendary, Director's Personal Collection | dark fantasy | SHOULD |
-| 11 | **Odds and ends** | wall clock face with no hands, plus separate hour and minute hands; a drawn-on villager moustache | cartoon | STRETCH |
+| 01 | **Skill icons** | 4 skills: Lecture (raised sword with a speech bubble), Form A Line! (queue posts and rope), Disappointed Sigh (grey sigh cloud), Last Judgment (sword in a beam of light). 3 passives, greyed: Brooding (hunched helm), Cape Maintenance (empty cape hook), Standing (planted boots). 256 px cells | knight | MUST (do first, locks the knight layer) |
+| 02 | **Film cards** | clapper slate (blank, for ACTION!), jagged comic burst (for CUT!), rewind panel (for RETAKE!), crumpled call-sheet paper (for That's a Wrap!). Thick dark outlines. Text is added live | Fenella | MUST (do second, locks the Fenella layer) |
+| 03 | **Rubber stamps** | DIRECTOR'S CUT, RESERVED FOR SEQUEL, PRODUCER'S PICK, EVIDENCE, REFORMED. Red ink, grungy, slightly rotated. **Text allowed here** | Fenella | MUST |
+| 04 | **Loot icons** (4x4, 4 spare) | sword, pauldrons, greaves, helm, chest plate ("doomplate"), gauntlets, toothbrush, cloak, damp napkin, amulet, ring, celery stick. All painted as grim legendary loot, including the napkin and celery | knight | MUST (at least sword, toothbrush, celery) |
+| 05 | **Fenella portraits** | head and shoulders: tiny faerie producer, beret, toy film camera. One neutral, one sulking. Plus one full-body glowing version as a billboard fallback, and one faerie wing (single, translucent). Thick dark outlines | Fenella | MUST |
+| 06 | **Knight frames** | title logo frame (wide, black iron, sharp, room for the title text in the middle); director's-notes card frame (dark iron frame with an empty slot where a paper card sits); 5 rarity card borders, rising in menace: Common, Uncommon, Rare, Legendary, Director's Personal Collection | knight | MUST (title and notes frames), SHOULD (rarity) |
+| 07 | **Paper** | director's-notes index card (fits the frame from 06); lined ledger paper with a coffee ring. Outlined edges | Fenella | MUST (notes card), SHOULD (ledger) |
+| 08 | **Premiere posters** | movie marquee frame; poster "THE DIRECTOR'S CUT"; poster "THE THEATRICAL RELEASE" (posters may carry their title text) | Fenella, a bit epic | SHOULD |
+| 09 | **Villager portraits** | the candy villager as Farmer (straw hat), Dental Marshal (head mirror), Almond Herder (crook) | Fenella | SHOULD |
+| 10 | **Candy Rock phone frame** | a candy boulder used as a mobile phone, with a screen area left empty | Fenella | SHOULD |
+| 11 | **Odds and ends** | wall clock face with no hands, plus separate hour and minute hands; a drawn-on villager moustache | Fenella | STRETCH |
 
 ## 4. Google Fonts (pick three, OFL licence)
 
@@ -162,12 +169,12 @@ Comic speech-bubble meshes, the "?" mesh and the word atlas (Blender script); gr
 3. N1 rat (Meshy).
 4. P9 house front (Meshy).
 5. X1 peppermint (Meshy).
-6. 2D sheet 01, skill icons (ChatGPT).
+6. 2D sheets 01 (skill icons) and 02 (film cards) in ChatGPT, one per UI layer.
 
 Approve each in the game camera before batching its type; that's the style lock.
 
-**Nov 13 (day 2), the batch, in this order:** hero rig and animations (two-hour time-box) · Scene 1: P1, P2, P3, N3, N4 · Scene 2: N2, P7, R2 · Scene 3: N5, N6, P4 · street: P10, P11, P13, P12, P5 · X2 · 2D sheets 02 to 05.
+**Nov 13 (day 2), the batch, in this order:** hero rig and animations (two-hour time-box) · Scene 1: P1, P2, P3, N3, N4 · Scene 2: N2, P7, R2 · Scene 3: N5, N6, P4 · street: P10, P11, P13, P12, P5 · X2 · 2D sheets 03 to 07.
 
-**Nov 14 (day 3), if there's time:** P8, P14, P6, P15, sheets 06 to 11, and replacements from Fab or Synty for anything that failed.
+**Nov 14 (day 3), if there's time:** P8, P14, P6, P15, sheets 08 to 11, and replacements from Fab or Synty for anything that failed.
 
 Every generated or bought asset gets a line in `Docs/Declared.md` the same day.
