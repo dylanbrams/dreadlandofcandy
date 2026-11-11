@@ -62,9 +62,39 @@ A complete eight-minute comedy with a beginning and an end. Solo, offline, one m
 
 ### Not building (do not start any of these without Dylan saying so)
 
-Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. FastAPI, Postgres, any network call. LLM-generated lines at runtime. Save games. Quest generator, seeds, stage weights. Classes other than the knight. Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, statuses, resistances. New GAS attributes, GameplayCues, cost effects. Auto-cast. Level 1 restart. Procedural terrain.
+Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no persistence, no Postgres). Save games. Quest generator, seeds, stage weights. Classes other than the knight. Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, statuses, resistances. New GAS attributes, GameplayCues, cost effects. Auto-cast. Level 1 restart. Procedural terrain.
 
 (Dylan, Nov 11: no multiplayer feature work in the jam plan, but keep the preparation: no architectural choice that makes adding it miserable later.)
+
+## 3a. The ambition feature: the player types the director's note
+
+Dylan's pitch for "Ambition and innovation" (Nov 11): an RPG the player directs in their own words, which shifts per player and reacts to typed text. This is the feature that carries that score, and it is the theme taken literally: the player gives the Director's notes.
+
+**In play:** at every CUT! prompt there is a third option beside Take and Refuse: **Give your own note**, a text box (80 characters). "Make the rats enormous and ashamed." "This scene is about taxes now." Fenella reads it ("Bold. Wrong. I love it."), and the next stage is reshot to match: the targets change size, number, speed and toughness, the weather and music mood change, and the knight's lecture bubbles, the nuisances' replies, the scene title and the loot name are rewritten to fit ("DECLARE YOUR MOLARS."). Gamepad players, and anyone offline, get three suggested notes as buttons instead of a text box.
+
+**Per player:** every note is kept in a log on the PlayerState and sent with later requests, so direction carries forward (a film that became about taxes in Scene 2 is still about taxes in Scene 3). At the Premiere the log is sent once more and comes back as the film's title, a tagline and three review quotes. No two players get the same film.
+
+**How it stays safe to ship** (the rule from the old briefs holds: a language model never decides rules, completion or rewards):
+
+- The model fills in a fixed form and nothing else. Knobs, each with a hard range: count, resolve multiplier, speed multiplier, target scale, time limit, target kind (from the kinds that set can spawn), tint, weather (none, rain, sprinkle-snow, fog), music mood. Text, each with a length cap: scene title, Fenella's reaction, three to five lecture bubbles, two or three nuisance replies, objective line, loot name and flavour.
+- `JamNoteClamp` (headless, tested) turns any response into a valid `FJamNoteDef` or rejects it: clamps every knob, truncates every string, drops anything not in the form, and checks the stage is finishable in that set. The game then treats it exactly like an authored note. Gross is computed by the client from the knobs, never by the model.
+- Six-second timeout, covered by Fenella "reading" the note. On timeout, error, rejection or no network: a small local keyword matcher (bigger, more, faster, sad, rain, and so on) picks the closest authored note, and failing that she says she can't read the handwriting and uses her own. The game is complete and funny with the server unplugged; `-autoplay` and the smoke test run with it off (`-nonotes`).
+- No keys in the client. The client knows one URL; the server holds the model key, rate-limits per session and per address, refuses abusive input and is told to keep everything in the game's tone. The title screen says in one line that typed notes are sent to a server.
+- The server has to stay up for the whole judging period. That is Dylan's to guarantee, and the reason the offline path must be good.
+
+**Backend:** OneMore's word server already does the hard part (a typed player answer sent from Unreal to FastAPI, judged by a language model, returned as structured JSON: `/judge-definition`, `chatgpt_service.py`, and `WordServerClient` on the Unreal side). Reuse that pattern: two new endpoints, `POST /v1/director/note` and `POST /v1/director/premiere`, either in that service or a small new one beside it. Anything copied gets a `Docs/Declared.md` line. This is a separate lane that does not compile Unreal, so it can run in parallel with the code session.
+
+**Gate:** typed notes work in a packaged build against the live server by the end of day 2, or the text box ships hidden and the suggested-note buttons stay.
+
+## 3b. Widening after the slice works
+
+The slice in section 3 is the floor, built so that more content is data, not code. Cheap to add once Scenes 1 and 2 work, in this order of value:
+
+- More typed-note knobs and text slots (each is a field, a clamp and a test).
+- More scenes: a scene is a table, a set and lines. About half a day each with art. Candidates from the old briefs: Mind the Rows (marching children, interact and follow), The Condensed Treacle Errand (collect in a cave).
+- More nuisance skins, authored notes, Fenella lines, loot names, street gags.
+
+Expensive, and still not in the plan: new verbs, more classes, inventory screens, save games, multiplayer features. Each of those is a system, not content.
 
 ## 4. Theme checklist (the "Theme" score)
 
@@ -177,6 +207,16 @@ Take the first unblocked task. One task per session. Sizes are guesses. "Model" 
 | T17 | Asset lane (Dylan plus a side session): fill `styles.json`, hero test asset, rat, goblin, one house, one Rodin prop | either | One approved asset per type in the game camera |
 | T18 | Audio lane (Dylan): the three music pieces, first eight sounds | Dylan | In the build, with the volume slider |
 
+Typed notes (section 3a), days 1 and 2. B-tasks run in the backend repo in parallel with the Unreal session:
+
+| ID | Task | Model | Done when |
+| --- | --- | --- | --- |
+| B1 | `POST /v1/director/note`: request and response schema, prompt, server-side validation, rate limit, tests with twenty canned notes including hostile ones | Opus | Deployed; curl returns a valid form inside 5 s |
+| B2 | `POST /v1/director/premiere`: notes log in; title, tagline, three review quotes out | Sonnet | Deployed; canned logs give usable text |
+| T12a | `JamNoteClamp` + keyword fallback matcher + tests (garbage JSON, out-of-range knobs, over-long text, unfinishable stage) | Sonnet | `Jam.Film.NoteClamp.*` pass |
+| T12b | Note client (HTTP, timeout, `-nonotes`), text box and suggestion buttons on the CUT! prompt, waiting state, notes log on the PlayerState, apply cosmetic knobs (scale, tint, weather, mood, bubble pools). Depends on T12 | Opus | Typed note visibly changes the next stage in a packaged build; unplugged run still passes |
+| T16a | Premiere uses the generated title and reviews, falls back to the authored endings | Opus | Both paths screenshotted |
+
 End of day 2: package, smoke, and **have someone who has not seen it play it**. Write down where they got lost.
 
 **Day 3 (Nov 14): make it look, sound and feel like the pitch. Feature freeze at the end of the day.**
@@ -196,6 +236,8 @@ End of day 2: package, smoke, and **have someone who has not seen it play it**. 
 ## 8. Cut order when behind
 
 Drop from the top. 1) Commentary track. 2) Street gags beyond signs. 3) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
+
+Typed notes are outside this order: they are decided by their own gate at the end of day 2 (section 3a), and if they pass they rank above everything in the list except Scene 3 entirely.
 
 Never cut: the sword fakeout, the forced "Perfect. Again.", one CUT! choice, the itemized ledger, an ending card, music, the packaged smoke test.
 
