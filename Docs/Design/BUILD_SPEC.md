@@ -127,9 +127,10 @@ Three layers. Dependencies point downward only.
 
 1. Debug shapes with labels (day 1; the game is built on these).
 2. Generated 3D, one approved test asset per type before batching.
-3. Fallback only, for anything the generators fail on or that runs out of time: **cardboard flats** (a 2D image on a plane with a plywood edge and a stick), which the film-with-no-budget fiction excuses. A few deliberate flats as gags (`Jokes.md`) are fine either way.
+3. First fallback (Dylan, Nov 11), if the generators do not deliver: **bought or free packs from Fab, Synty or similar**. A Synty-style low-poly pack suits the bright kiddie side; a rigged dark-fantasy knight with animations from Fab would also remove the hero rigging risk. Rules: Dylan chooses and downloads (the engine's Fab plugin is disabled in the `.uproject` because it breaks UBT on this install, so assets come in through the launcher or a manual import, not the in-editor plugin); every pack gets a line with its licence in `Docs/Declared.md` under third-party assets and in the submission; import only the meshes used, since the zip must stay under 1 GB; at least one shipped prop still comes from Rodin for the Hyper3D pool.
+4. Last fallback, for single missing pieces late on: **cardboard flats** (a 2D image on a plane with a plywood edge and a stick), which the film-with-no-budget fiction excuses. A few deliberate flats as gags (`Jokes.md`) are fine either way.
 
-**The hero** is the riskiest asset. Time-box the Meshy rig-and-animate route to two hours on day 2. If it fails: a static knight mesh that glides and bobs, with one Fenella line about the animation budget. Needed animations if it works: idle, walk, one sword-raise. Set the camera close enough that a high-poly hero is worth having (see section 11, question 5).
+**The hero** is the riskiest asset. Time-box the Meshy rig-and-animate route to two hours on day 2. If it fails: a rigged knight from Fab; failing that, a static knight mesh that glides and bobs, with one Fenella line about the animation budget. Needed animations if it works: idle, walk, one sword-raise. Set the camera close enough that a high-poly hero is worth having (see section 11, question 5).
 
 **Lecture presentation is the brand moment and gets real time on day 3:** sword up (0.3 s, no swing), inhale, cone flash, two or three jagged bubbles from `Jokes.md`, targets recoil. Total wind-up under 0.4 s so it still plays well.
 
