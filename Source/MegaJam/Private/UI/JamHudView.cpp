@@ -83,7 +83,11 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 		V.Objective = TEXT("Pacify the goblins   3/3");
 		V.CardKind = EJamCardKind::Cut;
 		V.CardTitle = TEXT("CUT!");
-		V.CardSubtitle = LineOr(JamScenes::Scene2().Note.PitchLineId, TEXT("I have a note.")) + TEXT("\nHold [E] / (A): take the note.   [Q] / (B): refuse.");
+		V.CardSubtitle = LineOr(JamScenes::Scene2().Note.PitchLineId, TEXT("I have a note."));
+		V.bNotePrompt = true;
+		V.NotePitch = V.CardSubtitle;
+		V.NoteGross = JamScenes::Scene2().Note.GrossMultiplier;
+		V.HoldFraction = 0.4f;
 	}
 	else if (N == TEXT("retake"))
 	{
@@ -123,7 +127,10 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 	else if (N == TEXT("caption"))
 	{
 		Rolling(V);
-		V.Caption = LineOr(TEXT("Idle_01"), TEXT("Are we filming the grass now? Is that the movie?"));
+		V.Caption = LineOr(TEXT("Sulking_01"), TEXT("Fine."));
+		V.bSulking = true;
+		V.NotesTaken = 1;
+		V.NotesRefused = 1;
 	}
 	else
 	{

@@ -98,6 +98,7 @@ void AJamFaerie::Tick(float DeltaSeconds)
 		const AActor* Watch = Subject.IsValid() ? Subject.Get() : F;
 		FVector ToSubject = Watch->GetActorLocation() - GetActorLocation();
 		ToSubject.Z = 0.f;
+		if (bSulking) { ToSubject = -(F->GetActorLocation() - GetActorLocation()).GetSafeNormal2D(); }   // the bush takes notes
 		if (!ToSubject.IsNearlyZero())
 		{
 			const FRotator Want = ToSubject.Rotation();

@@ -56,6 +56,18 @@ struct MEGAJAM_API FJamHudView
 	bool bPromptVisible = false;
 	FString Prompt;               // "Hold [E]  Feed celery"
 	FVector2D PromptPosition = FVector2D::ZeroVector;
+	float HoldFraction = 0.f;     // interact held, 0 to 1 (fills the prompt and the take tile)
+
+	/** CUT!: Fenella's note, as two choices. Replaces the card while up. */
+	bool bNotePrompt = false;
+	FString NotePitch;
+	float NoteGross = 1.f;        // what taking it does to the box office
+	bool bGamepad = false;        // key glyphs
+
+	/** Run counters on the slate panel, and her mood. */
+	int32 NotesTaken = 0;
+	int32 NotesRefused = 0;
+	bool bSulking = false;
 
 	TArray<FJamHudBubble> Bubbles;
 

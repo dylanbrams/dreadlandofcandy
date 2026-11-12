@@ -197,6 +197,9 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
 		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
 		Input->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AJamHero::OnInteract);
+		Input->BindAction(InteractAction, ETriggerEvent::Started, this, &AJamHero::OnInteractPressed);
+		Input->BindAction(InteractAction, ETriggerEvent::Canceled, this, &AJamHero::OnInteractReleased);
+		Input->BindAction(InteractAction, ETriggerEvent::Completed, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
 	}
 	else
@@ -244,7 +247,24 @@ void AJamHero::OnAim(const FInputActionValue& Value)
 
 void AJamHero::OnInteract(const FInputActionValue& /*Value*/)
 {
+	InteractPressedAt = -1.f;
 	RequestInteract();
+}
+
+void AJamHero::OnInteractPressed(const FInputActionValue& /*Value*/)
+{
+	InteractPressedAt = GetWorld()->GetTimeSeconds();
+}
+
+void AJamHero::OnInteractReleased(const FInputActionValue& /*Value*/)
+{
+	InteractPressedAt = -1.f;
+}
+
+float AJamHero::GetInteractHoldFraction() const
+{
+	if (InteractPressedAt < 0.f) { return 0.f; }
+	return FMath::Clamp((GetWorld()->GetTimeSeconds() - InteractPressedAt) / JamHeroTuning::InteractHoldSeconds, 0.f, 1.f);
 }
 
 AJamNuisance* AJamHero::FindInteractTarget() const

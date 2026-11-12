@@ -34,6 +34,7 @@ private:
 	UBorder* MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding);
 	UTextBlock* MakeText(int32 Size, const FLinearColor& Colour, bool bBold);
 	UBorder* GetBubble(int32 Index);
+	UBorder* MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill);
 
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> Root;
 	UPROPERTY(Transient) TObjectPtr<UBorder> SlatePanel;
@@ -53,6 +54,17 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> Bubbles;
 	UPROPERTY(Transient) TObjectPtr<UBorder> PromptPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> PromptText;
+
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> NotesText;
+	UPROPERTY(Transient) TObjectPtr<UProgressBar> PromptFill;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionSpeaker;
+
+	UPROPERTY(Transient) TObjectPtr<UBorder> NotePanel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> NotePitchText;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> TakeKeyText;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> TakeSubText;
+	UPROPERTY(Transient) TObjectPtr<UProgressBar> TakeFill;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> RefuseKeyText;
 
 	UPROPERTY(Transient) TObjectPtr<UBorder> CaptionPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionText;

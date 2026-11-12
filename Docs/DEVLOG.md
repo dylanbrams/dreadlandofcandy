@@ -51,3 +51,9 @@
 - Dylan: music has two takes of each track, both fine, so pick one at random. Batch 2 models are being cleaned and pulled in another session.
 - Schedule: day 1 backlog finished by 10:00, and two day 2 tasks done by 12:30.
 - Packaged T11 smoke: `PASS scenes=3 ... lines=13`. The smoke's 30 s default had cut the 4x film off at 95 s of game time; default is now 60 s.
+
+## 13:00 T12 note prompt
+
+- CUT! is now a panel with Fenella's pitch and two choice tiles (take: hold E / A with a fill; refuse: Q / B), a run counter of notes, and a sulking tag on her caption. She turns her back on the hero while she sulks ("I'm filming that bush").
+- The pitch lines start with "CUT!", which doubled the panel's title; the panel strips it.
+- Autoplay passes both ways: take gives the Director's Cut ending, refuse the Theatrical Release.

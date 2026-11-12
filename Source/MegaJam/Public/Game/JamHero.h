@@ -47,6 +47,9 @@ public:
 	/** True once the player last used a gamepad (for prompt glyphs). */
 	bool IsUsingGamepad() const { return bUsingGamepad; }
 
+	/** 0 to 1 while interact (E / A) is held toward its 0.6 s threshold; 0 when not held. For the HUD's fill. */
+	float GetInteractHoldFraction() const;
+
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void PossessedBy(AController* NewController) override;
@@ -60,6 +63,8 @@ private:
 	void OnAim(const FInputActionValue& Value);
 	void OnInteract(const FInputActionValue& Value);
 	void OnRefuse(const FInputActionValue& Value);
+	void OnInteractPressed(const FInputActionValue& Value);
+	void OnInteractReleased(const FInputActionValue& Value);
 	void UpdateFacing();
 
 	UPROPERTY(VisibleAnywhere)
@@ -99,4 +104,6 @@ private:
 	FVector StickAim = FVector::ZeroVector;
 	FVector2D LastMousePosition = FVector2D(-1.f);
 	bool bUsingGamepad = false;
+	/** World time interact was pressed; negative when not held. */
+	float InteractPressedAt = -1.f;
 };

@@ -104,7 +104,17 @@ void UJamHudWidget::BuildTree()
 	// Interact prompt, placed over its target.
 	PromptPanel = MakePanel(PanelDark, 6.f, FMargin(14.f, 6.f));
 	PromptText = MakeText(22, FLinearColor::White, true);
-	PromptPanel->SetContent(PromptText);
+	{
+		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		Box->AddChildToVerticalBox(PromptText);
+		USizeBox* FillSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		FillSize->SetHeightOverride(5.f);
+		PromptFill = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
+		PromptFill->SetFillColorAndOpacity(Gold);
+		FillSize->SetContent(PromptFill);
+		Box->AddChildToVerticalBox(FillSize)->SetPadding(FMargin(0.f, 4.f, 0.f, 0.f));
+		PromptPanel->SetContent(Box);
+	}
 	{
 		UCanvasPanelSlot* S = BubbleLayer->AddChildToCanvas(PromptPanel);
 		S->SetAutoSize(true);
@@ -128,6 +138,8 @@ void UJamHudWidget::BuildTree()
 		RecSlot->SetPadding(FMargin(28.f, 0.f, 10.f, 0.f));
 		Row->AddChildToHorizontalBox(TimecodeText)->SetVerticalAlignment(VAlign_Center);
 		Box->AddChildToVerticalBox(Row)->SetPadding(FMargin(0.f, 2.f, 0.f, 0.f));
+		NotesText = MakeText(16, Dim, false);
+		Box->AddChildToVerticalBox(NotesText)->SetPadding(FMargin(0.f, 4.f, 0.f, 0.f));
 		SlatePanel->SetContent(Box);
 	}
 	Place(SlatePanel, FAnchors(0.f, 0.f), FVector2D(0.f, 0.f), FVector2D(36.f, 32.f), 5);
@@ -191,9 +203,9 @@ void UJamHudWidget::BuildTree()
 	CaptionPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.72f), 6.f, FMargin(22.f, 10.f));
 	{
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
-		UTextBlock* Speaker = MakeText(16, FLinearColor(0.8f, 0.6f, 1.f), true);
-		Speaker->SetText(FText::FromString(TEXT("FENELLA")));
-		Box->AddChildToVerticalBox(Speaker)->SetHorizontalAlignment(HAlign_Center);
+		CaptionSpeaker = MakeText(16, FLinearColor(0.8f, 0.6f, 1.f), true);
+		CaptionSpeaker->SetText(FText::FromString(TEXT("FENELLA")));
+		Box->AddChildToVerticalBox(CaptionSpeaker)->SetHorizontalAlignment(HAlign_Center);
 		CaptionText = MakeText(28, FLinearColor::White, false);
 		CaptionText->SetJustification(ETextJustify::Center);
 		CaptionText->SetWrapTextAt(1100.f);
@@ -202,10 +214,88 @@ void UJamHudWidget::BuildTree()
 	}
 	Place(CaptionPanel, FAnchors(0.5f, 1.f), FVector2D(0.5f, 1.f), FVector2D(0.f, -60.f), 15);
 
+	// CUT!: the note prompt. Her pitch, then two tiles: take (hold) or refuse.
+	NotePanel = MakePanel(FLinearColor(0.07f, 0.01f, 0.01f, 0.92f), 10.f, FMargin(48.f, 0.f, 48.f, 32.f));
+	{
+		const FJamCardStyle CutStyle = JamHud::CardStyle(EJamCardKind::Cut);
+		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		USizeBox* BarSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		BarSize->SetHeightOverride(10.f);
+		BarSize->SetContent(MakePanel(CutStyle.Accent, 3.f, FMargin(0.f)));
+		UVerticalBoxSlot* BarSlot = Box->AddChildToVerticalBox(BarSize);
+		BarSlot->SetHorizontalAlignment(HAlign_Fill);
+		BarSlot->SetPadding(FMargin(-32.f, 18.f, -32.f, 6.f));
+		UTextBlock* Cut = MakeText(72, CutStyle.Accent, true);
+		Cut->SetText(FText::FromString(TEXT("CUT!")));
+		Cut->SetShadowOffset(FVector2D(4.f, 4.f));
+		Box->AddChildToVerticalBox(Cut)->SetHorizontalAlignment(HAlign_Center);
+		UTextBlock* Has = MakeText(18, FLinearColor(0.8f, 0.6f, 1.f), true);
+		Has->SetText(FText::FromString(TEXT("FENELLA HAS A NOTE")));
+		Box->AddChildToVerticalBox(Has)->SetHorizontalAlignment(HAlign_Center);
+		NotePitchText = MakeText(30, FLinearColor::White, false);
+		NotePitchText->SetJustification(ETextJustify::Center);
+		NotePitchText->SetWrapTextAt(980.f);
+		UVerticalBoxSlot* PitchSlot = Box->AddChildToVerticalBox(NotePitchText);
+		PitchSlot->SetHorizontalAlignment(HAlign_Center);
+		PitchSlot->SetPadding(FMargin(0.f, 10.f, 0.f, 22.f));
+
+		UHorizontalBox* Tiles = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+		UTextBlock* TakeKey = nullptr;
+		UTextBlock* TakeSub = nullptr;
+		UProgressBar* Fill = nullptr;
+		UTextBlock* RefuseKey = nullptr;
+		UTextBlock* RefuseSub = nullptr;
+		UBorder* TakeTile = MakeChoiceTile(FLinearColor(0.45f, 1.f, 0.55f), TEXT("TAKE THE NOTE"), TakeKey, TakeSub, &Fill);
+		UBorder* RefuseTile = MakeChoiceTile(FLinearColor(1.f, 0.55f, 0.3f), TEXT("REFUSE"), RefuseKey, RefuseSub, nullptr);
+		TakeKeyText = TakeKey;
+		TakeSubText = TakeSub;
+		TakeFill = Fill;
+		RefuseKeyText = RefuseKey;
+		RefuseSub->SetText(FText::FromString(TEXT("Your film, your way.\nShe will sulk. Audibly.")));
+		Tiles->AddChildToHorizontalBox(TakeTile)->SetPadding(FMargin(0.f, 0.f, 14.f, 0.f));
+		Tiles->AddChildToHorizontalBox(RefuseTile)->SetPadding(FMargin(14.f, 0.f, 0.f, 0.f));
+		Box->AddChildToVerticalBox(Tiles)->SetHorizontalAlignment(HAlign_Center);
+		NotePanel->SetContent(Box);
+	}
+	Place(NotePanel, FAnchors(0.5f, 0.45f), FVector2D(0.5f, 0.5f), FVector2D::ZeroVector, 21);
+	NotePanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+
+	Show(NotePanel, false);
 	Show(CaptionPanel, false);
 	Show(PromptPanel, false);
 	Show(CardPanel, false);
 	Show(HintPanel, false);
+}
+
+UBorder* UJamHudWidget::MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill)
+{
+	UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 8.f, FMargin(24.f, 16.f));
+	Tile->SetBrush(Rounded(FLinearColor::White, 8.f, Accent, 2.f));
+	Tile->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
+	USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	Size->SetWidthOverride(400.f);
+	UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+	OutKey = MakeText(20, Accent, true);
+	Box->AddChildToVerticalBox(OutKey)->SetHorizontalAlignment(HAlign_Center);
+	UTextBlock* Head = MakeText(34, FLinearColor::White, true);
+	Head->SetText(FText::FromString(Title));
+	Box->AddChildToVerticalBox(Head)->SetHorizontalAlignment(HAlign_Center);
+	OutSub = MakeText(19, Dim, false);
+	OutSub->SetJustification(ETextJustify::Center);
+	OutSub->SetWrapTextAt(360.f);
+	Box->AddChildToVerticalBox(OutSub)->SetHorizontalAlignment(HAlign_Center);
+	if (OutFill)
+	{
+		USizeBox* FillSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		FillSize->SetHeightOverride(8.f);
+		*OutFill = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
+		(*OutFill)->SetFillColorAndOpacity(Accent);
+		FillSize->SetContent(*OutFill);
+		Box->AddChildToVerticalBox(FillSize)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
+	}
+	Size->SetContent(Box);
+	Tile->SetContent(Size);
+	return Tile;
 }
 
 UBorder* UJamHudWidget::GetBubble(int32 Index)
@@ -242,6 +332,9 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		RecText->SetColorAndOpacity(FSlateColor(View.bRolling ? RecRed : Dim));
 		RecText->SetRenderOpacity(bBlinkOn ? 1.f : 0.15f);
 		SetTextIfChanged(TimecodeText, JamHud::Timecode(View.FilmSeconds));
+		const bool bNotes = View.NotesTaken + View.NotesRefused > 0;
+		Show(NotesText, bNotes);
+		if (bNotes) { SetTextIfChanged(NotesText, FString::Printf(TEXT("Notes taken %d   refused %d"), View.NotesTaken, View.NotesRefused)); }
 	}
 
 	// Objective and meter.
@@ -270,6 +363,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	if (View.bPromptVisible)
 	{
 		SetTextIfChanged(PromptText, View.Prompt);
+		PromptFill->SetPercent(View.HoldFraction);
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(PromptPanel->Slot)) { S->SetPosition(View.PromptPosition); }
 	}
 
@@ -288,9 +382,23 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 
 	Show(CaptionPanel, !View.Caption.IsEmpty());
 	SetTextIfChanged(CaptionText, View.Caption);
+	SetTextIfChanged(CaptionSpeaker, View.bSulking ? TEXT("FENELLA (SULKING)") : TEXT("FENELLA"));
 
-	// The card, with a short pop when a new one appears.
-	const bool bCard = View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
+	Show(NotePanel, View.bNotePrompt);
+	if (View.bNotePrompt)
+	{
+		// The pitch lines open with "CUT!", which the panel already shouts.
+		FString Pitch = View.NotePitch;
+		if (Pitch.StartsWith(TEXT("CUT!"))) { Pitch.RightChopInline(4); Pitch.TrimStartInline(); }
+		SetTextIfChanged(NotePitchText, FString::Printf(TEXT("\u201C%s\u201D"), *Pitch));
+		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("HOLD [E]"));
+		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("PRESS [Q]"));
+		SetTextIfChanged(TakeSubText, FString::Printf(TEXT("Her way. Box office x%.1f.\nThe next shot changes."), View.NoteGross));
+		TakeFill->SetPercent(View.HoldFraction);
+	}
+
+	// The card, with a short pop when a new one appears. The note prompt takes its place while up.
+	const bool bCard = !View.bNotePrompt && View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
 	Show(CardPanel, bCard);
 	if (!bCard)
 	{

@@ -346,7 +346,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 		{
 			const FJamLine* Pitch = JamLines::Find(Shoot.GetScene().Note.PitchLineId);
 			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
-			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), FString::Printf(TEXT("%s\nHold [E] / (A): take the note.   [Q] / (B): refuse."), *PitchText), -1.f);
+			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), PitchText, -1.f);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
 		}
 	}
@@ -449,6 +449,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 	case EJamShootEventType::NoteAnswered:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: note %s"), Event.Value ? TEXT("taken") : TEXT("refused"));
 		ShowCard(EJamCardKind::Info, Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"), FString(), 2.f);
+		(Event.Value ? GS->RunNotesTaken : GS->RunNotesRefused) += 1;
 		Say(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused);
 		break;
 
@@ -684,5 +685,6 @@ void AJamGameMode::TickFenella(float DeltaSeconds)
 			if (D < BestDist) { BestDist = D; Best = N; }
 		}
 		Faerie->SetSubject(Best);
+		Faerie->SetSulking(GS->GetShoot().IsSulking());
 	}
 }

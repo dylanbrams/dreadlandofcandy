@@ -46,6 +46,9 @@ public:
 	FString Hint;
 	/** Film running time: counts while a take rolls, across the whole film (the HUD timecode). */
 	float FilmSeconds = 0.f;
+	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */
+	int32 RunNotesTaken = 0;
+	int32 RunNotesRefused = 0;
 	/** Waiting for the hero's answer to CUT!. */
 	bool IsNotePrompt() const { return Shoot.GetState() == EJamShootState::NotePrompt; }
 

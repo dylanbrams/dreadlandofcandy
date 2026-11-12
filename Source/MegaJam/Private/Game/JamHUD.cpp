@@ -85,6 +85,19 @@ void AJamHUD::BuildView()
 	}
 
 	if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+	View.NotesTaken = GS->RunNotesTaken;
+	View.NotesRefused = GS->RunNotesRefused;
+	View.bSulking = Shoot.IsSulking();
+
+	const AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+	View.bGamepad = Hero && Hero->IsUsingGamepad();
+	View.HoldFraction = Hero ? Hero->GetInteractHoldFraction() : 0.f;
+	if (GS->IsNotePrompt())
+	{
+		View.bNotePrompt = true;
+		View.NotePitch = GS->CardSubtitle;
+		View.NoteGross = Shoot.GetScene().Note.GrossMultiplier;
+	}
 
 	if (GS->IsCardVisible())
 	{
@@ -94,7 +107,6 @@ void AJamHUD::BuildView()
 	}
 
 	// Interact prompt over the target the hero would treat, only while treating counts.
-	const AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
 	if (Hero && GS->CanInteract())
 	{
 		if (const AJamNuisance* Target = Hero->FindInteractTarget())

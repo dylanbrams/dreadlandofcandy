@@ -26,6 +26,8 @@ public:
 	void SetFollow(AActor* InFollow) { Follow = InFollow; }
 	/** What she films; null = the hero. */
 	void SetSubject(AActor* InSubject) { Subject = InSubject; }
+	/** After a refused note: she turns her back and films something else. */
+	void SetSulking(bool bInSulking) { bSulking = bInSulking; }
 	/** Talking: bobs and flaps faster for a moment. */
 	void Speak(float Seconds);
 
@@ -48,4 +50,5 @@ private:
 	TWeakObjectPtr<AActor> Subject;
 	float Age = 0.f;
 	float SpeakUntil = -1.f;
+	bool bSulking = false;
 };
