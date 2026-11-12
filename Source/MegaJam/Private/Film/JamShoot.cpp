@@ -201,10 +201,108 @@ namespace JamScenes
 		return S;
 	}
 
+	FJamSceneDef Scene2()
+	{
+		FJamSceneDef S;
+		S.Id = TEXT("Scene2");
+		S.Title = TEXT("Fort Toothache");
+
+		FJamStageDef& Pacify = S.Stages.AddDefaulted_GetRef();
+		Pacify.Id = TEXT("S2_PacifyGoblins");
+		Pacify.Verb = EJamStageVerb::Pacify;
+		Pacify.Target = EJamTargetKind::Goblin;
+		Pacify.Count = 3;
+		Pacify.Objective = TEXT("Pacify the goblins");
+
+		// Failure by countdown: "we're losing the light".
+		FJamStageDef& Brush = S.Stages.AddDefaulted_GetRef();
+		Brush.Id = TEXT("S2_BrushGoblins");
+		Brush.Verb = EJamStageVerb::Interact;
+		Brush.Target = EJamTargetKind::Goblin;
+		Brush.Count = 3;
+		Brush.TimeLimit = 60.f;
+		Brush.Objective = TEXT("Brush each goblin");
+
+		// CUT! "Needs a stronger antagonist": one boss-sized goblin (480 Resolve, speed 250, from goblin 150 / 350).
+		S.NoteBeforeStage = 1;
+		S.Note.Id = TEXT("S2_BiggerGoblin");
+		S.Note.PitchLineId = TEXT("CutPitch_02");
+		S.Note.GrossMultiplier = 1.5f;
+		S.Note.BubblePool = TEXT("Default");
+		FJamStageDef& Boss = S.Note.Replacement;
+		Boss.Id = TEXT("S2_BrushBigGoblin");
+		Boss.Verb = EJamStageVerb::Interact;
+		Boss.Target = EJamTargetKind::Goblin;
+		Boss.Count = 1;
+		Boss.ResolveMultiplier = 3.2f;
+		Boss.SpeedMultiplier = 250.f / 350.f;
+		Boss.TimeLimit = 60.f;
+		Boss.Objective = TEXT("Brush the very large goblin");
+		return S;
+	}
+
+	FJamSceneDef Scene3()
+	{
+		FJamSceneDef S;
+		S.Id = TEXT("Scene3");
+		S.Title = TEXT("The Almond Affair");
+
+		// Failure by damage meter: ten crops eaten.
+		FJamStageDef& Disperse = S.Stages.AddDefaulted_GetRef();
+		Disperse.Id = TEXT("S3_DisperseBugs");
+		Disperse.Verb = EJamStageVerb::Pacify;
+		Disperse.Target = EJamTargetKind::Bug;
+		Disperse.Count = 5;
+		Disperse.FailMeter = 10;
+		Disperse.Objective = TEXT("Disperse the lollypop bugs");
+
+		FJamStageDef& Gather = S.Stages.AddDefaulted_GetRef();
+		Gather.Id = TEXT("S3_GatherAlmonds");
+		Gather.Verb = EJamStageVerb::Collect;
+		Gather.Target = EJamTargetKind::Almond;
+		Gather.Count = 4;
+		Gather.Objective = TEXT("Gather the almonds");
+
+		FJamStageDef& Final = S.Stages.AddDefaulted_GetRef();
+		Final.Id = TEXT("S3_LastBugs");
+		Final.Verb = EJamStageVerb::Pacify;
+		Final.Target = EJamTargetKind::Bug;
+		Final.Count = 5;
+		Final.FailMeter = 10;
+		Final.Objective = TEXT("Shoo the last of the bugs");
+
+		// CUT! "It's good. Make it more. Just... more." before the final stage.
+		S.NoteBeforeStage = 2;
+		S.Note.Id = TEXT("S3_MoreBugs");
+		S.Note.PitchLineId = TEXT("CutPitch_06");
+		S.Note.GrossMultiplier = 1.5f;
+		S.Note.BubblePool = TEXT("Default");
+		FJamStageDef& More = S.Note.Replacement;
+		More.Id = TEXT("S3_ManyMoreBugs");
+		More.Verb = EJamStageVerb::Pacify;
+		More.Target = EJamTargetKind::Bug;
+		More.Count = 8;
+		More.SpeedMultiplier = 1.2f;
+		More.FailMeter = 10;
+		More.Objective = TEXT("Shoo the many, many bugs");
+		return S;
+	}
+
+	TArray<FJamSceneDef> All()
+	{
+		return { Scene1(), Scene2(), Scene3() };
+	}
+
 	int32 SetCapacity(const FJamSceneDef& Scene, EJamTargetKind Kind)
 	{
-		// The field set spawns three rats (the game mode's Scene 1 spawn points).
+		// What each set's spawn points hold at most (the game mode places this many markers).
 		if (Scene.Id == FName(TEXT("Scene1"))) { return Kind == EJamTargetKind::Rat ? 3 : 0; }
+		if (Scene.Id == FName(TEXT("Scene2"))) { return Kind == EJamTargetKind::Goblin ? 6 : 0; }
+		if (Scene.Id == FName(TEXT("Scene3")))
+		{
+			if (Kind == EJamTargetKind::Bug) { return 8; }
+			return Kind == EJamTargetKind::Almond ? 4 : 0;
+		}
 		return 0;
 	}
 }

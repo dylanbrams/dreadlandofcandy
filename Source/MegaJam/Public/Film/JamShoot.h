@@ -73,6 +73,10 @@ private:
 namespace JamScenes
 {
 	MEGAJAM_API FJamSceneDef Scene1();
+	MEGAJAM_API FJamSceneDef Scene2();
+	MEGAJAM_API FJamSceneDef Scene3();
+	/** Scene 1 to 3 in order. */
+	MEGAJAM_API TArray<FJamSceneDef> All();
 
 	/** How many targets of a kind each scene's set spawns at most (the finishable-stage test checks against it). */
 	MEGAJAM_API int32 SetCapacity(const FJamSceneDef& Scene, EJamTargetKind Kind);
