@@ -67,6 +67,7 @@ private:
 	void OnInteract(const FInputActionValue& Value);
 	void OnRefuse(const FInputActionValue& Value);
 	void OnInteractPressed(const FInputActionValue& Value);
+	void OnPause(const FInputActionValue& Value);
 	void OnInteractReleased(const FInputActionValue& Value);
 	void UpdateFacing();
 
@@ -100,6 +101,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> RefuseAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> PauseAction;
 
 	enum class EAimSource : uint8 { Movement, Mouse, Stick };
 	EAimSource AimSource = EAimSource::Movement;

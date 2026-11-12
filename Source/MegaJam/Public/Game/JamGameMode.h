@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Film/JamFilmTypes.h"
 #include "UI/JamHudView.h"
+#include "UI/JamScreens.h"
 #include "Film/JamNagScheduler.h"
 #include "JamGameMode.generated.h"
 
@@ -40,7 +41,13 @@ public:
 	/** A hero answers CUT!. False unless the note prompt is up. */
 	bool HandleNoteAnswer(AJamHero* Hero, bool bTake);
 
-	/** Interact while the wrap panel is up closes it. True if it did. */
+	// The film around the scenes (T16). Menus send these; only the game mode changes the phase.
+	void RequestRollCamera();
+	void RequestPremiere();
+	void RequestCredits();
+	void RequestBackToTitle();
+
+	/** Interact while the wrap panel is up closes it (the last one opens the Premiere). True if it did. */
 	bool HandleDismissWrap(AJamHero* Hero);
 
 	/** The hero cast a Lecture (cosmetic: Fenella may remark on it). */
@@ -61,6 +68,8 @@ private:
 	void HandlePacified(AActor* Pacified);
 	void FinishRun(bool bPass, const FString& Why);
 	void TickAutoplay(float DeltaSeconds);
+	void TickAutoplayAfterRun(float DeltaSeconds);
+	void SetPhase(EJamFilmPhase Phase);
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
 	void Say(EJamLineTrigger Trigger);
@@ -115,6 +124,12 @@ private:
 	/** -forcefail[=seconds]: the first take of the run fails after this long rolling (T13 check). Negative = off. */
 	float ForceFailAfter = -1.f;
 	bool bForceFailDone = false;
+	// Film totals for the Premiere.
+	int32 FilmGross = 0;
+	int32 DirectorTotal = 0;
+	bool bLastWrapped = false;
+	float AfterRunTime = 0.f;
+	bool bAutoplayEndLogged = false;
 	bool bFailForcedByFlag = false;
 	float AutoplayTime = 0.f;
 	float SceneTime = 0.f;

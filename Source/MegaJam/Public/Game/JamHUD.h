@@ -3,9 +3,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
 #include "UI/JamHudView.h"
+#include "UI/JamScreens.h"
 #include "JamHUD.generated.h"
 
 class UJamHudWidget;
+class UJamScreenWidget;
+enum class EJamMenuInput : uint8;
 
 /**
  * Owns the HUD widget and feeds it an FJamHudView each frame, built from the game state (read only).
@@ -21,11 +24,34 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
+	/** Esc / Start in play: pause and open the Pause menu. */
+	void RequestPause();
+
 	/** The view built from the world this frame (or the sample). */
 	const FJamHudView& GetView() const { return View; }
 
 private:
 	void BuildView();
+	// Screens (T16): which one is up, its view, and what its inputs do.
+	FJamScreenView BuildScreen() const;
+	void HandleMenu(EJamMenuInput Input, int32 Index);
+	void Activate(const FJamMenuOption& Option);
+	void Adjust(const FJamMenuOption& Option, int32 Delta);
+	void SetPaused(bool bPause);
+	void UpdateInputMode(bool bInteractive);
+	FJamMenuSettings MenuSettings() const;
+	class UJamSettings* Settings() const;
+	class AJamGameMode* AuthGameMode() const;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UJamScreenWidget> Screen;
+	FJamScreenView ScreenView;
+	EJamScreen SubScreen = EJamScreen::None;   // Options or QuitConfirm over the title or the pause menu
+	int32 Selected = 0;
+	bool bPaused = false;
+	bool bMenuGamepad = false;
+	int32 InputModeState = -1;                 // 0 game, 1 UI
+	FString ScreenSampleName;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UJamHudWidget> Widget;

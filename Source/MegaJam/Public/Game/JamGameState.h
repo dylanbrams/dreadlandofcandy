@@ -5,6 +5,7 @@
 #include "Film/JamShoot.h"
 #include "UI/JamHudView.h"
 #include "UI/JamWrapView.h"
+#include "UI/JamScreens.h"
 #include "JamGameState.generated.h"
 
 /**
@@ -49,6 +50,11 @@ public:
 	float FilmSeconds = 0.f;
 	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */
 	int32 RunNotesTaken = 0;
+	EJamFilmPhase Phase = EJamFilmPhase::Title;
+	/** World time the phase began (the rating card, the credits scroll). */
+	float PhaseSince = 0.f;
+	FJamPremiereTotals Premiere;
+
 	/** The wrap panel (ledger, loot, character sheet). WrapUntil negative = stays until replaced. */
 	FJamWrapView Wrap;
 	float WrapUntil = 0.f;

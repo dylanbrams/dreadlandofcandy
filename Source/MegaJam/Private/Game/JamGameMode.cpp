@@ -7,6 +7,8 @@
 #include "Game/JamNuisance.h"
 #include "Game/JamPickup.h"
 #include "Game/JamPlayerState.h"
+#include "Game/JamSettings.h"
+#include "Kismet/GameplayStatics.h"
 #include "Film/JamLines.h"
 #include "Film/JamShoot.h"
 #include "Gas/JamResolveAttributeSet.h"
@@ -150,7 +152,11 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	Faerie = GetWorld()->SpawnActor<AJamFaerie>(AJamFaerie::StaticClass(), NewHero->GetActorTransform(), FaerieParams);
 	if (Faerie) { Faerie->SetFollow(NewHero); }
 
-	StartScene(FirstSceneIndex);
+	// Straight to the shoot when a flag asks for a scene or a screen sample; otherwise the title (T16).
+	FString Dummy;
+	const bool bSkipTitle = FParse::Value(Cmd, TEXT("scene="), Dummy) || FParse::Value(Cmd, TEXT("uiscreen="), Dummy) || FParse::Param(Cmd, TEXT("notitle"));
+	if (bSkipTitle) { RequestRollCamera(); }
+	else { SetPhase(EJamFilmPhase::Title); }
 }
 
 void AJamGameMode::StartScene(int32 InSceneIndex)
@@ -299,9 +305,10 @@ void AJamGameMode::Tick(float DeltaSeconds)
 	if (bBetweenScenes) { TickBetweenScenes(); }
 	else { TickShoot(DeltaSeconds); }
 	TickFenella(DeltaSeconds);
-	if (bAutoplay && !bRunOver && Hero.IsValid())
+	if (bAutoplay && Hero.IsValid())
 	{
-		TickAutoplay(DeltaSeconds);
+		if (!bRunOver) { TickAutoplay(DeltaSeconds); }
+		else { TickAutoplayAfterRun(DeltaSeconds); }
 	}
 }
 
@@ -546,6 +553,16 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	AutoplayTime += DeltaSeconds;
 	AJamGameState* GS = GetJamGameState();
 	if (!GS) { return; }
+	// The title: the bot rolls camera once the rating card has gone.
+	if (GS->Phase == EJamFilmPhase::Title)
+	{
+		if (GetWorld()->GetTimeSeconds() - GS->PhaseSince > 3.f)
+		{
+			UE_LOG(LogJam, Log, TEXT("JamAutoplay: title, Roll Camera"));
+			RequestRollCamera();
+		}
+		return;
+	}
 	const FJamShoot& Shoot = GS->GetShoot();
 
 	if (SceneTime > JamAutoplayTuning::SceneTimeoutSeconds)
@@ -642,6 +659,8 @@ FJamNagSnapshot AJamGameMode::MakeSnapshot() const
 	{
 		Snap.bSilenced = GS->IsNotePrompt();
 		Snap.bSulking = GS->GetShoot().IsSulking();
+		const UJamSettings* Settings = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
+		Snap.bCommentary = Settings && Settings->bCommentary;
 	}
 	return Snap;
 }
@@ -784,6 +803,9 @@ void AJamGameMode::RollWrap(bool bLastScene)
 	ApplyHeroStats();
 
 	GS->Wrap = JamWrap::MakeView(Out, Shoot.GetScene().Title, Before, Prog.GetStats(), Gained, Seed);
+	FilmGross += Out.Ledger.Gross;
+	DirectorTotal += Out.Ledger.DeductionsTotal;
+	bLastWrapped = bLastScene;
 	GS->WrapUntil = bLastScene ? -1.f : GetWorld()->GetTimeSeconds() + JamWrapTuning::PanelSeconds;
 
 	const FJamLootDef& Equipped = JamProgression::LootTable()[Out.LootIndices[Out.EquippedSlot]];
@@ -795,7 +817,78 @@ void AJamGameMode::RollWrap(bool bLastScene)
 bool AJamGameMode::HandleDismissWrap(AJamHero* InHero)
 {
 	AJamGameState* GS = GetJamGameState();
-	if (!GS || !InHero || !GS->IsWrapVisible() || GS->WrapUntil < 0.f) { return false; }
+	if (!GS || !InHero || !GS->IsWrapVisible()) { return false; }
+	if (GS->WrapUntil < 0.f) { RequestPremiere(); return true; }   // the last wrap opens the Premiere
 	GS->WrapUntil = GetWorld()->GetTimeSeconds();
 	return true;
+}
+
+// ---- The film around the scenes (T16) -------------------------------------------------------------------------
+
+void AJamGameMode::SetPhase(EJamFilmPhase Phase)
+{
+	if (AJamGameState* GS = GetJamGameState())
+	{
+		GS->Phase = Phase;
+		GS->PhaseSince = GetWorld()->GetTimeSeconds();
+	}
+}
+
+void AJamGameMode::RequestRollCamera()
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || (GS->Phase != EJamFilmPhase::Title && GS->GetShoot().GetState() != EJamShootState::Idle)) { return; }
+	SetPhase(EJamFilmPhase::Shooting);
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: roll camera"));
+	StartScene(FirstSceneIndex);
+}
+
+void AJamGameMode::RequestPremiere()
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || GS->Phase != EJamFilmPhase::Shooting || !bLastWrapped) { return; }
+	const AJamPlayerState* PS = GetHeroState();
+	GS->Premiere.bDirectorsCut = JamScreens::IsDirectorsCut(GS->RunNotesTaken, GS->RunNotesRefused);
+	GS->Premiere.FilmGross = FilmGross;
+	GS->Premiere.Director = DirectorTotal;
+	GS->Premiere.Hero = PS ? PS->Sprinkles : 0;
+	GS->Wrap.bVisible = false;
+	SetPhase(EJamFilmPhase::Premiere);
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: premiere, %s, gross %d, director %d, hero %d"),
+		GS->Premiere.bDirectorsCut ? TEXT("THE DIRECTOR'S CUT") : TEXT("THE THEATRICAL RELEASE"), FilmGross, DirectorTotal, GS->Premiere.Hero);
+}
+
+void AJamGameMode::RequestCredits()
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || GS->Phase != EJamFilmPhase::Premiere) { return; }
+	SetPhase(EJamFilmPhase::Credits);
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: credits"));
+}
+
+void AJamGameMode::RequestBackToTitle()
+{
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: back to the title"));
+	if (bAutoplay)
+	{
+		// Reloading would start the autoplay over; the run is a loop test, so it stops here.
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: title to title (no reload under autoplay)"));
+		return;
+	}
+	UGameplayStatics::OpenLevel(this, FName(*UGameplayStatics::GetCurrentLevelName(this)));
+}
+
+void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || bAutoplayEndLogged) { return; }
+	AfterRunTime += DeltaSeconds;
+	const float InPhase = GetWorld()->GetTimeSeconds() - GS->PhaseSince;
+	if (GS->Phase == EJamFilmPhase::Shooting && bLastWrapped && AfterRunTime > 3.f) { RequestPremiere(); }
+	else if (GS->Phase == EJamFilmPhase::Premiere && InPhase > 4.f) { RequestCredits(); }
+	else if (GS->Phase == EJamFilmPhase::Credits && InPhase > 4.f)
+	{
+		bAutoplayEndLogged = true;
+		RequestBackToTitle();
+	}
 }

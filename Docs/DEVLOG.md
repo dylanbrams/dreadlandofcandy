@@ -70,3 +70,10 @@
 - T14: the wrap is now the Production Ledger beside three loot cards and a character sheet. Fenella stamps her pick; the hero's item equips and changes a real number. Radius, power and cooldown all come from the progression now, so the cooldown items are no longer just names.
 - First panel screenshot: "DIRECTOR'S PERSONAL COLLECTION" ran off its card and the stamp hid the item name. Wrapped the text and moved the stamp down onto her stat line.
 - Refusing notes now costs gross (x0.8 each); the spec said so and nothing did it yet.
+
+## 15:00 T16 title, pause, Premiere, credits
+
+- T14 packaged smoke passes (three wraps, levels 8 to 10, sprinkles 510).
+- T15 is mostly tuning by play, so it waits for Dylan; T16 went first. The film now has a title, a pause menu, a Premiere with both endings and scrolling credits, all from the Jokes.md text, with keyboard, gamepad and mouse handled in one C++ screen widget.
+- First title screenshot had the DIRECTOR'S CUT stamp sitting on the subtitle; it now crosses the end of the title, with a clear fill so the words show through. The game HUD (and its caption) showed under the pause menu; it hides under every screen now.
+- Autoplay goes title -> film -> Premiere -> credits; nobody has pressed the menu keys yet.

@@ -2,6 +2,7 @@
 #include "Film/JamProgression.h"
 #include "Game/JamPlayerState.h"
 #include "Game/JamGameMode.h"
+#include "Game/JamHUD.h"
 #include "Game/JamNuisance.h"
 #include "EngineUtils.h"
 #include "InputTriggers.h"
@@ -151,6 +152,8 @@ void AJamHero::CreateInput()
 
 	RefuseAction = NewObject<UInputAction>(this, TEXT("IA_Refuse"));
 	RefuseAction->ValueType = EInputActionValueType::Boolean;
+	PauseAction = NewObject<UInputAction>(this, TEXT("IA_Pause"));
+	PauseAction->ValueType = EInputActionValueType::Boolean;
 
 	InputContext = NewObject<UInputMappingContext>(this, TEXT("IMC_Hero"));
 
@@ -187,6 +190,8 @@ void AJamHero::CreateInput()
 	// At the CUT! prompt: hold E / A takes the note, Q / B refuses it (placeholder until the T12 prompt UI).
 	InputContext->MapKey(RefuseAction, EKeys::Q);
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
+	InputContext->MapKey(PauseAction, EKeys::Escape);
+	InputContext->MapKey(PauseAction, EKeys::Gamepad_Special_Right);
 }
 
 void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -204,6 +209,7 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(InteractAction, ETriggerEvent::Canceled, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(InteractAction, ETriggerEvent::Completed, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
+		Input->BindAction(PauseAction, ETriggerEvent::Started, this, &AJamHero::OnPause);
 	}
 	else
 	{
@@ -362,4 +368,12 @@ void AJamHero::ApplyStats(const FJamStatBlock& Stats)
 	// The walk speed was tuned by hand (450); the stat's base is 600, so loot scales the tuned value.
 	const float Base = FJamProgression().GetStats().MoveSpeed;
 	GetCharacterMovement()->MaxWalkSpeed = JamHeroTuning::WalkSpeed * (Base > 0.f ? Stats.MoveSpeed / Base : 1.f);
+}
+
+void AJamHero::OnPause(const FInputActionValue& /*Value*/)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AJamHUD* HUD = Cast<AJamHUD>(PC->GetHUD())) { HUD->RequestPause(); }
+	}
 }

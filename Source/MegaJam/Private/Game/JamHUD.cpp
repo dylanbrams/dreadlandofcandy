@@ -3,6 +3,10 @@
 #include "Game/JamHero.h"
 #include "Game/JamNuisance.h"
 #include "UI/JamHudWidget.h"
+#include "UI/JamScreenWidget.h"
+#include "Game/JamGameMode.h"
+#include "Game/JamSettings.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "MegaJam.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/World.h"
@@ -19,24 +23,38 @@ AJamHUD::AJamHUD()
 void AJamHUD::BeginPlay()
 {
 	Super::BeginPlay();
-	FString Screen;
-	if (FParse::Value(FCommandLine::Get(), TEXT("uiscreen="), Screen))
+	FString Arg;
+	if (FParse::Value(FCommandLine::Get(), TEXT("uiscreen="), Arg))
 	{
 		FJamHudView Probe;
-		if (JamHud::Sample(Screen, Probe))
+		FJamScreenView ScreenProbe;
+		if (JamScreens::Sample(Arg, ScreenProbe))
 		{
-			SampleName = Screen;
-			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s (sample HUD)"), *Screen);
+			ScreenSampleName = Arg;
+			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s (sample screen)"), *Arg);
+		}
+		else if (JamHud::Sample(Arg, Probe))
+		{
+			SampleName = Arg;
+			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s (sample HUD)"), *Arg);
 		}
 		else
 		{
-			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s is not a HUD sample (%s)"), *Screen, *FString::Join(JamHud::SampleNames(), TEXT(", ")));
+			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s is not a HUD sample (%s)"), *Arg, *FString::Join(JamHud::SampleNames(), TEXT(", ")));
 		}
 	}
 	if (PlayerOwner && PlayerOwner->IsLocalController())
 	{
 		Widget = CreateWidget<UJamHudWidget>(PlayerOwner, UJamHudWidget::StaticClass());
 		if (Widget) { Widget->AddToViewport(0); }
+		Screen = CreateWidget<UJamScreenWidget>(PlayerOwner, UJamScreenWidget::StaticClass());
+		if (Screen)
+		{
+			Screen->AddToViewport(10);
+			Screen->SetVisibility(ESlateVisibility::Collapsed);
+			Screen->OnMenuInput.BindUObject(this, &AJamHUD::HandleMenu);
+			Screen->OnDevice.BindLambda([this](bool bGamepad) { bMenuGamepad = bGamepad; });
+		}
 	}
 }
 
@@ -46,6 +64,24 @@ void AJamHUD::Tick(float DeltaSeconds)
 	if (SampleName.IsEmpty()) { BuildView(); }
 	else { JamHud::Sample(SampleName, View); }
 	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
+
+	if (Screen)
+	{
+		FJamScreenView Sample;
+		const bool bSample = !ScreenSampleName.IsEmpty() && JamScreens::Sample(ScreenSampleName, Sample);
+		ScreenView = bSample ? Sample : BuildScreen();
+		const bool bShown = ScreenView.Screen != EJamScreen::None;
+		const ESlateVisibility Vis = bShown ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
+		if (Screen->GetVisibility() != Vis) { Screen->SetVisibility(Vis); }
+		if (bShown) { Screen->ApplyView(ScreenView, GetWorld()->GetRealTimeSeconds()); }
+		// The game HUD hides under any screen (pause too: two captions and a card under the menu was clutter).
+		if (Widget)
+		{
+			const ESlateVisibility HudVis = bShown ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible;
+			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
+		}
+		if (!bSample) { UpdateInputMode(bShown && ScreenView.Screen != EJamScreen::Rating); }
+	}
 }
 
 void AJamHUD::BuildView()
@@ -119,14 +155,172 @@ void AJamHUD::BuildView()
 	{
 		if (const AJamNuisance* Target = Hero->FindInteractTarget())
 		{
-			FVector2D Screen;
-			if (UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Target->GetActorLocation() + FVector(0.f, 0.f, 140.f), Screen, false))
+			FVector2D OnScreen;
+			if (UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Target->GetActorLocation() + FVector(0.f, 0.f, 140.f), OnScreen, false))
 			{
 				const TCHAR* Verb = Stage && Stage->Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
 				View.bPromptVisible = true;
 				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Hold [E]"), Verb);
-				View.PromptPosition = Screen;
+				View.PromptPosition = OnScreen;
 			}
 		}
+	}
+}
+
+// ---- Screens (T16) ----------------------------------------------------------------------------------------------
+
+namespace
+{
+	constexpr float RatingSeconds = 2.f;
+	constexpr float CreditSecondsPerLine = 1.1f;
+}
+
+UJamSettings* AJamHUD::Settings() const
+{
+	return GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
+}
+
+AJamGameMode* AJamHUD::AuthGameMode() const
+{
+	return GetWorld()->GetAuthGameMode<AJamGameMode>();
+}
+
+FJamMenuSettings AJamHUD::MenuSettings() const
+{
+	FJamMenuSettings S;
+	if (const UJamSettings* J = Settings()) { S.Volume = J->Volume; S.bCommentary = J->bCommentary; }
+	S.bGamepad = bMenuGamepad;
+	return S;
+}
+
+FJamScreenView AJamHUD::BuildScreen() const
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS) { return FJamScreenView(); }
+	const FJamMenuSettings S = MenuSettings();
+	const float InPhase = GetWorld()->GetTimeSeconds() - GS->PhaseSince;
+	FJamScreenView V;
+
+	if (GS->Phase == EJamFilmPhase::Title)
+	{
+		if (InPhase < RatingSeconds) { return JamScreens::Rating(); }
+		V = SubScreen == EJamScreen::Options ? JamScreens::Options(S)
+			: SubScreen == EJamScreen::QuitConfirm ? JamScreens::QuitConfirm(S, false) : JamScreens::Title(S);
+	}
+	else if (bPaused)
+	{
+		V = SubScreen == EJamScreen::QuitConfirm ? JamScreens::QuitConfirm(S, true) : JamScreens::Pause(S);
+	}
+	else if (GS->Phase == EJamFilmPhase::Premiere)
+	{
+		V = JamScreens::Premiere(GS->Premiere, S);
+	}
+	else if (GS->Phase == EJamFilmPhase::Credits)
+	{
+		V = JamScreens::Credits(GS->Premiere.bDirectorsCut, S);
+		V.Scroll = InPhase / FMath::Max(1.f, V.Body.Num() * CreditSecondsPerLine);
+	}
+	if (V.Options.Num() > 0) { V.Selected = FMath::Clamp(Selected, 0, V.Options.Num() - 1); }
+	return V;
+}
+
+void AJamHUD::UpdateInputMode(bool bInteractive)
+{
+	const int32 Want = bInteractive ? 1 : 0;
+	if (!PlayerOwner || Want == InputModeState) { return; }
+	InputModeState = Want;
+	if (bInteractive && Screen)
+	{
+		FInputModeUIOnly Mode;
+		Mode.SetWidgetToFocus(Screen->TakeWidget());
+		Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		PlayerOwner->SetInputMode(Mode);
+	}
+	else
+	{
+		PlayerOwner->SetInputMode(FInputModeGameOnly());
+	}
+	PlayerOwner->bShowMouseCursor = true;   // the hero faces the cursor; menus are clickable
+}
+
+void AJamHUD::SetPaused(bool bPause)
+{
+	bPaused = bPause;
+	SubScreen = EJamScreen::None;
+	Selected = 0;
+	if (PlayerOwner) { PlayerOwner->SetPause(bPause); }
+	UE_LOG(LogJam, Log, TEXT("JamHUD: %s"), bPause ? TEXT("paused") : TEXT("resumed"));
+}
+
+void AJamHUD::RequestPause()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || GS->Phase != EJamFilmPhase::Shooting || bPaused) { return; }
+	SetPaused(true);
+}
+
+void AJamHUD::Adjust(const FJamMenuOption& Option, int32 Delta)
+{
+	UJamSettings* J = Settings();
+	if (!J) { return; }
+	if (Option.Action == EJamMenuAction::Volume) { J->SetVolume(J->Volume + 0.1f * Delta); }
+	else if (Option.Action == EJamMenuAction::Commentary) { J->SetCommentary(!J->bCommentary); }
+}
+
+void AJamHUD::Activate(const FJamMenuOption& Option)
+{
+	AJamGameMode* GM = AuthGameMode();
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	const bool bTitle = GS && GS->Phase == EJamFilmPhase::Title;
+	switch (Option.Action)
+	{
+	case EJamMenuAction::RollCamera:  if (GM) { GM->RequestRollCamera(); } break;
+	case EJamMenuAction::OpenOptions: SubScreen = EJamScreen::Options; Selected = 0; break;
+	case EJamMenuAction::WalkOffSet:  SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
+	case EJamMenuAction::Fine:
+	case EJamMenuAction::Back:        Selected = SubScreen == EJamScreen::Options ? 1 : (bTitle ? 2 : 4); SubScreen = EJamScreen::None; break;
+	case EJamMenuAction::Resume:      SetPaused(false); break;
+	case EJamMenuAction::Volume:      Adjust(Option, 1); break;
+	case EJamMenuAction::Commentary:  Adjust(Option, 1); break;
+	case EJamMenuAction::WalkAnyway:
+		if (bTitle) { UKismetSystemLibrary::QuitGame(this, PlayerOwner, EQuitPreference::Quit, false); }
+		else { SetPaused(false); if (GM) { GM->RequestBackToTitle(); } }
+		break;
+	default: break;
+	}
+}
+
+void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
+{
+	const EJamScreen Shown = ScreenView.Screen;
+	AJamGameMode* GM = AuthGameMode();
+
+	// Cards without options: confirm moves on.
+	if (Shown == EJamScreen::Premiere || Shown == EJamScreen::Credits)
+	{
+		if (Input == EJamMenuInput::Confirm || Input == EJamMenuInput::Click)
+		{
+			if (Shown == EJamScreen::Premiere && GM) { GM->RequestCredits(); }
+			else if (GM) { GM->RequestBackToTitle(); }
+		}
+		return;
+	}
+	const TArray<FJamMenuOption>& Options = ScreenView.Options;
+	if (Options.Num() == 0) { return; }
+	switch (Input)
+	{
+	case EJamMenuInput::Up:    Selected = JamScreens::Step(Options, ScreenView.Selected, -1); break;
+	case EJamMenuInput::Down:  Selected = JamScreens::Step(Options, ScreenView.Selected, 1); break;
+	case EJamMenuInput::Left:  Adjust(Options[ScreenView.Selected], -1); break;
+	case EJamMenuInput::Right: Adjust(Options[ScreenView.Selected], 1); break;
+	case EJamMenuInput::Hover: if (Options.IsValidIndex(Index) && Options[Index].bEnabled) { Selected = Index; } break;
+	case EJamMenuInput::Click:
+		if (Options.IsValidIndex(Index) && Options[Index].bEnabled) { Selected = Index; Activate(Options[Index]); }
+		break;
+	case EJamMenuInput::Confirm: Activate(Options[ScreenView.Selected]); break;
+	case EJamMenuInput::Back:
+		if (SubScreen != EJamScreen::None) { Activate(FJamMenuOption{ EJamMenuAction::Back }); }
+		else if (bPaused) { SetPaused(false); }
+		break;
 	}
 }
