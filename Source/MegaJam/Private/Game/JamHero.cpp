@@ -5,6 +5,8 @@
 #include "Game/JamHUD.h"
 #include "Game/JamSkillFx.h"
 #include "Game/JamArt.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/SkeletalMesh.h"
 #include "Animation/AnimSequence.h"
@@ -179,11 +181,12 @@ void AJamHero::PossessedBy(AController* NewController)
 		Visor->SetHiddenInGame(true);
 		// The sword goes into his right hand and follows the animation (the Lecture's raise is in the SwordRaise clip).
 		// Keep the fitted size in world terms: the FBX bones carry their own scale, so a relative scale would be wrong.
+		// The grip (0, 0, -90) in the hand bone's frame: point up when the hand is raised; checked close up (-closecam).
 		const FVector SwordWorldScale = ArtSword->GetComponentScale();
 		ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
 		ArtSword->SetWorldScale3D(SwordWorldScale);
 		ArtSword->SetRelativeLocation(FVector::ZeroVector);
-		ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
+		ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
 		UE_LOG(LogJam, Log, TEXT("JamHero: rigged hero, %d animations, bounds %s, scale %.3f, sword scale %s"), RigAnims.Num(),
 			*Box.GetSize().ToString(), Scale, *ArtSword->GetRelativeScale3D().ToString());
 	}
@@ -583,6 +586,14 @@ void AJamHero::OnPause(const FInputActionValue& /*Value*/)
 void AJamHero::OnSkill2(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::FormALine); }
 void AJamHero::OnSkill3(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::DisappointedSigh); }
 void AJamHero::OnSkill4(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::LastJudgment); }
+
+void AJamHero::BeginPlay()
+{
+	Super::BeginPlay();
+	// -closecam=<uu>: the camera close on the hero (checking the rig and the sword).
+	float Close = 0.f;
+	if (FParse::Value(FCommandLine::Get(), TEXT("closecam="), Close) && Close > 0.f) { CameraArm->TargetArmLength = Close; CameraArm->TargetOffset = FVector::ZeroVector; }
+}
 
 void AJamHero::SetCameraDistance(float Distance)
 {
