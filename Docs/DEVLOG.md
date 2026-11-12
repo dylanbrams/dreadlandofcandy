@@ -29,3 +29,4 @@
 - Shared-engine friction: one package attempt died on UBT's global mutex (another worktree was building), and one editor run hung waiting for the Zen cache server. Both worked on retry.
 - Not yet done: a human playing it. The feeding prompt has not been seen.
 - Screenshot: `Saved/Screenshots/WindowsEditor/t06-again.png`.
+- Packaged build (08:51) smoke-tested with `-autoplay`: `JamAutoplay: PASS scenes=1 takes=2`, all checks pass.
