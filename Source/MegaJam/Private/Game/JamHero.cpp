@@ -1,5 +1,9 @@
 #include "Game/JamHero.h"
 #include "Game/JamPlayerState.h"
+#include "Game/JamGameMode.h"
+#include "Game/JamNuisance.h"
+#include "EngineUtils.h"
+#include "InputTriggers.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "MegaJam.h"
 #include "Camera/CameraComponent.h"
@@ -31,15 +35,20 @@ namespace JamHeroTuning
 	// Match UJamGA_LectureCone (debug draw only).
 	constexpr float LectureRange = 800.f;
 	constexpr float LectureHalfAngleDeg = 35.f;
+	// BUILD_SPEC section 10: hold E 0.6 s, inside 150 uu.
+	constexpr float InteractRange = 150.f;
+	constexpr float InteractHoldSeconds = 0.6f;
+	constexpr float StickAimDeadZone = 0.35f;
 }
 
 AJamHero::AJamHero()
 {
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.f);
 
+	PrimaryActorTick.bCanEverTick = true;
 	bUseControllerRotationYaw = false;
 	UCharacterMovementComponent* Move = GetCharacterMovement();
-	Move->bOrientRotationToMovement = true;
+	Move->bOrientRotationToMovement = false;   // UpdateFacing() turns the hero
 	Move->RotationRate = FRotator(0.f, 720.f, 0.f);
 	Move->MaxWalkSpeed = 450.f;
 
@@ -111,7 +120,8 @@ bool AJamHero::RequestLecture()
 			FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg), FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg),
 			24, FColor::Orange, false, 1.5f, 0, 4.f);
 	}
-	UE_LOG(LogJam, Log, TEXT("JamHero: Lecture %s"), bActivated ? TEXT("cast") : TEXT("refused"));
+	if (bActivated) { UE_LOG(LogJam, Log, TEXT("JamHero: Lecture cast")); }
+	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: Lecture refused")); }
 	return bActivated;
 }
 
@@ -123,6 +133,14 @@ void AJamHero::CreateInput()
 	MoveAction->ValueType = EInputActionValueType::Axis2D;
 	LectureAction = NewObject<UInputAction>(this, TEXT("IA_Lecture"));
 	LectureAction->ValueType = EInputActionValueType::Boolean;
+	AimAction = NewObject<UInputAction>(this, TEXT("IA_Aim"));
+	AimAction->ValueType = EInputActionValueType::Axis2D;
+	InteractAction = NewObject<UInputAction>(this, TEXT("IA_Interact"));
+	InteractAction->ValueType = EInputActionValueType::Boolean;
+	UInputTriggerHold* Hold = NewObject<UInputTriggerHold>(InteractAction);
+	Hold->HoldTimeThreshold = JamHeroTuning::InteractHoldSeconds;
+	Hold->bIsOneShot = true;
+	InteractAction->Triggers.Add(Hold);
 
 	InputContext = NewObject<UInputMappingContext>(this, TEXT("IMC_Hero"));
 
@@ -148,9 +166,14 @@ void AJamHero::CreateInput()
 	MapMoveKey(EKeys::Left, false, true);
 	InputContext->MapKey(MoveAction, EKeys::Gamepad_Left2D);
 
+	InputContext->MapKey(AimAction, EKeys::Gamepad_Right2D);
+
+	// BUILD_SPEC 3: skill 1 on LMB / RT, interact on E / A. Space also lectures (handy on a laptop).
 	InputContext->MapKey(LectureAction, EKeys::LeftMouseButton);
 	InputContext->MapKey(LectureAction, EKeys::SpaceBar);
-	InputContext->MapKey(LectureAction, EKeys::Gamepad_FaceButton_Bottom);
+	InputContext->MapKey(LectureAction, EKeys::Gamepad_RightTrigger);
+	InputContext->MapKey(InteractAction, EKeys::E);
+	InputContext->MapKey(InteractAction, EKeys::Gamepad_FaceButton_Bottom);
 }
 
 void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -161,6 +184,9 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AJamHero::OnMove);
 		Input->BindAction(LectureAction, ETriggerEvent::Started, this, &AJamHero::OnLecture);
+		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
+		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
+		Input->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AJamHero::OnInteract);
 	}
 	else
 	{
@@ -172,8 +198,9 @@ void AJamHero::PawnClientRestart()
 {
 	Super::PawnClientRestart();
 	CreateInput();
-	if (const APlayerController* PC = Cast<APlayerController>(GetController()))
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
+		PC->bShowMouseCursor = true;   // the hero faces the cursor
 		if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
 			Sub->AddMappingContext(InputContext, 0);
@@ -192,4 +219,92 @@ void AJamHero::OnMove(const FInputActionValue& Value)
 void AJamHero::OnLecture(const FInputActionValue& /*Value*/)
 {
 	RequestLecture();
+}
+
+void AJamHero::OnAim(const FInputActionValue& Value)
+{
+	const FVector2D Axis = Value.Get<FVector2D>();
+	bUsingGamepad = true;
+	// Right stick up = screen up = world +X.
+	StickAim = FVector(Axis.Y, Axis.X, 0.f);
+	if (StickAim.Size() >= JamHeroTuning::StickAimDeadZone) { AimSource = EAimSource::Stick; }
+	else if (AimSource == EAimSource::Stick) { AimSource = EAimSource::Movement; }
+}
+
+void AJamHero::OnInteract(const FInputActionValue& /*Value*/)
+{
+	RequestInteract();
+}
+
+AJamNuisance* AJamHero::FindInteractTarget() const
+{
+	AJamNuisance* Best = nullptr;
+	// Range is measured from the hero's edge to the nuisance's centre, plus its radius.
+	float BestDistance = JamHeroTuning::InteractRange + 40.f;
+	for (TActorIterator<AJamNuisance> It(GetWorld()); It; ++It)
+	{
+		if (!It->IsPacified()) { continue; }
+		const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation()) - GetCapsuleComponent()->GetScaledCapsuleRadius();
+		if (D < BestDistance) { BestDistance = D; Best = *It; }
+	}
+	return Best;
+}
+
+bool AJamHero::RequestInteract()
+{
+	AJamNuisance* Target = FindInteractTarget();
+	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
+	return Target && GM && GM->HandleInteract(this, Target);
+}
+
+void AJamHero::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	UpdateFacing();
+}
+
+void AJamHero::UpdateFacing()
+{
+	FVector Facing = FVector::ZeroVector;
+	APlayerController* PC = Cast<APlayerController>(GetController());
+
+	// The mouse takes over as soon as it moves.
+	FVector2D Mouse;
+	if (PC && PC->GetMousePosition(Mouse.X, Mouse.Y))
+	{
+		if (LastMousePosition.X >= 0.f && FVector2D::Distance(Mouse, LastMousePosition) > 2.f)
+		{
+			AimSource = EAimSource::Mouse;
+			bUsingGamepad = false;
+		}
+		LastMousePosition = Mouse;
+	}
+
+	if (!AimOverride.IsNearlyZero())
+	{
+		Facing = AimOverride;
+	}
+	else if (AimSource == EAimSource::Stick)
+	{
+		Facing = StickAim.GetSafeNormal2D();
+	}
+	else if (AimSource == EAimSource::Mouse && PC)
+	{
+		// Where the cursor ray meets the ground plane under the hero.
+		FVector Origin, Direction;
+		const float GroundZ = GetActorLocation().Z - GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+		if (PC->DeprojectMousePositionToWorld(Origin, Direction) && Direction.Z < -KINDA_SMALL_NUMBER)
+		{
+			const FVector Hit = Origin + Direction * ((GroundZ - Origin.Z) / Direction.Z);
+			Facing = (Hit - GetActorLocation()).GetSafeNormal2D();
+		}
+	}
+	if (Facing.IsNearlyZero())
+	{
+		Facing = GetCharacterMovement()->Velocity.GetSafeNormal2D();
+	}
+	if (!Facing.IsNearlyZero())
+	{
+		SetActorRotation(Facing.Rotation());
+	}
 }
