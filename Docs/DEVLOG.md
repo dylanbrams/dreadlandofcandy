@@ -63,3 +63,10 @@
 - The T12 package was killed by Claude Code for low memory (another session was cleaning up models). Code went on; packaging reruns with T13.
 - Failed takes now say why (out of time, crops gone), flash the world red, and send the hero back to his mark. `-forcefail` makes the first take fail so a screenshot or smoke run reaches the Take 2 slate without waiting for a real failure.
 - First flash covered the HUD panels too; moved it under them so only the world burns.
+
+## 14:00 T14 wrap card
+
+- T13 packaged smoke (refuse path, forced fail) passes: back to one on take 2, theatrical ending.
+- T14: the wrap is now the Production Ledger beside three loot cards and a character sheet. Fenella stamps her pick; the hero's item equips and changes a real number. Radius, power and cooldown all come from the progression now, so the cooldown items are no longer just names.
+- First panel screenshot: "DIRECTOR'S PERSONAL COLLECTION" ran off its card and the stamp hid the item name. Wrapped the text and moved the stamp down onto her stat line.
+- Refusing notes now costs gross (x0.8 each); the spec said so and nothing did it yet.

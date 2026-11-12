@@ -264,6 +264,7 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 	if (Stage && Stage->Verb == EJamStageVerb::Pacify)
 	{
 		GS->Shoot.ReportProgress(1);
+		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
 		Say(EJamLineTrigger::Pacified);
 	}
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: pacified %s"), Pacified ? *Pacified->GetName() : TEXT("(null)"));
@@ -279,6 +280,7 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 	if (!Target->Treat()) { return false; }
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: Treated %s"), *Target->GetName());
 	GS->Shoot.ReportProgress(1);
+	if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Treat); }
 	Say(EJamLineTrigger::Interact);
 	return true;
 }
@@ -355,6 +357,14 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
 			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), PitchText, -1.f);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
+			if (SceneIndex == 2)
+			{
+				if (AJamPlayerState* PS = GetHeroState())
+				{
+					const int32 Gained = PS->EditProgression().ReachMilestone(EJamMilestone::Scene3FinalNote);
+					UE_LOG(LogJam, Log, TEXT("JamGameMode: level %d (+%d) at the final CUT!"), PS->GetProgression().GetLevel(), Gained);
+				}
+			}
 		}
 	}
 
@@ -405,6 +415,7 @@ void AJamGameMode::TickStage(float DeltaSeconds)
 				P->Destroy();
 				Pickups.RemoveAt(i);
 				UE_LOG(LogJam, Log, TEXT("JamGameMode: collected a pickup"));
+				if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Collect); }
 				Shoot.ReportProgress(1);
 			}
 		}
@@ -488,7 +499,8 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		NotesTaken += Shoot.GetNotesTaken();
 		NotesRefused += Shoot.GetNotesRefused();
 		const bool bLast = !JamScenes::All().IsValidIndex(SceneIndex + 1) || !JamBacklot::Sets().IsValidIndex(SceneIndex + 1);
-		ShowCard(EJamCardKind::Wrap, TEXT("THAT'S A WRAP!"), FString(), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
+		ShowCard(EJamCardKind::None, FString(), FString(), 0.f);   // the wrap panel says THAT'S A WRAP
+		RollWrap(bLast);
 		Say(EJamLineTrigger::Wrap);
 		if (bLast)
 		{
@@ -729,4 +741,61 @@ void AJamGameMode::ResetHeroToMark()
 	H->TeleportTo(FVector(Mark, GroundZ + H->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
 	H->GetCharacterMovement()->StopMovementImmediately();
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: back to one (take %d)"), GetJamGameState()->GetShoot().GetTake());
+}
+
+// ---- Wrap, ledger, loot, progression (T14) ---------------------------------------------------------------------
+
+namespace JamWrapTuning
+{
+	constexpr float PanelSeconds = 14.f;     // closes itself; interact closes it sooner
+	constexpr float RefusedGross = 0.8f;     // each refused note in the scene (BUILD_SPEC 3: refusing lowers the gross)
+}
+
+AJamPlayerState* AJamGameMode::GetHeroState() const
+{
+	return Hero.IsValid() ? Hero->GetPlayerState<AJamPlayerState>() : nullptr;
+}
+
+void AJamGameMode::ApplyHeroStats()
+{
+	AJamPlayerState* PS = GetHeroState();
+	if (!PS || !Hero.IsValid()) { return; }
+	Hero->ApplyStats(PS->GetProgression().GetStats());
+}
+
+void AJamGameMode::RollWrap(bool bLastScene)
+{
+	AJamGameState* GS = GetJamGameState();
+	AJamPlayerState* PS = GetHeroState();
+	if (!GS || !PS) { return; }
+	const FJamShoot& Shoot = GS->Shoot;
+	FJamProgression& Prog = PS->EditProgression();
+
+	const float GrossMultiplier = Shoot.GetGrossMultiplier() * FMath::Pow(JamWrapTuning::RefusedGross, Shoot.GetNotesRefused());
+	const int32 Seed = SceneIndex * 100 + (Shoot.GetTakesUsed() - 1);
+	const FJamWrapOutcome Out = JamWrap::Roll(SceneIndex, GrossMultiplier, Seed);
+
+	const FJamStatBlock Before = Prog.GetStats();
+	if (Out.LootIndices.IsValidIndex(Out.EquippedSlot)) { Prog.AddLoot(Out.LootIndices[Out.EquippedSlot]); }
+	int32 Gained = 0;
+	if (SceneIndex == 0) { Gained = Prog.ReachMilestone(EJamMilestone::Scene1Wrap); }
+	else if (SceneIndex == 1) { Gained = Prog.ReachMilestone(EJamMilestone::Scene2Wrap); }
+	PS->Sprinkles += Out.Ledger.HeroCut;
+	ApplyHeroStats();
+
+	GS->Wrap = JamWrap::MakeView(Out, Shoot.GetScene().Title, Before, Prog.GetStats(), Gained, Seed);
+	GS->WrapUntil = bLastScene ? -1.f : GetWorld()->GetTimeSeconds() + JamWrapTuning::PanelSeconds;
+
+	const FJamLootDef& Equipped = JamProgression::LootTable()[Out.LootIndices[Out.EquippedSlot]];
+	UE_LOG(LogJam, Log, TEXT("JamWrap: scene %d gross %d cut %d (sprinkles %d), equipped %s (%s), level %d, radius %.0f -> %.0f"),
+		SceneIndex + 1, Out.Ledger.Gross, Out.Ledger.HeroCut, PS->Sprinkles, *Equipped.Name, *JamWrap::StatText(Equipped),
+		Prog.GetLevel(), Before.Radius, Prog.GetStats().Radius);
+}
+
+bool AJamGameMode::HandleDismissWrap(AJamHero* InHero)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !InHero || !GS->IsWrapVisible() || GS->WrapUntil < 0.f) { return false; }
+	GS->WrapUntil = GetWorld()->GetTimeSeconds();
+	return true;
 }

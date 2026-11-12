@@ -47,6 +47,9 @@ public:
 	/** True once the player last used a gamepad (for prompt glyphs). */
 	bool IsUsingGamepad() const { return bUsingGamepad; }
 
+	/** Takes the progression's stats: move speed now; the Lecture reads radius and power itself. */
+	void ApplyStats(const struct FJamStatBlock& Stats);
+
 	/** 0 to 1 while interact (E / A) is held toward its 0.6 s threshold; 0 when not held. For the HUD's fill. */
 	float GetInteractHoldFraction() const;
 

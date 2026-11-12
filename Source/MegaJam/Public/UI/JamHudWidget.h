@@ -9,6 +9,7 @@ class UBorder;
 class UCanvasPanel;
 class UProgressBar;
 class UTextBlock;
+class UOverlay;
 
 /**
  * The HUD (BUILD_SPEC 5C), in layers: slate label with REC and timecode (top left), objective, meter and hint
@@ -34,6 +35,8 @@ private:
 	UBorder* MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding);
 	UTextBlock* MakeText(int32 Size, const FLinearColor& Colour, bool bBold);
 	UBorder* GetBubble(int32 Index);
+	void BuildWrapPanel();
+	void ApplyWrap(const FJamWrapView& Wrap);
 	UBorder* MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill);
 
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> Root;
@@ -67,6 +70,28 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UProgressBar> TakeFill;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> RefuseKeyText;
 
+	// The wrap panel (T14): ledger on the left, loot cards and the character sheet on the right.
+	UPROPERTY(Transient) TObjectPtr<UBorder> WrapPanel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapScene;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapGross;
+	UPROPERTY(Transient) TArray<TObjectPtr<UWidget>> LedgerRows;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LedgerItems;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LedgerNotes;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LedgerAmounts;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapCut;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapFooter;
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> LootCards;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LootRarity;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LootName;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LootFlavour;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LootStat;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> LootTag;
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> LootStamp;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> StatNames;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> StatValues;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapLevel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapContinue;
+
 	UPROPERTY(Transient) TObjectPtr<UBorder> CaptionPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionText;
 
@@ -76,5 +101,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CardSubtitle;
 
 	FString ShownCardTitle;
+	bool bWrapShown = false;
+	float WrapShownAt = -1.f;
 	float CardShownAt = -1.f;
 };

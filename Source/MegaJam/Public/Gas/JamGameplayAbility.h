@@ -68,7 +68,8 @@ public:
 	                             const FGameplayEventData* TriggerEventData) override;
 
 protected:
-	FJamAoePatternParams ResolveParams() const;
+	virtual FJamAoePatternParams ResolveParams() const;
+	virtual float ResolveDamage() const { return BaseDamage; }
 	void Strike(const FGameplayAbilityActorInfo* ActorInfo, const FVector& Origin, const FVector& Forward);
 };
 
@@ -84,4 +85,12 @@ class MEGAJAM_API UJamGA_LectureCone : public UJamGA_AoeAttack
 
 public:
 	UJamGA_LectureCone();
+
+protected:
+	/** Radius and power come from the owner's progression (rank and loot) when it has one. */
+	virtual FJamAoePatternParams ResolveParams() const override;
+	virtual float ResolveDamage() const override;
+	/** The cooldown's length comes from the progression too (rank, loot, Cooldown Recovery). */
+	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo) const override;
 };

@@ -113,6 +113,14 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 		V.CardTitle = TEXT("THAT'S A WRAP!");
 		V.CardSubtitle = TEXT("Everyone gets paid. \"Everyone\" is a term of art.");
 		V.Hint = TEXT("Walk up the street to Fort Toothache");
+		{
+			const FJamWrapOutcome Out = JamWrap::Roll(0, 1.f, 0);
+			FJamProgression P;
+			const FJamStatBlock Before = P.GetStats();
+			P.AddLoot(Out.LootIndices[Out.EquippedSlot]);
+			V.Wrap = JamWrap::MakeView(Out, JamScenes::Scene1().Title, Before, P.GetStats(), 1, 0);
+			V.Wrap.ContinueHint = TEXT("Hold [E] to continue");
+		}
 	}
 	else if (N == TEXT("meter"))
 	{

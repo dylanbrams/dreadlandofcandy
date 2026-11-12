@@ -2,6 +2,7 @@
 #include "Gas/JamAoePatternLibrary.h"
 #include "Gas/JamGameplayEffects.h"
 #include "Gas/JamGameplayTags.h"
+#include "Game/JamPlayerState.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayEffect.h"
@@ -79,7 +80,7 @@ void UJamGA_AoeAttack::Strike(const FGameplayAbilityActorInfo* ActorInfo, const 
 		Context.AddInstigator(Avatar, Avatar);
 		FGameplayEffectSpecHandle Spec = SourceASC->MakeOutgoingSpec(DamageEffect, GetAbilityLevel(), Context);
 		if (!Spec.IsValid()) { continue; }
-		Spec.Data->SetSetByCallerMagnitude(JamGameplayTags::SetByCaller_Resolve_Base, BaseDamage);
+		Spec.Data->SetSetByCallerMagnitude(JamGameplayTags::SetByCaller_Resolve_Base, ResolveDamage());
 		SourceASC->ApplyGameplayEffectSpecToTarget(*Spec.Data, TargetASC);
 
 		LastHitTargets.Add(Candidate);
@@ -95,4 +96,53 @@ UJamGA_LectureCone::UJamGA_LectureCone()
 	DynamicParams.ConeHalfAngleDeg = 35.f;
 	BaseDamage = 60.f;
 	CooldownGameplayEffectClass = UJamGE_LectureCooldown::StaticClass();
+}
+
+namespace
+{
+	const FJamProgression* OwnerProgression(const UGameplayAbility* Ability)
+	{
+		const AJamPlayerState* PS = Cast<AJamPlayerState>(Ability->GetOwningActorFromActorInfo());
+		return PS ? &PS->GetProgression() : nullptr;
+	}
+}
+
+FJamAoePatternParams UJamGA_LectureCone::ResolveParams() const
+{
+	FJamAoePatternParams Params = Super::ResolveParams();
+	if (const FJamProgression* Prog = OwnerProgression(this))
+	{
+		const float Radius = Prog->GetSkillNumbers(EJamSkill::Lecture).Radius;
+		if (Radius > 0.f) { Params.Radius = Radius; }
+	}
+	return Params;
+}
+
+float UJamGA_LectureCone::ResolveDamage() const
+{
+	if (const FJamProgression* Prog = OwnerProgression(this))
+	{
+		const float Damage = Prog->GetSkillNumbers(EJamSkill::Lecture).Damage;
+		if (Damage > 0.f) { return Damage; }
+	}
+	return BaseDamage;
+}
+
+void UJamGA_LectureCone::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo) const
+{
+	const FJamProgression* Prog = OwnerProgression(this);
+	const float Seconds = Prog ? Prog->GetSkillNumbers(EJamSkill::Lecture).Cooldown : 0.f;
+	UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
+	if (!Prog || Seconds <= 0.f || !CooldownGE)
+	{
+		Super::ApplyCooldown(Handle, ActorInfo, ActivationInfo);
+		return;
+	}
+	FGameplayEffectSpecHandle Spec = MakeOutgoingGameplayEffectSpec(Handle, ActorInfo, ActivationInfo, CooldownGE->GetClass(), GetAbilityLevel(Handle, ActorInfo));
+	if (Spec.IsValid())
+	{
+		Spec.Data->SetDuration(Seconds, true);
+		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, Spec);
+	}
 }

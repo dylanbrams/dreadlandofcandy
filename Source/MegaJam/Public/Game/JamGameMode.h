@@ -40,6 +40,9 @@ public:
 	/** A hero answers CUT!. False unless the note prompt is up. */
 	bool HandleNoteAnswer(AJamHero* Hero, bool bTake);
 
+	/** Interact while the wrap panel is up closes it. True if it did. */
+	bool HandleDismissWrap(AJamHero* Hero);
+
 	/** The hero cast a Lecture (cosmetic: Fenella may remark on it). */
 	void NotifyLectureCast(AJamHero* Hero);
 
@@ -64,6 +67,13 @@ private:
 	void ShowCaption(const FJamLine& Line);
 	void TickFenella(float DeltaSeconds);
 	FJamNagSnapshot MakeSnapshot() const;
+
+	/** The wrap (T14): rolls the ledger and loot, equips the hero's item, levels up, fills the panel. */
+	void RollWrap(bool bLastScene);
+	/** XP and milestones go to the hero's PlayerState. */
+	class AJamPlayerState* GetHeroState() const;
+	/** Pushes the progression's stats onto the hero (move speed). */
+	void ApplyHeroStats();
 
 	/** "Back to one": the hero returns to the set's mark for the next take. */
 	void ResetHeroToMark();

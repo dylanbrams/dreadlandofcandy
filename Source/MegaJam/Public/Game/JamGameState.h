@@ -4,6 +4,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "Film/JamShoot.h"
 #include "UI/JamHudView.h"
+#include "UI/JamWrapView.h"
 #include "JamGameState.generated.h"
 
 /**
@@ -48,6 +49,11 @@ public:
 	float FilmSeconds = 0.f;
 	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */
 	int32 RunNotesTaken = 0;
+	/** The wrap panel (ledger, loot, character sheet). WrapUntil negative = stays until replaced. */
+	FJamWrapView Wrap;
+	float WrapUntil = 0.f;
+	bool IsWrapVisible() const;
+
 	/** World time the last take failed (the HUD's flash); negative = never. */
 	float TakeFailedAt = -100.f;
 	int32 RunNotesRefused = 0;

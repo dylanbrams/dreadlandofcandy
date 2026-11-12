@@ -7,6 +7,12 @@ bool AJamGameState::IsCardVisible() const
 	return CardUntil < 0.f || (GetWorld() && GetWorld()->GetTimeSeconds() < CardUntil);
 }
 
+bool AJamGameState::IsWrapVisible() const
+{
+	if (!Wrap.bVisible) { return false; }
+	return WrapUntil < 0.f || (GetWorld() && GetWorld()->GetTimeSeconds() < WrapUntil);
+}
+
 bool AJamGameState::IsCaptionVisible() const
 {
 	return !CaptionLineId.IsNone() && GetWorld() && GetWorld()->GetTimeSeconds() < CaptionUntil;

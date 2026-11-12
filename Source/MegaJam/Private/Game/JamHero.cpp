@@ -1,4 +1,5 @@
 #include "Game/JamHero.h"
+#include "Film/JamProgression.h"
 #include "Game/JamPlayerState.h"
 #include "Game/JamGameMode.h"
 #include "Game/JamNuisance.h"
@@ -33,6 +34,7 @@ namespace JamHeroTuning
 	const FVector CameraLookAhead(300.f, 0.f, 0.f);
 	constexpr float CameraPitch = -50.f;
 	// Match UJamGA_LectureCone (debug draw only).
+	constexpr float WalkSpeed = 450.f;
 	constexpr float LectureRange = 800.f;
 	constexpr float LectureHalfAngleDeg = 35.f;
 	// BUILD_SPEC section 10: hold E 0.6 s, inside 150 uu.
@@ -50,7 +52,7 @@ AJamHero::AJamHero()
 	UCharacterMovementComponent* Move = GetCharacterMovement();
 	Move->bOrientRotationToMovement = false;   // UpdateFacing() turns the hero
 	Move->RotationRate = FRotator(0.f, 720.f, 0.f);
-	Move->MaxWalkSpeed = 450.f;
+	Move->MaxWalkSpeed = JamHeroTuning::WalkSpeed;
 
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
 	CameraArm->SetupAttachment(RootComponent);
@@ -116,7 +118,8 @@ bool AJamHero::RequestLecture()
 	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetLectureHandle());
 	if (bActivated)
 	{
-		DrawDebugCone(GetWorld(), GetActorLocation(), GetActorForwardVector(), JamHeroTuning::LectureRange,
+		const float Range = PS->GetProgression().GetSkillNumbers(EJamSkill::Lecture).Radius;
+		DrawDebugCone(GetWorld(), GetActorLocation(), GetActorForwardVector(), Range > 0.f ? Range : JamHeroTuning::LectureRange,
 			FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg), FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg),
 			24, FColor::Orange, false, 1.5f, 0, 4.f);
 	}
@@ -286,6 +289,7 @@ bool AJamHero::RequestInteract()
 	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
 	if (!GM) { return false; }
 	if (GM->HandleNoteAnswer(this, true)) { return true; }   // at the CUT! prompt, interact takes the note
+	if (GM->HandleDismissWrap(this)) { return true; }   // the wrap panel: interact closes it
 	AJamNuisance* Target = FindInteractTarget();
 	return Target && GM->HandleInteract(this, Target);
 }
@@ -351,4 +355,11 @@ void AJamHero::UpdateFacing()
 	{
 		SetActorRotation(Facing.Rotation());
 	}
+}
+
+void AJamHero::ApplyStats(const FJamStatBlock& Stats)
+{
+	// The walk speed was tuned by hand (450); the stat's base is 600, so loot scales the tuned value.
+	const float Base = FJamProgression().GetStats().MoveSpeed;
+	GetCharacterMovement()->MaxWalkSpeed = JamHeroTuning::WalkSpeed * (Base > 0.f ? Stats.MoveSpeed / Base : 1.f);
 }

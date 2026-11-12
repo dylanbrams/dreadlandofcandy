@@ -5,6 +5,9 @@
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
 #include "Components/HorizontalBoxSlot.h"
+#include "Components/Overlay.h"
+#include "Components/OverlaySlot.h"
+#include "Components/Spacer.h"
 #include "Components/ProgressBar.h"
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
@@ -271,6 +274,8 @@ void UJamHudWidget::BuildTree()
 	Place(NotePanel, FAnchors(0.5f, 0.45f), FVector2D(0.5f, 0.5f), FVector2D::ZeroVector, 21);
 	NotePanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
+	BuildWrapPanel();
+
 	Show(NotePanel, false);
 	Show(CaptionPanel, false);
 	Show(PromptPanel, false);
@@ -411,8 +416,19 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		TakeFill->SetPercent(View.HoldFraction);
 	}
 
-	// The card, with a short pop when a new one appears. The note prompt takes its place while up.
-	const bool bCard = !View.bNotePrompt && View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
+	ApplyWrap(View.Wrap);
+	if (View.Wrap.bVisible)
+	{
+		if (!bWrapShown) { bWrapShown = true; WrapShownAt = RealSeconds; }
+		const float W = FMath::Clamp((RealSeconds - WrapShownAt) / 0.22f, 0.f, 1.f);
+		const float WS = FMath::Lerp(1.15f, 1.f, FMath::InterpEaseOut(0.f, 1.f, W, 3.f));
+		WrapPanel->SetRenderScale(FVector2D(WS, WS));
+		WrapPanel->SetRenderOpacity(FMath::Clamp(W * 2.f, 0.f, 1.f));
+	}
+	else { bWrapShown = false; }
+
+	// The card, with a short pop when a new one appears. The note prompt and the wrap panel take its place.
+	const bool bCard = !View.bNotePrompt && !View.Wrap.bVisible && View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
 	Show(CardPanel, bCard);
 	if (!bCard)
 	{
@@ -435,4 +451,262 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	const float Scale = T < 1.f ? FMath::Lerp(1.35f, 1.f, FMath::InterpEaseOut(0.f, 1.f, T, 3.f)) : 1.f;
 	CardPanel->SetRenderScale(FVector2D(Scale, Scale));
 	CardPanel->SetRenderOpacity(FMath::Clamp(T * 2.f, 0.f, 1.f));
+}
+
+// ---- Wrap panel (T14) -------------------------------------------------------------------------------------------
+
+namespace
+{
+	constexpr int32 MaxLedgerRows = 8;
+	constexpr int32 LootSlots = 3;
+
+	FLinearColor RarityColour(int32 Rarity)
+	{
+		switch (Rarity)
+		{
+		case 0:  return FLinearColor(0.75f, 0.75f, 0.72f);
+		case 1:  return FLinearColor(0.4f, 0.95f, 0.45f);
+		case 2:  return FLinearColor(0.35f, 0.65f, 1.f);
+		case 3:  return FLinearColor(1.f, 0.6f, 0.15f);
+		default: return FLinearColor(0.95f, 0.35f, 0.9f);   // Director's Personal Collection
+		}
+	}
+
+	FString Sprinkles(int32 Amount) { return FString::Printf(TEXT("%d"), Amount); }
+}
+
+void UJamHudWidget::BuildWrapPanel()
+{
+	const FJamCardStyle Style = JamHud::CardStyle(EJamCardKind::Wrap);
+	WrapPanel = MakePanel(FLinearColor(0.025f, 0.025f, 0.03f, 0.95f), 12.f, FMargin(44.f, 0.f, 44.f, 26.f));
+	UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+
+	USizeBox* BarSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	BarSize->SetHeightOverride(10.f);
+	BarSize->SetContent(MakePanel(Style.Accent, 3.f, FMargin(0.f)));
+	UVerticalBoxSlot* BarSlot = Box->AddChildToVerticalBox(BarSize);
+	BarSlot->SetHorizontalAlignment(HAlign_Fill);
+	BarSlot->SetPadding(FMargin(-28.f, 18.f, -28.f, 4.f));
+
+	UTextBlock* Title = MakeText(60, Style.Accent, true);
+	Title->SetText(FText::FromString(TEXT("THAT'S A WRAP!")));
+	Title->SetShadowOffset(FVector2D(4.f, 4.f));
+	Box->AddChildToVerticalBox(Title)->SetHorizontalAlignment(HAlign_Center);
+	WrapScene = MakeText(20, Dim, false);
+	UVerticalBoxSlot* SceneSlot = Box->AddChildToVerticalBox(WrapScene);
+	SceneSlot->SetHorizontalAlignment(HAlign_Center);
+	SceneSlot->SetPadding(FMargin(0.f, 0.f, 0.f, 18.f));
+
+	UHorizontalBox* Columns = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+	Box->AddChildToVerticalBox(Columns);
+
+	// Left: the ledger.
+	USizeBox* LedgerSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	LedgerSize->SetWidthOverride(620.f);
+	UVerticalBox* Ledger = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+	LedgerSize->SetContent(Ledger);
+	Columns->AddChildToHorizontalBox(LedgerSize)->SetVerticalAlignment(VAlign_Top);
+
+	auto AmountRow = [this](UVerticalBox* Into, const TCHAR* Label, int32 Size, const FLinearColor& Colour, UTextBlock*& OutAmount)
+	{
+		UHorizontalBox* Row = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+		UTextBlock* L = MakeText(Size, Colour, true);
+		L->SetText(FText::FromString(Label));
+		UHorizontalBoxSlot* LS = Row->AddChildToHorizontalBox(L);
+		LS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+		LS->SetVerticalAlignment(VAlign_Center);
+		OutAmount = MakeText(Size, Colour, true);
+		Row->AddChildToHorizontalBox(OutAmount)->SetVerticalAlignment(VAlign_Center);
+		return Into->AddChildToVerticalBox(Row);
+	};
+	UTextBlock* GrossAmount = nullptr;
+	UTextBlock* LedgerHead = MakeText(15, Dim, true);
+	LedgerHead->SetText(FText::FromString(TEXT("THE PRODUCTION LEDGER  (sprinkles)")));
+	Ledger->AddChildToVerticalBox(LedgerHead)->SetPadding(FMargin(0.f, 0.f, 0.f, 6.f));
+	AmountRow(Ledger, TEXT("GROSS"), 26, FLinearColor::White, GrossAmount)->SetPadding(FMargin(0.f, 0.f, 0.f, 8.f));
+	WrapGross = GrossAmount;
+
+	for (int32 i = 0; i < MaxLedgerRows; ++i)
+	{
+		UHorizontalBox* Row = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+		UVerticalBox* Words = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		UTextBlock* Item = MakeText(20, FLinearColor::White, false);
+		UTextBlock* Note = MakeText(15, Dim, false);
+		Words->AddChildToVerticalBox(Item);
+		Words->AddChildToVerticalBox(Note);
+		UHorizontalBoxSlot* WS = Row->AddChildToHorizontalBox(Words);
+		WS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+		UTextBlock* Amount = MakeText(20, FLinearColor(1.f, 0.55f, 0.45f), true);
+		Row->AddChildToHorizontalBox(Amount)->SetVerticalAlignment(VAlign_Center);
+		Ledger->AddChildToVerticalBox(Row)->SetPadding(FMargin(0.f, 3.f));
+		LedgerRows.Add(Row);
+		LedgerItems.Add(Item);
+		LedgerNotes.Add(Note);
+		LedgerAmounts.Add(Amount);
+	}
+	USizeBox* Rule = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	Rule->SetHeightOverride(2.f);
+	Rule->SetContent(MakePanel(FLinearColor(1.f, 1.f, 1.f, 0.4f), 0.f, FMargin(0.f)));
+	Ledger->AddChildToVerticalBox(Rule)->SetPadding(FMargin(0.f, 10.f, 0.f, 8.f));
+	UTextBlock* CutAmount = nullptr;
+	AmountRow(Ledger, TEXT("HERO'S CUT"), 34, Gold, CutAmount);
+	WrapCut = CutAmount;
+	WrapFooter = MakeText(17, Dim, false);
+	Ledger->AddChildToVerticalBox(WrapFooter)->SetHorizontalAlignment(HAlign_Right);
+
+	Columns->AddChildToHorizontalBox(WidgetTree->ConstructWidget<USpacer>(USpacer::StaticClass()))->SetPadding(FMargin(22.f, 0.f));
+
+	// Right: three loot cards, then the character sheet.
+	UVerticalBox* Right = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+	Columns->AddChildToHorizontalBox(Right)->SetVerticalAlignment(VAlign_Top);
+	UTextBlock* LootHead = MakeText(15, Dim, true);
+	LootHead->SetText(FText::FromString(TEXT("LOOT")));
+	Right->AddChildToVerticalBox(LootHead)->SetPadding(FMargin(0.f, 0.f, 0.f, 6.f));
+	UHorizontalBox* Cards = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+	Right->AddChildToVerticalBox(Cards);
+	for (int32 i = 0; i < LootSlots; ++i)
+	{
+		UOverlay* Stack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
+		UBorder* Card = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.6f), 8.f, FMargin(14.f, 12.f));
+		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		Size->SetWidthOverride(232.f);
+		Size->SetMinDesiredHeight(250.f);
+		UVerticalBox* V = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		UTextBlock* Rarity = MakeText(14, Dim, true);
+		Rarity->SetWrapTextAt(204.f);
+		UTextBlock* Name = MakeText(20, FLinearColor::White, true);
+		Name->SetWrapTextAt(204.f);
+		UTextBlock* Flavour = MakeText(15, Dim, false);
+		Flavour->SetWrapTextAt(204.f);
+		UTextBlock* Stat = MakeText(18, Gold, true);
+		Stat->SetWrapTextAt(204.f);
+		UTextBlock* Tag = MakeText(16, Gold, true);
+		V->AddChildToVerticalBox(Rarity);
+		V->AddChildToVerticalBox(Name)->SetPadding(FMargin(0.f, 4.f));
+		V->AddChildToVerticalBox(Flavour)->SetPadding(FMargin(0.f, 0.f, 0.f, 8.f));
+		V->AddChildToVerticalBox(Stat);
+		V->AddChildToVerticalBox(Tag)->SetPadding(FMargin(0.f, 6.f, 0.f, 0.f));
+		Size->SetContent(V);
+		Card->SetContent(Size);
+		UOverlaySlot* CardSlot = Stack->AddChildToOverlay(Card);
+		CardSlot->SetHorizontalAlignment(HAlign_Fill);
+		CardSlot->SetVerticalAlignment(VAlign_Fill);
+
+		// Her stamp, slapped across the card at an angle.
+		UBorder* Stamp = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+		Stamp->SetBrush(Rounded(FLinearColor::White, 4.f, FLinearColor(0.95f, 0.15f, 0.1f), 4.f));
+		Stamp->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.35f));
+		Stamp->SetPadding(FMargin(10.f, 4.f));
+		UTextBlock* StampText = MakeText(22, FLinearColor(1.f, 0.2f, 0.12f), true);
+		StampText->SetJustification(ETextJustify::Center);
+		StampText->SetWrapTextAt(200.f);
+		Stamp->SetContent(StampText);
+		Stamp->SetRenderTransformAngle(-14.f);
+		Stamp->SetVisibility(ESlateVisibility::Collapsed);
+		UOverlaySlot* StampSlot = Stack->AddChildToOverlay(Stamp);
+		StampSlot->SetHorizontalAlignment(HAlign_Center);
+		StampSlot->SetVerticalAlignment(VAlign_Bottom);
+		StampSlot->SetPadding(FMargin(0.f, 0.f, 0.f, 44.f));   // over her card's flavour, clear of the name
+
+		Cards->AddChildToHorizontalBox(Stack)->SetPadding(FMargin(i == 0 ? 0.f : 8.f, 0.f, 0.f, 0.f));
+		LootCards.Add(Card);
+		LootRarity.Add(Rarity);
+		LootName.Add(Name);
+		LootFlavour.Add(Flavour);
+		LootStat.Add(Stat);
+		LootTag.Add(Tag);
+		LootStamp.Add(Stamp);
+	}
+
+	UTextBlock* SheetHead = MakeText(15, Dim, true);
+	SheetHead->SetText(FText::FromString(TEXT("CHARACTER SHEET")));
+	Right->AddChildToVerticalBox(SheetHead)->SetPadding(FMargin(0.f, 16.f, 0.f, 4.f));
+	for (int32 i = 0; i < 4; ++i)
+	{
+		UHorizontalBox* Row = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+		UTextBlock* N = MakeText(19, FLinearColor::White, false);
+		UTextBlock* Val = MakeText(19, FLinearColor::White, true);
+		UHorizontalBoxSlot* NS = Row->AddChildToHorizontalBox(N);
+		NS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+		Row->AddChildToHorizontalBox(Val);
+		Right->AddChildToVerticalBox(Row)->SetPadding(FMargin(0.f, 2.f));
+		StatNames.Add(N);
+		StatValues.Add(Val);
+	}
+	WrapLevel = MakeText(24, Gold, true);
+	Right->AddChildToVerticalBox(WrapLevel)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
+
+	WrapContinue = MakeText(18, Dim, true);
+	UVerticalBoxSlot* ContSlot = Box->AddChildToVerticalBox(WrapContinue);
+	ContSlot->SetHorizontalAlignment(HAlign_Center);
+	ContSlot->SetPadding(FMargin(0.f, 18.f, 0.f, 0.f));
+
+	WrapPanel->SetContent(Box);
+	UCanvasPanelSlot* S = Root->AddChildToCanvas(WrapPanel);
+	S->SetAnchors(FAnchors(0.5f, 0.5f));
+	S->SetAlignment(FVector2D(0.5f, 0.5f));
+	S->SetPosition(FVector2D(0.f, 10.f));
+	S->SetAutoSize(true);
+	S->SetZOrder(22);
+	WrapPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+	Show(WrapPanel, false);
+}
+
+void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
+{
+	Show(WrapPanel, Wrap.bVisible);
+	if (!Wrap.bVisible) { return; }
+
+	SetTextIfChanged(WrapScene, FString::Printf(TEXT("\u201C%s\u201D"), *Wrap.SceneTitle));
+	SetTextIfChanged(WrapGross, Sprinkles(Wrap.Gross));
+	for (int32 i = 0; i < LedgerRows.Num(); ++i)
+	{
+		const bool bRow = Wrap.Lines.IsValidIndex(i);
+		Show(LedgerRows[i], bRow);
+		if (!bRow) { continue; }
+		SetTextIfChanged(LedgerItems[i], Wrap.Lines[i].Item);
+		SetTextIfChanged(LedgerNotes[i], Wrap.Lines[i].Note);
+		SetTextIfChanged(LedgerAmounts[i], FString::Printf(TEXT("-%d"), Wrap.Lines[i].Amount));
+	}
+	SetTextIfChanged(WrapCut, Sprinkles(Wrap.HeroCut));
+	SetTextIfChanged(WrapFooter, Wrap.Footer);
+
+	for (int32 i = 0; i < LootCards.Num(); ++i)
+	{
+		const bool bCard = Wrap.Loot.IsValidIndex(i);
+		Show(LootCards[i]->GetParent(), bCard);
+		if (!bCard) { continue; }
+		const FJamWrapLoot& L = Wrap.Loot[i];
+		const FLinearColor Colour = RarityColour(L.RarityLevel);
+		LootCards[i]->SetBrush(Rounded(FLinearColor::White, 8.f, L.bEquipped ? Gold : Colour, L.bEquipped ? 3.f : 1.5f));
+		LootCards[i]->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, L.bKept ? 0.75f : 0.6f));
+		SetTextIfChanged(LootRarity[i], L.Rarity.ToUpper());
+		LootRarity[i]->SetColorAndOpacity(FSlateColor(Colour));
+		SetTextIfChanged(LootName[i], L.Name);
+		SetTextIfChanged(LootFlavour[i], FString::Printf(TEXT("\u201C%s\u201D"), *L.Flavour.TrimQuotes()));
+		SetTextIfChanged(LootStat[i], L.Stat);
+		SetTextIfChanged(LootTag[i], L.bEquipped ? TEXT("EQUIPPED") : FString());
+		Show(LootStamp[i], L.bKept && !L.Stamp.IsEmpty());
+		if (L.bKept) { SetTextIfChanged(Cast<UTextBlock>(LootStamp[i]->GetContent()), L.Stamp); }
+	}
+
+	for (int32 i = 0; i < StatNames.Num(); ++i)
+	{
+		const bool bRow = Wrap.Stats.IsValidIndex(i);
+		Show(StatNames[i], bRow);
+		Show(StatValues[i], bRow);
+		if (!bRow) { continue; }
+		const FJamWrapStat& St = Wrap.Stats[i];
+		const bool bFraction = St.Unit == TEXT("x");
+		auto Fmt = [bFraction, &St](float V) { return bFraction ? FString::Printf(TEXT("%.2f%s"), V, *St.Unit) : FString::Printf(TEXT("%.0f%s"), V, *St.Unit); };
+		SetTextIfChanged(StatNames[i], St.Name);
+		const bool bChanged = !FMath::IsNearlyEqual(St.Before, St.After, 0.005f);
+		SetTextIfChanged(StatValues[i], bChanged ? FString::Printf(TEXT("%s  \u2192  %s"), *Fmt(St.Before), *Fmt(St.After)) : Fmt(St.After));
+		const bool bBetter = St.After > St.Before;
+		StatValues[i]->SetColorAndOpacity(FSlateColor(!bChanged ? FLinearColor::White : (bBetter ? FLinearColor(0.45f, 1.f, 0.55f) : FLinearColor(1.f, 0.5f, 0.4f))));
+	}
+	Show(WrapLevel, !Wrap.LevelLine.IsEmpty());
+	SetTextIfChanged(WrapLevel, Wrap.LevelLine);
+	Show(WrapContinue, !Wrap.ContinueHint.IsEmpty());
+	SetTextIfChanged(WrapContinue, Wrap.ContinueHint);
 }

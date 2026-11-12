@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UI/JamWrapView.h"
 
 /** What kind of centre card is up; picks its colours. */
 enum class EJamCardKind : uint8
@@ -68,6 +69,9 @@ struct MEGAJAM_API FJamHudView
 	int32 NotesTaken = 0;
 	int32 NotesRefused = 0;
 	bool bSulking = false;
+
+	/** The wrap panel; replaces the card while up. */
+	FJamWrapView Wrap;
 
 	/** A take just failed: a red film-burn over the whole screen, 1 fading to 0. */
 	float FailFlash = 0.f;
