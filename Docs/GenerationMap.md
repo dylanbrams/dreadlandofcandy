@@ -12,6 +12,7 @@ Written 2026-11-11. **To run generation, hand an agent `Docs/GenerationRunbook.m
 | **Meshy rigging** | Hero only: rig, then idle / walk / sword-raise | 1 | Probe Nov 12, two-hour time-box Nov 13 |
 | **Rodin** (3D) | The hero's two hand props (sword, toothbrush). Needed for the Hyper3D prize | 2 | Sword Nov 12, toothbrush Nov 13 |
 | **Rodin, if picked** | Any mesh group Dylan moves off Meshy after the morning comparison (rat, house front and peppermint are made on both). 0.5 credits a model, so props on Rodin leave Meshy's 1,100 credits for the hero, rig and creatures | up to ~23 | From batch1 |
+| **fal** (Hunyuan3D v3.1 Pro) | Same routing. Tested Nov 12 with a throwaway model: works, about $0.53 a model at 40k faces, so the $30 balance covers about 57 | up to ~57 | From batch1 |
 | **Tripo** | Same routing, if its API balance is topped up (it is 0 now) | - | - |
 | **ChatGPT images** (2D) | UI art: icons, stamps, cards, portraits, posters, paper textures | 11 sheets | Skill icons Nov 12, the rest Nov 13 |
 | **Google Fonts** | Three fonts (pick, don't generate) | 3 | Any time |

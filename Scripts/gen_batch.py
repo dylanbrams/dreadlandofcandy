@@ -12,7 +12,7 @@ One runner at a time (lock file ImportSource/_gen/run.lock).
   python -I Scripts/gen_batch.py approve npc terrain_piece   # Dylan approved the test asset: unlock that group's batches
   python -I Scripts/gen_batch.py redo SM_Rat                 # make it again (old files kept as _v1, _v2 ...)
   python -I Scripts/gen_batch.py declare                     # add a Docs/Declared.md line for each finished asset
-  python -I Scripts/gen_batch.py route terrain_piece rodin   # run that group's batches on rodin / tripo / meshy / default
+  python -I Scripts/gen_batch.py route terrain_piece rodin   # run that group's batches on rodin / fal / tripo / meshy / default
   python -I Scripts/gen_batch.py run --stage batch1 --fallback rodin   # if a mesh tool runs dry mid-batch, finish on Rodin
 
 Images: by default they are made by the agent's own image tool (Codex/ChatGPT, on the subscription) through
@@ -39,17 +39,18 @@ LOGS = GEN / "logs"
 LOCK = GEN / "run.lock"
 DROP = ROOT / "Assets" / "Incoming" / "2D" / "_drop"
 STAGES = ["test", "batch1", "batch2"]
-LIMITS = {"meshy": 8, "rodin": 3, "tripo": 4, "meshy_rig": 1, "image": 4}
-SCRIPTS = {"meshy": "meshy.py", "rodin": "rodin.py", "tripo": "tripo.py", "meshy_rig": "meshy_rig.py",
+LIMITS = {"meshy": 8, "rodin": 3, "tripo": 4, "fal": 4, "meshy_rig": 1, "image": 4}
+SCRIPTS = {"meshy": "meshy.py", "rodin": "rodin.py", "tripo": "tripo.py", "fal": "fal3d.py", "meshy_rig": "meshy_rig.py",
            "image": "openai_image.py"}
-MESH_TOOLS = ("meshy", "rodin", "tripo")
-OUT_DIRS = {"meshy": "Meshy", "rodin": "Hyper3D", "tripo": "Tripo"}
+MESH_TOOLS = ("meshy", "rodin", "tripo", "fal")
+OUT_DIRS = {"meshy": "Meshy", "rodin": "Hyper3D", "tripo": "Tripo", "fal": "Fal"}
 DEFAULT_RODIN_TIER = "Gen-2.5-Medium"
 ROUTES = {}  # group -> mesh tool, from state["routes"]; set in main()
 NO_RETRY = ("HTTP 400", "HTTP 401", "HTTP 403", "HTTP 404", "HTTP 422", "refusing to download", "No key found",
             "over Meshy's 800", "not found")
-OUT_OF_CREDITS = ("HTTP 402", "insufficient", "Insufficient", "quota", "credit balance", "not enough credits")
-TOOL_NAMES = {"meshy": "Meshy text-to-3D", "rodin": "Hyper3D Rodin Gen-2.5", "tripo": "Tripo text-to-3D",
+OUT_OF_CREDITS = ("HTTP 402", "insufficient", "Insufficient", "quota", "credit balance", "not enough credits",
+                  "Exhausted balance", "exhausted balance", "User is locked")
+TOOL_NAMES = {"meshy": "Meshy text-to-3D", "rodin": "Hyper3D Rodin Gen-2.5", "tripo": "Tripo text-to-3D", "fal": "fal.ai (Hunyuan3D v3.1 Pro text-to-3D)",
               "meshy_rig": "Meshy rigging + animation (library presets and text-to-motion)",
               "image": "ChatGPT image generation"}
 
@@ -183,13 +184,16 @@ def mesh_args(j, tool):
         return ["--tier", tier or DEFAULT_RODIN_TIER]  # face count is reduced in UE/Blender afterwards
     if tool == "tripo":
         return ["--face-limit", poly] if poly else []
+    if tool == "fal":
+        # Hunyuan3D defaults to 500k faces (28 MB a prop). 40k is its floor (+$0.15); UE reduces further.
+        return ["--field", "face_count=40000"]
     return args
 
 
 def command(j, doc, jobs, state, tool=None):
     t = tool_of(j, tool)
     py = [sys.executable, "-I", str(ROOT / "Scripts" / SCRIPTS[t])]
-    if t in ("meshy", "rodin"):
+    if t in ("meshy", "rodin", "fal"):
         return py + [j["subject"], "--name", j["id"], "--type", j["group"]] + mesh_args(j, t)
     if t == "tripo":  # tripo.py has no --type: apply the locked style words here
         sys.path.insert(0, str(ROOT / "Scripts"))

@@ -22,7 +22,7 @@ Hand this file to the agent (Codex, ChatGPT, or a Claude session) with one line:
 | `python -I Scripts/gen_batch.py review` | Writes `ImportSource/_gen/review.html`, a thumbnail grid of everything made so far |
 | `python -I Scripts/gen_batch.py redo <id>` | Makes a job again; the old files are kept as `_v1` |
 | `python -I Scripts/gen_batch.py declare` | Adds a `Docs/Declared.md` line for each finished asset (the jam requires it) |
-| `python -I Scripts/gen_batch.py route <group> <rodin\|tripo\|meshy\|default>` | Runs a group's batch jobs on another mesh tool. Only when Dylan picks it |
+| `python -I Scripts/gen_batch.py route <group> <rodin\|fal\|tripo\|meshy\|default>` | Runs a group's batch jobs on another mesh tool. Only when Dylan picks it. fal = Hunyuan3D v3.1 Pro, about $0.53 a model at 40k faces ($30 balance); Tripo needs its API wallet topped up first |
 | `run ... --fallback rodin` | If a mesh tool runs out of credits mid-batch, its remaining jobs finish on Rodin instead of failing |
 
 **3D** comes from Meshy (characters, creatures, props, rigging, animations) and Rodin (sword, toothbrush) through their APIs; the runner calls them. **2D** comes from your own image generation (Codex/ChatGPT), on Dylan's subscription. If you can't generate images yourself, `run --stage S --images api` makes them through the OpenAI Images API instead (needs `OPENAI_API_KEY` in `.env`; costs API credit).
