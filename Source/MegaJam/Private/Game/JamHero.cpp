@@ -434,7 +434,7 @@ AJamNuisance* AJamHero::FindInteractTarget() const
 	for (TActorIterator<AJamNuisance> It(GetWorld()); It; ++It)
 	{
 		if (!It->IsPacified()) { continue; }
-		const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation()) - GetCapsuleComponent()->GetScaledCapsuleRadius();
+		const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation()) - GetCapsuleComponent()->GetScaledCapsuleRadius() - It->ExtraReach();
 		if (D < BestDistance) { BestDistance = D; Best = *It; }
 	}
 	return Best;

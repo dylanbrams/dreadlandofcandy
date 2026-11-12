@@ -58,6 +58,12 @@ public:
 	// Set by the game mode before FinishSpawning (per kind, BUILD_SPEC 10).
 	float MaxResolveValue = 100.f;
 	FLinearColor BaseColour = FLinearColor(1.0f, 0.35f, 0.6f);
+	/** How much further away a scaled-up nuisance can be treated from (its extra radius over scale 1). */
+	float ExtraReach() const
+	{
+		const float S = GetActorScale3D().X;
+		return S > 1.f ? GetSimpleCollisionRadius() * (S - 1.f) / S : 0.f;
+	}
 	/** A typed note's tint (T12b): wandering and fleeing models wash in BaseColour at this opacity. 0 = plain. */
 	float NoteTintOpacity = 0.f;
 	/** Changes heading often while wandering (bugs). */

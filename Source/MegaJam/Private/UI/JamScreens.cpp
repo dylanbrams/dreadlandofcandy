@@ -139,7 +139,7 @@ FJamScreenView JamScreens::Premiere(const FJamPremiereTotals& T, const FJamMenuS
 
 namespace
 {
-	FString PremiereCleanText(const FString& In, int32 MaxChars)
+	FString PremiereCleanText(const FString& In, int32 Limit)
 	{
 		FString Out;
 		bool bSpace = false;
@@ -150,7 +150,7 @@ namespace
 			if (bSpace) { Out.AppendChar(TEXT(' ')); bSpace = false; }
 			Out.AppendChar(C);
 		}
-		return Out.Left(MaxChars).TrimEnd();
+		return Out.Left(Limit).TrimEnd();
 	}
 }
 

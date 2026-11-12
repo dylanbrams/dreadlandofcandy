@@ -368,7 +368,7 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 	if (!GS || !GS->CanInteract()) { return false; }
 	if (!InHero || !Target || !Target->IsPacified()) { return false; }
 	// The hero picked the target; check range again here, as a server would.
-	if (FVector::Dist2D(InHero->GetActorLocation(), Target->GetActorLocation()) > 250.f) { return false; }
+	if (FVector::Dist2D(InHero->GetActorLocation(), Target->GetActorLocation()) > 250.f + Target->ExtraReach()) { return false; }
 	if (!Target->Treat()) { return false; }
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: Treated %s"), *Target->GetName());
 	GS->Shoot.ReportProgress(1);
@@ -752,7 +752,7 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 
 	const FVector ToTarget = (Target->GetActorLocation() - Bot->GetActorLocation()) * FVector(1.f, 1.f, 0.f);
 	Bot->SetAimOverride(ToTarget);
-	const float Reach = bTreating ? JamAutoplayTuning::InteractDistance + Target->GetSimpleCollisionRadius() * (Target->GetActorScale3D().X - 1.f)
+	const float Reach = bTreating ? JamAutoplayTuning::InteractDistance + Target->ExtraReach()
 		: JamAutoplayTuning::LectureDistance;
 	if (ToTarget.Size() > Reach) { Bot->AddMovementInput(ToTarget.GetSafeNormal()); }
 	else if (bTreating) { Bot->RequestInteract(); }
