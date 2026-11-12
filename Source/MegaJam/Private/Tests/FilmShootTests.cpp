@@ -1,5 +1,7 @@
 #include "Misc/AutomationTest.h"
 #include "Film/JamShoot.h"
+#include "Film/JamNoteClamp.h"
+#include "Film/JamLines.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -245,16 +247,73 @@ bool FJamFilmShootForcedRetake::RunTest(const FString&)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamFilmScenesFinishable, "Jam.Film.Scenes.Finishable", JamFilmFlags)
 bool FJamFilmScenesFinishable::RunTest(const FString&)
 {
-	// Every stage asks for no more targets than its set spawns.
-	const FJamSceneDef Scenes[] = { JamScenes::Scene1() };
+	// Every stage, and every authored note's replacement, asks for no more targets than its set spawns and
+	// can be finished with the Lecture alone inside its clock.
+	const TArray<FJamSceneDef> Scenes = JamScenes::All();
+	TestEqual(TEXT("three scenes"), Scenes.Num(), 3);
 	for (const FJamSceneDef& Scene : Scenes)
 	{
-		TestTrue(*FString::Printf(TEXT("%s has stages"), *Scene.Id.ToString()), Scene.Stages.Num() > 0);
-		for (const FJamStageDef& Stage : Scene.Stages)
+		const FString Name = Scene.Id.ToString();
+		TestTrue(*FString::Printf(TEXT("%s has stages"), *Name), Scene.Stages.Num() > 0);
+		TestFalse(*FString::Printf(TEXT("%s has a title"), *Name), Scene.Title.IsEmpty());
+		for (int32 i = 0; i < Scene.Stages.Num(); ++i)
 		{
+			const FJamStageDef& Stage = Scene.Stages[i];
+			const FJamNoteContext Ctx = JamNoteClamp::MakeContext(Scene, i);
 			TestTrue(*FString::Printf(TEXT("%s: count %d fits the set"), *Stage.Id.ToString(), Stage.Count),
 				Stage.Count > 0 && Stage.Count <= JamScenes::SetCapacity(Scene, Stage.Target));
 			TestFalse(*FString::Printf(TEXT("%s has an objective"), *Stage.Id.ToString()), Stage.Objective.IsEmpty());
+			TestTrue(*FString::Printf(TEXT("%s is finishable"), *Stage.Id.ToString()), JamNoteClamp::IsFinishable(Stage, Ctx));
+		}
+		if (Scene.NoteBeforeStage != INDEX_NONE)
+		{
+			TestTrue(*FString::Printf(TEXT("%s: note sits at a transition"), *Name), Scene.NoteBeforeStage > 0 && Scene.NoteBeforeStage < Scene.Stages.Num());
+			const FJamStageDef& R = Scene.Note.Replacement;
+			TestTrue(*FString::Printf(TEXT("%s: note stage fits the set"), *Name), R.Count > 0 && R.Count <= JamScenes::SetCapacity(Scene, R.Target));
+			TestTrue(*FString::Printf(TEXT("%s: note stage is finishable"), *Name), JamNoteClamp::IsFinishable(R, JamNoteClamp::MakeContext(Scene, Scene.NoteBeforeStage)));
+			TestTrue(*FString::Printf(TEXT("%s: the pitch line exists"), *Name), JamLines::Find(Scene.Note.PitchLineId) != nullptr);
+			TestTrue(*FString::Printf(TEXT("%s: taking pays more"), *Name), Scene.Note.GrossMultiplier > 1.f);
+			TestFalse(*FString::Printf(TEXT("%s: note has an objective"), *Name), R.Objective.IsEmpty());
+		}
+	}
+	TestTrue(TEXT("only scene 1 forces a retake"), Scenes[0].bForcedRetakeOnFirstStage && !Scenes[1].bForcedRetakeOnFirstStage && !Scenes[2].bForcedRetakeOnFirstStage);
+	TestEqual(TEXT("scene 1 has no note"), Scenes[0].NoteBeforeStage, (int32)INDEX_NONE);
+	TestNotEqual(TEXT("scene 2 has a note"), Scenes[1].NoteBeforeStage, (int32)INDEX_NONE);
+	TestNotEqual(TEXT("scene 3 has a note"), Scenes[2].NoteBeforeStage, (int32)INDEX_NONE);
+	TestTrue(TEXT("scene 2 fails by countdown"), Scenes[1].Stages.ContainsByPredicate([](const FJamStageDef& S) { return S.TimeLimit > 0.f; }));
+	TestTrue(TEXT("scene 3 fails by meter"), Scenes[2].Stages.ContainsByPredicate([](const FJamStageDef& S) { return S.FailMeter == 10; }));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamFilmScenesPlaythrough, "Jam.Film.Scenes.Playthrough", JamFilmFlags)
+bool FJamFilmScenesPlaythrough::RunTest(const FString&)
+{
+	// Drive every scene to its wrap with each answer to the note: it always ends, exactly once.
+	for (const FJamSceneDef& Scene : JamScenes::All())
+	{
+		for (int32 Answer = 0; Answer < 2; ++Answer)
+		{
+			FJamShoot Shoot;
+			Shoot.Start(Scene);
+			int32 Wraps = 0, Steps = 0;
+			while (Shoot.GetState() != EJamShootState::Wrap && Steps++ < 100)
+			{
+				switch (Shoot.GetState())
+				{
+				case EJamShootState::Slate:
+				case EJamShootState::StageCleared: Shoot.Action(); break;
+				case EJamShootState::Rolling: Shoot.ReportProgress(Shoot.GetStage()->Count); break;
+				case EJamShootState::NotePrompt: Shoot.AnswerNote(Answer == 1); break;
+				case EJamShootState::FailedTake: Shoot.Retake(); break;
+				default: break;
+				}
+				TArray<FJamShootEvent> Events;
+				Shoot.DrainEvents(Events);
+				for (const FJamShootEvent& E : Events) { Wraps += E.Type == EJamShootEventType::Wrapped ? 1 : 0; }
+			}
+			TestEqual(*FString::Printf(TEXT("%s (answer %d) reaches the wrap"), *Scene.Id.ToString(), Answer), Shoot.GetState(), EJamShootState::Wrap);
+			TestEqual(TEXT("wrapped once"), Wraps, 1);
+			TestEqual(TEXT("notes answered"), Shoot.GetNotesTaken() + Shoot.GetNotesRefused(), Scene.NoteBeforeStage == INDEX_NONE ? 0 : 1);
 		}
 	}
 	return true;

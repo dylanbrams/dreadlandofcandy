@@ -30,8 +30,17 @@
   - `FromKeywords(typed, ctx, seed, out)`: false if it understands nothing. Words: bigger/smaller, more/fewer, faster/slower, tough/weak, sad/epic/happy, rain/snow/fog, clock, five tints. Text comes from Jokes.md pools (`NoteTaken` reaction, default or sadder bubbles, nuisance replies). **Fenella's reaction is set; `SceneTitle`, `LootName` and `LootFlavour` are left empty and `Motif` is empty: GAME keeps the scene's own.**
   - **Request to GAME:** I wrote a private mini JSON reader (`Private/Film/JamMiniJson.*`) because `MegaJam.Build.cs` has no `Json` module. For the HTTP client (T12b) you will want `Json`/`HTTP` in Build.cs anyway; the clamp takes the body as a string, so it does not care.
 
+- **Scenes 2 and 3 as data** (`JamScenes::Scene2()`, `Scene3()`, `All()` in `Private/Film/JamShoot.cpp`; `SetCapacity` extended). Tests `Jam.Film.Scenes.Finishable` (every stage and every authored note fits its set and is finishable with the Lecture alone) and `Jam.Film.Scenes.Playthrough` (each scene driven to its wrap once, with the note taken and refused). 36/36 `Jam.Film` pass.
+  - Scene 2 "Fort Toothache": pacify 3 goblins, then brush 3 (60 s countdown). CUT! before the brush stage, pitch `CutPitch_02` ("stronger antagonist"): one boss goblin (Resolve x3.2 = 480, speed x0.714 = 250), brush it, 60 s, gross x1.5.
+  - Scene 3 "The Almond Affair": disperse 5 bugs (meter fails at 10), gather 4 almonds, final stage 5 bugs (meter 10). CUT! before the final stage, pitch `CutPitch_06` ("make it more"): 8 bugs, speed x1.2, gross x1.5. The budget-out beat itself is GAME's (T21).
+  - **Set capacities GAME must provide** (the game mode's spawn markers): Scene 1 rats 3 (as built); Scene 2 goblins 6; Scene 3 bugs 8 and almonds 4. The typed-note clamp uses these as `set_kinds`/`set_capacity`: `JamNoteClamp::MakeContext(scene, stageIndex)` builds the context for a request. Change a capacity in `JamScenes::SetCapacity` and the tests re-check everything.
+  - An Interact stage with a changed Resolve multiplier (the boss) spawns fresh targets that need pacifying before the brush; the finishability model counts that. The boss must therefore be spawned untreated and un-pacified when the note stage starts.
+  - `PitchLineId` of the notes is a `JamLines` id (`CutPitch_02`, `CutPitch_06`); the authored note-taken/refused reactions are the `NoteTaken` / `NoteRefused` pools (use `Request(EJamLineTrigger::NoteTaken, ...)`).
+
 ## Next
-Scene 2 and Scene 3 as data tables with the finishability test (`JamScenes::Scene2/3`, `SetCapacity`), then T22's pools if GAME asks (already in `JamLines`).
+Day 1 and day 2 RULES backlog is done. Waiting on GAME requests (rule fixes, the T22 commentary toggle is already in `JamLines` as `Commentary` + `FJamNagSnapshot::bCommentary`).
 
 ## Requests to GAME
-None yet.
+- Merge `rules` into `main` (it is ahead; builds and passes `Jam.Film` in this worktree). New headers: `Film/JamLedger.h`, `JamLines.h`, `JamNagScheduler.h`, `JamProgression.h`, `JamNoteClamp.h`.
+- Add `Json` and `HTTP` to `MegaJam.Build.cs` for T12b if you want the engine's JSON; not needed for the clamp.
+- Provide the Scene 2 and Scene 3 set capacities above.

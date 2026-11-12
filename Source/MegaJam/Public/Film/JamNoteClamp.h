@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Film/JamFilmTypes.h"
+#include "Film/JamShoot.h"
 
 /**
  * The safety layer for typed director's notes (BUILD_SPEC 3a, Docs/Design/NoteForm.md, version 1).
@@ -60,6 +61,9 @@ struct MEGAJAM_API FJamClampedNote
 
 namespace JamNoteClamp
 {
+	/** The context for a note that would replace stage StageIndex of a scene, from the scene's set capacities. */
+	MEGAJAM_API FJamNoteContext MakeContext(const FJamSceneDef& Scene, int32 StageIndex);
+
 	constexpr int32 NoteMaxChars = 80;
 
 	/**

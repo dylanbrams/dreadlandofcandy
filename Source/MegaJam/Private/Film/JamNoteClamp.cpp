@@ -132,6 +132,19 @@ namespace
 
 namespace JamNoteClamp
 {
+	FJamNoteContext MakeContext(const FJamSceneDef& Scene, int32 StageIndex)
+	{
+		FJamNoteContext C;
+		C.SceneId = Scene.Id;
+		if (Scene.Stages.IsValidIndex(StageIndex)) { C.BaseStage = Scene.Stages[StageIndex]; }
+		for (EJamTargetKind Kind : { EJamTargetKind::Rat, EJamTargetKind::Goblin, EJamTargetKind::Bug, EJamTargetKind::Almond })
+		{
+			const int32 Cap = JamScenes::SetCapacity(Scene, Kind);
+			if (Cap > 0) { C.Kinds.Emplace(Kind, Cap); }
+		}
+		return C;
+	}
+
 	float BaseResolve(EJamTargetKind Kind)
 	{
 		switch (Kind)
@@ -156,6 +169,13 @@ namespace JamNoteClamp
 		// A generous, sequential model of a player who only has the Lecture: travel two seconds per target, then hit
 		// until pacified (or hold E, or pick up). The player must manage it in 60% of the time on the clock.
 		float PerTarget = 2.f;
+		// An Interact stage with a changed Resolve spawns fresh targets (a boss), which must be pacified before they are treated.
+		const bool bFreshTargets = Stage.Verb == EJamStageVerb::Interact && Stage.ResolveMultiplier != 1.f;
+		if (bFreshTargets)
+		{
+			const float Hits = FMath::CeilToFloat(BaseResolve(Stage.Target) * Stage.ResolveMultiplier / FMath::Max(1.f, Ctx.LectureDamage));
+			PerTarget += FMath::Max(1.f, Hits) * Ctx.LectureCooldown;
+		}
 		switch (Stage.Verb)
 		{
 		case EJamStageVerb::Pacify:
