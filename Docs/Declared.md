@@ -80,3 +80,4 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 | `SM_Peppermint_Fal` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Peppermint_Fal.glb`; prompt in `Assets/Generation/jobs.json` |
 | `T_Skill_Lecture` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Card_Clapper` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Rat_Fal` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Rat_Fal.glb`; prompt in `Assets/Generation/jobs.json` |

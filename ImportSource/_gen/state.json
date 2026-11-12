@@ -50,9 +50,9 @@
       "tool": "rodin"
     },
     "SM_Rat_Fal": {
-      "status": "failed",
-      "error": "HTTP 422 from queue.fal.run: {\"detail\":[{\"loc\":[\"body\"],\"msg\":\"The content could not be processed because it contained material flagged by a content checker.\",\"type\":\"content_policy_violation\",\"url\":\"https://docs.fal.ai/errors#content_policy_violation\",\"input\":\"\",\"categories\":[\"model_moderated\"]}]}",
-      "finished": "Thu Nov 12 07:20:19 2026",
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:24:59 2026",
       "via": "api",
       "tool": "fal"
     },
@@ -109,6 +109,7 @@
     "SM_HouseFront_Fal",
     "SM_Peppermint_Fal",
     "T_Skill_Lecture",
-    "T_Card_Clapper"
+    "T_Card_Clapper",
+    "SM_Rat_Fal"
   ]
 }
