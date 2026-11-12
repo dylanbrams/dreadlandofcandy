@@ -22,8 +22,16 @@
   - Loot: `JamProgression::LootTable()` (the 12 items of Jokes.md, with stat, signed percent, rarity 0 to 3), `RollLoot(seed, 3)` gives three distinct indices ordered worst to best, so the last card is the one she keeps. `AddLoot(index)` stacks (napkin +1% helps every stat incl. cooldown). For the ledger pass `LootRarities` from the same rolls; `KeptLootIndex` is then the best card. Show `RarityName(rarity, bDirectorsPick)`; passives for the pre-spent panel in `Passives()`.
   - Numbers for ranks and XP are my placeholders (BUILD_SPEC 10 does not set them); tune in `JamProgression.cpp`.
 
+- **T12a note clamp + keyword fallback**: `Public/Film/JamNoteClamp.h`, `Private/Film/JamNoteClamp.cpp`, tests `Jam.Film.NoteClamp.*` (ValidResponse, GarbageJson, OutOfRangeKnobs, OverLongText, RejectsAndDropsUnknown, Unfinishable, Keywords, GrossFromKnobs). 35/35 `Jam.Film` pass.
+  - `JamNoteClamp::FromResponse(body, ctx, out, reason)`: whole response body in, `FJamClampedNote` out (`Def` = `FJamNoteDef` with the replacement stage and a client-computed `GrossMultiplier`; `Cosmetics` = scale, tint, weather, mood, motif, scene title, Fenella's reaction, bubbles, replies, loot name/flavour). False means use `FromKeywords`, then the scene's authored note. Rules as NoteForm.md: v must be 1; source must be cache/model; every field present with the right type; knobs clamped (not rejected); text cleaned (control chars, whitespace) and cut; unknown fields dropped; unknown tint/weather/mood become none/none/cheerful; unknown `target_kind` becomes keep; bubbles 3 to 5, replies 2 to 3; time limit 0 or 30 to 120; must be finishable.
+  - `FJamNoteContext`: build from the stage the note replaces: `BaseStage`, `Kinds` (kind, capacity) the set spawns, Lecture damage/cooldown (defaults 60 / 1.5). For the request: `set_kinds` and `set_capacity` = `MaxCapacity()`. The note's verb is always the base stage's.
+  - Finishable: Count x (2 s travel + hits x cooldown, or +0.6 s for interact) must fit in 60% of the time limit; no clock is always finishable. Authored notes can use `JamNoteClamp::IsFinishable` in their tests.
+  - `JamNoteClamp::SanitizeNote(typed)`: what the client sends and shows (80 chars, no control characters).
+  - `FromKeywords(typed, ctx, seed, out)`: false if it understands nothing. Words: bigger/smaller, more/fewer, faster/slower, tough/weak, sad/epic/happy, rain/snow/fog, clock, five tints. Text comes from Jokes.md pools (`NoteTaken` reaction, default or sadder bubbles, nuisance replies). **Fenella's reaction is set; `SceneTitle`, `LootName` and `LootFlavour` are left empty and `Motif` is empty: GAME keeps the scene's own.**
+  - **Request to GAME:** I wrote a private mini JSON reader (`Private/Film/JamMiniJson.*`) because `MegaJam.Build.cs` has no `Json` module. For the HTTP client (T12b) you will want `Json`/`HTTP` in Build.cs anyway; the clamp takes the body as a string, so it does not care.
+
 ## Next
-T12a (note clamp and keyword fallback, against `NoteForm.md`), then the Scene 2 and 3 tables with the finishability test.
+Scene 2 and Scene 3 as data tables with the finishability test (`JamScenes::Scene2/3`, `SetCapacity`), then T22's pools if GAME asks (already in `JamLines`).
 
 ## Requests to GAME
 None yet.
