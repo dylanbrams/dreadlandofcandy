@@ -112,6 +112,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> ArtSword;
 	FVector ArtBodyScale = FVector::OneVector;
+	FVector ArtBodyLocation = FVector::ZeroVector;
+	FRotator ArtBodyRotation = FRotator::ZeroRotator;
+	float WalkPhase = 0.f;
 	float SwordUpAt = -100.f;   // world time of the last Lecture
 	void TickSword();
 

@@ -1,6 +1,8 @@
 #include "Game/JamNuisance.h"
 #include "Components/TextRenderComponent.h"
 #include "Game/JamArt.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "Game/JamHero.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamResolveAttributeSet.h"
@@ -309,5 +311,7 @@ void AJamNuisance::Tick(float DeltaSeconds)
 	}
 
 	// Development aid: state label (debug draws are compiled out of Shipping).
-	DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State, BaseColour).ToFColor(true), 0.f, true, 1.1f);
+	// Only with -debuglabels: the jam ships a Development build, where debug draws are visible.
+	static const bool bLabels = FParse::Param(FCommandLine::Get(), TEXT("debuglabels"));
+	if (bLabels) { DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State, BaseColour).ToFColor(true), 0.f, true, 1.1f); }
 }

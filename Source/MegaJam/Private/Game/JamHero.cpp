@@ -143,6 +143,8 @@ void AJamHero::PossessedBy(AController* NewController)
 	if (JamArt::Apply(ArtBody, TEXT("SM_Hero"), JamArt::Height(TEXT("SM_Hero")), Floor))
 	{
 		ArtBodyScale = ArtBody->GetRelativeScale3D();
+		ArtBodyLocation = ArtBody->GetRelativeLocation();
+		ArtBodyRotation = ArtBody->GetRelativeRotation();
 		Body->SetHiddenInGame(true);
 		Visor->SetHiddenInGame(true);
 	}
@@ -444,7 +446,18 @@ void AJamHero::TickSword()
 	// The inhale before the speech.
 	const float Breath = T < InhaleSeconds ? FMath::Sin(PI * T / InhaleSeconds) * InhaleAmount : 0.f;
 	Body->SetRelativeScale3D(FVector(0.85f * (1.f + Breath), 0.85f * (1.f + Breath), 1.9f));
-	if (ArtBody->GetStaticMesh()) { ArtBody->SetRelativeScale3D(ArtBodyScale * FVector(1.f + Breath, 1.f + Breath, 1.f)); }
+	if (ArtBody->GetStaticMesh())
+	{
+		ArtBody->SetRelativeScale3D(ArtBodyScale * FVector(1.f + Breath, 1.f + Breath, 1.f));
+		// No rig yet (BUILD_SPEC 6 fallback): a static knight that waddles. Bounce twice per stride, rock once.
+		const float Speed = GetVelocity().Size2D();
+		const float Walk = FMath::Clamp(Speed / 300.f, 0.f, 1.f);
+		WalkPhase += GetWorld()->GetDeltaSeconds() * (4.f + Speed / 80.f) * Walk;
+		const float Bounce = FMath::Abs(FMath::Sin(WalkPhase)) * 9.f * Walk;
+		const float Rock = FMath::Sin(WalkPhase) * 5.f * Walk;
+		ArtBody->SetRelativeLocation(ArtBodyLocation + FVector(0.f, 0.f, Bounce));
+		ArtBody->SetRelativeRotation(ArtBodyRotation + FRotator(0.f, 0.f, Rock));
+	}
 }
 
 void AJamHero::UpdateFacing()
