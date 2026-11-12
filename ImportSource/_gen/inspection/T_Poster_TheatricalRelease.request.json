@@ -1,0 +1,11 @@
+{
+  "id": "T_Poster_TheatricalRelease",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Additional references provide character or material consistency only; include only the subject specified in the asset prompt. Use 1024x1536 aspect ratio. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A cheap, cheerful, focus-grouped children's movie poster titled \"THE THEATRICAL RELEASE\": the same grim knight awkwardly holding a lollipop, smiling candy villagers crowding him. The artwork fills an opaque canvas edge to edge, with no transparent background or surrounding margin. No text unless words are given in quotes, and then spelled exactly. For quoted titles, include only that title and no credits or extra lettering.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png",
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Poster_DirectorsCut/T_Poster_DirectorsCut.png"
+  ],
+  "aspect": "1024x1536",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-77f04c13-f00c-467b-a1fb-c036fc96f8dd.png",
+  "builtin": true
+}

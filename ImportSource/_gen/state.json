@@ -494,6 +494,26 @@
       "status": "done",
       "finished": "Thu Nov 12 08:47:37 2026",
       "via": "codex"
+    },
+    "T_Clock_HourHand": {
+      "status": "done",
+      "finished": "Thu Nov 12 10:55:21 2026",
+      "via": "codex"
+    },
+    "T_Poster_TheatricalRelease": {
+      "status": "done",
+      "finished": "Thu Nov 12 10:56:08 2026",
+      "via": "codex"
+    },
+    "T_Clock_MinuteHand": {
+      "status": "done",
+      "finished": "Thu Nov 12 10:56:09 2026",
+      "via": "codex"
+    },
+    "T_Villager_Moustache": {
+      "status": "done",
+      "finished": "Thu Nov 12 10:56:10 2026",
+      "via": "codex"
     }
   },
   "approved": [
@@ -589,7 +609,11 @@
     "T_Portrait_Marshal",
     "T_Portrait_Herder",
     "T_Frame_CandyRockPhone",
-    "T_Clock_Face"
+    "T_Clock_Face",
+    "T_Poster_TheatricalRelease",
+    "T_Clock_HourHand",
+    "T_Clock_MinuteHand",
+    "T_Villager_Moustache"
   ],
   "routes": {
     "npc": "rodin",

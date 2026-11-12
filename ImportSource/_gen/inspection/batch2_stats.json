@@ -215,6 +215,26 @@
       "center_alpha": 255
     },
     {
+      "id": "T_Poster_TheatricalRelease",
+      "size": [
+        1024,
+        1536
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "kind": "full",
+      "transparent_fraction": 0.0,
+      "center_alpha": 255
+    },
+    {
       "id": "T_Portrait_Farmer",
       "size": [
         1001,
@@ -312,6 +332,66 @@
       ],
       "kind": "icon",
       "transparent_fraction": 0.24412712857847976,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Clock_HourHand",
+      "size": [
+        369,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        2,
+        4,
+        368,
+        1020
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.3121453675474255,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Clock_MinuteHand",
+      "size": [
+        283,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        1,
+        4,
+        282,
+        1021
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.3327006956713781,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Villager_Moustache",
+      "size": [
+        1024,
+        433
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        5,
+        1020,
+        433
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.24849343244803695,
       "center_alpha": 253
     }
   ]

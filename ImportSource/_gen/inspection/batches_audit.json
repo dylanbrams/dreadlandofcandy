@@ -1,0 +1,16 @@
+{
+  "batch1": {
+    "models": 17,
+    "UI": 34,
+    "jobs_done": 51,
+    "incomplete": [],
+    "alpha_errors": []
+  },
+  "batch2": {
+    "models": 8,
+    "UI": 16,
+    "jobs_done": 24,
+    "incomplete": [],
+    "alpha_errors": []
+  }
+}

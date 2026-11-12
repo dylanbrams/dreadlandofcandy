@@ -84,7 +84,7 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 | `SM_Toothbrush` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Toothbrush.glb`; prompt in `Assets/Generation/jobs.json` |
 | `SM_Goblin` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Goblin.glb`; prompt in `Assets/Generation/jobs.json` |
 | `SM_Villager` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Villager.glb`; prompt in `Assets/Generation/jobs.json` |
-| `SM_Fenella` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Fenella.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Fenella_v1` (superseded) | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Fenella_v1.glb`; original prompt in `ImportSource/Hyper3D/manifest.jsonl`; replaced with thin winged fairy and video camcorder |
 | `SM_LollyBug` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_LollyBug.glb`; prompt in `Assets/Generation/jobs.json` |
 | `SM_Almond` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Almond.glb`; prompt in `Assets/Generation/jobs.json` |
 | `SM_CandyCrop` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_CandyCrop.glb`; prompt in `Assets/Generation/jobs.json` |
@@ -153,3 +153,7 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 | `T_Portrait_Herder` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Herder/T_Portrait_Herder.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Frame_CandyRockPhone` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_CandyRockPhone/T_Frame_CandyRockPhone.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Clock_Face` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_Face/T_Clock_Face.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Poster_TheatricalRelease` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Poster_TheatricalRelease/T_Poster_TheatricalRelease.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Clock_HourHand` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_HourHand/T_Clock_HourHand.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Clock_MinuteHand` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_MinuteHand/T_Clock_MinuteHand.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Villager_Moustache` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Villager_Moustache/T_Villager_Moustache.png`; prompt in `Assets/Generation/jobs.json` |
