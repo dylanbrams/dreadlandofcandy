@@ -1,0 +1,244 @@
+{
+  "assets": [
+    {
+      "name": "SM_Rodin_PeppermintBirch",
+      "category": "tree",
+      "biomes": [
+        "Meadow",
+        "Orchard"
+      ],
+      "height_cm": 620,
+      "source_triangles": 1438,
+      "triangles": 1438,
+      "raw_sha256": "cbd8fd3437ed7a9daf5915a5dc304530649d0cfde6737b170baea2d819ad2d24",
+      "clean_sha256": "17c6f0fa95a9b168eb069759e8f158e46b6f6e695a4eddc9e04a732f1ce7b393",
+      "width_cm": 531.00048828125,
+      "depth_cm": 320.1475524902344,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_PeppermintBirch_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_PeppermintBirch_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_LicoriceWillow",
+      "category": "tree",
+      "biomes": [
+        "Orchard",
+        "Molars"
+      ],
+      "height_cm": 660,
+      "source_triangles": 1460,
+      "triangles": 1460,
+      "raw_sha256": "bfa6ef5760fa040db8da4840c3d1759a5161f82f7213d6f9ad9f04b0f3ace7b9",
+      "clean_sha256": "edbb5cea7b2d70cf8d6f8c4703c42802ae94059baa8c9a561896a939c632492e",
+      "width_cm": 665.1943359375,
+      "depth_cm": 579.5858764648438,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_LicoriceWillow_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_LicoriceWillow_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_CandyCaneFir",
+      "category": "tree",
+      "biomes": [
+        "Molars",
+        "Meadow"
+      ],
+      "height_cm": 720,
+      "source_triangles": 1464,
+      "triangles": 1464,
+      "raw_sha256": "20fbe062695c294b8da1b8bc6b9f5ac1094bbaa8a7ed063a7e146b82bcb83981",
+      "clean_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "width_cm": 462.9079284667969,
+      "depth_cm": 486.32537841796875,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_CandyCaneFir_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_CandyCaneFir_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_BubblegumBlossom",
+      "category": "tree",
+      "biomes": [
+        "Meadow",
+        "Orchard"
+      ],
+      "height_cm": 580,
+      "source_triangles": 1458,
+      "triangles": 1458,
+      "raw_sha256": "5e392ebdddd365739d63d8a808e2126a87ed1eab72ffb191ad5239cf1001c17e",
+      "clean_sha256": "c32690425f95babe1ca3147215a891dc7219824c03a491e4f95548b8a87e5dd3",
+      "width_cm": 555.5958251953125,
+      "depth_cm": 369.66998291015625,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_BubblegumBlossom_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_BubblegumBlossom_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_JellybeanBush",
+      "category": "bush",
+      "biomes": [
+        "Meadow",
+        "Orchard"
+      ],
+      "height_cm": 160,
+      "source_triangles": 1444,
+      "triangles": 1444,
+      "raw_sha256": "3f4ac77fc27f0bf6b36ed6376ec7b48a89e40159110815acce3aa18f202527d9",
+      "clean_sha256": "226ab39cf7052fe17988e807350589b0b0dfe7d49e3959198e98b7f8d1752c7c",
+      "width_cm": 156.54234313964844,
+      "depth_cm": 98.97437286376953,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_JellybeanBush_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_JellybeanBush_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_SugarFern",
+      "category": "groundcover",
+      "biomes": [
+        "Orchard",
+        "Molars"
+      ],
+      "height_cm": 95,
+      "source_triangles": 1398,
+      "triangles": 1398,
+      "raw_sha256": "7f3ecd42098771e7a234405a0549308f4ac0317cff207029c1aaff6cefc8a1a6",
+      "clean_sha256": "05bd4ec72d28ae0016f5bb10ddb303f412f7b2cdd2f6f5583dfaa4511aaf7863",
+      "width_cm": 89.68724822998047,
+      "depth_cm": 59.793792724609375,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_SugarFern_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_SugarFern_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_CandyFlowerClump",
+      "category": "flowers",
+      "biomes": [
+        "Meadow",
+        "Orchard"
+      ],
+      "height_cm": 80,
+      "source_triangles": 1476,
+      "triangles": 1476,
+      "raw_sha256": "fee02bebccd4a6384a48fd95a7fd3f3d640b7457ecea5ecf927a7c225e876af3",
+      "clean_sha256": "b6a4503db009ce27655cde26d60552266403a4d5272944e547d8073561bd6f92",
+      "width_cm": 70.83980560302734,
+      "depth_cm": 28.618579864501953,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_CandyFlowerClump_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_CandyFlowerClump_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    },
+    {
+      "name": "SM_Rodin_GummySucculent",
+      "category": "bush",
+      "biomes": [
+        "Molars",
+        "Meadow"
+      ],
+      "height_cm": 130,
+      "source_triangles": 1404,
+      "triangles": 1404,
+      "raw_sha256": "285b006b0cd343899828363e0b126ff3609a992d2ea2ca57efef4a31b3e3f6f2",
+      "clean_sha256": "29129d4bb0965498cd1b3b661d8541fc9bab41d0a53c0a4b9d4faaf98f15a6e8",
+      "width_cm": 154.13272094726562,
+      "depth_cm": 145.42544555664062,
+      "materials": [
+        {
+          "slot": 0,
+          "name": "Material_0",
+          "base_color": "T_Rodin_GummySucculent_BaseColor_0"
+        }
+      ],
+      "textures": [
+        {
+          "file": "T_Rodin_GummySucculent_BaseColor_0.png",
+          "width": 1024,
+          "height": 1024
+        }
+      ],
+      "collision": "NoCollision"
+    }
+  ]
+}

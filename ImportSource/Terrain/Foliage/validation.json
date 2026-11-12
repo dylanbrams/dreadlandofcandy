@@ -1,0 +1,64 @@
+{
+  "status": "passed",
+  "assets": [
+    {
+      "name": "SM_Rodin_PeppermintBirch",
+      "triangles": 1438,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_LicoriceWillow",
+      "triangles": 1460,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_CandyCaneFir",
+      "triangles": 1464,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_BubblegumBlossom",
+      "triangles": 1458,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_JellybeanBush",
+      "triangles": 1444,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_SugarFern",
+      "triangles": 1398,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_CandyFlowerClump",
+      "triangles": 1476,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    },
+    {
+      "name": "SM_Rodin_GummySucculent",
+      "triangles": 1404,
+      "textures": 1,
+      "raw_unchanged": true,
+      "status": "passed"
+    }
+  ],
+  "actual_credits": 4.0,
+  "runtime_imported": false,
+  "in_world": false
+}

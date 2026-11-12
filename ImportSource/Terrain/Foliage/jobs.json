@@ -1,0 +1,26 @@
+{
+  "batch": "candy-foliage-01",
+  "provider": "Hyper3D Rodin",
+  "tier": "Gen-2.5-Low",
+  "quality_override": 1500,
+  "max_models": 8,
+  "expected_credits": 4,
+  "jobs": [
+    {"name": "SM_Rodin_PeppermintBirch", "category": "tree", "height_cm": 620, "biomes": ["Meadow", "Orchard"],
+     "subject": "one freestanding peppermint birch tree, thick ivory trunk with broad pink candy stripes, three short sturdy branches holding large rounded mint-green leaf masses like scoops of candy, a few pink wrapped sweets embedded in the canopy, broad readable silhouette, wide solid trunk ending flat at ground level, entire tree visible from roots to canopy, no base, no platform, no soil, no pot, no ground patch, no surrounding scenery"},
+    {"name": "SM_Rodin_LicoriceWillow", "category": "tree", "height_cm": 660, "biomes": ["Orchard", "Molars"],
+     "subject": "one freestanding fanciful licorice willow tree, thick twisted dark chocolate trunk, broad umbrella canopy made of chunky drooping raspberry licorice ropes and teal candy leaves, only a few thick hanging shapes rather than fine strands, welcoming storybook proportions, trunk meets ground cleanly, whole tree visible, no base, no pedestal, no soil, no pot, no ground patch, no scene"},
+    {"name": "SM_Rodin_CandyCaneFir", "category": "tree", "height_cm": 720, "biomes": ["Molars", "Meadow"],
+     "subject": "one freestanding candy-cane fir tree, sturdy short red and cream striped trunk, three distinct broad tiers of chunky turquoise frosting branches tapering to a rounded tip, thick white icing edging on each tier and a few large pink gumdrop ornaments, solid simple geometry and strong conical silhouette, entire tree visible, no base, no pot, no soil, no ground patch, no pedestal, no scenery"},
+    {"name": "SM_Rodin_BubblegumBlossom", "category": "tree", "height_cm": 580, "biomes": ["Meadow", "Orchard"],
+     "subject": "one freestanding bubblegum blossom tree, squat branching caramel trunk, asymmetrical spreading canopy of four large rounded pale pink and raspberry blossom clusters, oversized cream candy petals and a few mint leaves integrated into the clusters, chunky charming silhouette, entire tree visible, trunk ends flat at ground level, no base, no platform, no soil, no pot, no scenery"},
+    {"name": "SM_Rodin_JellybeanBush", "category": "bush", "height_cm": 160, "biomes": ["Meadow", "Orchard"],
+     "subject": "one compact jellybean berry bush, a single dense mound of broad chunky mint leaves with eight oversized raspberry pink and golden jellybeans nestled among them, tiny sturdy chocolate stems mostly hidden by foliage, irregular natural silhouette wider than tall, solid candy shapes, no separate loose sweets, no base, no planter, no soil, no ground platform, no scenery"},
+    {"name": "SM_Rodin_SugarFern", "category": "groundcover", "height_cm": 95, "biomes": ["Orchard", "Molars"],
+     "subject": "one compact sugar fern clump, five thick curling mint and lavender fronds with broad rounded candy leaflets like soft gummy ribbons, opaque solid leaves with generous thickness, chunky low-poly shapes with no fine veins or hairlike stems, fronds gathered into one small rooted clump, no pot, no soil, no base, no ground patch, no pedestal, no scene"},
+    {"name": "SM_Rodin_CandyFlowerClump", "category": "flowers", "height_cm": 80, "biomes": ["Meadow", "Orchard"],
+     "subject": "one small rooted clump of three candy daisies at different heights, chunky pink and lavender marshmallow petals around large yellow gumdrop centres, short sturdy mint stems and two broad opaque mint leaves, flowers face slightly different directions, solid thick petals, charming readable shape, no vase, no pot, no soil, no base, no ground platform, no scenery"},
+    {"name": "SM_Rodin_GummySucculent", "category": "bush", "height_cm": 130, "biomes": ["Molars", "Meadow"],
+     "subject": "one rosette of oversized gummy succulent leaves, chunky rounded triangular leaves in turquoise mint and lavender with pale pink candy-coated tips, opaque matte candy rather than translucent glass, broad leaves clustered tightly into one squat plant, flat bottom and no dangling fine parts, no pot, no soil, no base, no pedestal, no ground patch, no scenery"}
+  ]
+}

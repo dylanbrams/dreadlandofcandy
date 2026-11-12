@@ -111,3 +111,17 @@ Dylan asked TERRAIN to continue the compile and checks. No Unreal or build proce
 - Local validation archive: `Builds/TerrainValidation.zip`, **574,901,156 bytes** (575 MB decimal), CRC checked, under 1 GB. Excludes debug symbols and runtime Saved directories. Nothing uploaded or pushed.
 
 **GAME integration remains:** merge/build O1 and continue O2–O9. The terrain follows O1's published table; main currently has no Open framework. Packaged map launch/render passes must not be called a passing Open quest autoplay. Keep the current default map until BUILD_SPEC's gate is met. Final third-person camera readability and a human playthrough remain for GAME/TUNING once that framework exists. Terrain sources, runtime assets, cook label, validation tools and evidence are ready for the scoped terrain commit.
+
+### Hyper3D foliage expansion active
+
+Dylan explicitly requested additional candy foliage and trees using his Hyper3D credits. TERRAIN is generating eight candidates in `ImportSource/Terrain/Foliage/`: four trees and four smaller plants. Current official API supports `quality_override=1500`; Gen-2.5-Low, Raw mesh, PBR/low textures. Expected cost four credits total. Raw files and public provenance are preserved; private queue subscription keys are git-ignored. No automatic paid retries. No world assets or existing scatter replaced yet. Unreal is in use by another worker, so generation and Blender review are proceeding offline.
+
+### Hyper3D foliage expansion delivered offline
+
+**Dylan explicitly instructed TERRAIN not to run Unreal; no engine launched for this batch.** All eight jobs succeeded at 0.5 credits each, **four credits total**. Prepared eight GLBs, eight FBXs, eight 1k base-colour textures, individual previews and a labelled contact sheet under `ImportSource/Terrain/Foliage/`.
+
+Models: peppermint birch, licorice willow, candy-cane fir, bubblegum blossom, jellybean bush, sugar fern, candy flower clump and gummy succulent. Actual source/output counts **1,398–1,476 triangles**: the API honoured the 1,500-face target, so no Collapse reduction was necessary. Original files/hashes and full submitted prompts retained. Final saved-file validation passed all eight (GLB/index structure, finite positions and UVs, texture references/size, raw hashes and FBX signatures). Material preparation keeps one generated base-colour atlas and matte roughness; original full PBR output stays in Raw.
+
+Visual review: birch, fir, blossom and succulent are strongest. Willow is noticeably spiky/angular; hold for review before scattering. Fern is chunky rather than fernlike; fern/flowers retain small brown root shapes to bury or trim at placement. Contact sheet: `ImportSource/Terrain/Foliage/Review/contact-sheet.png`. More details in that folder's README.
+
+**Not imported, not scattered, not included in the current 575 MB package.** Current world and prior packaged validation remain unchanged. Engine integration should target `/Game/World/Foliage/`, keep scatter nonblocking and retain all location/road exclusions. Approval and in-game visual checks remain for the next engine window; this task's requested generation and offline preparation are complete. No C++ build/test/package run was needed or attempted for these source-only additions.

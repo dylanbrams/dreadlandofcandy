@@ -163,3 +163,22 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 The 30 current Hyper3D/Fal meshes above and batch-2 Meshy `SM_LollyShard` were processed in Blender 3.3 with new jam-authored `decimate.py`, `ImportSource/_decimated/cleanup.py`, and companion validation/preview/collision scripts. No cleanup code was copied from another project and no extra generator/API requests were made. Derived GLBs live under `ImportSource/_decimated/{Hyper3D,Fal,Meshy}`; original generator files and provenance remain intact.
 
 Work includes welding before Collapse, removal of unwanted attachments/bases, cap repairs, normals/pivots, blade proportion adjustment, material regions and UCX collision companions. Hat, HeadMirror and LeafMegaphone were procedurally rebuilt to remove fused heads/interior ornaments while retaining their original embedded base-colour atlases as paint; lamp tripod and clapper slate were rebuilt around retained textured parts. See `ImportSource/_decimated/_review/REPORT.md`, `cleanup_results.json` and `validation.json` for per-file actions and verification. These derivatives retain the provenance and licence obligations of their source assets; Unreal import/gameplay acceptance was not performed by ASSETS.
+
+### Additional terrain foliage generated during the jam - 2026-11-12
+
+Requested by Dylan and generated through Hyper3D Rodin Gen-2.5-Low. Each model
+consumed 0.5 credits (four total). Raw originals, full prompts, task identifiers,
+derived GLBs/FBXs and texture/geometry checks are in `ImportSource/Terrain/Foliage/`.
+Preparation and previews use new jam-authored Blender/Python scripts in that
+folder. These assets have not yet been imported into Unreal or placed in the map.
+
+| Asset | Tool | Date | Source and provenance |
+| --- | --- | --- | --- |
+| `SM_Rodin_PeppermintBirch` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_PeppermintBirch.glb`; `generation_manifest.json` |
+| `SM_Rodin_LicoriceWillow` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_LicoriceWillow.glb`; `generation_manifest.json` |
+| `SM_Rodin_CandyCaneFir` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_CandyCaneFir.glb`; `generation_manifest.json` |
+| `SM_Rodin_BubblegumBlossom` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_BubblegumBlossom.glb`; `generation_manifest.json` |
+| `SM_Rodin_JellybeanBush` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_JellybeanBush.glb`; `generation_manifest.json` |
+| `SM_Rodin_SugarFern` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_SugarFern.glb`; `generation_manifest.json` |
+| `SM_Rodin_CandyFlowerClump` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_CandyFlowerClump.glb`; `generation_manifest.json` |
+| `SM_Rodin_GummySucculent` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_GummySucculent.glb`; `generation_manifest.json` |
