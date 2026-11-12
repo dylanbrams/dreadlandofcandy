@@ -1,0 +1,427 @@
+THE DREAD LAND OF CANDY: DIRECTOR'S CUT
+ATTACK & ABILITY EFFECTS DESIGN BIBLE — STANDALONE HANDOFF
+Version 1.0 | 2026-11-12 | GAME DESIGN / EFFECTS PLANNING
+Intended reader: a separate ChatGPT conversation or an Unreal Engine 5.8 effects/animation/AI assembler.
+
+PURPOSE
+=======
+This document is self-contained. It inventories EVERY specifically named player attack/skill discussed in the game's prior brainstorming or written briefs, including superseded/alternative names, and turns the selected abilities into concrete effect-building briefs. It also describes reusable VFX systems, encounter reactions, the Director's Cut theme layer, voice variants, replication and a production-priority queue. You do not need to read the larger MMO design to start discussing effects.
+
+Do not infer that any described ability, mesh, animation, voice clip, Niagara system, Blueprint, Gameplay Ability or network feature already exists. These are DESIGNS, not an implementation report. Some names are alternatives, not separate abilities. Avoid silently expanding a class's shippable skill count by treating every brainstorm as a commitment. Before modifying a real Unreal project, inspect its existing GAS setup, GameplayCue conventions, art and reference assets.
+
+GAME PITCH AND CONTEXT
+======================
+Game: THE DREAD LAND OF CANDY: DIRECTOR'S CUT.
+Village: SugarBorough.
+Theme: 'Director's Cut'. An in-world Director of Heroic Affairs treats every ridiculous local errand as a magnificent fantasy epic, periodically shouting ACTION!, CUT! or RETAKE! and changing procedurally assembled quest stages. A Magic Candy Rock lets players contact quest NPCs remotely. No film-production simulation or live video editor is necessary.
+
+Visual setup: the PLAYER characters are tall, imposing, grim dark-fantasy adventurers with weathered armor, genuine giant swords and apocalyptic casting poses. The WORLD is welcoming, bright, rounded, pastel and candy-saturated. Village NPCs treat these terrifying heroes as ordinary contractors. VFX bridge the styles: deeply serious anticipation, a wildly ridiculous payload (toothpaste, candy, celery, speech bubbles, rolling pins), monumental impact, and a harmless behavior change.
+
+Gameplay: nonviolent action RPG / tiny co-op MMO-like vertical slice (not a real MMO server). Enemies/nuisances have RESOLVE rather than lethal health. When Resolve reaches zero, they become Pacified, Compliant or Dispersed. An E interaction may still be necessary (brush a goblin's teeth, offer celery to a rat). Real gameplay hits are authoritative; visuals are client-side decoration. Four classes: Mage, Archer, Knight, Barbarian. Default player level 7. All classes must be able to complete all quest objectives.
+
+DESIGN STATUS KEY
+=================
+[CORE]     The preferred ability set from the combat companion (one basic + two heroes, plus a few optional picks). These are design choices, NOT confirmed implemented features.
+[HERO]     Strong visual showcase and production priority.
+[OPTION]   Previously proposed skill, not required for the jam; can share an effect or mechanic with a [CORE] skill.
+[LEGACY]   Name from the original architecture brainstorming, possibly replaced later. Preserve for completeness, but don't automatically build it.
+[MOTIF]    Visual example rather than a specified, independent playable ability.
+[ENCOUNTER] NPC/environment action or contextual finishing interaction; not a player attack.
+[DIRECTOR] Theme/quest presentation cue; not a damage ability.
+
+'Formal Reprimand' = alternate name for 'Sword of Stern Instruction'.
+'Rolling-Pin Spin' = early name for 'Rolling Pin Cyclone'.
+'Ferocious Knead' = earlier name/near-equivalent of 'Furious Kneading'.
+'Dental Floss Snare' = alternate form of 'Floss Snare'.
+'Caramel Meteor' is best treated as an impact/presentation variant of 'Caramel Catastrophe', not an additional backend system.
+'Frosting Nova' and 'Polite Intervention' could use one circle-AoE framework but are different character appearances.
+
+I. ALL NAMED ATTACKS / ABILITIES — CONSOLIDATED INDEX
+======================================================
+The index is intentionally inclusive, including skills suggested in the first design brief, later class discussions, and subsequent VFX brainstorming. For each entry, geometry is the suggested gameplay archetype; details may change during balancing.
+
+MAGE / THE CONFECTIONER
+-----------------------
+ M01 [CORE/BASIC] Sugar Spark                | projectile | Sweetness | crisp sugar missile, short candy pop.
+ M02 [CORE/HERO]  Peppermint Popfall          | ground AoE / multiple waves | Sweetness | striped mints appear overhead, fall, pop, bounce.
+ M03 [CORE/HERO]  Arcane Mouthwash            | frontal cone | Hygiene | mint/teal rinse, torrent of foam and bubbles.
+ M04 [OPTION]     Caramel Catastrophe         | lobbed orb + sticky area | Sweetness | golden caramel orb, splat, lingering strands.
+ M05 [LEGACY]     Glaze Field                 | placed ground area | Sweetness | glossy circular coating aura, glints.
+ M06 [LEGACY]     Frosting Nova               | radial burst / slow | Sweetness / Chilling | white frosting ring, frosty dollops.
+ M07 [LEGACY]     Fondant Catastrophe         | large ultimate AoE | Sweetness | huge sculpted fondant conversion, rainbow confetti.
+ M08 [OPTION]     Caramel Meteor              | falling orb / impact | Sweetness | flaming-looking caramel splash; variant of M04.
+ M09 [OPTION]     Cone of Celery              | frontal cone | Nutrition | powerful magical blast of celery stalks/leaves.
+ M10 [OPTION]     Summon Napkin               | summoned utility/guard | Domestic/Manners | dramatic magic circle, one humble napkin.
+ M11 [OPTION]     Broccoli Bombardment        | AoE projectiles | Nutrition | small broccoli heads descend like artillery.
+ M12 [MOTIF]      Sugar Storm                 | particle storm / AoE | Sweetness | glittering sugar spiral; could skin M05/M07.
+ M13 [MOTIF]      Gumdrop Bomb Burst          | impact explosion | Sweetness | gummy blobs and bounce trails.
+ M14 [MOTIF]      Toothpaste Comet            | projectile impact | Hygiene | blue/white ribbon, sudden foam detonation.
+
+ARCHER / THE PRECISION DECORATOR
+--------------------------------
+ A01 [CORE/BASIC] Celery Shot                 | direct projectile | Nutrition | single stalk dart with crunch hit.
+ A02 [CORE/HERO]  Celery Volley               | 3–5-shot spread | Nutrition | stalk barrage, leafy trails, green impact bursts.
+ A03 [CORE/HERO]  Floss Snare / Dental Floss Snare | snare/slow line | Hygiene | brilliant dental-floss strand and twang.
+ A04 [OPTION]     Sprinkle Barrage            | ground AoE pellet rain | Sweetness | colored sprinkles rain, many tiny pops.
+ A05 [LEGACY]     Icing Shot                  | precision projectile | Sweetness | thin icing line, small glaze star on impact.
+ A06 [LEGACY]     Pinball Sprinkle            | ricochet projectile | Sweetness | bouncing candy projectile with pinball-like trail.
+ A07 [LEGACY]     Taffy Snare                 | snare/slow | Sweetness | stretched taffy ribbons around feet.
+ A08 [LEGACY]     Bullseye Banquet            | synchronized decoration ultimate | Sweetness | area marked then precise multi-hit confectionery.
+ A09 [OPTION]     Toothpick Volley            | rapid multi-projectile | Domestic/Hygiene | serious archery stance, ridiculous toothpicks.
+ A10 [OPTION]     Carrot Piercer              | long-range line shot | Nutrition | overcharged carrot lance, orange streak.
+ A11 [OPTION]     Precision Pea               | ultra-precise single shot | Nutrition | minuscule pea, absurdly oversized scope/impact.
+ A12 [MOTIF]      Carrot Arrow Rain           | arcing barrage | Nutrition | many carrots fall like arrows; can skin A04.
+
+KNIGHT / THE ETIQUETTE PALADIN
+------------------------------
+ K01 [CORE/BASIC] Polite Shield              | short melee arc/cone | Manners | shield present, gentle push, formal ring.
+ K02 [CORE/HERO]  Sword of Stern Instruction / Formal Reprimand | frontal vocal cone | Manners | massive sword drawn BUT NOT SWUNG; devastating spoken lecture.
+ K03 [CORE/HERO]  Shield of Good Manners      | self/ally shield aura | Manners | gleaming shield dome, heraldic rings, napkins, 'tsk'.
+ K04 [OPTION]     Polite Intervention         | radial interrupt | Manners | outward symmetry, placards, civilized shock ring.
+ K05 [LEGACY]     Queue Formation             | ally/zone buff | Manners | glowing floor queue lines and ranks.
+ K06 [LEGACY]     Ceremonial Shove            | short knockback | Manners | over-formal shield tap, rulebook starburst.
+ K07 [LEGACY]     Royal Table Setting         | area stabilization ultimate | Domestic/Manners | huge spectral utensils/tablecloth/place settings.
+ K08 [OPTION]     Toothbrush Smite            | contact swing/impact | Hygiene | oversized brush, white foamy burst (avoid lethal sword visuals).
+ K09 [MOTIF]      Toothbrush Sword Swipe      | visual alternative to K08 | Hygiene | giant spectral toothbrush arc, bubbles.
+
+BARBARIAN / THE DOUGH BERSERKER
+-------------------------------
+ B01 [CORE/BASIC] Furious Kneading / Ferocious Knead | close melee arc | Domestic | dough squish, flour burst, oversized impact.
+ B02 [CORE/HERO]  Rolling Pin Cyclone / Rolling-Pin Spin | sustained radial AoE | Domestic | orbiting dozens-of-looking rolling pins and flour cloud.
+ B03 [CORE/HERO]  Aggressive Encouragement   | vocal cone/radial shout | Manners | gigantic comic jagged exhortation bubbles.
+ B04 [OPTION]     Rage of the Baker           | self haste/buff | Domestic | flour aura, shaking whisk, frantic footfalls.
+ B05 [LEGACY]     Unreasonable Mixing         | large ultimate AoE | Domestic | mixing-bowl vortex rearranging props/targets.
+ B06 [OPTION]     Sugar Rush                  | speed/buff | Sweetness | red-pink candy streaks and sputtering sugar sparks.
+ B07 [OPTION]     Tantrum Slam                | radial ground impact | Manners/Domestic | stomp, comic punctuation, cookie-crack ring.
+ B08 [MOTIF]      Flour Whirlwind             | effect variant | Domestic | dust spiral; reuse B02.
+
+SHARED, NON-PLAYER, OR GENERIC ATTACK MOTIFS (NOT EXTRA CLASS SKILLS)
+-------------------------------------------------------------------
+ S01 [MOTIF]     Celery Lance / Celery Spear Barrage    | Nutrition piercing / volleys.
+ S02 [MOTIF]     Broccoli Shock Bomb                   | broccoli impact burst, leafy fragments.
+ S03 [MOTIF]     Caramel Blast / Caramel Pools          | sticky molten sugar, golden ground residue.
+ S04 [MOTIF]     Toothbrush Foam Explosion             | toothpaste cloud and white/teal flecks.
+ S05 [MOTIF]     Soap Bubble Barrage                   | hygiene bubbles with gentle pop.
+ S06 [MOTIF]     Mouthwash Torrent                     | translucent flowing cone, mint fog.
+ S07 [MOTIF]     Etiquette Pulse / Lecture Shockwave   | concentric speech waves and comic glyphs.
+ S08 [MOTIF]     Flying Napkins / Tablecloth Dome      | formal shield/defense, paper flutter.
+ S09 [MOTIF]     Cookie-Crack Stomp Decal              | short-lived ground ring.
+ S10 [MOTIF]     Peppermint Mortar                      | falling striped candy impacts.
+ S11 [MOTIF]     Sugar / Wrapper / Sprinkle Debris      | universal secondary burst language.
+ S12 [MOTIF]     Scribble Stars / Exclamation Burst    | universal comic impact language.
+
+[ENCOUNTER] N01 Candygoblin spits harmless toothpaste/bubbles or evades a brush.
+[ENCOUNTER] N02 Lollypop bug dive / distraction rush; scatters on pacification.
+[ENCOUNTER] N03 Giant candy rat crop-rush / steal; sits and eats celery when handled.
+[ENCOUNTER] N04 Supreme Plaque Warden: large bubble/projectile volley, brush-evasion, optional shield phase.
+[ENCOUNTER] N05 Field kids: run through crop rows; stop/learn with calm interaction. Do NOT present violence against children.
+[ENCOUNTER] N06 Tamed almonds wobble or wander after bug distraction; settle when bugs disperse.
+
+II. THE FOUR MOST IMPORTANT EFFECTS — DETAILED SHOT LISTS
+=========================================================
+These four are the Friday showreel. If resources are limited, make ONE beautifully readable hero effect per class before attempting any optional attacks. Timing below is a PROPOSED starting point; measure against actual combat cadence and character animation.
+
+K02 — SWORD OF STERN INSTRUCTION / FORMAL REPRIMAND
+  Ability role: directional cone of Manners/Resolve, possibly brief Flustered/interrupt.
+  Comedy: a horrifyingly serious knight unsheathes a huge sword as though about to end civilization... then does not swing it, but lectures enemies instead. This is a central visual joke; the sword fakeout MUST be legible.
+  0.00–0.30s: Hero plants feet, reaches for huge sword. Glint, severe metal scrape, low orchestral/riser cue.
+  0.30–0.65s: Sword rises to a big threatening pose. Freeze at apex. Hold silhouette just long enough for audience to expect a cleave.
+  0.65–0.80s: Knight instead points sword like a teacher's pointer and takes an exaggerated breath. Music/impact anticipation momentarily drops.
+  0.80–1.15s: Vocal frontal shock cone, translucent concentric air ribbons in royal blue and gold; giant angular speech bubble(s): 'ABSOLUTELY NOT.' / 'FORM A LINE!' / 'MIND YOUR TEETH!' / 'THIS IS A PUBLIC SPACE!'. No blade strike.
+  1.15–1.55s: Papery punctuation scraps, heraldic geometric ripples, target wobble/flinch/WellBehaved pose.
+  Tail: subtle fading word fragments and a disapproving 'tsk' or NPC gasp.
+  Main preset: VFX.LectureCone + UI.ComicBubble.Jagged/Placard + SFX.SternLecture.
+  Mechanic: server cone trace ONCE at the designated hit window, not once per drawn word. Bubble text is never a hitbox. Other players see the same animation and core event.
+  Implementation shortcut: montage or procedural upper-body pose + Niagara cone mesh + 2D screen-facing widget. Keep camera at gameplay distance; cinematic closeup optional only for trailer.
+
+B02 — ROLLING PIN CYCLONE
+  Ability role: sustained radial AoE at bounded hit intervals, Domestic Resolve effect.
+  Comedy: a grim berserker becomes a mobile kitchen cyclone of unrealistically many rolling pins.
+  0.00–0.25s: 1–2 rolling pins orbit chest/waist, character braces and inhales; low wooden knock and rising flour puff.
+  0.25–0.55s: spin accelerates, 4–8 visible mesh pins plus sprite/impostor silhouettes multiply; growing cream-colored flour cloud.
+  0.55–1.65s: full whirlwind, MANY perceived pins despite small mesh budget. Thick flour funnel, distinct wooden rings, 'whup-whup' orbit rhythm; target contact flour/crumbs. Center remains legible to player.
+  1.65–1.90s: finish, pins whip outward visually in a radial starburst, NO independent physically simulated damage.
+  1.90–2.30s: debris falls, dust dissipates, possibly one leftover rolling pin rolls away and vanishes as a visual punchline.
+  Main preset: VFX.FlourCyclone + mesh orbit component + SFX.WoodClackLoop.
+  Mechanic: bounded server AoE tick (e.g. one hit per target per scheduled interval, not per mesh collision); cancel/interrupt behavior must stop effects cleanly.
+  Performance: cap visibly animated 3D rolling pins around 20 at hero quality, using fewer on low settings and sprite silhouettes for the remainder. No replicated utensils as physics actors.
+
+M02 — PEPPERMINT POPFALL
+  Ability role: ground-targeted multi-wave Sweetness AoE.
+  Comedy: an extremely grand high-magic summoning ceremony rains tiny peppermint candies.
+  0.00–0.30s: imposing caster posture and ornate serious glyphs above target location; pink/red-white swirl.
+  0.30–0.55s: peppermints wink into existence over marked circle, hovering for a ridiculous instant; candy 'tink' chimes.
+  0.55–1.45s: staggered drops, clear impact pops on the ground, one small bouncy hop per selected mesh candy, small sugar cloud and striped afterimage.
+  1.45–1.90s: final accent pop, several candies roll to stillness and dissolve, sugar sparkles fade.
+  Main preset: VFX.PeppermintPop + decal/telegraph ring + SFX.CandyPopSequence.
+  Mechanic: fixed number of authoritative area waves; one hit per target per wave, explicitly bounded. Individual falling candy meshes do not cause hits.
+  Performance: about 12 candy bounce meshes maximum and sprite/shader duplicates for volume. Spawn candy debris locally; remove on pool timeout.
+
+A02 — CELERY VOLLEY
+  Ability role: 3–5 projectiles/spread, Nutrition/Resolve.
+  Comedy: the archer launches vegetables with the precision and presentation of mythical armor-piercing arrows.
+  0.00–0.15s: dead-serious bow nock/draw, slim emerald charge line; leaves curl around arrow rest.
+  0.15–0.40s: rapid or simultaneous volley of clearly readable celery stalks with luminous green streaks and orange leaf flecks.
+  0.40–0.70s: dry 'CRUNCH' on impact, leaf confetti and small jolting vegetable-green glyph; a few tiny stalk pieces tumble.
+  Tail: target briefly shakes its head or glows ReluctantlyNourished.
+  Main preset: VFX.CeleryVolley + SFX.CrispCrunch.
+  Mechanic: authoritative projectile or spread traces; cap damage overlap. At least one projectile should be direct aim for reliable solo play.
+  Performance: one celery mesh reused as projectile, simple trail emitter and leaf burst sprite. Make it readable at gameplay-camera distance.
+
+III. OTHER CORE ABILITY EFFECT CARDS
+====================================
+M01 SUGAR SPARK [BASIC]
+  Tiny bright sugar charge at wand/hand -> fast pink/gold missile -> crisp pop, 2–4 wrapper motes. One inexpensive impact preset; high clarity for repeated attacks.
+M03 ARCANE MOUTHWASH [HERO]
+  Dramatic translucent mint-circle charge -> frontal surge of blue/aqua liquid-shaped ribbons (not simulated fluid) -> huge toothbrush-foam detonation, bubbling droplets, mint sparkles -> SqueakyClean shine on targets. Cone gameplay, cosmetic foam sprites, brief foam puddle decal optional. This is the primary FOAM SHOWCASE.
+A01 CELERY SHOT [BASIC]
+  One straight stalk/dart with sharp green contrail -> satisfying crunch and compact leaf puff. Shares A02 prop and impact system.
+A03 FLOSS SNARE [HERO]
+  Archer flicks magical spool -> thin intensely white floss line snaps taut around one target/feet -> rubber-band TWANG -> glints at endpoints + slow status icon. Real gameplay is one tagged slow; fancy wire simulation not required.
+K01 POLITE SHIELD [BASIC]
+  Knight presents shield with an over-formal step -> neat blue/gold quarter-circle ring -> small paper/placard fragments and pushed target reaction. Use a short arc/cone; no lethal bash.
+K03 SHIELD OF GOOD MANNERS [HERO]
+  Upright solemn stance -> elegant heraldic concentric circles -> blue/gold translucent protective bubble/dome, spinning miniature napkins; every absorbed nuisance impact makes a very small floating 'tsk.' text. Avoid blocking player camera.
+B01 FURIOUS KNEADING [BASIC]
+  Muscular near-melee kneading strike -> impossible mass of dough briefly squash-stretches -> cream dust puff, flour cloud, rhythmic giant dough 'THUMP'. Could be bare-handed or a temporarily conjured lump of dough.
+B03 AGGRESSIVE ENCOURAGEMENT [HERO]
+  Barbarian plants feet/inflates chest, epic roar setup -> cone/radial SOUND rather than a blade swing -> giant jagged comic speech bubbles in sync with shockwave rings: 'DO BETTER!', 'YOU CAN FIX THIS!', 'EAT THE CELERY!' -> punctuation confetti -> target Flustered/Encouraged reaction. Voice behavior expanded in section VI. Same base LectureCone system as K02, but rougher red/orange, angular bubbles, less polished knight heraldry.
+
+IV. OPTIONAL / LEGACY EFFECT SKETCHES — DO NOT TURN ALL INTO JAM TASKS
+=====================================================================
+Mage:
+- M04/M08 Caramel Catastrophe / Caramel Meteor: ominous orb overhead, molten-gold drop, sticky syrup splat/puddle decal and trailing sugar strings; ground slow optional.
+- M05 Glaze Field: translucent pastry-glaze disc, slow pulsating sheen, sparkles on anything inside.
+- M06 Frosting Nova: one big white frosting ring blossoms radially and leaves soft dollops on surfaces; slow effect if used.
+- M07 Fondant Catastrophe: grand confectioner's ritual; entire area briefly gets a comical fondant coating or colorful icing silhouette; may be purely ultimate-level VFX.
+- M09 Cone of Celery: green arcane circle opens into exaggerated fan of celery spears; nutrition cone.
+- M10 Summon Napkin: eldritch summon circle, thunder, smoke; finally one tiny pristine napkin floats into being and protects/cleans something.
+- M11 Broccoli Bombardment: artillery-style falling broccoli heads, soft 'thud' and leafy puff; shares PeppermintPopfall AoE.
+- M12–M14 Sugar Storm / Gumdrop Bomb / Toothpaste Comet: skins of shared storm, single impact, and foam projectile primitives; not new GAS work.
+
+Archer:
+- A04 Sprinkle Barrage: precision cluster arrow opens overhead into sprinkle rain; tiny rainbow popcorn sparks; same AoE scheduling as Popfall.
+- A05 Icing Shot: fine white icing ribbon fired from bow; small swirling frosting rosette on target.
+- A06 Pinball Sprinkle: bouncing confectionery pellet, bright arcade-style ricochet streak and little pips; real bounce target set validated server-side.
+- A07 Taffy Snare: stretchy caramel-pink bands wrap target; slow status reuses Floss Snare backend.
+- A08 Bullseye Banquet: multiple luminous target circles, exaggerated exact-placement confectionery blasts, coordinated finale starburst.
+- A09 Toothpick Volley: extremely serious rapid-fire archery with tiny toothpicks; woody tick-tick impacts; reuse A02 volley.
+- A10 Carrot Piercer: dramatic drawn-out charge, very long orange carrot lance, brilliant piercing streak, carrot fragments.
+- A11 Precision Pea: impossibly tiny pea flies with huge sci-fi/fantasy precision trail and a wildly disproportionate impact 'ping'.
+- A12 Carrot Arrow Rain: shower of carrot darts; skin of A04.
+
+Knight:
+- K04 Polite Intervention: symmetric expanding etiquette circle; formal-looking wave freezes/interrupts nuisance for a moment; recolor K02 ripple without huge speech text.
+- K05 Queue Formation: regimented lines draw themselves along ground; miniature golden queue markers snap into position; buff/status.
+- K06 Ceremonial Shove: dignified shoulder/shield nudge creates an outsized civic-authority stamp burst.
+- K07 Royal Table Setting: area transforms with translucent tablecloth/plates/cutlery arranging themselves perfectly; grand ultimate utility/status effect.
+- K08/K09 Toothbrush Smite / Toothbrush Sword Swipe: knight raises a gigantic brush like a sword, toothbrush-bristle arc lands, toothpaste foam pops and tooth shine stars appear. NB K02's sword MUST NOT make physical contact; keep these clearly separate abilities if both exist.
+
+Barbarian:
+- B04 Rage of the Baker: jittering flour halo, frantic footwork, whisk/rustle motif; haste buff.
+- B05 Unreasonable Mixing: huge hovering bowl/whisk vortex, flying dough balls, catastrophic but harmless ingredient rearrangement. Ultimate scale; high art cost, low priority.
+- B06 Sugar Rush: red/pink sugar particles trail boots, hyperactive foot sparkle, a few jittering candy shards; speed buff.
+- B07 Tantrum Slam: two-handed stomp/ground hit, cookie-cracked decal ring, giant comic exclamation mark and dough dust burst.
+- B08 Flour Whirlwind: no separate ability; cheaper B02 background effect variant.
+
+V. SHARED VFX SYSTEMS TO DESIGN BEFORE INDIVIDUAL ABILITIES
+==========================================================
+An EFFECT PRESET should combine modules rather than requiring a totally new Niagara graph for each skill.
+
+FAMILY / PRESET IDs (suggestions; align to real project naming):
+  VFX.FoamBurst       - white/mint/aqua bubbles, explosive foam sprites, droplet trail, soap pop, optional puddle.
+  VFX.PeppermintPop   - peppermint mesh/sprite spawn, hover, drop, short ground bounce, pop, dissolve.
+  VFX.CaramelSplash  - golden glob, stringy sheet, sticky pool, lingering sugar flecks.
+  VFX.LectureCone    - blue/gold or red/orange sound waves; punctuation scraps; independently skinned comic balloons.
+  VFX.CeleryVolley   - green stalk projectile mesh/trail, crunch burst, leaf confetti.
+  VFX.FlourCyclone   - flour dust volume sprite/particles, orbiting wooden pin proxies, outward finish burst.
+  VFX.CleanSparkle   - mint/silver clean-tooth gleam, cross-shaped star and magical shine glints.
+  VFX.Flustered      - tiny jagged punctuation cards, dazed wobble stars, papery scraps.
+  VFX.EtiquetteAura  - clean heraldic geometric rings, formal blue/gold defense, napkin flutters.
+  VFX.FlossSnare     - tensile white line from spool, twang/spark at endpoints, minimal rope geometry.
+  VFX.DoughImpact    - impact blob squash, flour/crumb puff and subtle ground ring.
+  VFX.SugarTrail     - compact candy/sugar motes and occasional shiny dust.
+  UI.ComicBubble     - reusable jagged, round and placard speech-card styles; text from localized string IDs.
+  UI.DirectorSlate   - ACTION!/CUT!/RETAKE! title-card/slate with take number and timed reveal.
+
+Each preset should accept parameters such as {scale_tier, palette_id, duration_s, particle_budget_tier, random_seed, attachment_socket, aim_direction, impact_position, cosmetic_variant_id}. These parameters control ONLY appearance. The authoritative gameplay system owns target selection, Resolve changes, status tags, cooldown, and quest objectives.
+
+DAMAGE/EFFECT FAMILIES
+  Damage.Sweetness  — sticky candy, peppermint, caramel, gold/pink/red. Optional Sticky.
+  Damage.Nutrition  — celery, carrot, broccoli; green and orange. Optional Healthy/ReluctantlyNourished.
+  Damage.Hygiene    — foam, floss, mouthwash, soap; white/aqua/mint. Optional SqueakyClean.
+  Damage.Manners    — shouts, lecture cones, banners, disapproval; royal blue/gold or vocal orange/red. Optional Flustered/WellBehaved.
+  Damage.Domestic   — dough, rolling pins, whisk, flour, napkins; wood/cream/copper. Optional Dazed. This fifth family need not have a unique resistance category.
+
+CORE FIVE-LAYER EFFECT GRAMMAR
+  1. Anticipation: 0.1–0.5 sec, grand threatening fantasy gesture + visible telegraph.
+  2. Main impact: clear <0.2s peak silhouette (foam, candy drops, speech wave, flour blast).
+  3. Secondary debris: 0.2–1.0 sec, peppermint bounce, crumbs, paper confetti, napkin scrap.
+  4. Status: brief persistent indicators while actual effect is live; Sticky strands, SqueakyClean shine, Flustered punctuation, etc.
+  5. Afterglow: <3 sec ordinary cosmetic tail; keep it short enough for four-player overlap.
+
+COMIC BUBBLE SYSTEM
+  Jagged: barked commands/attacks. Phrases: 'DO BETTER!', 'EAT THE CELERY!', 'YOU CAN FIX THIS!', 'ABSOLUTELY NOT!', 'ENOUGH!', 'THIS IS A PUBLIC SPACE!'.
+  Round: supportive/soft/rare exasperated voice. Phrases: 'You've got this.' / 'please just eat them'.
+  Formal placard: knight/Director civic correction. Phrases: 'FORM A LINE', 'MIND YOUR TEETH', 'STAND PROPERLY', 'EXCUSE ME'.
+  Suggested motion: pop in at ~0.5 scale, overshoot 1.15, settle 1.0; stagger bubbles at 0.12–0.25s; float and pop into paper confetti. Designate screen-space priority and anchor world position to actor or attack origin. Never cover health/Resolve/status display or quest tracker excessively.
+  For repetitive abilities, avoid unreadable walls of text: around TWO legible bubbles per player simultaneously at most; remaining 'shouts' can be smaller punctuation-only particles. World UMG or facing sprite cards are fine.
+
+VI. VOICE DESIGN — ELEVENLABS / RANDOM LANGUAGE / PARENT VARIANT
+===============================================================
+Concept established in conversation: 'EAT YOUR VEGETABLES!' is a disproportionately epic multilingual barbarian battle cry. Every recorded language must convey the SAME meaning rather than inventing different threats. Localize the on-screen comic bubble into the player's UI language (English initial target), keeping the joke comprehensible. The fun is the wildly serious delivery versus the mundane instruction, not making a joke of a particular nationality/accent.
+
+Voice production: PRE-GENERATE, LICENSE/ATTRIBUTE AS REQUIRED, and package short clips. Do NOT call a TTS API with every attack; that increases latency, cost, dependency and desync. ElevenLabs is an option, not guaranteed available or required. Verify pronunciation/translation with reliable sources or a competent speaker; don't rely on one model's unsupported phonetics. Obtain necessary rights/consents for voice characteristics; avoid copying recognizable actors.
+
+Performance tiers (proposed):
+  SHOUT_EPIC: booming fantasy battle command in chosen language; loud full delivery. Primary B03 variant.
+  SHOUT_PARENT: a defeated, deeply exasperated parent, quieter, conversational, emotionally spent: 'Please. Just eat them.' This is a specifically requested FUNNIEST RARE LINE. Present as an unheroic anticlimax with tiny lowercase/rounded bubble 'please just eat them' while the enormous underlying skill VFX continues without changing power.
+  SHOUT_DIRECTOR_RETAKE: Director yells 'CUT! We need an international version!' and the next use of the shout plays a different language; optional, script-only.
+
+Randomization: choose from a small deterministic/local table of known clip IDs at activation. The previous conversation floated 25% English, 65% non-English and 10% overdramatic extended delivery as EXPERIMENTAL weights, not a locked requirement. The exasperated parent variant was suggested at roughly 3% on a qualifying critical attack, but its actual frequency should be adjusted for comedic timing and clip availability. Avoid firing multiple long overlapping voice clips in co-op. Replicate/publish voice_variant_id for consistent shared timing if needed; the server still owns only the gameplay result.
+
+Candidate English captions:
+  'EAT YOUR VEGETABLES!'
+  'EAT THE CELERY!'
+  'DO BETTER!'
+  'YOU CAN FIX THIS!'
+  Rare caption: 'please just eat them'
+
+Audio layering: theatrical inhale / controlled silence / roar / low-frequency fantasy impact; 2D paper pops on comic bubbles; target reaction squeak. For SHOUT_PARENT, sharply drop the heroic voice processing and let the embarrassing domestic exhaustion land. The ability deals the same authoritative Resolve/status regardless of voice clip.
+
+VII. DIRECTOR'S CUT — PRESENTATION EFFECTS, NOT A NEW DAMAGE SYSTEM
+=================================================================
+The actual jam theme is 'Director's Cut'. Quests are called Scenes with numbered Takes. An NPC/voice called the Director of Heroic Affairs may request a new ending or alternate compatible quest stage. All changes must be selected from prebuilt tested objective templates; do not spawn LLM-authored mechanics.
+
+D01 [DIRECTOR] ACTION!   | clapperboard clap; 'SCENE 03 / TAKE 02' title; short lens flare/spotlight; start quest stage.
+D02 [DIRECTOR] CUT!      | giant film-slate / comic CUT overlay; short snap/silence, then choice of alternate objective; not an interrupt of arbitrary combat frames.
+D03 [DIRECTOR] RETAKE!   | rewind-like audio flourish/visual loop; reset current scene's progress only through valid gameplay reset logic.
+D04 [DIRECTOR] THAT'S A WRAP! | reward card with a glorious heroic score, ridiculous loot and NPC reputation.
+D05 [DIRECTOR] 'International release' gag | Director demands a voice-line retake in another language; B03 clip variation, no new damage effect.
+
+Keep overlays short, minimize camera theft, and do not require an actual film editor, camera crew, or replay system. An additional joke: this is 'The Definitive Edition of a Game That Never Existed.'
+
+VIII. NPC / QUEST PAYOFF EFFECTS (CRUCIAL TO THE NONVIOLENT JOKE)
+=================================================================
+Reducing Resolve to zero is NOT always quest completion. There should be an explicit contextual action and satisfying post-action image; don't use conventional death or corpse effects.
+
+RATS + CELERY:
+  Rat stops crop eating, sits with offended expression. The player presses E or another assigned interact to OFFER celery. Short leafy flourish, slow reluctant crunch, green success sparkles. Crit from Nutrition can accentuate chewing but must not replace interact if quest requires it.
+
+KIDS + CROPS:
+  Child or group stops running through rows because of conversation/attention, NOT because of being hurt. A magical line/path appears on soil, kids tiptoe in an orderly procession, little politely straightened posture or queue placards. Use dialogue/escort/interact, not physical attack damage on kids.
+
+MINE / CONDENSED TREACLE:
+  Serious dungeon reveal; dark rocks with ridiculous syrup stalactites. Extracting syrup triggers gold viscous strands, heroic jar-seal stamp, tiny glistening drops. Could use caramel splash shader without fluid simulation.
+
+LOLLYPOP BUGS + TAMED ALMONDS:
+  Bugs zip and distract almonds; upon pacification, bugs spiral upward and vanish in candy glitter. Almonds stop wobbling and begin obediently gathering, sleepy twinkle. Avoid lifelike insect gore.
+
+FORT TOOTHACHE:
+  Goblin at zero Resolve opens mouth in extreme reluctant cooperation. E interaction animates oversized toothbrush scrub and enormous FOAM BURST. End with 'SQUEAKY CLEAN' dental sparkle/star glint and proud/surprised goblin face. For boss Supreme Plaque Warden, add bigger bubble waves and dramatic oversized toothbrush finish. A single room, 3 goblins, one special enemy is enough for the jam.
+
+IX. TECHNICAL EFFECTS ARCHITECTURE FOR UNREAL 5.8 / GAS
+======================================================
+Assume an existing Unreal 5.8 game and considerable local C++/Blueprint/GAS reference code. INSPECT it before designing new interfaces. Exact UCLASS names, GameplayCue tags, assets, and plugins below are naming proposals rather than claims about the project.
+
+Separation of concerns:
+  A. Skill definition: data for input slot, class, cooldown, energy, geometry, gameplay effect, status, VFX preset ID, animation, SFX and cosmetic choice.
+  B. Authoritative executor: validate cast, cooldown/range/targets, apply Resolve and status effects, update quest objective events exactly once.
+  C. Cosmetic activation event / GameplayCue: ability_id, caster actor, aim point/direction, server cast timestamp, random_seed, voice_variant_id, scale_tier and optionally hit list. Clients drive visuals; do NOT replicate each particle/rolling pin.
+  D. Ability VFX actor/component: spawns or plays Niagara/mesh attachments, timed UMG popups, one-shot/loop audio, camera impulses, status sprites and cleanup.
+  E. Quality tiers: lower debris counts and reduce translucency, preserve anticipation + impact silhouette and readable sound.
+
+Suggested common ability fields:
+  ability_id, class_id, display_name, status[CORE|OPTION|LEGACY], damage_tag,
+  geometry[projectile|cone|radial|ground_aoe|melee_arc|self_buff|interact],
+  range_m, radius_m, cone_angle_deg, windup_ms, active_ms, recovery_ms,
+  cooldown_s, max_targets, damage_per_authoritative_hit, num_waves,
+  status_tag, status_duration_s, animation_cue, vfx_preset_id,
+  sfx_cue_id, bubble_style_id, voice_pool_id, effect_quality_scalars.
+
+Example (illustrative only, not a verified API contract):
+  ability_id: B03
+  name: Aggressive Encouragement
+  geometry: cone
+  damage_tag: Damage.Manners
+  vfx_preset_id: VFX.LectureCone
+  bubble_style_id: UI.ComicBubble.Jagged
+  voice_pool_id: Voice.EatYourVegetables.Multilingual
+  animation_cue: Anim.Barb.VocalShout
+  gameplay_hit: server cone query at animation notify
+  client_only: comic text, waves, audio, camera impulse
+
+Timing and multiplayer:
+  - Predict local windup only if the current GAS implementation supports it reliably.
+  - Cast/target validation and impacts are host authoritative (or dedicated server if infrastructure changes later).
+  - Cosmetic sequencers may locally spawn MANY objects but the host sends ONE compact activation/cue; do not replicate dozens of rolling pins or peppermint rigidbodies.
+  - Actor spawn/destroy/pacified state must replicate; transient VFX need not persist for joining players.
+  - If an ability is interrupted, end looping sound/mesh orbit emitter and restore animation state; no stuck whirlwinds or speech balloons.
+  - Stacking/cooldowns/Resolve should be tested with 2 players hitting the same target.
+  - Do not trigger an ElevenLabs HTTP request while a combat montage waits.
+
+Effects and assets (suggested): Niagara for foam/dust/candy sprites/sound-wave mesh particles; Static Mesh for 1 representative peppermint/stalk/rolling pin/toothbrush; UMG world-space widget or camera-facing sprites for comic bubbles; pooled/short-lived decals for caramel/frosting/flour. Meshes are cosmetic unless the server's ability execution explicitly uses a corresponding gameplay projectile. A single shared material function for palette controls will help cohesion.
+
+Performance baseline (initial proposal; profile, don't treat as guaranteed):
+  - <= ~20 visible animated 3D rolling pins during ONE hero cast, fewer at low quality; fake more with cards.
+  - <= ~12 bouncing peppermint meshes at once; add sprites for the impression of many.
+  - <= 2 readable comic speech bubbles per player on screen at once; additional punctuation particles fine.
+  - Ordinary cosmetic tail under ~3s; status duration can be longer.
+  - Limit local camera shake, transparency, overdraw and simultaneous one-shot audio.
+  - For 2–4 players, make effects legible under overlap; preserve enemy silhouettes and quest HUD.
+  - Expose reduced flashes/screenshake/particles options where feasible.
+
+Visual cohesion: the grim heroes, pastel world, and comedy particles must share camera, lighting and exposure. Pink world lights should bounce/reflection on dark armor. Avoid copied proprietary armor/characters. No blood, lethal finishers, or grotesque fear framing.
+
+X. PRODUCTION ORDER FOR A SEPARATE VFX AGENT
+===========================================
+PHASE 0 — ASSET / CONTRACT AUDIT (read-only):
+  - Examine real UE 5.8 project, existing Niagara graphs, gameplay tags, GAS abilities, animation sockets, material conventions, voice/music assets, and folders.
+  - Make a table of what EXISTS, what can be REUSED, what is PROPOSED and what is MISSING. This document makes no claims of implementation.
+
+PHASE 1 — CORE PRIMITIVES (shortest shippable path):
+  - VFX.LectureCone + UI.ComicBubble (K02, later B03).
+  - VFX.FoamBurst + VFX.CleanSparkle (M03 and Fort Toothache interaction).
+  - VFX.PeppermintPop (M02).
+  - VFX.FlourCyclone (B02).
+  - VFX.CeleryVolley (A01/A02).
+  - Shared SpawnCue/StopCue and status icons.
+
+PHASE 2 — 4 SHOWCASE ATTACKS:
+  Priority #1 K02 Sword of Stern Instruction — giant sword fakeout into lecture (strongest story joke).
+  Priority #2 B02 Rolling Pin Cyclone — maximal apparent prop count with minimal actual mesh count.
+  Priority #3 M03 Arcane Mouthwash — toothpaste foam detonation for goblin encounters.
+  Priority #4 A02 Celery Volley — clear projectile identity and cross-class coverage.
+  Then M02 Peppermint Popfall and B03 Aggressive Encouragement if time allows.
+
+PHASE 3 — JOKE PAYOFF & THEME:
+  - Candygoblin brush-teeth contextual foam finish.
+  - Giant rat celery eating reaction and munch audio.
+  - Director ACTION/CUT/RETAKE overlays (only if quest state actually supports them).
+  - Packaged multilingual B03 voice variants, the soft 'please just eat them' rare clip, and subtitles.
+
+PHASE 4 — OPTIONAL EXPANSION:
+  - M04 caramel pool, A03 floss snare, K03 shield, B01 dough hit.
+  - Only then explore optional/legacy skills, extra cosmetic variants, and boss-specific effects.
+
+XI. ACCEPTANCE TESTS FOR EACH EFFECT
+===================================
+[ ] The attack is identifiable from a 2-second clip at the actual gameplay camera distance.
+[ ] The joke is legible without having to read the skill description.
+[ ] Cast/impact/cleanup works repeatedly and when interrupted.
+[ ] No skill applies extra hits solely because multiple cosmetic objects collided.
+[ ] Bubbles do not obscure the quest or Resolve UI; translations fit all bubble shapes.
+[ ] Audio is not punishingly repetitive in 30 seconds of combat; voice clips do not overlap uncontrollably.
+[ ] The four classes have distinct silhouettes and effects even when played together.
+[ ] At low effects quality, every cast still has a readable tell and impact.
+[ ] On a joinable session, clients agree on authoritative Resolve/states/quest completion.
+[ ] The knight emphatically DOES NOT swing the sword in K02.
+[ ] The rare parent voice uses the exact emotional gag: 'Please. Just eat them.'
+[ ] Enemies show pacification and context-specific completion; no lethal death animations.
+[ ] Any sourced/AI-generated voice, texture, model or audio has recorded license/source and required jam disclosure.
+
+XII. READY-TO-PASTE PROMPT FOR YOUR NEXT CONVERSATION
+====================================================
+"I am designing the attack effects for my Unreal Engine 5.8 Epic MegaJam project, The Dread Land of Candy: Director's Cut. Treat the attached ATTACK & ABILITY EFFECTS DESIGN BIBLE as the complete creative inventory, not as evidence anything is already implemented. Help me design a reusable, performance-conscious Niagara / UMG / animation / audio VFX architecture for the four classes, starting with the strongest showcase attacks. Preserve the visual contrast: deadly serious grim-fantasy adventurers in an upbeat candy world using absurdly extravagant, nonviolent attacks. Separate gameplay authority from client-only presentation, reuse modules, identify what existing project assets and integrations you'd need to inspect, and give practical construction specs. Do not quietly treat optional or legacy brainstorm entries as shippable commitments."
+
+END OF STANDALONE ATTACK/VFX DESIGN BIBLE

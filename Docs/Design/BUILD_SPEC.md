@@ -62,7 +62,7 @@ A complete eight-minute comedy with a beginning and an end. Solo, offline, one m
 
 ### Not building (do not start any of these without Dylan saying so)
 
-Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no player persistence). Save games. Quest generator, seeds, stage weights. Classes other than the knight. Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, resistances, any status other than Flustered. GAS beyond what section 3c needs (no new attribute sets, GameplayCues or cost effects). Skill trees, respec, talents. Auto-cast. Level 1 restart. Procedural terrain.
+Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no player persistence). Save games. Quest generator, seeds, stage weights. Classes other than the knight (in the shipped flow; section 3d allows them as expansion work behind `-class=`). Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, resistances, any status other than Flustered. GAS beyond what section 3c needs (no new attribute sets, GameplayCues or cost effects). Skill trees, respec, talents. Auto-cast. Level 1 restart. Procedural terrain.
 
 (Dylan, Nov 11: no multiplayer feature work in the jam plan, but keep the preparation: no architectural choice that makes adding it miserable later.)
 
@@ -127,7 +127,36 @@ The slice in section 3 is the floor, built so that more content is data, not cod
 - More scenes: a scene is a table, a set and lines. About half a day each with art. Candidates from the old briefs: Mind the Rows (marching children, interact and follow), The Condensed Treacle Errand (collect in a cave).
 - More nuisance skins, authored notes, Fenella lines, loot names, street gags.
 
-Expensive, and still not in the plan: new verbs, more classes, inventory screens, save games, multiplayer features. Each of those is a system, not content.
+Expensive, and still not in the plan: new verbs, inventory screens, save games, multiplayer features. Each of those is a system, not content. More classes were on this list until Nov 12; they are now expansion work under section 3d.
+
+## 3d. After the slice: the expandable game (Dylan, Nov 12)
+
+The jam slice in section 3 ships first and stays protected. The longer goal is an open-world, multi-class game, and the slice is its first demo. From now on, new combat systems are built class-agnostic and data-driven, with the knight as their first consumer. This section overrules "Classes other than the knight" in section 3, for expansion work only.
+
+**Order and gates**
+
+- Slice tasks (section 7) always come before expansion tasks. Expansion drops first in the cut order (section 8).
+- Expansion never breaks the slice: `JamAutoplay: PASS` and all `Jam.*` tests stay green after every expansion commit, and the daily package and smoke test still pass.
+- Anything not finished by the end of day 3 (Nov 14) stays behind a dev flag and out of the shipped flow.
+
+**The combat system** (new folder `Source/MegaJam/*/Combat/`, tests `Jam.Combat.*`; owned by the FX worker, `WORKERS.md`)
+
+- **Attack definitions:** one C++ table row per attack: id, class, archetype, shape and pulse pattern, wind-up / active / recovery times, status, presentation preset, bubble pool, voice pool, animation clip. Timing comes from this row and timers, not montage notifies (the hero plays single-node clips; there are no montages).
+- **Archetypes, in build order:** instant area (exists: `UJamGA_AoeAttack`), pulsed area (on the caster or on the ground), projectile, sustained cone. Each is headless-testable hit logic first. Cosmetic objects never decide hits.
+- **Events:** each cast emits Start, Release, Contact, HitResolved, End or Cancel as compact data (cast id, attack id, seed, positions, hit list). No replication code and no GameplayCues yet; the event struct is shaped so it can become a cue's parameters later.
+- **Presentation coordinator:** consumes those events and drives primitives (cone, projectile rain, orbiting props, foam, dome, tether, comic bubbles). Cosmetic only; it never feeds back into rules. Primitives are C++ (procedural or static meshes, HUD bubbles) unless GAME authors a Niagara asset in the editor; the primitive's interface hides which. Cancel must stop every loop, emitter and bubble a cast started.
+- **First task:** the knight's four skills as table rows and through the coordinator, with no change in behaviour. Done when the autoplay PASS line, `Jam.Gas.Skills` and the T19 screenshots are unchanged.
+- Things to remember from the slice: the budget-out switch (T21) must also grey anything a primitive spawns afterwards; `-noart` must still work; anything loaded by path goes in `DirectoriesToAlwaysCook`; distances are Unreal units, not metres.
+
+**Classes**
+
+A class is a set of attack rows, a hero mesh on the mannequin skeleton, and its clips. Mage, Archer and Barbarian are reached with `-class=<name>` only. No class select in the shipped flow unless Dylan says so.
+
+**Source documents**
+
+`The_Dread_Land_of_Candy_Attacks_and_Effects_Pipeline.md` is the roster and the contract; `The_Dread_Land_of_Candy_Attacks_and_VFX_Design.txt` is an inventory and mood reference (most of its entries are brainstorm, not commitments). Where they disagree the pipeline document wins; where either disagrees with this file, this file wins. Ignore their replication, owner/teammate tier and runtime-localization parts for now. Neither is evidence that anything exists. Shouted lines go into `Jokes.md` before they go into code.
+
+**Still not building:** replication, sessions, quest generator, inventory, backend beyond typed notes.
 
 ## 4. Theme checklist (the "Theme" score)
 
@@ -276,7 +305,7 @@ End of day 2: package, smoke, and **have someone who has not seen it play it**. 
 
 ## 8. Cut order when behind
 
-Drop from the top. 1) Commentary track. 2) Street gags beyond signs. 3) Skill 3, the Disappointed Sigh (two skills and the ultimate still give a choice). 3a) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
+Drop from the top. 0) All expansion work (section 3d): it goes before anything in the slice does. 1) Commentary track. 2) Street gags beyond signs. 3) Skill 3, the Disappointed Sigh (two skills and the ultimate still give a choice). 3a) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
 
 Typed notes are outside this order: they are decided by their own gate at the end of day 2 (section 3a), and if they pass they rank above everything in the list except Scene 3 entirely.
 

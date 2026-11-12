@@ -15,6 +15,7 @@ How the backlog in `BUILD_SPEC.md` section 7 is split across sessions that can r
 | --- | --- | --- | --- |
 | **GAME** | Opus | Main checkout, branch `main`. The only one with the editor open | `Source/MegaJam/*/Game/`, `*/UI/`, `*/Gas/`, `*/Testing/`, `Content/`, `Config/`, `Scripts/`, `Docs/STATUS.md`, `Docs/DEVLOG.md` |
 | **RULES** | Sonnet | Worktree `D:\Source\Unreal\MegaJam2026-rules`, branch `rules` | `Source/MegaJam/*/Film/`, `Source/MegaJam/Private/Tests/Film*.cpp`, `Docs/Workers/rules.md` |
+| **FX** | Codex | Worktree `D:\Source\Unreal\MegaJam2026-fx`, branch `fx`. Builds and runs tests; never opens the editor | `Source/MegaJam/*/Combat/`, `Source/MegaJam/Private/Tests/Combat*.cpp`, `Docs/Workers/fx.md` |
 | **BACKEND** | Opus for B1, Sonnet after | Its own repo, beside OneMore's server; never this repo's source | The note service and its database; `Docs/Workers/backend.md` in this repo (notes only) |
 | **ASSETS** | Sonnet, with Dylan approving | Main repo files outside `Source/` and `Content/`; no builds, no editor | `Assets/Incoming/` (generated meshes, textures, manifests), `Docs/styles.json`, `Docs/Workers/assets.md` |
 | **AUDIO** | Dylan, ACE Studio | Outside the repo, delivering files | `Assets/Incoming/Audio/`, `Docs/Workers/audio.md` |
@@ -67,6 +68,22 @@ No world, no engine objects, no assets, so it never needs the editor. Builds and
 Commits to `rules` at the end of each task. Does not edit `MegaJam.Build.cs`, the `.uproject` or anything GAME owns; asks in `Docs/Workers/rules.md`.
 
 Set-up once, by Dylan or GAME: `git worktree add ..\MegaJam2026-rules -b rules`. First build there compiles the whole module.
+
+### FX: the combat and effects system (expansion work)
+
+Builds the class-agnostic combat system in `BUILD_SPEC.md` section 3d. Expansion work: it ranks below every slice task and is cut first. Unlike ASSETS, this worker builds (`Scripts\build.ps1`) and runs `Jam.Combat.*` in its own worktree, so it never shares a checkout with GAME's uncommitted work.
+
+In order:
+
+1. Attack definition table, with the knight's four skills as the first rows, and a test that every row is well formed.
+2. Cast events (Start, Release, Contact, HitResolved, End, Cancel) as plain data, and the presentation coordinator that consumes them.
+3. Primitives in C++, one at a time: lecture cone and comic bubbles, then projectile rain, orbiting props, foam.
+4. New archetypes as headless hit logic with tests: pulsed area, projectile, sustained cone.
+5. Rows for the other classes, reached with `-class=<name>`.
+
+Does not edit `Game/`, `UI/`, `Gas/`, `Content/`, `Config/`, `MegaJam.Build.cs` or the `.uproject`. The hookups in those (calling the coordinator from `AJamHero::RequestSkill`, pointing the abilities at the table, a new module dependency, a Niagara or other editor-made asset) are requests to GAME in `Docs/Workers/fx.md`; GAME makes them when it merges `fx`, and checks the autoplay PASS line and the T19 screenshots are unchanged. Text for bubbles and cries comes from `Jokes.md` through `JamLines` (RULES), not from the two effects documents.
+
+Commits to `fx` at the end of each task, once the build and `Jam.*` tests pass. Set-up once: `git worktree add ..\MegaJam2026-fx -b fx`.
 
 ### BACKEND: the typed-note service
 
@@ -124,6 +141,7 @@ GAME never waits idle: every task above has engine work that can go first agains
 | --- | --- | --- | --- | --- |
 | GAME | all day | all day | all day | all day |
 | RULES | all day, unattended | all day, unattended | morning only | off |
+| FX | off | when the slice is ahead | when the slice is ahead; freeze at end of day | off |
 | BACKEND | B1 | B2 and deploy | prompt tuning, short | off |
 | ASSETS | list and test assets | main batch | replacements | off |
 | AUDIO | off | music and sounds | song, voice | levels only |
@@ -134,13 +152,15 @@ When Dylan is away from the keyboard: RULES and BACKEND keep going; GAME stops a
 
 ## Notes files
 
-RULES, BACKEND, ASSETS and AUDIO each keep `Docs/Workers/<name>.md`: what is done, what is in progress, requests for other workers. GAME reads them at the start of each task and folds what matters into `Docs/STATUS.md` and `Docs/DEVLOG.md`, which only GAME writes. That keeps the two shared files free of merge conflicts.
+RULES, FX, BACKEND, ASSETS and AUDIO each keep `Docs/Workers/<name>.md`: what is done, what is in progress, requests for other workers. GAME reads them at the start of each task and folds what matters into `Docs/STATUS.md` and `Docs/DEVLOG.md`, which only GAME writes. That keeps the two shared files free of merge conflicts.
 
 ## Start prompts
 
 **GAME:** "You are the GAME worker. Read `CLAUDE.md`, `Docs/STATUS.md`, `Docs/Design/BUILD_SPEC.md` and `Docs/Design/WORKERS.md`. Read `Docs/Workers/*.md` for hand-overs and run `python -I Scripts/gen_batch.py status`. Merge `rules` if it is ahead. Start the asset-state watch (WORKERS.md, GAME, 'Watching asset state'). Take the next GAME task, finish it to its 'done when', commit, update STATUS and DEVLOG."
 
 **RULES:** "You are the RULES worker in the worktree at `D:\Source\Unreal\MegaJam2026-rules` on branch `rules`. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` sections 3, 3a, 3c and 5, and `Docs/Design/WORKERS.md`. Edit only what RULES owns. Take the next RULES task, write the tests first, build and run `Jam.Film.*`, commit to `rules`, update `Docs/Workers/rules.md`, then take the next one."
+
+**FX:** "You are the FX worker in the worktree at `D:\Source\Unreal\MegaJam2026-fx` on branch `fx`. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` sections 3, 3c, 3d and 5, and `Docs/Design/WORKERS.md`. Then read `Docs/Design/The_Dread_Land_of_Candy_Attacks_and_Effects_Pipeline.md` (roster and contract) and skim the `..._VFX_Design.txt` bible (reference only); where they disagree with the spec, the spec wins. Read the existing code you build on: `Gas/JamGameplayAbility.h`, `Gas/JamAoePattern.h`, `Film/JamProgression.h`, `Game/JamSkillFx.h` and `AJamHero::RequestSkill`. Edit only what FX owns. Take the next FX task, write the tests first, build and run `Jam.*`, commit to `fx`, write requests for GAME and what you finished in `Docs/Workers/fx.md`, then take the next one. Never open the editor, never print or open config or key files (this is streamed)."
 
 **BACKEND:** "You are the BACKEND worker. Read `Docs/Design/NoteForm.md` and `BUILD_SPEC.md` section 3a in the MegaJam2026 repo, and the route and client pattern in OneMore's word server (source only; never open config, env or key files; this is streamed). Build the next B task as a separate Gunicorn service with its own database. Load the `claude-api` skill before the model call. Record progress in `Docs/Workers/backend.md`."
 
