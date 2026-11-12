@@ -2,6 +2,7 @@
 import io
 import json
 import struct
+import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw
@@ -11,25 +12,33 @@ OUT = Path(__file__).resolve().parent
 DOC = json.loads((ROOT / 'Assets/Generation/jobs.json').read_text(encoding='utf-8'))
 STATE = json.loads((ROOT / 'ImportSource/_gen/state.json').read_text(encoding='utf-8'))
 DIRS = {'rodin': 'Hyper3D', 'fal': 'Fal', 'meshy': 'Meshy'}
+STAGE = sys.argv[1] if len(sys.argv) > 1 else 'batch1'
+if STAGE not in ('batch1', 'batch2'):
+    raise SystemExit('Expected batch1 or batch2')
 mesh_stats = []
 image_stats = []
 cards = []
 
 for job in DOC['jobs']:
-    if job['stage'] != 'batch1':
+    if job['stage'] != STAGE:
         continue
     name = job['id']
     record = STATE['jobs'].get(name, {})
     if job['tool'] == 'image':
         path = ROOT / 'Assets/Incoming/2D' / name / (name + '.png')
-        if not path.exists():
-            path = ROOT / 'Assets/Incoming/2D/_drop' / (name + '.png')
+        pending = ROOT / 'Assets/Incoming/2D/_drop' / (name + '.png')
+        if pending.exists():
+            path = pending
+        elif record.get('status') == 'redo':
+            continue
         if not path.exists():
             continue
         im = Image.open(path).convert('RGBA')
         alpha = im.getchannel('A')
         image_stats.append({'id': name, 'size': list(im.size), 'alpha_extrema': alpha.getextrema(),
-                            'visible_bounds': alpha.getbbox(), 'kind': job.get('kind', 'icon')})
+                            'visible_bounds': alpha.getbbox(), 'kind': job.get('kind', 'icon'),
+                            'transparent_fraction': alpha.histogram()[0] / (im.width * im.height),
+                            'center_alpha': alpha.getpixel((im.width // 2, im.height // 2))})
         cards.append(('2d', name, im.copy()))
         continue
     tool = record.get('tool') or STATE.get('routes', {}).get(job['group'], job['tool'])
@@ -78,7 +87,7 @@ for kind in ('3d', 'atlas', '2d'):
             x, y = (idx % 3) * 400, (idx // 3) * 430
             sheet.paste(im, (x + (400 - im.width) // 2, y + 25), im)
             draw.text((x + 8, y + 7), label, fill='white')
-        sheet.save(OUT / f'batch1_{kind}_{page // 9 + 1}.jpg', quality=90)
+        sheet.save(OUT / f'{STAGE}_{kind}_{page // 9 + 1}.jpg', quality=90)
 
-(OUT / 'batch1_stats.json').write_text(json.dumps({'meshes': mesh_stats, 'images': image_stats}, indent=2) + '\n', encoding='utf-8')
+(OUT / f'{STAGE}_stats.json').write_text(json.dumps({'meshes': mesh_stats, 'images': image_stats}, indent=2) + '\n', encoding='utf-8')
 print(json.dumps({'meshes': mesh_stats, 'images_checked': len(image_stats)}, indent=2))

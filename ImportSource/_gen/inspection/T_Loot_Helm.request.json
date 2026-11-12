@@ -1,0 +1,10 @@
+{
+  "id": "T_Loot_Helm",
+  "prompt": "REFERENCE ROLE: Use the attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the reference. Use 1024x1024 aspect ratio.\n\nASSET PROMPT (verbatim):\nPainted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. Legendary loot icon: a closed great helm with a narrow visor slit. Exactly one item, centred, filling about 80 percent of a square canvas, isolated on a fully transparent background. No text, no letters, no numbers, no border, no frame, no scenery, no cast shadow.",
+  "reference": [
+    "Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1024x1024",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-cf1c9d68-2f91-496b-9450-f01ce485bae9.png",
+  "builtin": true
+}

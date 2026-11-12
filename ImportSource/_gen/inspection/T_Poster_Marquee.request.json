@@ -1,0 +1,10 @@
+{
+  "id": "T_Poster_Marquee",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Use 1024x1536 aspect ratio. Frame only: leave both the whole central opening and the outside completely transparent, without backdrop, paper or glow. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A cinema poster frame ringed with marquee light bulbs, the poster area empty. A decorative frame or border only, centred on the canvas. The inside of the frame is completely empty and transparent, and so is everything outside it. No text, no letters.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1024x1536",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-753fd157-c563-4b4b-a36b-77506652b21c.png",
+  "builtin": true
+}

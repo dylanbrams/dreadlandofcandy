@@ -1,0 +1,10 @@
+{
+  "id": "T_Portrait_Farmer",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Use 1024x1024 aspect ratio. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A round sincere candy villager, cream skin, round head, dot eyes, small smile, short brown hair and peach tunic, wearing a pale golden straw farmer hat. No other tools. Head and shoulders, centred, facing slightly toward the viewer, isolated on a fully transparent background. No text.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1024x1024",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-90667063-ee4f-487a-8467-240e5bdc0dcb.png",
+  "builtin": true
+}

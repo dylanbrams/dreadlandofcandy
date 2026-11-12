@@ -1,6 +1,61 @@
 ﻿# ASSETS handoff
 
-Updated 2026-11-12. **Test stage finished: all 14 jobs done; ready for Dylan's review.** The fal rat succeeded after Dylan authorized a simpler subject. This session's instruction to run the test stage supersedes the previous prompt-only hold. No groups are approved, no routes changed, and no batch1/batch2 generation ran. Unreal was never opened.
+Updated 2026-11-12. **Batch1 complete: 17 models and 34 UI images. Batch2 models complete: 8/8; its 16 UI images are in progress.** Dylan authorized both batches. This is a generation/file-delivery status, not in-engine validation. ASSETS has not opened Unreal.
+
+## Current handoff
+
+- Approved groups from Dylan's recorded review: character, equipment, NPC, terrain piece, particle mesh and both 2D layers. Effective routes: NPCs on Rodin, terrain pieces on fal, particles on Meshy. Equipment stays on Rodin. No credit fallback was needed.
+- Batch1's 3D run: 17 done, 0 failed, 11.1 minutes. Fenella was subsequently rejected and regenerated successfully with Dylan's new direction. Batch2's 3D run: 8 done, 0 failed, 8.0 minutes. Actual service delivery does not establish gameplay suitability.
+- **Fenella supersedes the old brief:** a ridiculously thin little flying fairy director, visible pink/gold wings, long skinny limbs, a small angular face, and a handheld digital VIDEO CAMCORDER held at chest height away from her face. Both eyes visible. Voice direction: a tiny high piping voice; no new audio generated here. The old big-head/chunky/no-wings/camera-at-eye version is rejected.
+- Updated `SM_Fenella`, both portraits, her billboard and the Director's Cut poster subject in `Assets/Generation/jobs.json`. The new billboard is the character reference for the portraits and poster. Rodin's Fenella job explicitly overrides the generic NPC prompt because its shared suffix still forces chunky shapes and a big head. Her latest manifest records the actual overridden prompt. Other NPCs retain their locked style. The old mesh is `ImportSource/Hyper3D/SM_Fenella_v1.glb`; old portrait PNGs are retained as `_v1`.
+- UI assets use built-in Codex image generation, one image per job. Exact job prompts and layer anchors are retained; actual tool requests, including style-reference instructions, are in `ImportSource/_gen/inspection/*.request.json`. The original Lecture attack icon is unchanged. The standalone sword inventory icon was corrected after it copied the Lecture icon's hand/burst. The early paper-backed RESERVED FOR SEQUEL stamp was replaced with an ink-only impression. Some image requests were interrupted by ESC; saved outputs were recovered and completed assets were not regenerated unnecessarily.
+- **Dylan's usage rule: always preserve 20% of both the 5-hour and weekly allowance for other tasks.** These counters are not available to ASSETS tools. Ask for current remaining percentages at small-group checkpoints. Latest reported snapshot before batch2 UI: 55% of 5-hour allowance remaining; weekly last reported 94%. Earlier checkpoints were 69%, 64% and 59% in the 5-hour window. This is distinct from generator API credits. Do not check fal's broken balance endpoint.
+- Inspection artifacts: `ImportSource/_gen/inspection/batch1_stats.json`, `batch2_stats.json`, labelled `batch1_3d_*.jpg`, `batch2_3d_*.jpg`, `batch1_2d_*.jpg` and `batch2_2d_*.jpg`. The inspection helper accepts `batch1` or `batch2`. The review page is `ImportSource/_gen/review.html`.
+
+## Batch1 model inspection
+
+Every current GLB has a valid header and matching file length. All models have one material slot; independent tooth/plaque/tint regions, pivots, collision and attachment fit need GAME/cleanup work. Rodin previews are untextured geometry; their embedded base-colour atlases were inspected. All six Rodin models are **500,000 triangles** and need reduction. fal outputs are around **40,000 triangles**, also above final game budgets. Meshy's stanchion is **404 triangles**.
+
+| Model | Delivered result / remaining issue |
+| --- | --- |
+| `SM_Toothbrush` | Rodin; visible pale bristle rows, long exposed shaft and dark wrapped grip. Check hand fit and brush orientation. |
+| `SM_Goblin` | Rodin; round mint goblin, cream tunic, open grin with yellow teeth. Teeth are not a separate material slot. |
+| `SM_Villager` | Rodin; round cream/peach villager with brown hair and boots, empty hands. Hat/tool attachments need fit checks. |
+| `SM_Fenella` | **Replacement** Rodin model: thin limbs and narrow body, visible spread wings, hovering legs, camcorder held at chest height, face clear. Old model retained as `_v1`; review the replacement in the game camera. |
+| `SM_LollyBug` | Rodin; pink/cream swirl in its texture, thick wings and small limbs. Adds antennae and an insect abdomen rather than a simple stick body. |
+| `SM_Almond` | Rodin; almond silhouette and pale golden texture. Adds arms and a mouth despite the subject's exclusions. |
+| `SM_CandyCrop` | fal; two lollipop stems and gumdrops, readable candy silhouette. Adds a brown soil/platform base. 40,012 triangles. |
+| `SM_CandyFence` | fal; two candy-striped posts and two rails. Adds small white feet/base pads. |
+| `SM_Celery` | fal; pale green stalk/leaves. Adds a face and a broader bundled silhouette. 40,008 triangles. |
+| `SM_Molar` | fal; white tooth with crown/roots. Adds a face and pink pedestal/steps. |
+| `SM_Signpost` | fal; blank white inset board and wood post. Adds a grassy ground tile. |
+| `SM_CardboardBox` | fal; open box/flaps. Adds pale label-like panels and pink tab details; not completely unmarked. |
+| `SM_CandyTree` | fal; pale pink faceted canopy lobes and short trunk. Adds grass/soil platform. |
+| `SM_Boulder` | fal; pale lavender faceted boulder. Adds a face and a matching pedestal. |
+| `SM_Clapperboard` | fal; blank slate and open striped clapper. Adds humanoid arms, gloves, legs and shoes. |
+| `SM_DirectorsChair` | fal; open folding wooden chair, blank cream seat/back, no person. Check folding geometry and scale. |
+| `SM_Stanchion` | Meshy; broad round base, cream shaft, faceted gold cap. Readable particle-style geometry. |
+
+Dylan reviewed batch1 meshes in the browser and accepted them except the original Fenella (`Docs/STATUS.md`); the table preserves observed cleanup issues rather than reversing his choices.
+
+## Batch2 model inspection
+
+All eight files validate. The seven fal meshes are 39,992 to 40,000 triangles; Meshy's shard is 156 triangles. These have significant prompt deviations to review before importing:
+
+| Model | Delivered result / remaining issue |
+| --- | --- |
+| `SM_FortGate` | Tooth gate between two pink towers, open arch. Adds a face and a **small knight figure in the arch**; remove the figure and check pass-through dimensions, depth and collision. 39,992 triangles. |
+| `SM_LightStand` | Tripod studio lamp with barn doors. Adds a hanging wire; no light beam. |
+| `SM_Table` | Pale rectangular table but **adds four chairs**, contrary to table-only prompt. Separate/remove chairs before use. |
+| `SM_Hat_Straw` | Pale straw hat and cream band but **includes an entire villager head/neck**. Not an isolated attachable hat yet. 39,998 triangles. |
+| `SM_HeadMirror` | Headband and round disc with hole but **includes a villager head/neck**. Not an isolated accessory yet. |
+| `SM_Crook` | Curved pale/tan staff. Adds a pink pedestal; remove it. |
+| `SM_LeafMegaphone` | Green flared megaphone with leaf veins; adds a handle and a small face-like detail inside. |
+| `SM_LollyShard` | Meshy; pink faceted broken candy but **retains a long white stick**, contrary to the shard-only prompt. 156 triangles; remove stick if suitable. |
+
+## Earlier test-stage report (historical)
+
+The following records the original 14-job test delivery before Dylan's approval and the current batches. Its recommendations and stop instructions describe that earlier checkpoint.
 
 Review grid: [review.html](../../ImportSource/_gen/review.html). GAME should put the meshes in the game camera for Dylan's approval. Observations below come from every generator thumbnail, the ingested UI PNGs, GLB structure and Rodin base-color atlases; they are not in-engine acceptance tests.
 

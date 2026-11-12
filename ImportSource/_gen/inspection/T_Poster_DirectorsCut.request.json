@@ -1,0 +1,12 @@
+{
+  "id": "T_Poster_DirectorsCut",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Additional references show the relevant character design; keep that character's proportions, face, wings, costume and props consistent while following the requested pose. Use 1024x1536 aspect ratio. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. An over-the-top epic movie poster titled \"THE DIRECTOR'S CUT\": a grim armoured knight raising a greatsword over a cheerful candy village. Filming from the corner is Fenella: a ridiculously thin tiny flying adult fairy director with long skinny limbs, a small angular face, cream skin, short lavender bob, berry-red beret, close-fitting mint jacket and clearly visible pink-and-gold fairy wings. She holds a dark grey handheld digital video camcorder with a flip-out side screen at chest height, away from her head, both eyes and her entire face visible. Keep her thin proportions and costume consistent with her character reference; no round chibi body, no film reels, no camera attached to her face. The artwork fills an opaque canvas edge to edge, with no transparent background or surrounding margin. No text unless words are given in quotes, and then spelled exactly. For quoted titles, include only that title and no credits or extra lettering.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png",
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png",
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Fenella_Billboard/T_Fenella_Billboard.png"
+  ],
+  "aspect": "1024x1536",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-9d406dd1-f39a-4a5a-a845-90b29878bdc9.png",
+  "builtin": true
+}

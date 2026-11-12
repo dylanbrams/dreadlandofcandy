@@ -1,0 +1,11 @@
+{
+  "id": "T_Portrait_Fenella",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. The second reference is Fenella's current replacement design for consistent thin proportions, face, wings, costume and video camcorder. Use 1024x1024 aspect ratio. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A tiny adult fairy film director with ridiculously thin elongated proportions, very narrow shoulders, long skinny arms, a small delicate angular face, cream skin, short lavender bob, berry-red beret and close-fitting mint jacket. Two clearly visible iridescent pink-and-gold fairy wings spread behind her shoulders. She holds a dark grey handheld digital VIDEO CAMCORDER with a flip-out side screen in both hands at chest height, below her chin, away from her face. Both eyes and the entire face are unobstructed. Bossy, confident, mid-instruction, as if speaking in a tiny high piping voice. No round chibi proportions, no film reels, no camera touching her head. Head and shoulders, centred, facing slightly toward the viewer, isolated on a fully transparent background. No text.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png",
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Fenella_Billboard/T_Fenella_Billboard.png"
+  ],
+  "aspect": "1024x1024",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-2c90fc66-2eda-4922-92f6-a22ec4f927f8.png",
+  "builtin": true
+}

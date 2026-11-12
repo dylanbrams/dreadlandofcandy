@@ -149,7 +149,7 @@
     "SM_Fenella": {
       "status": "done",
       "error": "",
-      "finished": "Thu Nov 12 07:44:13 2026",
+      "finished": "Thu Nov 12 08:19:22 2026",
       "via": "api",
       "tool": "rodin"
     },
@@ -266,17 +266,233 @@
     },
     "T_Stamp_ReservedForSequel": {
       "status": "done",
-      "finished": "Thu Nov 12 08:06:47 2026",
+      "finished": "Thu Nov 12 08:35:10 2026",
       "via": "codex"
     },
     "T_Portrait_Fenella": {
       "status": "done",
-      "finished": "Thu Nov 12 08:07:45 2026",
+      "finished": "Thu Nov 12 08:35:13 2026",
       "via": "codex"
     },
     "T_Portrait_Fenella_Sulk": {
       "status": "done",
-      "finished": "Thu Nov 12 08:07:47 2026",
+      "finished": "Thu Nov 12 08:35:14 2026",
+      "via": "codex"
+    },
+    "T_Paper_NotesCard": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:09:50 2026",
+      "via": "codex"
+    },
+    "T_Passive_Standing": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:10:43 2026",
+      "via": "codex"
+    },
+    "T_Passive_Brooding": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:12:42 2026",
+      "via": "codex"
+    },
+    "T_Passive_CapeMaintenance": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:14:09 2026",
+      "via": "codex"
+    },
+    "T_Loot_Helm": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:15:08 2026",
+      "via": "codex"
+    },
+    "T_Loot_Pauldrons": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:15:11 2026",
+      "via": "codex"
+    },
+    "T_Loot_Greaves": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:17:03 2026",
+      "via": "codex"
+    },
+    "T_Loot_Doomplate": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:17:04 2026",
+      "via": "codex"
+    },
+    "T_Loot_Gauntlets": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:17:07 2026",
+      "via": "codex"
+    },
+    "T_Fenella_Billboard": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:21:52 2026",
+      "via": "codex"
+    },
+    "T_Loot_Amulet": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:22:45 2026",
+      "via": "codex"
+    },
+    "T_Loot_Cloak": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:23:18 2026",
+      "via": "codex"
+    },
+    "T_Loot_Ring": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:23:56 2026",
+      "via": "codex"
+    },
+    "T_Loot_DampNapkin": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:23:57 2026",
+      "via": "codex"
+    },
+    "T_Stamp_DirectorsCut": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:23:58 2026",
+      "via": "codex"
+    },
+    "SM_FortGate": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:28:14 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_LightStand": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:28:03 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Table": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:30:36 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Hat_Straw": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:28:52 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_LollyShard": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:26:20 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_HeadMirror": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:31:15 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Crook": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:31:42 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_LeafMegaphone": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 08:33:21 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "T_Stamp_ProducersPick": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:35:11 2026",
+      "via": "codex"
+    },
+    "T_Stamp_Evidence": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:35:12 2026",
+      "via": "codex"
+    },
+    "T_Stamp_Reformed": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:35:13 2026",
+      "via": "codex"
+    },
+    "T_Fenella_Wing": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:35:15 2026",
+      "via": "codex"
+    },
+    "T_Paper_Ledger": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:35:16 2026",
+      "via": "codex"
+    },
+    "T_Portrait_Farmer": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:38:50 2026",
+      "via": "codex"
+    },
+    "T_Frame_Rarity_Common": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:39:37 2026",
+      "via": "codex"
+    },
+    "T_Frame_Rarity_Uncommon": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:40:26 2026",
+      "via": "codex"
+    },
+    "T_Frame_Rarity_Rare": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:41:26 2026",
+      "via": "codex"
+    },
+    "T_Frame_Rarity_Legendary": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:41:28 2026",
+      "via": "codex"
+    },
+    "T_Frame_Rarity_DirectorsCollection": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:41:34 2026",
+      "via": "codex"
+    },
+    "T_Poster_DirectorsCut": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:44:48 2026",
+      "via": "codex"
+    },
+    "T_Poster_Marquee": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:45:54 2026",
+      "via": "codex"
+    },
+    "T_Portrait_Marshal": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:46:40 2026",
+      "via": "codex"
+    },
+    "T_Portrait_Herder": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:46:42 2026",
+      "via": "codex"
+    },
+    "T_Frame_CandyRockPhone": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:47:35 2026",
+      "via": "codex"
+    },
+    "T_Clock_Face": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:47:37 2026",
       "via": "codex"
     }
   },
@@ -306,7 +522,6 @@
     "SM_Toothbrush",
     "SM_Goblin",
     "SM_Villager",
-    "SM_Fenella",
     "SM_LollyBug",
     "SM_Almond",
     "SM_CandyCrop",
@@ -329,7 +544,52 @@
     "T_Frame_Title",
     "T_Frame_NotesCard",
     "T_Card_CutBurst",
-    "T_Card_Retake"
+    "T_Card_Retake",
+    "SM_Fenella",
+    "SM_FortGate",
+    "SM_LightStand",
+    "SM_Table",
+    "SM_Hat_Straw",
+    "SM_HeadMirror",
+    "SM_Crook",
+    "SM_LeafMegaphone",
+    "SM_LollyShard",
+    "T_Passive_Brooding",
+    "T_Passive_CapeMaintenance",
+    "T_Passive_Standing",
+    "T_Loot_Pauldrons",
+    "T_Loot_Greaves",
+    "T_Loot_Helm",
+    "T_Loot_Doomplate",
+    "T_Loot_Gauntlets",
+    "T_Loot_Cloak",
+    "T_Loot_DampNapkin",
+    "T_Loot_Amulet",
+    "T_Loot_Ring",
+    "T_Card_CallSheet",
+    "T_Stamp_DirectorsCut",
+    "T_Stamp_ReservedForSequel",
+    "T_Stamp_ProducersPick",
+    "T_Stamp_Evidence",
+    "T_Stamp_Reformed",
+    "T_Portrait_Fenella",
+    "T_Portrait_Fenella_Sulk",
+    "T_Fenella_Billboard",
+    "T_Fenella_Wing",
+    "T_Paper_NotesCard",
+    "T_Paper_Ledger",
+    "T_Frame_Rarity_Common",
+    "T_Frame_Rarity_Uncommon",
+    "T_Frame_Rarity_Rare",
+    "T_Frame_Rarity_Legendary",
+    "T_Frame_Rarity_DirectorsCollection",
+    "T_Poster_Marquee",
+    "T_Poster_DirectorsCut",
+    "T_Portrait_Farmer",
+    "T_Portrait_Marshal",
+    "T_Portrait_Herder",
+    "T_Frame_CandyRockPhone",
+    "T_Clock_Face"
   ],
   "routes": {
     "npc": "rodin",

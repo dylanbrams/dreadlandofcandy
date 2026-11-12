@@ -1,0 +1,9 @@
+{
+  "id": "T_Paper_NotesCard",
+  "prompt": "REFERENCE ROLE: The attached image is a STYLE REFERENCE ONLY for painting, materials and palette. Generate a NEW standalone game asset specified below. Subject and composition come only from the asset prompt. Do not copy the reference's objects or add accessories, ribbons, weapons, frames, comic bursts, hands or text unless expressly requested in the asset prompt. Use 1536x1024 aspect ratio. The paper must fill the entire opaque canvas edge to edge.\n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A blank cream index-card paper texture seen straight on, faint ruled lines, a red header line, slight creases near corners, thick dark edge outline touching the canvas perimeter, open clean writing area, nothing written on it, no desk, no surrounding margin. The artwork fills an opaque canvas edge to edge, with no transparent background or surrounding margin. No text unless words are given in quotes, and then spelled exactly. For quoted titles, include only that title and no credits or extra lettering.",
+  "reference": [
+    "Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1536x1024",
+  "builtin": true
+}

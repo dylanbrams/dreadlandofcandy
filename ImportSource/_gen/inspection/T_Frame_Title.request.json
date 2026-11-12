@@ -1,0 +1,10 @@
+{
+  "id": "T_Frame_Title",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-f850b014-9be6-4ca9-8707-6bfbd5c06786.png",
+  "prompt": "REFERENCE ROLE: The attached image is a STYLE REFERENCE ONLY for painting, materials and palette. Generate a NEW standalone game asset specified below. Its subject and composition come only from the asset prompt. Do not reproduce the reference's gauntlet, comic burst, sword or cloth unless that object is explicitly requested below. Use the requested 1536x1024 aspect ratio. For a frame, both its central opening and outside must be fully transparent, with no background gradient.\n\nASSET PROMPT (verbatim):\nPainted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. A wide title-logo frame of black iron with sharp spikes and riveted corners, viewed straight on without perspective, a large empty central opening for live title text; keep spikes inside the canvas. A decorative frame or border only, centred on the canvas. The inside of the frame is completely empty and transparent, and so is everything outside it. No text, no letters.",
+  "reference": [
+    "Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1536x1024",
+  "builtin": true
+}

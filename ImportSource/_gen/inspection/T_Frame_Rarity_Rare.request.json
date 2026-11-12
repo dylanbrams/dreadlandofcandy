@@ -1,0 +1,10 @@
+{
+  "id": "T_Frame_Rarity_Rare",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Use 1024x1536 aspect ratio. Frame only: leave both the whole central opening and the outside completely transparent, without backdrop, paper or glow. \n\nASSET PROMPT (verbatim):\nPainted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. A tall loot-card border, iron with cold blue accents, the third of five rarity tiers. A decorative frame or border only, centred on the canvas. The inside of the frame is completely empty and transparent, and so is everything outside it. No text, no letters.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1024x1536",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-7535c0ba-9ad4-495d-a7d2-849bf196882f.png",
+  "builtin": true
+}

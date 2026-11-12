@@ -1,0 +1,9 @@
+{
+  "id": "T_Passive_Brooding",
+  "prompt": "REFERENCE ROLE: The attached image is a STYLE REFERENCE ONLY for painting, materials and palette. Generate a NEW standalone game asset specified below. Subject and composition come only from the asset prompt. Do not copy the reference's objects or add accessories, ribbons, weapons, frames, comic bursts, hands or text unless expressly requested in the asset prompt. Use 1024x1024 aspect ratio. The background must be genuinely transparent.\n\nASSET PROMPT (verbatim):\nPainted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. Passive skill icon, desaturated to near grey as if inactive: a closed great helm slumped in shadow, brooding. Exactly one item, centred, filling about 80 percent of a square canvas, isolated on a fully transparent background. No text, no letters, no numbers, no border, no frame, no scenery, no cast shadow.",
+  "reference": [
+    "Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1024x1024",
+  "builtin": true
+}

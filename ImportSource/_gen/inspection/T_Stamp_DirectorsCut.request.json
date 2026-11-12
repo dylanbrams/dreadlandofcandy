@@ -1,0 +1,10 @@
+{
+  "id": "T_Stamp_DirectorsCut",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Use 1024x1024 aspect ratio. STAMP REQUIREMENT: ink impression only; every area without ink is transparent, including spaces inside letters. No paper, cardboard, plaque, backing, glow or shadow. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. Red ink stamp reading \"DIRECTOR'S CUT\" inside a rectangular border. Exactly one rubber-stamp impression, centred, isolated on a fully transparent background, ink slightly uneven and grungy, tilted about 8 degrees. The words must be spelled exactly as given in quotes, in bold block capitals. No other text.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1024x1024",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-740e4773-4315-47fa-9b6a-e570220e171f.png",
+  "builtin": true
+}

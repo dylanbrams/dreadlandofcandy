@@ -1,0 +1,10 @@
+{
+  "id": "T_Loot_Sword",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-f31b48af-c612-41aa-ad53-bada72d94e44.png",
+  "prompt": "REFERENCE ROLE: The attached image is a STYLE REFERENCE ONLY for painting, materials and palette. Generate a NEW standalone game asset specified below. Its subject and composition come only from the asset prompt. Do not reproduce the reference's gauntlet, comic burst, sword or cloth unless that object is explicitly requested below. Use the requested 1024x1024 aspect ratio. For a frame, both its central opening and outside must be fully transparent, with no background gradient.\n\nASSET PROMPT (verbatim):\nPainted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. Legendary loot icon: an oversized dark greatsword. Exactly one item, centred, filling about 80 percent of a square canvas, isolated on a fully transparent background. No text, no letters, no numbers, no border, no frame, no scenery, no cast shadow.",
+  "reference": [
+    "Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1024x1024",
+  "builtin": true
+}

@@ -34,7 +34,7 @@
       "triangles": 500000,
       "materials": 1,
       "textures": 3,
-      "bytes": 24168832
+      "bytes": 24940060
     },
     {
       "id": "SM_LollyBug",
@@ -158,26 +158,28 @@
     {
       "id": "T_Skill_FormALine",
       "size": [
-        1254,
-        1254
+        1024,
+        879
       ],
       "alpha_extrema": [
         0,
         255
       ],
       "visible_bounds": [
+        1,
         0,
-        23,
-        1240,
-        1254
+        1023,
+        878
       ],
-      "kind": "icon"
+      "kind": "icon",
+      "transparent_fraction": 0.6827816144055745,
+      "center_alpha": 0
     },
     {
       "id": "T_Skill_DisappointedSigh",
       "size": [
-        1254,
-        1254
+        992,
+        1024
       ],
       "alpha_extrema": [
         0,
@@ -185,35 +187,99 @@
       ],
       "visible_bounds": [
         0,
-        19,
-        1218,
-        1254
+        1,
+        989,
+        1019
       ],
-      "kind": "icon"
+      "kind": "icon",
+      "transparent_fraction": 0.5017463930191532,
+      "center_alpha": 253
     },
     {
       "id": "T_Skill_LastJudgment",
       "size": [
-        1254,
-        1254
+        732,
+        1024
       ],
       "alpha_extrema": [
         0,
         255
       ],
       "visible_bounds": [
-        41,
-        21,
-        1232,
-        1254
+        3,
+        0,
+        731,
+        1024
       ],
-      "kind": "icon"
+      "kind": "icon",
+      "transparent_fraction": 0.5827423262465847,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Passive_Brooding",
+      "size": [
+        936,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        4,
+        935,
+        1023
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.46858828291933763,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Passive_CapeMaintenance",
+      "size": [
+        937,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        3,
+        937,
+        1024
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.4113558481189968,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Passive_Standing",
+      "size": [
+        907,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        3,
+        5,
+        907,
+        1022
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.3842315842061742,
+      "center_alpha": 252
     },
     {
       "id": "T_Loot_Sword",
       "size": [
-        1254,
-        1254
+        942,
+        1024
       ],
       "alpha_extrema": [
         0,
@@ -221,17 +287,99 @@
       ],
       "visible_bounds": [
         0,
-        31,
-        1234,
-        1238
+        5,
+        940,
+        1021
       ],
-      "kind": "icon"
+      "kind": "icon",
+      "transparent_fraction": 0.7710489649681529,
+      "center_alpha": 252
     },
     {
       "id": "T_Loot_Toothbrush",
       "size": [
-        1254,
-        1254
+        915,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        5,
+        2,
+        913,
+        1024
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.7989519296448088,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Loot_Celery",
+      "size": [
+        950,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        1,
+        4,
+        950,
+        1022
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.6659231085526316,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Loot_Pauldrons",
+      "size": [
+        1024,
+        918
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        0,
+        1021,
+        918
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.503975396582244,
+      "center_alpha": 0
+    },
+    {
+      "id": "T_Loot_Greaves",
+      "size": [
+        684,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        3,
+        4,
+        683,
+        1020
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.36767149808114036,
+      "center_alpha": 0
+    },
+    {
+      "id": "T_Loot_Helm",
+      "size": [
+        849,
+        1024
       ],
       "alpha_extrema": [
         0,
@@ -239,34 +387,158 @@
       ],
       "visible_bounds": [
         0,
-        37,
-        1216,
-        1254
+        4,
+        849,
+        1024
       ],
-      "kind": "icon"
+      "kind": "icon",
+      "transparent_fraction": 0.40950175758244994,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Loot_Doomplate",
+      "size": [
+        993,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        3,
+        1,
+        993,
+        1022
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.3914855157980866,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Loot_Gauntlets",
+      "size": [
+        941,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        3,
+        938,
+        1020
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.4901970144792774,
+      "center_alpha": 0
+    },
+    {
+      "id": "T_Loot_Cloak",
+      "size": [
+        1013,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        1013,
+        1023
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.32397581441263573,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Loot_DampNapkin",
+      "size": [
+        1024,
+        983
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        3,
+        1024,
+        983
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.4768227842065107,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Loot_Amulet",
+      "size": [
+        727,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        4,
+        726,
+        1020
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.5006259671595599,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Loot_Ring",
+      "size": [
+        886,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        2,
+        2,
+        883,
+        1024
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.4152628121472912,
+      "center_alpha": 253
     },
     {
       "id": "T_Frame_Title",
       "size": [
-        1536,
-        1024
+        1532,
+        1002
       ],
       "alpha_extrema": [
         0,
         254
       ],
       "visible_bounds": [
-        8,
-        9,
-        1535,
-        1024
+        6,
+        1,
+        1531,
+        1002
       ],
-      "kind": "frame"
+      "kind": "frame",
+      "transparent_fraction": 0.6753692354195004,
+      "center_alpha": 1
     },
     {
       "id": "T_Frame_NotesCard",
       "size": [
-        1536,
+        1529,
         1024
       ],
       "alpha_extrema": [
@@ -276,10 +548,292 @@
       "visible_bounds": [
         0,
         4,
-        1535,
+        1529,
         1024
       ],
-      "kind": "frame"
+      "kind": "frame",
+      "transparent_fraction": 0.6770758819081099,
+      "center_alpha": 0
+    },
+    {
+      "id": "T_Card_CutBurst",
+      "size": [
+        1024,
+        944
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        5,
+        4,
+        1024,
+        942
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.4219412076271186,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Card_Retake",
+      "size": [
+        1024,
+        984
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        5,
+        5,
+        1020,
+        980
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.10851653804623984,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Card_CallSheet",
+      "size": [
+        1024,
+        949
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        5,
+        0,
+        1020,
+        945
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.16560092037671234,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Stamp_DirectorsCut",
+      "size": [
+        1024,
+        384
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        3,
+        0,
+        1021,
+        383
+      ],
+      "kind": "stamp",
+      "transparent_fraction": 0.44858551025390625,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Stamp_ReservedForSequel",
+      "size": [
+        1024,
+        621
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        1,
+        1024,
+        619
+      ],
+      "kind": "stamp",
+      "transparent_fraction": 0.38200262932769724,
+      "center_alpha": 251
+    },
+    {
+      "id": "T_Stamp_ProducersPick",
+      "size": [
+        1024,
+        1023
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        2,
+        1024,
+        1021
+      ],
+      "kind": "stamp",
+      "transparent_fraction": 0.4976612139540567,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Stamp_Evidence",
+      "size": [
+        1024,
+        416
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        3,
+        1024,
+        415
+      ],
+      "kind": "stamp",
+      "transparent_fraction": 0.4734332744891827,
+      "center_alpha": 2
+    },
+    {
+      "id": "T_Stamp_Reformed",
+      "size": [
+        1024,
+        431
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        1024,
+        431
+      ],
+      "kind": "stamp",
+      "transparent_fraction": 0.39152679089327147,
+      "center_alpha": 252
+    },
+    {
+      "id": "T_Portrait_Fenella",
+      "size": [
+        1020,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        4,
+        4,
+        1017,
+        1020
+      ],
+      "kind": "portrait",
+      "transparent_fraction": 0.3651596966911765,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Portrait_Fenella_Sulk",
+      "size": [
+        1024,
+        1022
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        4,
+        1024,
+        1022
+      ],
+      "kind": "portrait",
+      "transparent_fraction": 0.375220729880137,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Fenella_Billboard",
+      "size": [
+        830,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        3,
+        4,
+        826,
+        1020
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.6346185523343374,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Fenella_Wing",
+      "size": [
+        1024,
+        728
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        1,
+        0,
+        1019,
+        727
+      ],
+      "kind": "icon",
+      "transparent_fraction": 0.3723667689732143,
+      "center_alpha": 253
+    },
+    {
+      "id": "T_Paper_NotesCard",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "kind": "full",
+      "transparent_fraction": 0.0,
+      "center_alpha": 255
+    },
+    {
+      "id": "T_Paper_Ledger",
+      "size": [
+        1024,
+        1536
+      ],
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        0,
+        1024,
+        1536
+      ],
+      "kind": "full",
+      "transparent_fraction": 0.0,
+      "center_alpha": 255
     }
   ]
 }

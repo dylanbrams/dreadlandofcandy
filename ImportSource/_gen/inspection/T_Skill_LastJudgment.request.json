@@ -1,0 +1,9 @@
+{
+  "id": "T_Skill_LastJudgment",
+  "prompt": "Painted dark-fantasy video game UI art: black iron and aged leather, sharp angular edges, desaturated palette, heavy shadows, accents of blood red and dull gold, grim and pompous, crisp silhouette that reads at small size. Skill icon: a greatsword raised into a single shaft of light from a dark sky. Exactly one item, centred, filling about 80 percent of a square canvas, isolated on a fully transparent background. No text, no letters, no numbers, no border, no frame, no scenery, no cast shadow.",
+  "reference": [
+    "Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png"
+  ],
+  "aspect": "1024x1024",
+  "builtin": true
+}

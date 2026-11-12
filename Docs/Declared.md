@@ -108,3 +108,48 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 | `T_Frame_NotesCard` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_NotesCard/T_Frame_NotesCard.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Card_CutBurst` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Card_CutBurst/T_Card_CutBurst.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Card_Retake` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Card_Retake/T_Card_Retake.png`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Fenella` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Fenella.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_FortGate` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_FortGate.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_LightStand` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_LightStand.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Table` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Table.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Hat_Straw` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Hat_Straw.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_HeadMirror` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_HeadMirror.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Crook` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Crook.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_LeafMegaphone` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_LeafMegaphone.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_LollyShard` | Meshy text-to-3D | 2026-11-12 | `ImportSource/Meshy/SM_LollyShard.glb`; prompt in `Assets/Generation/jobs.json` |
+| `T_Passive_Brooding` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Passive_Brooding/T_Passive_Brooding.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Passive_CapeMaintenance` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Passive_CapeMaintenance/T_Passive_CapeMaintenance.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Passive_Standing` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Passive_Standing/T_Passive_Standing.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Pauldrons` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Pauldrons/T_Loot_Pauldrons.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Greaves` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Greaves/T_Loot_Greaves.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Helm` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Helm/T_Loot_Helm.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Doomplate` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Doomplate/T_Loot_Doomplate.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Gauntlets` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Gauntlets/T_Loot_Gauntlets.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Cloak` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Cloak/T_Loot_Cloak.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_DampNapkin` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_DampNapkin/T_Loot_DampNapkin.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Amulet` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Amulet/T_Loot_Amulet.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Loot_Ring` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Loot_Ring/T_Loot_Ring.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Card_CallSheet` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Card_CallSheet/T_Card_CallSheet.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Stamp_DirectorsCut` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Stamp_DirectorsCut/T_Stamp_DirectorsCut.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Stamp_ReservedForSequel` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Stamp_ReservedForSequel/T_Stamp_ReservedForSequel.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Stamp_ProducersPick` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Stamp_ProducersPick/T_Stamp_ProducersPick.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Stamp_Evidence` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Stamp_Evidence/T_Stamp_Evidence.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Stamp_Reformed` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Stamp_Reformed/T_Stamp_Reformed.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Portrait_Fenella` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Fenella/T_Portrait_Fenella.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Portrait_Fenella_Sulk` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Fenella_Sulk/T_Portrait_Fenella_Sulk.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Fenella_Billboard` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Fenella_Billboard/T_Fenella_Billboard.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Fenella_Wing` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Fenella_Wing/T_Fenella_Wing.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Paper_NotesCard` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Paper_NotesCard/T_Paper_NotesCard.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Paper_Ledger` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Paper_Ledger/T_Paper_Ledger.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_Rarity_Common` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_Rarity_Common/T_Frame_Rarity_Common.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_Rarity_Uncommon` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_Rarity_Uncommon/T_Frame_Rarity_Uncommon.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_Rarity_Rare` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_Rarity_Rare/T_Frame_Rarity_Rare.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_Rarity_Legendary` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_Rarity_Legendary/T_Frame_Rarity_Legendary.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_Rarity_DirectorsCollection` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_Rarity_DirectorsCollection/T_Frame_Rarity_DirectorsCollection.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Poster_Marquee` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Poster_Marquee/T_Poster_Marquee.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Poster_DirectorsCut` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Poster_DirectorsCut/T_Poster_DirectorsCut.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Portrait_Farmer` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Farmer/T_Portrait_Farmer.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Portrait_Marshal` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Marshal/T_Portrait_Marshal.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Portrait_Herder` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Portrait_Herder/T_Portrait_Herder.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Frame_CandyRockPhone` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Frame_CandyRockPhone/T_Frame_CandyRockPhone.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Clock_Face` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_Face/T_Clock_Face.png`; prompt in `Assets/Generation/jobs.json` |

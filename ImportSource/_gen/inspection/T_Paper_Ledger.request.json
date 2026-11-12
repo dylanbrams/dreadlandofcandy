@@ -1,0 +1,10 @@
+{
+  "id": "T_Paper_Ledger",
+  "prompt": "REFERENCE ROLE: Use the first attached image only for painting style, materials and palette. Create a NEW standalone asset, with ONLY the subject described below. Do not copy other objects from the style reference. Use 1024x1536 aspect ratio. \n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A blank accounting ledger paper texture seen straight on, faint green ruled columns, small coffee ring stain near an outer corner, thick dark edge outline touching the canvas perimeter, clean central accounting area, nothing written on it, no desk, no surrounding margin. The artwork fills an opaque canvas edge to edge, with no transparent background or surrounding margin. No text unless words are given in quotes, and then spelled exactly. For quoted titles, include only that title and no credits or extra lettering.",
+  "reference": [
+    "D:/Source/Unreal/MegaJam2026/Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1024x1536",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-5432ea57-af9c-4d65-9e1a-fe37b9d79822.png",
+  "builtin": true
+}
