@@ -112,7 +112,7 @@ function makeScene() {
 function load(path) {
   if (!cache.has(path)) {
     cache.set(path, (async () => {
-      const res = await fetch(path);
+      const res = await fetch('/' + path);
       if (!res.ok) throw new Error(res.status + ' ' + path);
       const buf = await res.arrayBuffer();
       const gltf = await loader.parseAsync(buf, '');
@@ -147,7 +147,8 @@ function placeModel(entry) {
   const norm = document.getElementById('norm').checked;
   const size = new THREE.Vector3(); entry.box.getSize(size);
   const center = new THREE.Vector3(); entry.box.getCenter(center);
-  const k = norm ? 1 / Math.max(size.x, size.y, size.z) : 1;
+  // Scale by the front-facing extent (width or height), so a long tail or deep roof doesn't shrink the model.
+  const k = norm ? 1 / Math.max(size.x, size.y) : 1;
   entry.root.scale.setScalar(k);
   entry.root.position.set(-center.x * k, -entry.box.min.y * k, -center.z * k);
 }
