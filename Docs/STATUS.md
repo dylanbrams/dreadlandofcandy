@@ -1,11 +1,11 @@
-# STATUS (GAME, 2026-11-12 09:10, day 1)
+# STATUS (GAME, 2026-11-12 10:00, day 1)
 
 Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers: `Docs/Design/WORKERS.md`.
 
 ## Next task
 
-**T07:** `-scene=<n>` (start on scene n, hero on set n's mark), `-autonote=take|refuse`, `-timescale`. Then day 2 (BUILD_SPEC): T10 HUD layers, T11 faerie and captions (RULES' `FJamNagScheduler` is merged), T12 note prompt, T13 failure, T14 wrap card (RULES' ledger and progression are merged), T15 Scenes 2 and 3 (tables merged; sets exist).
-**Dylan: please play Scene 1 once** (editor `-game`, or `.\Scripts\screenshot.ps1 -At 999`). The "Hold [E] Feed celery" prompt and the hold-E feel have not been seen in a screenshot or played by a person.
+**Day 2 tasks, in order:** T10 HUD layers (`-uiscreen`), T11 faerie and captions (RULES' `FJamNagScheduler` is merged), T12 note prompt UI (the CUT! card plus hold E / Q is a placeholder), T13 failure presentation, T14 wrap card (ledger and progression are merged), T15 scene beats and tuning (all three scenes already play), T16 title, pause, Premiere, credits.
+**Dylan: please play the film once** (editor `-game`, or `.\Scripts\screenshot.ps1 -At 999`). Dylan found the hero stuck behind pacified rats (fixed in T07: nuisances no longer block the hero). Hold E or A takes a note at CUT!, and Q or B refuses it.
 Workers: RULES says days 1 and 2 are done (`rules` merged at `d9d9b51`). ASSETS: generation finished (batch1 and batch2, Fenella regenerated with wings and a camcorder); meshes need reducing and a look in the game camera (T20). BACKEND: B1 and B2 built and tested, deploy pending; asks GAME or RULES to confirm the CUT! prompt ids and suggested notes in `backend/deploy/suggested_notes.json`.
 
 ## Decisions (Dylan, Nov 12, from the browser model viewer)
@@ -20,6 +20,16 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
 - Camera (T01 tuning): arm **1700 uu** (not 1100), 50 degree pitch, FOV 55, looks 300 uu ahead of the hero. At 1100 the hero filled a third of the screen and the nuisances were off the top. The hero is now about a fifth of the screen height.
 
 ## What exists
+
+- **T07 done.** Flags: `-scene=<n>` (start at scene n, hero on its set), `-autonote=take|refuse`, `-timescale=<x>` (0.25 to 8). All three scenes play in sequence. After a wrap the HUD hint says to walk up the street, and stepping onto the next set starts its scene.
+  - Kinds follow BUILD_SPEC 10: rat, goblin, erratic bug, and the almond (an `AJamPickup`, collected by walking over it).
+  - Interact stages treat the previous stage's pacified targets; a retake resets them to pacified. A note's boss (Resolve x3.2) spawns fresh at 1.8x scale and does not flee.
+  - Scene 3's crop meter: each loose bug eats one crop per 15 s.
+  - CUT! shows the `JamLines` pitch line. Hold E or A takes the note, Q or B refuses it.
+  - Autoplay runs:
+    - `-autoplay -timescale=4` logs `JamAutoplay: PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut`.
+    - Adding `-autonote=refuse` logs `notes=0/2 ending=theatrical`.
+  - Nuisances overlap pawns instead of blocking them. The Lecture still finds them, because it queries by object type.
 
 - **T08 done.** MCP spike answer: **no.** The 5.8 `ModelContextProtocol` plugin (HTTP server, port 8000, off unless autostarted) with `EditorToolset` offers selection, camera, capture and PIE, but no actor spawning or map saving, and it is not connected to these sessions. So the backlot is a C++ table: `Game/JamBacklot.h` (`JamBacklot::Sets()`, `Streets()`, `HeroMark(i)`) and `AJamBacklot`, which the game mode spawns on the template map. Up the screen (+X): the field (1800 x 1800, Scene 1), a 4500 uu street, Fort Toothache (1400 x 1400), another street, the orchard (2000 x 2000). Low plywood walls with street-wide openings, a banner per set facing the camera. Scene 1 plays on the field set; rats steer inside its walls. After the wrap, `-autoplay` walks the street and logs `JamAutoplay: walked to set Fort in 14.0 s` (BUILD_SPEC wants about 15 s). Tests `Jam.Game.Backlot.Layout` and `.Room`. Screenshots `t08-field.png`, `t08-street.png`, `t08-fort.png`. Still on `Template_Default`; a real map with lighting comes with T20.
 - **RULES work merged** (`d9d9b51`): `JamLedger`, `JamLines` + `FJamNagScheduler`, `FJamProgression`, `JamNoteClamp`, Scenes 2 and 3 as data. See `Docs/Workers/rules.md` for how GAME uses each. 42 tests under `Jam.`, all pass.
@@ -41,9 +51,11 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
 
 ## What does not exist yet
 
-Game-side use of the ledger, lines, progression and note clamp; the note UI, faerie, widget UI, a map asset, imported assets, Scenes 2 and 3 in the game mode (the set capacities RULES asks for: goblins 6, bugs 8, almonds 4). Nothing replicates (solo only, BUILD_SPEC 5).
+Game-side use of the ledger, lines, progression and note clamp; the note UI, faerie, widget UI, a map asset, imported assets, scene-specific beats (budget-out, sulking camera). Nothing replicates (solo only, BUILD_SPEC 5).
 
 ## Known issues
+
+- **Tuning:** Scene 3 is far too quick for the bot (19 s against BUILD_SPEC's 3 minutes; bugs fall to one lecture), and its crop meter never fails. Scene 2's 60 s countdown never fails either. Tune with Dylan's play in T15.
 
 - **Shared engine:** builds from other worktrees on the same engine take UBT's global mutex; a GAME build or package started at the same time fails at once with `ConflictingInstance` (UAT reports it as `Error_SDKNotFound`, exit code 10). Retry. Once an editor `-game` run also hung at startup waiting for the Zen cache server while a worker ran `UnrealEditor-Cmd`; retrying worked.
 

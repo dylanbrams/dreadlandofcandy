@@ -37,3 +37,8 @@
 - T08 MCP spike, about 10 minutes: the engine MCP plugin has no spawn-actor or save-map tool, so no map asset. The backlot is a C++ layout table instead: three sets on one line up the screen, joined by streets, walls with openings, banners. Testable and needs no cooked content.
 - First autoplay run: the bot never left the field. A scripted text replace had missed the line that starts the walk (tabs versus spaces); fixed with the Edit tool. Second run: walks to Fort Toothache in 14.0 s.
 - Packaged smoke (T08 build): all checks pass; packaged log has the PASS line and the walk to Fort Toothache.
+
+## 10:00 T07 flags, the whole film plays
+
+- `-scene`, `-autonote`, `-timescale`. Went further than the T07 row: the game mode now runs all three scenes on their sets, so autoplay is a regression test for the whole film (BUILD_SPEC wants `PASS scenes=3 ending=<name>`): both `take` and `refuse` pass.
+- Dylan, playing: the hero gets stuck behind pacified rats. The same bug failed my first full run, with the bot pinned against sitting bugs while collecting almonds in Scene 3. Nuisances now overlap pawns instead of blocking.
