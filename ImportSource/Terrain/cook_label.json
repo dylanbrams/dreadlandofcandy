@@ -1,0 +1,11 @@
+{
+  "asset": "/Game/World/PAL_Sugarborough",
+  "rule": "AlwaysCook",
+  "explicit_maps": [
+    "/Game/World/L_Sugarborough",
+    "/Game/World/Review/L_TerrainOverview",
+    "/Game/World/Review/L_TerrainVillage",
+    "/Game/World/Review/L_TerrainMeadow",
+    "/Game/World/Review/L_TerrainFort"
+  ]
+}

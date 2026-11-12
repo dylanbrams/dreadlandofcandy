@@ -1,0 +1,43 @@
+{
+  "verified_date_utc": "2026-11-12",
+  "map": "/Game/World/L_Sugarborough",
+  "editor_build": "passed",
+  "automation": {"passed": 54, "failed": 0},
+  "editor_physics": {
+    "status": "passed",
+    "ground_samples": 79,
+    "hero_capsule_approaches": 3,
+    "boundary_samples": 12,
+    "terrain_tiles": 16,
+    "nonblocking_scatter": 520,
+    "details": "engine_validation.json"
+  },
+  "windows_development_package": "passed",
+  "cook_label": "/Game/World/PAL_Sugarborough",
+  "packaged_main_map_launch_with_open_flag": "passed",
+  "inspected_packaged_captures": [
+    "Review/packaged-village.png",
+    "Review/packaged-overview.png"
+  ],
+  "backlot_regression": {
+    "status": "passed",
+    "smoke_seconds": 70,
+    "smoke_checks": 7,
+    "autoplay": "PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=72 lines=15 skills=16 time=126.5"
+  },
+  "validation_archive": {
+    "path": "Builds/TerrainValidation.zip",
+    "bytes": 574901156,
+    "limit_bytes": 1000000000,
+    "crc_verified": true,
+    "uploaded": false
+  },
+  "open_quest_gameplay_verified": false,
+  "remaining": [
+    "GAME's O1 framework is unmerged; O2-O9 remain separate GAME work.",
+    "Open quest autoplay cannot be verified on the current main source.",
+    "Human playthrough and final follow-camera readability need the GAME framework."
+  ],
+  "default_map_changed": false,
+  "game_source_changed": false
+}

@@ -1,0 +1,59 @@
+newmtl Village
+Kd 0.57 0.34 0.19
+Pr 0.85
+
+newmtl Meadow
+Kd 0.3 0.63 0.29
+Pr 0.85
+
+newmtl Molars
+Kd 0.49 0.3 0.4
+Pr 0.85
+
+newmtl Orchard
+Kd 0.19 0.43 0.29
+Pr 0.85
+
+newmtl Path
+Kd 0.91 0.67 0.36
+Pr 0.85
+
+newmtl Pink
+Kd 0.95 0.22 0.49
+Pr 0.85
+
+newmtl Mint
+Kd 0.26 0.87 0.69
+Pr 0.85
+
+newmtl Cream
+Kd 0.96 0.86 0.63
+Pr 0.85
+
+newmtl Chocolate
+Kd 0.17 0.065 0.035
+Pr 0.85
+
+newmtl Lavender
+Kd 0.54 0.33 0.76
+Pr 0.85
+
+newmtl Red
+Kd 0.8 0.06 0.12
+Pr 0.85
+
+newmtl White
+Kd 0.97 0.94 0.85
+Pr 0.85
+
+newmtl Window
+Kd 0.1 0.35 0.43
+Pr 0.85
+
+newmtl Dark
+Kd 0.045 0.025 0.055
+Pr 0.85
+
+newmtl Terrain
+Kd 1 1 1
+map_Kd T_SugarboroughGround.png
