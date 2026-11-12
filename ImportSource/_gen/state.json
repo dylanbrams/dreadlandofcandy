@@ -52,7 +52,7 @@
     "SM_Rat_Fal": {
       "status": "failed",
       "error": "HTTP 422 from queue.fal.run: {\"detail\":[{\"loc\":[\"body\"],\"msg\":\"The content could not be processed because it contained material flagged by a content checker.\",\"type\":\"content_policy_violation\",\"url\":\"https://docs.fal.ai/errors#content_policy_violation\",\"input\":\"\",\"categories\":[\"model_moderated\"]}]}",
-      "finished": "Thu Nov 12 07:09:05 2026",
+      "finished": "Thu Nov 12 07:20:19 2026",
       "via": "api",
       "tool": "fal"
     },

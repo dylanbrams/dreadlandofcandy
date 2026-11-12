@@ -1,1 +1,2 @@
-run SK_Hero,SK_Hero_Rig,SM_HouseFront,SM_Peppermint_Rodin,SM_HouseFront_Fal,SM_Peppermint_Fal finished in 3.6 min: 6 done, 0 failed
+run SM_Rat_Fal finished in 0.3 min: 0 done, 1 failed
+  FAILED SM_Rat_Fal: HTTP 422 from queue.fal.run: {"detail":[{"loc":["body"],"msg":"The content could not be processed because it contained material flagged by a content checker.","type":"content_policy_violation","url":"  (log: ImportSource/_gen/logs/SM_Rat_Fal.log)
