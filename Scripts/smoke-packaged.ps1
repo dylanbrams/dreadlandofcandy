@@ -19,7 +19,7 @@
 param(
     [ValidateSet("Development", "Shipping", "DebugGame")]
     [string]$Config = "Development",
-    [int]$RunSeconds = 30,
+    [int]$RunSeconds = 60,   # a full -autoplay -timescale=4 film needs about 30 s
     [string[]]$Extra = @(),
     [switch]$Play
 )

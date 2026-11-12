@@ -42,3 +42,12 @@
 
 - `-scene`, `-autonote`, `-timescale`. Went further than the T07 row: the game mode now runs all three scenes on their sets, so autoplay is a regression test for the whole film (BUILD_SPEC wants `PASS scenes=3 ending=<name>`): both `take` and `refuse` pass.
 - Dylan, playing: the hero gets stuck behind pacified rats. The same bug failed my first full run, with the bot pinned against sitting bugs while collecting almonds in Scene 3. Nuisances now overlap pawns instead of blocking.
+
+## 12:30 T10 HUD, T11 Fenella
+
+- T10: the canvas HUD became a UMG widget in layers, tree built in C++ (no MCP to author a WBP). It draws a plain view struct, so `-uiscreen=<sample>` can show any card or layer without playing to it. Eight samples screenshotted and checked, then a live run. Packaged smoke passes.
+- T11: Fenella exists. Basic-shape placeholder with wings and a camcorder (Dylan's notes on the generated model), following at the hero's shoulder and filming the nearest rat. RULES' nag scheduler picks her lines; the game mode queues story lines and lets ambient ones fill silence. 13 lines over a full autoplay run, no repeats.
+- First full run showed the cards and her captions saying the same thing (ACTION!, wrap, "This time the rats know their lines"); the cards now carry only the title.
+- Dylan: music has two takes of each track, both fine, so pick one at random. Batch 2 models are being cleaned and pulled in another session.
+- Schedule: day 1 backlog finished by 10:00, and two day 2 tasks done by 12:30.
+- Packaged T11 smoke: `PASS scenes=3 ... lines=13`. The smoke's 30 s default had cut the 4x film off at 95 s of game time; default is now 60 s.

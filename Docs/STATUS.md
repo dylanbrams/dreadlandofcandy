@@ -1,14 +1,19 @@
-# STATUS (GAME, 2026-11-12 10:00, day 1)
+# STATUS (GAME, 2026-11-12 12:30, day 1)
 
 Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers: `Docs/Design/WORKERS.md`.
 
 ## Next task
 
-**Day 2 tasks, in order:** T10 HUD layers (`-uiscreen`), T11 faerie and captions (RULES' `FJamNagScheduler` is merged), T12 note prompt UI (the CUT! card plus hold E / Q is a placeholder), T13 failure presentation, T14 wrap card (ledger and progression are merged), T15 scene beats and tuning (all three scenes already play), T16 title, pause, Premiere, credits.
+**Schedule: well ahead.** Day 1's backlog was done by 10:00 on day 1, and T10 and T11 (day 2) are done too. **Day 2 tasks left, in order:** T12 note prompt UI (the CUT! card plus hold E / Q is a placeholder), T13 failure presentation, T14 wrap card (ledger and progression are merged), T15 scene beats and tuning (all three scenes already play), T16 title, pause, Premiere, credits.
 **Dylan: please play the film once** (editor `-game`, or `.\Scripts\screenshot.ps1 -At 999`). Dylan found the hero stuck behind pacified rats (fixed in T07: nuisances no longer block the hero). Hold E or A takes a note at CUT!, and Q or B refuses it.
 Workers: RULES says days 1 and 2 are done (`rules` merged at `d9d9b51`). ASSETS: generation finished (batch1 and batch2, Fenella regenerated with wings and a camcorder); meshes need reducing and a look in the game camera (T20). BACKEND: B1 and B2 built and tested, deploy pending; asks GAME or RULES to confirm the CUT! prompt ids and suggested notes in `backend/deploy/suggested_notes.json`.
 
-## Decisions (Dylan, Nov 12, from the browser model viewer)
+## Decisions (Dylan, Nov 12)
+
+- **Music (T18):** every track comes in two takes, and both are fine; play one of the two at random each time a track starts. The boss music is "ridiculously over-the-top", as intended. Files are in `music/` (untracked; T18 imports them).
+- Batch 2 models: Dylan is having another session clean them up and pull them (12:20).
+
+### From the browser model viewer
 
 Test-stage verdicts. Dylan ran the approvals and routes himself and started batch1.
 - Hero (Meshy): approved, "pretty damn good". Peppermint: Meshy (Rodin's reads as a regular candy).
@@ -21,6 +26,8 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
 
 ## What exists
 
+- **T10 done.** Widget HUD `UJamHudWidget` (`Source/MegaJam/*/UI/`), tree built in C++ (no editor MCP for a WBP; BUILD_SPEC 5C allows it; all Transient, so a WBP can be reparented later). Draws a plain `FJamHudView` that `AJamHUD` builds from the game state each frame. Layers: slate label, take, blinking REC / STBY and a 24 fps timecode (`AJamGameState::FilmSeconds`, counts while rolling); objective with a meter bar (countdown or crops, pulses red when in danger); hint; bubble layer (round for Fenella, sharp red-edged for lectures; nothing emits bubbles until T19); interact prompt over its target; Fenella's caption at the bottom; centre card with a colour per `EJamCardKind` and a 0.18 s pop. `-uiscreen=hud|slate|action|cut|retake|wrap|meter|bubbles|caption` shows a sample over the running game. Tests `Jam.UI.Hud.*`. Screenshots `Saved/Screenshots/WindowsEditor/t10-*.png`.
+- **T11 done.** `AJamFaerie`: cosmetic, basic shapes until `SM_Fenella` (T20): violet cone dress, head, flapping dragonfly wings, camcorder with a blinking tally light; drifts at the hero's shoulder, bobs, films the nearest loose nuisance within 1500 uu, flaps faster while talking. The game mode owns the `FJamNagScheduler` (seed 2026): story lines (scene start, Level7Intro once, failed / forced retake, Take3..6, note taken / refused, wrap) queue; ambient lines (pacified, treated, lecture cast, idle, strayed via `Poll` each second) only fill silence; silenced during CUT!. The caption is a line id plus text on the game state. Cards Fenella now speaks (ACTION!, "Perfect! Again.", wrap, note answered) lost their subtitles. Autoplay PASS line now ends `lines=13`. Screenshots `t11-fenella.png`, `t11-action.png`.
 - **T07 done.** Flags: `-scene=<n>` (start at scene n, hero on its set), `-autonote=take|refuse`, `-timescale=<x>` (0.25 to 8). All three scenes play in sequence. After a wrap the HUD hint says to walk up the street, and stepping onto the next set starts its scene.
   - Kinds follow BUILD_SPEC 10: rat, goblin, erratic bug, and the almond (an `AJamPickup`, collected by walking over it).
   - Interact stages treat the previous stage's pacified targets; a retake resets them to pacified. A note's boss (Resolve x3.2) spawns fresh at 1.8x scale and does not flee.
@@ -55,6 +62,7 @@ Game-side use of the ledger, lines, progression and note clamp; the note UI, fae
 
 ## Known issues
 
+- The nuisances' debug state labels (`DrawDebugString`) draw over the HUD card. They go when the art does (T20).
 - **Tuning:** Scene 3 is far too quick for the bot (19 s against BUILD_SPEC's 3 minutes; bugs fall to one lecture), and its crop meter never fails. Scene 2's 60 s countdown never fails either. Tune with Dylan's play in T15.
 
 - **Shared engine:** builds from other worktrees on the same engine take UBT's global mutex; a GAME build or package started at the same time fails at once with `ConflictingInstance` (UAT reports it as `Error_SDKNotFound`, exit code 10). Retry. Once an editor `-game` run also hung at startup waiting for the Zen cache server while a worker ran `UnrealEditor-Cmd`; retrying worked.
