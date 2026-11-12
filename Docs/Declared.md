@@ -60,3 +60,23 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | Claude Code | Code, scripts, docs, the ability layer port and test scene |
 | ChatGPT | Pre-jam design briefs in `Docs/Design/` |
 | Unreal MCP + PCG and Niagara toolsets (engine plugins, Experimental) | Lets the agent drive the editor, build PCG graphs and Niagara systems |
+
+## Generated during the jam
+
+AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with the locked style words) are in the `manifest.jsonl` beside each output.
+
+| Asset | Tool | Date | File; prompt |
+| --- | --- | --- | --- |
+| `SK_Hero` | Meshy text-to-3D | 2026-11-12 | `ImportSource/Meshy/SK_Hero.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SK_Hero_Rig` | Meshy rigging + animation (library presets and text-to-motion) | 2026-11-12 | `ImportSource/Meshy/SK_Hero_Rig/SK_Hero_Rig.fbx`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Sword` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Sword.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Rat` | Meshy text-to-3D | 2026-11-12 | `ImportSource/Meshy/SM_Rat.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_HouseFront` | Meshy text-to-3D | 2026-11-12 | `ImportSource/Meshy/SM_HouseFront.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Peppermint` | Meshy text-to-3D | 2026-11-12 | `ImportSource/Meshy/SM_Peppermint.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Rat_Rodin` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Rat_Rodin.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_HouseFront_Rodin` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_HouseFront_Rodin.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Peppermint_Rodin` | Hyper3D Rodin Gen-2.5 | 2026-11-12 | `ImportSource/Hyper3D/SM_Peppermint_Rodin.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_HouseFront_Fal` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_HouseFront_Fal.glb`; prompt in `Assets/Generation/jobs.json` |
+| `SM_Peppermint_Fal` | fal.ai (Hunyuan3D v3.1 Pro text-to-3D) | 2026-11-12 | `ImportSource/Fal/SM_Peppermint_Fal.glb`; prompt in `Assets/Generation/jobs.json` |
+| `T_Skill_Lecture` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Skill_Lecture/T_Skill_Lecture.png`; prompt in `Assets/Generation/jobs.json` |
+| `T_Card_Clapper` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png`; prompt in `Assets/Generation/jobs.json` |

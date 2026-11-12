@@ -1,0 +1,114 @@
+{
+  "jobs": {
+    "SK_Hero": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:13:21 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_Sword": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:10:22 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Rat": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:10:10 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_HouseFront": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:13:21 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_Peppermint": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:09:59 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_Rat_Rodin": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:10:04 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_HouseFront_Rodin": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:10:04 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Rat_Fal": {
+      "status": "failed",
+      "error": "HTTP 422 from queue.fal.run: {\"detail\":[{\"loc\":[\"body\"],\"msg\":\"The content could not be processed because it contained material flagged by a content checker.\",\"type\":\"content_policy_violation\",\"url\":\"https://docs.fal.ai/errors#content_policy_violation\",\"input\":\"\",\"categories\":[\"model_moderated\"]}]}",
+      "finished": "Thu Nov 12 07:09:05 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_HouseFront_Fal": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:15:26 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Peppermint_Fal": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:14:37 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Peppermint_Rodin": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:13:28 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SK_Hero_Rig": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:14:42 2026",
+      "via": "api",
+      "tool": "meshy_rig"
+    },
+    "T_Skill_Lecture": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:15:44 2026",
+      "via": "codex"
+    },
+    "T_Card_Clapper": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:15:46 2026",
+      "via": "codex"
+    }
+  },
+  "approved": [],
+  "declared": [
+    "SK_Hero",
+    "SK_Hero_Rig",
+    "SM_Sword",
+    "SM_Rat",
+    "SM_HouseFront",
+    "SM_Peppermint",
+    "SM_Rat_Rodin",
+    "SM_HouseFront_Rodin",
+    "SM_Peppermint_Rodin",
+    "SM_HouseFront_Fal",
+    "SM_Peppermint_Fal",
+    "T_Skill_Lecture",
+    "T_Card_Clapper"
+  ]
+}

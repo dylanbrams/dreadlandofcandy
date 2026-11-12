@@ -1,25 +1,57 @@
-# ASSETS handoff
+﻿# ASSETS handoff
 
-Updated 2026-11-12. Current instruction from Dylan: **prepare and write prompts only; do not generate through Meshy, Rodin or any 2D image tool.** This overrides the execution steps in the ASSETS start prompt and GenerationRunbook for this session.
+Updated 2026-11-12. **Test stage finished: 13 of 14 jobs done; ready for Dylan's review, with the fal rat comparator missing.** This session's instruction to run the test stage supersedes the previous prompt-only hold. No groups are approved, no routes changed, and no batch1/batch2 generation ran. Unreal was never opened.
 
-## Completed
+Review grid: [review.html](../../ImportSource/_gen/review.html). GAME should put the meshes in the game camera for Dylan's approval. Observations below come from every generator thumbnail, the ingested UI PNGs, GLB structure and Rodin base-color atlases; they are not in-engine acceptance tests.
 
-- Refined `Assets/Generation/jobs.json` subjects for all 30 model jobs and character/texture prompts that needed explicit identity, blank text surfaces, clean silhouettes or transparency constraints. Existing job IDs, routing, stages, priorities, dependencies, preset animation IDs and model settings retained.
-- Preserved `Docs/styles.json` unchanged. Hero stays dark fantasy without cape or candy decoration; candy-side meshes stay low poly and tintable. Fenella's shared appearance is cream skin, lavender bob, berry-red beret, mint jacket and a toy black-and-white camera. Villagers share a cream-skinned round face, short brown hair and peach tunic, with separate hats/tools.
-- Corrected the clock's numerals/no-numbers contradiction by using twelve tick marks. Clarified opaque full-canvas paper/poster rules. Revised sword-raise motion to a 0.3-second raise followed by a hold, and kept brush props separate from animation generation.
-- Wrote 83 self-contained text files: 28 Meshy model prompts, 2 Rodin model prompts, 1 hero rig/animation brief, 52 individual image prompts. Indexes include stages, priorities, settings, transparency and style anchors. Start at `Assets/Prompts/README.md`.
-- Added an offline exporter at `Assets/Generation/export_prompts.py`. It reads only jobs/style JSON and writes prompt documents. This lets prompt changes be re-exported without generation, approval changes or service calls.
+## Test asset inspection
 
-## Validation
+| Asset | Result and visual notes |
+| --- | --- |
+| `SK_Hero` | Done, Meshy. Dark angular plate armour, closed pointed helm, broad shoulders, empty open hands, separated legs and arms lowered away from torso in an apparent A-pose. Good dark-fantasy identity; **cape-like cloth behind the left arm despite "no cape"**, fairly clean tabard rather than visibly scorched/tattered. No visible lettering or candy. 41,148 triangles. |
+| `SK_Hero_Rig` | Done. Rigged FBX/GLB plus all seven requested animation FBXs and BasicWalk exist. Rig service succeeded with requested `ue5_mannequin` template; GLB has one skin and 28 joints. Finger bones absent from that GLB skeleton. Deformation, grip, retarget compatibility and motion quality need GAME review. |
+| `SM_Sword` | Done, Rodin. Straight pointed blade, angular crossguard, wrapped long grip and pommel, no wielder/base/visible inscriptions. Grey thumbnail; embedded texture atlas contains worn steel and dark brown leather. Blade looks narrower and less comically oversized than requested; scale and hand fit remain to check. **500,000 triangles**, reduction needed. |
+| `SM_Rat` | Done, Meshy. Cream upright rat, large pink ears/nose, raised paws, thin pink toes, long whiskers, curled tail. Friendly but more anatomical/detailed than chunky cartoon brief; paws forward rather than neutral A-pose. Thin parts may read poorly at game scale. No text/base. 5,175 triangles. |
+| `SM_Rat_Rodin` | Done. Rounder toy-like mouse/rat, big head, simple face, stubby feet/paws, thick upward-curled tail. Closer cartoon silhouette than Meshy, though tail rises behind head and paws held inward. Grey thumbnail; atlas confirms cream/pink and simple dark eyes. **500,000 triangles**. |
+| `SM_Rat_Fal` | **Failed: HTTP 422**, service content checker rejected submitted prompt (`content_policy_violation`, `model_moderated`). No mesh/thumbnail. No prompt rewrite or further retry; left for Dylan. |
+| `SM_HouseFront` | Done, Meshy. Bright orange gingerbread front, white icing, red door/windows, chunky low-poly surfaces. **Broad ground slab and substantial roof depth**, contrary to flat film-set facade brief. Front preview does not establish planar back. No visible text. 4,107 triangles. |
+| `SM_HouseFront_Rodin` | Done. Shallow peaked house-shaped slab, raised door/window/icing details, no visible ground platform. Best facade silhouette available. Grey thumbnail; atlas has orange gingerbread, red, white and blue accents. **Back planarity unverified** from front/side render. **500,000 triangles**. |
+| `SM_HouseFront_Fal` | Done. Cheerful orange/white/pink candy cottage, clean cartoon shapes. **Full side walls, deep roof, green ground platform and small vegetation**, fails shallow front-only requirement. No visible lettering. 40,000 triangles. |
+| `SM_Peppermint` | Done, Meshy. Strong red/white pinwheel disc, two pale chunky twisted wrapper ends. Readable faceted silhouette; slightly glossy rather than matte. No base/lettering. **418 triangles**, close to 400 target and most suitable particle starting point. |
+| `SM_Peppermint_Rodin` | Done. Flattened candy with spiral relief but **four diagonal wrapper tips**, not two. Grey thumbnail; atlas has red/white candy and cream wrapper. Too elaborate for tiny particle. **500,000 triangles**. |
+| `SM_Peppermint_Fal` | Done. Bright red/white swirl, faceted cream wrap, two chunky ends. **Adds red oval pedestal** and thick bowl-like rim; less suitable particle silhouette. 40,000 triangles. |
+| `T_Skill_Lecture` | Done, built-in Codex image generation; exact runner prompt, no reference. Raised dark steel/gold greatsword held by gauntlet, blank cream comic burst, red accents, torn wrist cloth. Adds arm/cloth and prominent red blade streaks; check small-size readability. Single composite icon, no visible text or external frame. Transparent PNG trimmed to **881 x 1024**; square raw original retained. |
+| `T_Card_Clapper` | Done, built-in Codex image generation; exact runner prompt, no reference. Open black/white clapper, exposed corrugated cardboard, cream paper writing area, yellow tape. Good handmade film-prop appearance; paper fully blank. Single item, no visible text or external frame. Transparent PNG trimmed to **943 x 1024**; square raw original retained. |
 
-Offline validation passed: all 83 files match source records, all 52 image prompts and 30 full model prompts match the existing runner/client formatting exactly, all prompt-index links resolve, original job IDs/order and routing/dependencies/stages remain intact. Longest Meshy prompt is 545 characters, below the client's 800 limit. Model arguments unchanged; only the two described text-to-motion descriptions changed in the rig arguments.
+## Comparison recommendations for Dylan
 
-No Unreal build or editor run was needed for prompt-only work. No generation clients or image tools ran, no balance/API requests were made, no assets were generated or ingested, no approval state was written, and no generated-asset declarations were added. Visual quality, rig acceptance, animation quality and usable material slots remain untested.
+Review preferences only; no approval or routing written.
 
-## Next authorized session
+| Group / trio | Closest available result and tradeoff |
+| --- | --- |
+| Rat / NPC | **Rodin** for simple friendly toy silhouette and thick appendages. Meshy's whiskers/thin feet fit candy cartoon layer less well. Rodin needs major reduction. fal unavailable because rat failed. |
+| House / terrain piece | **Rodin** for shallow standalone facade without ground slab. Meshy gives useful low-poly candy look but added ground/roof depth; fal made full house. Check Rodin back before approval. |
+| Peppermint / particle mesh | **Meshy** for clear swirl, two wrapper ends, no pedestal and 418-triangle geometry. Rodin has four tips/excessive geometry; fal has pedestal and 40,000 triangles. |
 
-Wait for Dylan to authorize generation. Then follow `Docs/GenerationRunbook.md`, starting at the test stage and reviewing each type before batching. The test items are hero, sword, rat, house front, peppermint and the two separate UI anchors (Lecture and clapper). A prepared prompt is not an approved asset.
+## Rig and animation delivery
 
-The runbook/jobs replace the older sheet layout in GenerationRouting/GenerationMap and the superseded sheet subsection in ASSETS. Use one image per job. Paper/poster jobs are opaque; the runbook's blanket instruction to request transparency needs that exception. GAME/DESK can reconcile those shared docs later; this session leaves them untouched.
+Files in `ImportSource/Meshy/SK_Hero_Rig/`:
 
-GAME imports only after generation and cleanup. Handoff review targets and placement notes are in `Assets/Prompts/README.md`: inspect flat facade backs, tint/scale readability, blank runtime-lettering surfaces, separated goblin teeth surfaces and hand grips. Exact mesh dimensions, pivots, material assignments and triangle budgets need cleanup; prompts cannot guarantee them. Extra identity references can be attached manually for portraits once approved; the existing runner attaches only each UI layer's anchor.
+- `SK_Hero_Rig.fbx` and `SK_Hero_Rig.glb`: rig succeeded. GLB joint names include pelvis, spine, clavicles, arms, hands, thighs, calves, feet and balls of feet.
+- `A_SK_Hero_Rig_Idle.fbx`, `A_SK_Hero_Rig_Walk.fbx`, `A_SK_Hero_Rig_ProudStrut.fbx`, `A_SK_Hero_Rig_OneHandUp.fbx`: all saved successfully.
+- `A_SK_Hero_Rig_SwordRaise.fbx`, `A_SK_Hero_Rig_Scrub.fbx`, `A_SK_Hero_Rig_Sigh.fbx`: text-to-motion and subsequent animation tasks succeeded and saved FBXs.
+- `A_SK_Hero_Rig_BasicWalk.fbx`: additional walk supplied with rig. `rig.json` retains task IDs for resuming.
+
+All nine FBXs are nonempty binary FBX version 7400. All ten static GLBs have valid headers and matching declared file sizes. Triangle/material/texture counts and position bounds: `ImportSource/_gen/inspection/mesh_stats.json`. Every static mesh has **one material slot**: independent tint regions, grips, pivots, dimensions and collision need cleanup/review. Rodin thumbnails are untextured geometry previews, not proof of missing textures: all four GLBs contain three texture references and their base-color atlases were inspected. Extracted atlases are under `ImportSource/_gen/inspection/`.
+
+The rig route works through file delivery. SwordRaise's 0.3-second raise/hold, toothbrush alignment, deformation and motion quality remain untested until GAME previews them. Both UI anchors inspected after ingest: transparency retained, no lettering, duplicate items or decorative icon frames. No 2D redo needed. Raw images are 1254 x 1254; ingest trims and caps the long side to 1024.
+
+## Execution, credits and handoff limits
+
+- Meshy balance: **1,100 before, 864 after** (236 used including interrupted work). Tripo: **0**. Rodin has no balance endpoint in checker. fal balance endpoint returns HTTP 403 despite successful house/peppermint generation.
+- Server restart interrupted first runner after five meshes completed. Confirmed no generation Python process remained, removed stale lock, retried only six unfinished jobs once. Completed meshes kept. Old remote tasks may have continued, so some credits may cover undownloaded interrupted results; manifests are not a complete billing ledger.
+- `last_run.txt` describes six-job recovery (6 done, 0 failed), **not whole stage**. Final `gen_batch.py status --stage test`: **13 done, 1 failed**, no pending test jobs. Failure retained in state and `ImportSource/_gen/logs/SM_Rat_Fal.log`.
+- Review page regenerated; **13 finished-asset declarations** added via `gen_batch.py declare`. Full submitted prompts in manifests; `Assets/Generation/jobs.json` unchanged. Earlier prompt pack remains at `Assets/Prompts/README.md`.
+- Static GLBs at `ImportSource/*/*.glb` are ignored by existing `.gitignore`; mesh files remain on this checkout for GAME. FBXs, nested rigged GLB, previews, UI PNGs, manifests, state and review artifacts are included in the scoped commit. Logs/drop scratch remain ignored.
+
+**Stop here for Dylan's approval.** GAME can prepare camera comparisons. Remaining issues: missing fal rat, hero cape-like cloth, facade geometry, particle cleanup, Rodin triangle reduction and animation/camera validation. Successful generation is not asset approval.
