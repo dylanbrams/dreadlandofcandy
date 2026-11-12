@@ -3,6 +3,9 @@
 #include "Game/JamLook.h"
 #include "Film/JamNoteClamp.h"
 #include "Game/JamBacklot.h"
+#include "Game/JamOpenWorld.h"
+#include "Game/JamOpenTuning.h"
+#include "World/JamWorld.h"
 #include "Game/JamArtReview.h"
 #include "Game/JamArt.h"
 #include "Game/JamFaerie.h"
@@ -188,6 +191,12 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	// never z-fight. The hero starts on the first scene's set mark.
 	const float TemplateFloorZ = NewHero->GetActorLocation().Z - NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	GroundZ = TemplateFloorZ + 2.f;
+	bOpenMode = FParse::Param(Cmd, TEXT("open")) && !FParse::Param(Cmd, TEXT("backlot"));
+	if (bOpenMode)
+	{
+		StartOpenWorld(NewHero, Cmd);
+		return;
+	}
 	if (AJamBacklot* Backlot = GetWorld()->SpawnActor<AJamBacklot>(AJamBacklot::StaticClass(), FTransform::Identity))
 	{
 		Backlot->Build(GroundZ);
@@ -1327,5 +1336,54 @@ void AJamGameMode::ClearNoteCosmetics()
 		GS->Weather = 0;
 		GS->Mood = 0;
 		GS->SceneTitleOverride.Reset();
+	}
+}
+
+void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
+{
+	// O1: the world from its table. On the template map, build the flat fallback; on TERRAIN's map, only find
+	// the ground under the village square (gameplay actors at the table's locations arrive with O4).
+	const FString MapPath = GetWorld()->GetOutermost()->GetName();
+	const FVector2D Start(JamOpenTuning::HeroStartX, JamOpenTuning::HeroStartY);
+	if (JamOpenWorld::IsFallbackMap(MapPath))
+	{
+		if (AJamOpenWorld* World = GetWorld()->SpawnActor<AJamOpenWorld>(AJamOpenWorld::StaticClass(), FTransform::Identity))
+		{
+			World->Build(GroundZ);
+		}
+	}
+	else
+	{
+		FHitResult Hit;
+		FCollisionQueryParams Params(TEXT("JamGround"), false, NewHero);
+		if (GetWorld()->LineTraceSingleByChannel(Hit, FVector(Start, 50000.f), FVector(Start, -50000.f), ECC_WorldStatic, Params))
+		{
+			GroundZ = Hit.ImpactPoint.Z;
+		}
+	}
+	JamLook::Apply(GetWorld());
+	NewHero->TeleportTo(FVector(Start, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: open mode on %s (%s), %d locations"), *MapPath,
+		JamOpenWorld::IsFallbackMap(MapPath) ? TEXT("flat fallback") : TEXT("terrain map"), JamWorld::Def().Locations.Num());
+
+	Nag.Reset(JamFenellaTuning::RunSeed);
+	FActorSpawnParameters FaerieParams;
+	FaerieParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Faerie = GetWorld()->SpawnActor<AJamFaerie>(AJamFaerie::StaticClass(), NewHero->GetActorTransform(), FaerieParams);
+	if (Faerie) { Faerie->SetFollow(NewHero); }
+
+	float CamDist = 0.f;
+	if (FParse::Value(Cmd, TEXT("camdist="), CamDist)) { NewHero->SetCameraDistance(CamDist); }   // O2 adds yaw and pitch
+
+	// No quests or bot until O4: the hero walks the world freely.
+	if (bAutoplay)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: open mode has no bot until O4"));
+		bAutoplay = false;
+	}
+	SetPhase(EJamFilmPhase::Shooting);
+	if (AJamGameState* GS = GetGameState<AJamGameState>())
+	{
+		GS->Hint = FString::Printf(TEXT("%s. The quests arrive with O4."), JamWorld::BiomeName(EJamBiome::Village));
 	}
 }
