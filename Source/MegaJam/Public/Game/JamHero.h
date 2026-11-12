@@ -95,6 +95,16 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Visor;
 
+	/** The sword (T19): raised for the Lecture, never swung. Placeholder cubes until SM_Sword is imported. */
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> SwordPivot;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> SwordBlade;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> SwordGuard;
+	float SwordUpAt = -100.f;   // world time of the last Lecture
+	void TickSword();
+
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> InputContext;
 

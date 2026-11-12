@@ -86,6 +86,7 @@ void UJamGA_AoeAttack::Strike(const FGameplayAbilityActorInfo* ActorInfo, const 
 
 		LastHitTargets.Add(Candidate);
 		OnTargetHitNative.Broadcast(Candidate);
+		if (AJamNuisance* Nuisance = Cast<AJamNuisance>(Candidate)) { Nuisance->Recoil(Origin); }
 	}
 }
 

@@ -79,6 +79,8 @@ private:
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
 	void Say(EJamLineTrigger Trigger);
+	/** A bubble from a pool over an actor (T19). */
+	void Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& Offset, float Seconds, bool bJagged);
 	void ShowCaption(const FJamLine& Line);
 	void TickFenella(float DeltaSeconds);
 	FJamNagSnapshot MakeSnapshot() const;

@@ -130,6 +130,17 @@ void AJamHUD::BuildView()
 	}
 
 	if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+	// World bubbles, projected; gone when their speaker is.
+	const float Now = GetWorld()->GetTimeSeconds();
+	for (const AJamGameState::FWorldBubble& B : GS->Bubbles)
+	{
+		const AActor* Anchor = B.Anchor.Get();
+		FVector2D OnScreen;
+		if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset, OnScreen, false))
+		{
+			View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
+		}
+	}
 	View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
 	if (GS->IsWrapVisible())
 	{

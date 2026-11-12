@@ -27,8 +27,20 @@ if ($Config -ne "Development") { Write-Host "Warning: the jam asks for a Develop
 $Zip = Join-Path $ProjectDir "Builds\${TeamName}_${GameName}.zip"
 if (Test-Path $Zip) { Remove-Item $Zip -Force }
 Write-Host "== Zipping $($Exe.Directory.FullName) -> $Zip ==" -ForegroundColor Cyan
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::CreateFromDirectory($Exe.Directory.FullName, $Zip, [System.IO.Compression.CompressionLevel]::Optimal, $false)
+# Debug symbols (*.pdb, about 350 MB) are not needed to run the game and would push the zip toward the 1 GB limit.
+$Root = $Exe.Directory.FullName.TrimEnd('\') + '\'
+$Skipped = 0
+$Archive = [System.IO.Compression.ZipFile]::Open($Zip, [System.IO.Compression.ZipArchiveMode]::Create)
+try {
+    foreach ($F in Get-ChildItem -Path $Root -Recurse -File) {
+        if ($F.Extension -eq '.pdb') { $Skipped += $F.Length; continue }
+        $Entry = $F.FullName.Substring($Root.Length).Replace('\', '/')
+        [void][System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($Archive, $F.FullName, $Entry, [System.IO.Compression.CompressionLevel]::Optimal)
+    }
+} finally { $Archive.Dispose() }
+Write-Host ("Left out debug symbols: {0:N0} MB" -f ($Skipped / 1MB)) -ForegroundColor DarkGray
 
 $SizeMB = [Math]::Round((Get-Item $Zip).Length / 1MB, 1)
 if ($SizeMB -ge 1024) { Write-Host "FAIL: $SizeMB MB is over the jam's 1 GB limit." -ForegroundColor Red; exit 1 }

@@ -3,6 +3,7 @@
 #include "Game/JamPlayerState.h"
 #include "Game/JamGameMode.h"
 #include "Game/JamHUD.h"
+#include "Game/JamSkillFx.h"
 #include "Game/JamNuisance.h"
 #include "EngineUtils.h"
 #include "InputTriggers.h"
@@ -86,6 +87,25 @@ AJamHero::AJamHero()
 	if (ShapeMaterial.Succeeded()) { Visor->SetMaterial(0, ShapeMaterial.Object); }
 	Visor->SetRelativeLocation(FVector(45.f, 0.f, 55.f));
 	Visor->SetRelativeScale3D(FVector(0.3f, 0.6f, 0.2f));
+
+	// The sword hangs at his right hand, point down and forward; the Lecture raises it straight up.
+	SwordPivot = CreateDefaultSubobject<USceneComponent>(TEXT("SwordPivot"));
+	SwordPivot->SetupAttachment(RootComponent);
+	SwordPivot->SetRelativeLocation(FVector(10.f, 58.f, 5.f));
+	SwordBlade = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SwordBlade"));
+	SwordBlade->SetupAttachment(SwordPivot);
+	SwordGuard = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SwordGuard"));
+	SwordGuard->SetupAttachment(SwordPivot);
+	for (UStaticMeshComponent* Part : { SwordBlade.Get(), SwordGuard.Get() })
+	{
+		Part->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		if (Cube.Succeeded()) { Part->SetStaticMesh(Cube.Object); }
+		if (ShapeMaterial.Succeeded()) { Part->SetMaterial(0, ShapeMaterial.Object); }
+	}
+	SwordBlade->SetRelativeLocation(FVector(0.f, 0.f, 75.f));
+	SwordBlade->SetRelativeScale3D(FVector(0.05f, 0.12f, 1.3f));
+	SwordGuard->SetRelativeLocation(FVector(0.f, 0.f, 8.f));
+	SwordGuard->SetRelativeScale3D(FVector(0.07f, 0.42f, 0.06f));
 }
 
 UAbilitySystemComponent* AJamHero::GetAbilitySystemComponent() const
@@ -110,6 +130,8 @@ void AJamHero::PossessedBy(AController* NewController)
 	{
 		M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.5f, 0.5f, 0.55f));
 	}
+	if (UMaterialInstanceDynamic* M = SwordBlade->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.88f, 0.95f)); }
+	if (UMaterialInstanceDynamic* M = SwordGuard->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.6f, 0.15f)); }
 }
 
 bool AJamHero::RequestLecture()
@@ -137,9 +159,29 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 
 void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 {
-	// Debug shapes until the T19 presentation: the cone, the line, the rings.
+	// The flash on the ground (T19); the debug shapes stay as the fallback when the FX material is missing.
 	const FVector At = GetActorLocation();
 	const FVector Fwd = GetActorForwardVector();
+	const FVector Floor = At - FVector(0.f, 0.f, GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+	AJamSkillFx* Fx = nullptr;
+	switch (Skill)
+	{
+	case EJamSkill::Lecture:
+		const_cast<AJamHero*>(this)->SwordUpAt = GetWorld()->GetTimeSeconds();
+		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Fan, Floor, Fwd, N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange,
+			JamHeroTuning::LectureHalfAngleDeg, FLinearColor(1.f, 0.32f, 0.05f), 0.45f);
+		break;
+	case EJamSkill::FormALine:
+		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Strip, Floor, Fwd, N.Length, N.Width * 0.5f, FLinearColor(0.3f, 0.85f, 1.f), 0.5f);
+		break;
+	case EJamSkill::DisappointedSigh:
+		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(0.65f, 0.5f, 1.f), 0.8f);
+		break;
+	default:
+		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(1.f, 0.15f, 0.1f), 1.0f);
+		break;
+	}
+	if (Fx) { return; }
 	switch (Skill)
 	{
 	case EJamSkill::Lecture:
@@ -354,6 +396,32 @@ void AJamHero::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	UpdateFacing();
+	TickSword();
+}
+
+namespace JamSwordTuning
+{
+	constexpr float RestPitch = -135.f;   // point down and forward
+	constexpr float UpPitch = -4.f;       // straight up, a touch forward
+	constexpr float RaiseSeconds = 0.12f; // the whole wind-up stays under 0.4 s (BUILD_SPEC 6)
+	constexpr float HoldSeconds = 0.45f;
+	constexpr float LowerSeconds = 0.3f;
+	constexpr float InhaleSeconds = 0.25f;
+	constexpr float InhaleAmount = 0.1f;
+}
+
+void AJamHero::TickSword()
+{
+	using namespace JamSwordTuning;
+	const float T = GetWorld()->GetTimeSeconds() - SwordUpAt;
+	float Up = 0.f;
+	if (T < RaiseSeconds) { Up = FMath::InterpEaseOut(0.f, 1.f, FMath::Clamp(T / RaiseSeconds, 0.f, 1.f), 3.f); }
+	else if (T < RaiseSeconds + HoldSeconds) { Up = 1.f; }
+	else if (T < RaiseSeconds + HoldSeconds + LowerSeconds) { Up = 1.f - FMath::InterpEaseInOut(0.f, 1.f, (T - RaiseSeconds - HoldSeconds) / LowerSeconds, 2.f); }
+	SwordPivot->SetRelativeRotation(FRotator(FMath::Lerp(RestPitch, UpPitch, Up), 0.f, 0.f));
+	// The inhale before the speech.
+	const float Breath = T < InhaleSeconds ? FMath::Sin(PI * T / InhaleSeconds) * InhaleAmount : 0.f;
+	Body->SetRelativeScale3D(FVector(0.85f * (1.f + Breath), 0.85f * (1.f + Breath), 1.9f));
 }
 
 void AJamHero::UpdateFacing()

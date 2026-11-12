@@ -272,6 +272,8 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 		GS->Shoot.ReportProgress(1);
 		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
 		Say(EJamLineTrigger::Pacified);
+		// Sometimes the pacified one answers back.
+		if (FMath::FRand() < 0.4f) { Bubble(EJamLineTrigger::NuisanceReply, Pacified, FVector(0.f, 0.f, 130.f), 1.8f, false); }
 	}
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: pacified %s"), Pacified ? *Pacified->GetName() : TEXT("(null)"));
 }
@@ -658,7 +660,14 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 {
 	if (!InHero || InHero != Hero.Get()) { return; }
-	if (Skill == EJamSkill::Lecture) { Say(EJamLineTrigger::LectureCast); }
+	if (Skill == EJamSkill::Lecture)
+	{
+		Say(EJamLineTrigger::LectureCast);
+		// The lecture itself: one jagged line over the knight, sadder once she sulks (BUILD_SPEC 6, T19).
+		const AJamGameState* GS = GetJamGameState();
+		const bool bSad = GS && GS->GetShoot().IsSulking();
+		Bubble(bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+	}
 	else { ++SkillCasts; }
 }
 
@@ -935,4 +944,25 @@ void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
 		bAutoplayEndLogged = true;
 		RequestBackToTitle();
 	}
+}
+
+// ---- Bubbles (T19) ----------------------------------------------------------------------------------------------
+
+void AJamGameMode::Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& Offset, float Seconds, bool bJagged)
+{
+	AJamGameState* GS = GetJamGameState();
+	const FJamLine* Line = Nag.PickFromPool(Pool);
+	if (!GS || !Line || !Anchor) { return; }
+	const float Now = GetWorld()->GetTimeSeconds();
+	GS->Bubbles.RemoveAll([Now](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid(); });
+	// One bubble per speaker at a time: a new line replaces the old one.
+	GS->Bubbles.RemoveAll([Anchor](const AJamGameState::FWorldBubble& B) { return B.Anchor.Get() == Anchor; });
+	AJamGameState::FWorldBubble B;
+	B.LineId = Line->Id;
+	B.Text = Line->Text;
+	B.Anchor = Anchor;
+	B.Offset = Offset;
+	B.Until = Now + Seconds;
+	B.bJagged = bJagged;
+	GS->Bubbles.Add(B);
 }

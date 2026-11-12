@@ -55,6 +55,18 @@ public:
 	float PhaseSince = 0.f;
 	FJamPremiereTotals Premiere;
 
+	/** A speech bubble in the world (T19): a lecture line over the hero, a reply over a nuisance. */
+	struct FWorldBubble
+	{
+		FName LineId;
+		FString Text;
+		TWeakObjectPtr<AActor> Anchor;
+		FVector Offset = FVector(0.f, 0.f, 170.f);
+		float Until = 0.f;
+		bool bJagged = true;
+	};
+	TArray<FWorldBubble> Bubbles;
+
 	/** The wrap panel (ledger, loot, character sheet). WrapUntil negative = stays until replaced. */
 	FJamWrapView Wrap;
 	float WrapUntil = 0.f;

@@ -141,6 +141,13 @@ void AJamNuisance::Fluster(float Seconds)
 	else { FlusterHold = FMath::Max(FlusterHold, StateTime + Seconds); }
 }
 
+void AJamNuisance::Recoil(const FVector& From)
+{
+	const FVector2D Away = (FVector2D(GetActorLocation()) - FVector2D(From)).GetSafeNormal();
+	RecoilVelocity = Away * 900.f;
+	RecoilAt = GetWorld()->GetTimeSeconds();
+}
+
 void AJamNuisance::Slow(float Factor, float Seconds)
 {
 	SlowFactor = FMath::Clamp(Factor, 0.05f, 1.f);
@@ -192,6 +199,21 @@ void AJamNuisance::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	StateTime += DeltaSeconds;
+
+	// Recoil: a shove that dies out in a fifth of a second, and a squash that springs back.
+	const float SinceRecoil = GetWorld()->GetTimeSeconds() - RecoilAt;
+	if (SinceRecoil < 0.35f)
+	{
+		if (!RecoilVelocity.IsNearlyZero()) { Steer(RecoilVelocity, DeltaSeconds); RecoilVelocity *= FMath::Pow(0.0005f, DeltaSeconds); }
+		const float Squash = FMath::Sin(PI * SinceRecoil / 0.35f) * 0.3f;
+		Body->SetRelativeScale3D(BodyBaseScale * FVector(1.f + Squash, 1.f + Squash, 1.f - Squash));
+	}
+	else if (RecoilAt > 0.f)
+	{
+		RecoilAt = -100.f;
+		RecoilVelocity = FVector2D::ZeroVector;
+		Body->SetRelativeScale3D(BodyBaseScale);
+	}
 
 	float HeroDistance = 0.f;
 	const AActor* Hero = FindNearestHero(HeroDistance);

@@ -65,6 +65,9 @@ public:
 
 	/** Form A Line: stop (Flustered) for at least this long. Ignored once pacified. */
 	void Fluster(float Seconds);
+	/** A skill hit it (T19): a short shove away from the hero and a squash. Cosmetic; the set bounds still hold. */
+	void Recoil(const FVector& From);
+
 	/** The Disappointed Sigh: move at this fraction of speed for a while. */
 	void Slow(float Factor, float Seconds);
 
@@ -105,6 +108,8 @@ private:
 	int32 FleeCount = 0;
 	float FlusterHold = 0.f;     // this Flustered lasts this long (a hit: FlusteredSeconds; the line: longer)
 	float SlowFactor = 1.f;
+	FVector2D RecoilVelocity = FVector2D::ZeroVector;
+	float RecoilAt = -100.f;
 	float SlowUntil = -1.f;
 	float StateTime = 0.f;
 	FVector2D WanderTarget = FVector2D::ZeroVector;
