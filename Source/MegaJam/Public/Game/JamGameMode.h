@@ -131,6 +131,9 @@ private:
 
 	TWeakObjectPtr<AJamHero> Hero;
 	float GroundZ = 0.f;
+	/** BUILD_SPEC 3e: Open mode (-open) plays the open world; Backlot (default, -backlot) is the slice, unchanged. */
+	bool bOpenMode = false;
+	void StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd);
 
 	/** Scene (and backlot set) index being shot; FieldBounds is that set's floor. */
 	int32 SceneIndex = 0;
