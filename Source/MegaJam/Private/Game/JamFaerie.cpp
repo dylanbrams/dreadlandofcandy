@@ -1,4 +1,5 @@
 #include "Game/JamFaerie.h"
+#include "Game/JamArt.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -41,6 +42,9 @@ AJamFaerie::AJamFaerie()
 	WingR = MakePart(TEXT("WingR"), Cube.Object, FVector(-10.f, 22.f, 14.f), FVector(0.03f, 0.42f, 0.26f));
 	Camcorder = MakePart(TEXT("Camcorder"), Cube.Object, FVector(18.f, 0.f, 6.f), FVector(0.26f, 0.12f, 0.14f));
 	Tally = MakePart(TEXT("Tally"), Sphere.Object, FVector(26.f, 0.f, 15.f), FVector(0.04f));
+	Art = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Art"));
+	Art->SetupAttachment(Root);
+	Art->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 UStaticMeshComponent* AJamFaerie::MakePart(const TCHAR* Name, UStaticMesh* Mesh, const FVector& Location, const FVector& Scale)
@@ -74,6 +78,13 @@ void AJamFaerie::BeginPlay()
 	Tint(WingR, FLinearColor(0.7f, 0.95f, 1.f));
 	Tint(Camcorder, FLinearColor(0.05f, 0.05f, 0.06f));
 	Tint(Tally, FLinearColor(1.f, 0.05f, 0.05f));
+	// The generated Fenella replaces the shapes; she still bobs (Art follows the pivot's height in Tick).
+	if (JamArt::Apply(Art, TEXT("SM_Fenella"), JamArt::Height(TEXT("SM_Fenella")), -45.f))
+	{
+		bArt = true;
+		ArtBaseZ = Art->GetRelativeLocation().Z;
+		for (UStaticMeshComponent* Part : { Body.Get(), Head.Get(), WingL.Get(), WingR.Get(), Camcorder.Get(), Tally.Get() }) { Part->SetHiddenInGame(true); }
+	}
 }
 
 void AJamFaerie::Speak(float Seconds)
@@ -108,6 +119,10 @@ void AJamFaerie::Tick(float DeltaSeconds)
 
 	const float Rate = bSpeaking ? BobRate * 2.f : BobRate;
 	Pivot->SetRelativeLocation(FVector(0.f, 0.f, FMath::Sin(Age * Rate * UE_TWO_PI * 0.5f) * BobHeight));
+	if (bArt)
+	{
+		Art->SetRelativeLocation(FVector(Art->GetRelativeLocation().X, Art->GetRelativeLocation().Y, ArtBaseZ + Pivot->GetRelativeLocation().Z));
+	}
 	const float Flap = FMath::Sin(Age * (bSpeaking ? FlapRate * 1.5f : FlapRate)) * FlapDegrees;
 	WingL->SetRelativeRotation(FRotator(0.f, 0.f, Flap));
 	WingR->SetRelativeRotation(FRotator(0.f, 0.f, -Flap));

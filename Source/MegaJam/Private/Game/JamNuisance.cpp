@@ -1,5 +1,6 @@
 #include "Game/JamNuisance.h"
 #include "Components/TextRenderComponent.h"
+#include "Game/JamArt.h"
 #include "Game/JamHero.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamResolveAttributeSet.h"
@@ -80,6 +81,9 @@ AJamNuisance::AJamNuisance()
 	BoxLabel->SetUsingAbsoluteRotation(true);
 	BoxLabel->SetHiddenInGame(true);
 
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Fx(TEXT("/Game/FX/M_FxUnlit.M_FxUnlit"));
+	OverlayBase = Fx.Object;
+
 	AbilitySystem = CreateDefaultSubobject<UJamAbilitySystemComponent>(TEXT("AbilitySystem"));
 	ResolveSet = CreateDefaultSubobject<UJamResolveAttributeSet>(TEXT("ResolveSet"));
 }
@@ -108,6 +112,12 @@ void AJamNuisance::PostInitializeComponents()
 void AJamNuisance::BeginPlay()
 {
 	Super::BeginPlay();
+	// The generated model first, so the squash, sit and recoil work from its own scale and height.
+	if (!ArtMesh.IsEmpty() && JamArt::Apply(Body, ArtMesh, ArtHeight, -Capsule->GetScaledCapsuleHalfHeight()) && OverlayBase)
+	{
+		StateOverlay = UMaterialInstanceDynamic::Create(OverlayBase, this);
+		Body->SetOverlayMaterial(StateOverlay);
+	}
 	BodyBaseScale = Body->GetRelativeScale3D();
 	BodyBaseLocation = Body->GetRelativeLocation();
 	BodyMaterial = Body->CreateAndSetMaterialInstanceDynamic(0);
@@ -128,6 +138,7 @@ void AJamNuisance::SetState(EJamNuisanceState NewState)
 	State = NewState;
 	StateTime = 0.f;
 	if (BodyMaterial) { BodyMaterial->SetVectorParameterValue(TEXT("Color"), ColourFor(State, BaseColour)); }
+	UpdateStateOverlay();
 
 	// Pacified sits (squashed); everything else stands.
 	const bool bSitting = State == EJamNuisanceState::Pacified || State == EJamNuisanceState::Treated;
@@ -163,8 +174,21 @@ void AJamNuisance::Recoil(const FVector& From)
 	RecoilAt = GetWorld()->GetTimeSeconds();
 }
 
+void AJamNuisance::UpdateStateOverlay()
+{
+	if (!StateOverlay) { return; }
+	// Wandering shows the model as it is; every other state washes it in its colour.
+	const bool bPlain = State == EJamNuisanceState::Wander;
+	StateOverlay->SetVectorParameterValue(TEXT("Color"), ColourFor(State, BaseColour));
+	StateOverlay->SetScalarParameterValue(TEXT("Opacity"), bPlain ? 0.f : (State == EJamNuisanceState::Flee ? 0.2f : 0.45f));
+}
+
 void AJamNuisance::BecomeBox(const FString& Label)
 {
+	Body->SetOverlayMaterial(nullptr);
+	StateOverlay = nullptr;
+	Body->EmptyOverrideMaterials();
+	Body->SetRelativeRotation(FRotator::ZeroRotator);
 	if (BoxMesh) { Body->SetStaticMesh(BoxMesh); }
 	BodyBaseScale = FVector(0.8f, 0.8f, 0.8f);
 	BodyBaseLocation = FVector(0.f, 0.f, -30.f);

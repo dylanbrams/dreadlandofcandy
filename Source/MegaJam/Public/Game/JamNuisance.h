@@ -60,6 +60,10 @@ public:
 	FLinearColor BaseColour = FLinearColor(1.0f, 0.35f, 0.6f);
 	/** Changes heading often while wandering (bugs). */
 	bool bErratic = false;
+	/** The generated model for this kind and its height (T20); empty keeps the placeholder. */
+	FString ArtMesh;
+	float ArtHeight = 80.f;
+
 	/** Spawns already sitting (retakes of a treat stage). */
 	bool bStartPacified = false;
 
@@ -106,6 +110,13 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UStaticMesh> BoxMesh;
+
+	/** On the generated model, the state colour is a translucent shell over it (the model has no tint). */
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInstanceDynamic> StateOverlay;
+	UPROPERTY(Transient)
+	TObjectPtr<UMaterialInterface> OverlayBase;
+	void UpdateStateOverlay();
 
 	UPROPERTY()
 	TObjectPtr<UJamResolveAttributeSet> ResolveSet;

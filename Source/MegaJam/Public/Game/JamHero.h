@@ -54,6 +54,9 @@ public:
 	/** True once the player last used a gamepad (for prompt glyphs). */
 	bool IsUsingGamepad() const { return bUsingGamepad; }
 
+	/** Pulls the fixed camera back (the -artreview lineup). */
+	void SetCameraDistance(float Distance);
+
 	/** Takes the progression's stats: move speed now; the Lecture reads radius and power itself. */
 	void ApplyStats(const struct FJamStatBlock& Stats);
 
@@ -102,6 +105,13 @@ private:
 	TObjectPtr<UStaticMeshComponent> SwordBlade;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> SwordGuard;
+
+	// The generated hero and sword (T20); the shapes above hide when these load.
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> ArtBody;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> ArtSword;
+	FVector ArtBodyScale = FVector::OneVector;
 	float SwordUpAt = -100.f;   // world time of the last Lecture
 	void TickSword();
 

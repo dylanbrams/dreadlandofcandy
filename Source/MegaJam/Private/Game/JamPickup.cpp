@@ -1,4 +1,5 @@
 #include "Game/JamPickup.h"
+#include "Game/JamArt.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -15,11 +16,21 @@ AJamPickup::AJamPickup()
 	if (Sphere.Succeeded()) { Body->SetStaticMesh(Sphere.Object); }
 	if (ShapeMaterial.Succeeded()) { Body->SetMaterial(0, ShapeMaterial.Object); }
 	Body->SetRelativeScale3D(FVector(0.6f, 0.4f, 0.4f));   // almond-ish
+	Art = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Art"));
+	Art->SetupAttachment(Body);
+	Art->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AJamPickup::BeginPlay()
 {
 	Super::BeginPlay();
+	// The generated almond on the floor (the root floats 25 uu up); the root loses its sphere and its squash.
+	if (JamArt::Load(TEXT("SM_Almond")))
+	{
+		Body->SetStaticMesh(nullptr);
+		Body->SetRelativeScale3D(FVector::OneVector);
+		JamArt::Apply(Art, TEXT("SM_Almond"), JamArt::Height(TEXT("SM_Almond")), -25.f);
+	}
 	if (UMaterialInstanceDynamic* M = Body->CreateAndSetMaterialInstanceDynamic(0))
 	{
 		M->SetVectorParameterValue(TEXT("Color"), Colour);

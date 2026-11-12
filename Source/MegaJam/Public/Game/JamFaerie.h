@@ -43,6 +43,9 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> WingR;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Camcorder;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Tally;   // the red recording light
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Art;     // the generated Fenella (T20)
+	bool bArt = false;
+	float ArtBaseZ = 0.f;
 
 	UPROPERTY(Transient) TObjectPtr<UMaterialInterface> ShapeMaterial;
 

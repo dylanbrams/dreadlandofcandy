@@ -1,5 +1,7 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamBacklot.h"
+#include "Game/JamArtReview.h"
+#include "Game/JamArt.h"
 #include "Game/JamFaerie.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
@@ -154,6 +156,20 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	Faerie = GetWorld()->SpawnActor<AJamFaerie>(AJamFaerie::StaticClass(), NewHero->GetActorTransform(), FaerieParams);
 	if (Faerie) { Faerie->SetFollow(NewHero); }
 
+	// -artreview (T20): every generated mesh in a lineup for checking, no scene.
+	FString ReviewArg;
+	if (FParse::Param(Cmd, TEXT("artreview")) || FParse::Value(Cmd, TEXT("artreview="), ReviewArg))
+	{
+		if (AJamArtReview* Review = GetWorld()->SpawnActor<AJamArtReview>(AJamArtReview::StaticClass(), FTransform::Identity))
+		{
+			Review->Build(FVector(JamBacklot::HeroMark(FirstSceneIndex) + FVector2D(700.f, 0.f), GroundZ));
+		}
+		NewHero->SetCameraDistance(ReviewArg.Equals(TEXT("close")) ? 2300.f : 4600.f);   // close: the first row, the cast
+		SetPhase(EJamFilmPhase::Shooting);
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: -artreview lineup"));
+		return;
+	}
+
 	// Straight to the shoot when a flag asks for a scene or a screen sample; otherwise the title (T16).
 	FString Dummy;
 	const bool bSkipTitle = FParse::Value(Cmd, TEXT("scene="), Dummy) || FParse::Value(Cmd, TEXT("uiscreen="), Dummy) || FParse::Param(Cmd, TEXT("notitle"));
@@ -223,6 +239,13 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 		N->BaseColour = Tuning.Colour;
 		N->bErratic = Tuning.bErratic;
 		N->bStartPacified = bPacified;
+		switch (Stage.Target)
+		{
+		case EJamTargetKind::Goblin: N->ArtMesh = TEXT("SM_Goblin"); break;
+		case EJamTargetKind::Bug:    N->ArtMesh = TEXT("SM_LollyBug"); break;
+		default:                     N->ArtMesh = TEXT("SM_Rat"); break;
+		}
+		N->ArtHeight = JamArt::Height(N->ArtMesh);
 		N->FinishSpawning(FTransform(Loc));
 		if (Stage.ResolveMultiplier >= 3.f) { N->SetActorScale3D(FVector(1.8f)); }
 		N->GetResolveSet()->OnPacified.AddUObject(this, &AJamGameMode::HandlePacified);

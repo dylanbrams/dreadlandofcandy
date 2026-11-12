@@ -4,6 +4,7 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamHUD.h"
 #include "Game/JamSkillFx.h"
+#include "Game/JamArt.h"
 #include "Game/JamNuisance.h"
 #include "EngineUtils.h"
 #include "InputTriggers.h"
@@ -106,6 +107,13 @@ AJamHero::AJamHero()
 	SwordBlade->SetRelativeScale3D(FVector(0.05f, 0.12f, 1.3f));
 	SwordGuard->SetRelativeLocation(FVector(0.f, 0.f, 8.f));
 	SwordGuard->SetRelativeScale3D(FVector(0.07f, 0.42f, 0.06f));
+
+	ArtBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtBody"));
+	ArtBody->SetupAttachment(RootComponent);
+	ArtBody->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ArtSword = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtSword"));
+	ArtSword->SetupAttachment(SwordPivot);
+	ArtSword->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 UAbilitySystemComponent* AJamHero::GetAbilitySystemComponent() const
@@ -129,6 +137,20 @@ void AJamHero::PossessedBy(AController* NewController)
 	if (UMaterialInstanceDynamic* M = Visor->CreateAndSetMaterialInstanceDynamic(0))
 	{
 		M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.5f, 0.5f, 0.55f));
+	}
+	// The generated knight and his sword, standing on the capsule's floor; the placeholder shapes hide.
+	const float Floor = -GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	if (JamArt::Apply(ArtBody, TEXT("SM_Hero"), JamArt::Height(TEXT("SM_Hero")), Floor))
+	{
+		ArtBodyScale = ArtBody->GetRelativeScale3D();
+		Body->SetHiddenInGame(true);
+		Visor->SetHiddenInGame(true);
+	}
+	// The sword's grip sits at the pivot (the hand); the blade runs along the pivot's +Z, which the Lecture raises.
+	if (JamArt::Apply(ArtSword, TEXT("SM_Sword"), 150.f, -20.f, 90.f))
+	{
+		SwordBlade->SetHiddenInGame(true);
+		SwordGuard->SetHiddenInGame(true);
 	}
 	if (UMaterialInstanceDynamic* M = SwordBlade->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.88f, 0.95f)); }
 	if (UMaterialInstanceDynamic* M = SwordGuard->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.6f, 0.15f)); }
@@ -422,6 +444,7 @@ void AJamHero::TickSword()
 	// The inhale before the speech.
 	const float Breath = T < InhaleSeconds ? FMath::Sin(PI * T / InhaleSeconds) * InhaleAmount : 0.f;
 	Body->SetRelativeScale3D(FVector(0.85f * (1.f + Breath), 0.85f * (1.f + Breath), 1.9f));
+	if (ArtBody->GetStaticMesh()) { ArtBody->SetRelativeScale3D(ArtBodyScale * FVector(1.f + Breath, 1.f + Breath, 1.f)); }
 }
 
 void AJamHero::UpdateFacing()
@@ -488,3 +511,9 @@ void AJamHero::OnPause(const FInputActionValue& /*Value*/)
 void AJamHero::OnSkill2(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::FormALine); }
 void AJamHero::OnSkill3(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::DisappointedSigh); }
 void AJamHero::OnSkill4(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::LastJudgment); }
+
+void AJamHero::SetCameraDistance(float Distance)
+{
+	CameraArm->TargetArmLength = Distance;
+	CameraArm->TargetOffset = FVector(Distance * 0.35f, 0.f, 0.f);
+}
