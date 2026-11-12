@@ -21,7 +21,7 @@ namespace
 	const FLinearColor StampRed(1.f, 0.2f, 0.12f);
 	constexpr int32 MaxRows = 4;
 	constexpr int32 MaxQuotes = 6;
-	constexpr int32 MaxOptions = 6;
+	constexpr int32 MaxOptions = 8;
 	constexpr int32 MaxCredits = 40;
 	constexpr float CreditsClipHeight = 560.f;
 	constexpr float CreditLineHeight = 46.f;

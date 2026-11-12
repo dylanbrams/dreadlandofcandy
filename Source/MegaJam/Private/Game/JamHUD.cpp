@@ -246,7 +246,7 @@ AJamGameMode* AJamHUD::AuthGameMode() const
 FJamMenuSettings AJamHUD::MenuSettings() const
 {
 	FJamMenuSettings S;
-	if (const UJamSettings* J = Settings()) { S.Volume = J->Volume; S.bCommentary = J->bCommentary; }
+	if (const UJamSettings* J = Settings()) { S.MusicVolume = J->MusicVolume; S.VoiceVolume = J->VoiceVolume; S.bCommentary = J->bCommentary; }
 	S.bGamepad = bMenuGamepad;
 	return S;
 }
@@ -323,7 +323,8 @@ void AJamHUD::Adjust(const FJamMenuOption& Option, int32 Delta)
 {
 	UJamSettings* J = Settings();
 	if (!J) { return; }
-	if (Option.Action == EJamMenuAction::Volume) { J->SetVolume(J->Volume + 0.1f * Delta); }
+	if (Option.Action == EJamMenuAction::MusicVolume) { J->SetMusicVolume(J->MusicVolume + 0.1f * Delta); }
+	else if (Option.Action == EJamMenuAction::VoiceVolume) { J->SetVoiceVolume(J->VoiceVolume + 0.1f * Delta); }
 	else if (Option.Action == EJamMenuAction::Commentary) { J->SetCommentary(!J->bCommentary); }
 }
 
@@ -341,7 +342,8 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::Fine:
 	case EJamMenuAction::Back:           Selected = ParentSelected; SubScreen = EJamScreen::None; break;
 	case EJamMenuAction::Resume:      SetPaused(false); break;
-	case EJamMenuAction::Volume:      Adjust(Option, 1); break;
+	case EJamMenuAction::MusicVolume:
+	case EJamMenuAction::VoiceVolume: Adjust(Option, 1); break;
 	case EJamMenuAction::Commentary:  Adjust(Option, 1); break;
 	case EJamMenuAction::WalkAnyway:
 		if (bTitle) { UKismetSystemLibrary::QuitGame(this, PlayerOwner, EQuitPreference::Quit, false); }
@@ -400,7 +402,7 @@ void AJamHUD::TickMusic()
 	C.bNotePrompt = GS->IsNotePrompt();
 	const FName Cue = bNoMusic ? NAME_None : JamMusic::CueFor(C);
 	const UJamSettings* J = Settings();
-	const float Volume = 0.7f * (J ? J->Volume : 0.8f);
+	const float Volume = 0.7f * (J ? J->MusicVolume : 0.8f);
 
 	if (Cue == MusicCue)
 	{

@@ -61,7 +61,8 @@ FJamScreenView JamScreens::Options(const FJamMenuSettings& S)
 	V.Kicker = TEXT("NOTES");
 	V.Title = TEXT("Production Notes");
 	V.Options = {
-		Opt(EJamMenuAction::Volume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.Volume))),
+		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
+		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::Back, TEXT("Back")) };
@@ -90,7 +91,8 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 	V.Title = TEXT("Lunch");
 	V.Options = {
 		Opt(EJamMenuAction::Resume, TEXT("Back to work")),
-		Opt(EJamMenuAction::Volume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.Volume))),
+		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
+		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::CharacterSheet, TEXT("Character Sheet")),
