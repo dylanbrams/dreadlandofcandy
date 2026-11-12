@@ -4,7 +4,7 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs; **section 3e and the "Open
 
 ## Next GAME session starts here
 
-1. **First, tell Dylan which side sessions you need him to start** (he asks for this at the start of every thread). For O1 to O9 that is probably TERRAIN (the map, from `Docs/Workers/terrain.md`, which O1 writes) and nothing else until O7.
+1. **First, tell Dylan which side sessions you need him to start** (he asks for this at the start of every thread). TERRAIN is not one of them: Dylan hands the terrain to ChatGPT himself. GAME's only part is writing the world table's shape into `Docs/Workers/terrain.md` in O1, and using TERRAIN's map in O7 if it has arrived.
 2. **Take O1 to O9 in order** (BUILD_SPEC section 7, "Open world"), ahead of T24 and T25. Stop after O9. O1 starts by tagging the last green commit `slice-day1` (currently `6810924`, spec only; the last code commit is `4a661b9`). Each O task is one commit with the build, `Jam.*` tests, **both** autoplay modes and a screenshot.
 3. **The slice must stay shippable** throughout: `-backlot` (the current game) keeps passing `smoke-packaged.ps1 -Extra "-autoplay","-timescale=4"`.
 4. Small leftovers from the slice, if a moment comes up: the title screen should say in one line that typed notes are sent to a server (BUILD_SPEC 3a; today only the note editor says it); the bot answers CUT! without its 1.5 s think (stale `StateEnteredAt`); missing VO clips log a `SkipPackage` warning per caption.
