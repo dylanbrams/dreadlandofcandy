@@ -20,6 +20,15 @@ struct FJamSetLayout
 	FLinearColor Floor;
 };
 
+/** One piece of set dressing (T20): a generated model standing at a spot, turned to face Yaw (0 = +X). */
+struct FJamProp
+{
+	FString Mesh;
+	FVector2D At;
+	float Yaw = 0.f;
+	float Height = 0.f;      // 0 = the model's game height (JamArt::Height)
+};
+
 namespace JamBacklot
 {
 	/** Street width; every opening in a set wall is this wide, centred on Y = 0. */
@@ -33,6 +42,8 @@ namespace JamBacklot
 	MEGAJAM_API TArray<FBox2D> Streets();
 	/** Where the hero stands when the set's scene starts: just inside its back edge, facing +X. */
 	MEGAJAM_API FVector2D HeroMark(int32 SetIndex);
+	/** Set dressing: houses along the streets, trees and crops round the sets, film gear in the back corners. */
+	MEGAJAM_API const TArray<FJamProp>& Dressing();
 }
 
 /** Builds the backlot from the table: floors, low walls with street openings, a sign per set. Static scenery only. */
@@ -49,6 +60,7 @@ public:
 
 private:
 	void AddBox(const FBox2D& Area, float Bottom, float Top, const FLinearColor& Colour, bool bCollide);
+	void AddDressing(float GroundZ);
 
 	UPROPERTY()
 	TObjectPtr<UStaticMesh> CubeMesh;

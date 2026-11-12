@@ -1,6 +1,7 @@
 #include "Misc/AutomationTest.h"
 #include "Film/JamShoot.h"
 #include "Game/JamBacklot.h"
+#include "Game/JamArt.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -55,5 +56,21 @@ bool FJamBacklotRoomTest::RunTest(const FString& Parameters)
 }
 
 #undef JamFlags
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamGameBacklotDressing, "Jam.Game.Backlot.Dressing", EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+bool FJamGameBacklotDressing::RunTest(const FString&)
+{
+	TestTrue(TEXT("there is dressing"), JamBacklot::Dressing().Num() > 20);
+	for (const FJamProp& P : JamBacklot::Dressing())
+	{
+		TestTrue(FString::Printf(TEXT("%s is a known model"), *P.Mesh), JamArt::AllNames().Contains(P.Mesh));
+		if (P.Mesh == TEXT("SM_FortGate")) { continue; }   // an arch over the path, by design (no collision)
+		for (const FBox2D& Street : JamBacklot::Streets())
+		{
+			TestFalse(FString::Printf(TEXT("%s at (%.0f, %.0f) is out of the street"), *P.Mesh, P.At.X, P.At.Y), Street.IsInside(P.At));
+		}
+	}
+	return true;
+}
 
 #endif

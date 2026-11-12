@@ -1,4 +1,5 @@
 #include "Game/JamBacklot.h"
+#include "Game/JamArt.h"
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/TextRenderComponent.h"
@@ -29,6 +30,84 @@ namespace JamBacklot
 			Out.Add(FBox2D(FVector2D(S[i].Bounds.Max.X, -StreetWidth * 0.5f), FVector2D(S[i + 1].Bounds.Min.X, StreetWidth * 0.5f)));
 		}
 		return Out;
+	}
+
+	const TArray<FJamProp>& Dressing()
+	{
+		static const TArray<FJamProp> Table = []()
+		{
+			TArray<FJamProp> P;
+			const TArray<FJamSetLayout>& S = Sets();
+			// Streets: candy houses face the street from both sides, trees behind them. Fronts face +Y after the
+			// art's forward fix, so the south row (−Y) faces the street as is and the north row turns round.
+			for (const FBox2D& Street : Streets())
+			{
+				int32 n = 0;
+				for (float X = Street.Min.X + 500.f; X < Street.Max.X - 300.f; X += 950.f, ++n)
+				{
+					const bool bLeft = (n % 2) == 0;
+					P.Add({ TEXT("SM_HouseFront"), FVector2D(X, bLeft ? -780.f : 780.f), bLeft ? 0.f : 180.f });
+					P.Add({ TEXT("SM_CandyTree"), FVector2D(X + 450.f, bLeft ? 1250.f : -1250.f), 0.f });
+				}
+				P.Add({ TEXT("SM_Signpost"), FVector2D(Street.Min.X + 150.f, -420.f), 90.f });
+				P.Add({ TEXT("SM_Stanchion"), FVector2D(Street.Max.X - 120.f, -390.f), 0.f });
+				P.Add({ TEXT("SM_Stanchion"), FVector2D(Street.Max.X - 120.f, 390.f), 0.f });
+			}
+			// Every set: film gear in the back corners, where the hero starts and the nuisances rarely go.
+			for (const FJamSetLayout& Set : S)
+			{
+				const FBox2D& B = Set.Bounds;
+				P.Add({ TEXT("SM_DirectorsChair"), FVector2D(B.Min.X + 120.f, B.Max.Y - 160.f), -60.f });
+				P.Add({ TEXT("SM_LightStand"), FVector2D(B.Min.X + 90.f, B.Min.Y + 110.f), 45.f });
+				P.Add({ TEXT("SM_LightStand"), FVector2D(B.Max.X - 90.f, B.Max.Y - 110.f), -135.f });
+				P.Add({ TEXT("SM_Clapperboard"), FVector2D(B.Min.X + 220.f, B.Max.Y - 90.f), 20.f });
+			}
+			// The field (Scene 1): candy crops in rows outside both walls, fences along them.
+			{
+				const FBox2D& B = S[0].Bounds;
+				for (float X = B.Min.X + 150.f; X < B.Max.X; X += 260.f)
+				{
+					for (float Y : { B.Min.Y - 220.f, B.Min.Y - 420.f, B.Max.Y + 220.f, B.Max.Y + 420.f }) { P.Add({ TEXT("SM_CandyCrop"), FVector2D(X, Y), 0.f }); }
+				}
+				for (float X = B.Min.X + 200.f; X < B.Max.X; X += 420.f)
+				{
+					P.Add({ TEXT("SM_CandyFence"), FVector2D(X, B.Min.Y - 90.f), 90.f });
+					P.Add({ TEXT("SM_CandyFence"), FVector2D(X, B.Max.Y + 90.f), 90.f });
+				}
+				P.Add({ TEXT("SM_CandyTree"), FVector2D(B.Max.X - 100.f, B.Min.Y - 750.f), 0.f });
+				P.Add({ TEXT("SM_Boulder"), FVector2D(B.Min.X + 600.f, B.Max.Y + 750.f), 30.f });
+			}
+			// Fort Toothache (Scene 2): molar towers at the corners, the gate at the far end.
+			{
+				const FBox2D& B = S[1].Bounds;
+				for (const FVector2D& C : { FVector2D(B.Min.X, B.Min.Y), FVector2D(B.Min.X, B.Max.Y), FVector2D(B.Max.X, B.Min.Y), FVector2D(B.Max.X, B.Max.Y) })
+				{
+					P.Add({ TEXT("SM_Molar"), C + FVector2D(C.X > B.GetCenter().X ? 150.f : -150.f, C.Y > 0.f ? 150.f : -150.f), 0.f, 380.f });
+				}
+				// The gate arches over the street at the fort's entrance: the hero walks up to it and through it.
+				P.Add({ TEXT("SM_FortGate"), FVector2D(B.Min.X - 80.f, 0.f), 90.f });
+				P.Add({ TEXT("SM_Toothbrush"), FVector2D(B.Min.X + 150.f, B.Min.Y + 260.f), 70.f, 120.f });
+			}
+			// The orchard (Scene 3): candy trees round the outside, crops and peppermints along the inner edges.
+			{
+				const FBox2D& B = S[2].Bounds;
+				for (float X = B.Min.X + 200.f; X < B.Max.X; X += 450.f)
+				{
+					P.Add({ TEXT("SM_CandyTree"), FVector2D(X, B.Min.Y - 350.f), X * 0.1f });
+					P.Add({ TEXT("SM_CandyTree"), FVector2D(X + 200.f, B.Max.Y + 350.f), X * 0.07f });
+				}
+				for (float X = B.Min.X + 500.f; X < B.Max.X - 200.f; X += 300.f)
+				{
+					P.Add({ TEXT("SM_CandyCrop"), FVector2D(X, B.Min.Y + 90.f), 0.f });
+					P.Add({ TEXT("SM_CandyCrop"), FVector2D(X, B.Max.Y - 90.f), 0.f });
+				}
+				P.Add({ TEXT("SM_Peppermint"), FVector2D(B.Max.X + 300.f, -500.f), 0.f, 140.f });
+				P.Add({ TEXT("SM_Peppermint"), FVector2D(B.Max.X + 300.f, 500.f), 0.f, 140.f });
+				P.Add({ TEXT("SM_Boulder"), FVector2D(B.Max.X + 400.f, 0.f), 0.f, 220.f });
+			}
+			return P;
+		}();
+		return Table;
 	}
 
 	FVector2D HeroMark(int32 SetIndex)
@@ -123,10 +202,33 @@ void AJamBacklot::Build(float GroundZ)
 		AddInstanceComponent(Sign);
 	}
 
+	// The land around the backlot: a candy-green ground under everything, hiding the template's checker floor.
+	AddBox(FBox2D(FVector2D(-3000.f, -5000.f), FVector2D(17500.f, 5000.f)), FloorBottom - 10.f, GroundZ - 1.f, FLinearColor(0.42f, 0.62f, 0.38f), false);
+	AddDressing(GroundZ);
+
 	for (const FBox2D& Street : Streets())
 	{
 		AddBox(Street, FloorBottom, GroundZ, StreetColour, true);
 		AddBox(FBox2D(FVector2D(Street.Min.X, Street.Min.Y - T), FVector2D(Street.Max.X, Street.Min.Y)), GroundZ, WallTop, WallColour, true);
 		AddBox(FBox2D(FVector2D(Street.Min.X, Street.Max.Y), FVector2D(Street.Max.X, Street.Max.Y + T)), GroundZ, WallTop, WallColour, true);
+	}
+}
+
+void AJamBacklot::AddDressing(float GroundZ)
+{
+	for (const FJamProp& Prop : JamBacklot::Dressing())
+	{
+		if (!JamArt::Load(Prop.Mesh)) { continue; }   // -noart, or not imported: the backlot stays bare
+		USceneComponent* Spot = NewObject<USceneComponent>(this);
+		Spot->SetupAttachment(RootComponent);
+		Spot->SetWorldLocationAndRotation(FVector(Prop.At, GroundZ), FRotator(0.f, Prop.Yaw, 0.f));
+		Spot->RegisterComponent();
+		AddInstanceComponent(Spot);
+		UStaticMeshComponent* Mesh = NewObject<UStaticMeshComponent>(this);
+		Mesh->SetupAttachment(Spot);
+		Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		Mesh->RegisterComponent();
+		AddInstanceComponent(Mesh);
+		JamArt::Apply(Mesh, Prop.Mesh, Prop.Height > 0.f ? Prop.Height : JamArt::Height(Prop.Mesh));
 	}
 }
