@@ -98,6 +98,9 @@ private:
 	/** The bot's typed note (-autonote=suggest / typed:...). */
 	FString AutoTypedNote;
 	bool bAutoSuggest = false;
+	/** T16a: the generated premiere, asked for at the last wrap (empty title = the authored ending). */
+	FJamPremiereTotals GeneratedPremiere;
+	void RequestGeneratedPremiere();
 	/** The budget runs out (T21): halfway through the finale's last stage. */
 	void TickBudget();
 	void BudgetOut();

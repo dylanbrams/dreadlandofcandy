@@ -615,6 +615,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		const bool bLast = !JamScenes::All().IsValidIndex(SceneIndex + 1) || !JamBacklot::Sets().IsValidIndex(SceneIndex + 1);
 		ShowCard(EJamCardKind::None, FString(), FString(), 0.f);   // the wrap panel says THAT'S A WRAP
 		RollWrap(bLast);
+		if (bLast) { RequestGeneratedPremiere(); }
 		Say(EJamLineTrigger::Wrap);
 		if (bLast)
 		{
@@ -1027,6 +1028,9 @@ void AJamGameMode::RequestPremiere()
 	GS->Premiere.FilmGross = FilmGross;
 	GS->Premiere.Director = DirectorTotal;
 	GS->Premiere.Hero = PS ? PS->Sprinkles : 0;
+	GS->Premiere.Title = GeneratedPremiere.Title;
+	GS->Premiere.Tagline = GeneratedPremiere.Tagline;
+	GS->Premiere.Reviews = GeneratedPremiere.Reviews;
 	GS->Wrap.bVisible = false;
 	SetPhase(EJamFilmPhase::Premiere);
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: premiere, %s, gross %d, director %d, hero %d"),
@@ -1170,7 +1174,7 @@ void AJamGameMode::BudgetOut()
 
 namespace
 {
-	const TCHAR* KindName(EJamTargetKind Kind)
+	const TCHAR* NoteKindName(EJamTargetKind Kind)
 	{
 		switch (Kind)
 		{
@@ -1202,7 +1206,7 @@ bool AJamGameMode::HandleTypedNote(AJamHero* InHero, const FString& InTyped)
 	if (Client && Client->IsOnline())
 	{
 		TArray<FString> Kinds;
-		for (const TPair<EJamTargetKind, int32>& K : Ctx.Kinds) { Kinds.Add(KindName(K.Key)); }
+		for (const TPair<EJamTargetKind, int32>& K : Ctx.Kinds) { Kinds.Add(NoteKindName(K.Key)); }
 		const AJamPlayerState* PS = GetHeroState();
 		TWeakObjectPtr<AJamGameMode> WeakThis(this);
 		Client->RequestNote(Scene.Id.ToString(), Ctx.BaseStage.Id.ToString(), Kinds, Ctx.MaxCapacity(), PS ? PS->Motif : FString(), Typed,
@@ -1274,6 +1278,37 @@ void AJamGameMode::ResolveTypedNote(int32 Serial, const FString& Typed, bool bOk
 	Reaction.Id = TEXT("TypedNote_Reaction");
 	Reaction.Text = NoteCosmetics.FenellaReaction;
 	if (!Reaction.Text.IsEmpty()) { ShowCaption(Reaction); }
+}
+
+void AJamGameMode::RequestGeneratedPremiere()
+{
+	// Only a film with typed notes has anything to generate (backend.md); otherwise the authored ending.
+	const AJamPlayerState* PS = GetHeroState();
+	UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
+	const AJamGameState* GS = GetJamGameState();
+	if (!PS || !Client || !GS || !Client->IsOnline() || PS->TypedNotes.Num() == 0) { return; }
+	TArray<FString> Notes = PS->TypedNotes;
+	while (Notes.Num() > 6) { Notes.RemoveAt(0); }
+	TWeakObjectPtr<AJamGameMode> WeakThis(this);
+	Client->RequestPremiere(PS->Motif, Notes, TakesTotal, GS->RunNotesTaken, GS->RunNotesRefused,
+		JamScreens::IsDirectorsCut(GS->RunNotesTaken, GS->RunNotesRefused),
+		[WeakThis](bool bOk, const FString& Body)
+		{
+			AJamGameMode* Self = WeakThis.Get();
+			if (!Self) { return; }
+			FJamPremiereTotals Read;
+			if (bOk && JamScreens::ReadPremiere(Body, Read))
+			{
+				Self->GeneratedPremiere = Read;
+				UE_LOG(LogJam, Log, TEXT("JamGameMode: generated premiere \"%s\""), *Read.Title);
+				// Already on the Premiere: it changes in place.
+				if (AJamGameState* G = Self->GetJamGameState())
+				{
+					if (G->Phase == EJamFilmPhase::Premiere) { G->Premiere.Title = Read.Title; G->Premiere.Tagline = Read.Tagline; G->Premiere.Reviews = Read.Reviews; }
+				}
+			}
+			else { UE_LOG(LogJam, Log, TEXT("JamGameMode: premiere fallback (authored ending)")); }
+		});
 }
 
 void AJamGameMode::ClearNoteCosmetics()

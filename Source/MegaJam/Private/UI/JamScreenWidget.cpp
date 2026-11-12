@@ -116,6 +116,8 @@ void UJamScreenWidget::BuildTree()
 	UOverlay* TitleStack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
 	Title = MakeText(84, ScreenGold, true);
 	Title->SetShadowOffset(FVector2D(5.f, 5.f));
+	Title->SetJustification(ETextJustify::Center);
+	Title->SetWrapTextAt(1760.f);   // a generated title (T16a) can run to 48 characters
 	TitleStack->AddChildToOverlay(Title)->SetHorizontalAlignment(HAlign_Center);
 	Stamp = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
 	Stamp->SetBrush(ScreenRounded(StampRed, 6.f, 5.f));
@@ -246,7 +248,7 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	ShowScreenPart(Kicker, !View.Kicker.IsEmpty());
 	SetScreenText(Title, View.Title);
 	// The rating card's single letter is huge; everything else is a title.
-	Title->SetFont(FCoreStyle::GetDefaultFontStyle("Bold", View.Screen == EJamScreen::Rating ? 220 : (View.Title.Len() > 18 ? 72 : 84)));
+	Title->SetFont(FCoreStyle::GetDefaultFontStyle("Bold", View.Screen == EJamScreen::Rating ? 220 : (View.Title.Len() > 36 ? 52 : View.Title.Len() > 26 ? 60 : View.Title.Len() > 18 ? 72 : 84)));
 	SetScreenText(StampText, View.Stamp);
 	ShowScreenPart(Stamp, !View.Stamp.IsEmpty());
 	// The stamp lands a beat after the title.

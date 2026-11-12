@@ -1,5 +1,8 @@
 #include "UI/JamScreens.h"
 #include "Film/JamLines.h"
+#include "Dom/JsonObject.h"
+#include "Serialization/JsonReader.h"
+#include "Serialization/JsonSerializer.h"
 
 namespace
 {
@@ -116,7 +119,14 @@ FJamScreenView JamScreens::Premiere(const FJamPremiereTotals& T, const FJamMenuS
 		{ TEXT("DIRECTOR"), FString::Printf(TEXT("%d sprinkles"), T.Director) },
 		{ TEXT("HERO"), FString::Printf(TEXT("%d sprinkles"), T.Hero) },
 		{ TEXT("RATS"), TEXT("paid in celery") } };
-	V.Quotes = T.bDirectorsCut
+	if (!T.Title.IsEmpty())
+	{
+		// The film the player's notes made. The totals and the hero's one word stay.
+		V.Kicker = T.bDirectorsCut ? TEXT("TONIGHT: THE DIRECTOR'S CUT OF") : TEXT("TONIGHT: THE THEATRICAL RELEASE OF");
+		V.Title = T.Title.ToUpper();
+		V.Subtitle = T.Tagline;
+	}
+	V.Quotes = T.Reviews.Num() == 3 ? T.Reviews : T.bDirectorsCut
 		? TArray<FString>{ TEXT("“Long.” — a rat"), TEXT("“I was in it!” — a different rat"),
 			TEXT("“I've seen it nine times. I had to. I made it.” — F. Flicker") }
 		: TArray<FString>{ TEXT("“Tighter.” — a rat"), TEXT("“Where was the bigger goblin?” — F. Flicker, from the lobby"),
@@ -125,6 +135,55 @@ FJamScreenView JamScreens::Premiere(const FJamPremiereTotals& T, const FJamMenuS
 	V.Caption = TEXT("Asked for a speech, the hero says: “...Celery.”     Fenella: “Chills. Cut it.”");
 	V.Footer = FString::Printf(TEXT("%s roll credits"), Confirm(S));
 	return V;
+}
+
+namespace
+{
+	FString PremiereCleanText(const FString& In, int32 MaxChars)
+	{
+		FString Out;
+		bool bSpace = false;
+		for (TCHAR C : In)
+		{
+			if (FChar::IsWhitespace(C)) { bSpace = !Out.IsEmpty(); continue; }
+			if (C < 32 || C == 127) { continue; }
+			if (bSpace) { Out.AppendChar(TEXT(' ')); bSpace = false; }
+			Out.AppendChar(C);
+		}
+		return Out.Left(MaxChars).TrimEnd();
+	}
+}
+
+bool JamScreens::ReadPremiere(const FString& Json, FJamPremiereTotals& Out)
+{
+	TSharedPtr<FJsonObject> Root;
+	const TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Json);
+	if (!FJsonSerializer::Deserialize(Reader, Root) || !Root.IsValid()) { return false; }
+	double V = 0.0;
+	FString Source, Title, Tagline;
+	if (!Root->TryGetNumberField(TEXT("v"), V) || V != 1.0) { return false; }
+	if (!Root->TryGetStringField(TEXT("source"), Source) || Source != TEXT("model")) { return false; }
+	if (!Root->TryGetStringField(TEXT("title"), Title) || !Root->TryGetStringField(TEXT("tagline"), Tagline)) { return false; }
+	const TArray<TSharedPtr<FJsonValue>>* Reviews = nullptr;
+	if (!Root->TryGetArrayField(TEXT("reviews"), Reviews) || !Reviews || Reviews->Num() != 3) { return false; }
+	TArray<FString> Lines;
+	for (const TSharedPtr<FJsonValue>& R : *Reviews)
+	{
+		const TSharedPtr<FJsonObject>* Obj = nullptr;
+		FString Quote, By;
+		if (!R.IsValid() || !R->TryGetObject(Obj) || !Obj || !(*Obj)->TryGetStringField(TEXT("quote"), Quote) || !(*Obj)->TryGetStringField(TEXT("by"), By)) { return false; }
+		Quote = PremiereCleanText(Quote, 70);
+		By = PremiereCleanText(By, 30);
+		if (Quote.IsEmpty() || By.IsEmpty()) { return false; }
+		Lines.Add(FString::Printf(TEXT("\u201C%s\u201D \u2014 %s"), *Quote, *By));
+	}
+	Title = PremiereCleanText(Title, 48);
+	Tagline = PremiereCleanText(Tagline, 80);
+	if (Title.IsEmpty() || Tagline.IsEmpty()) { return false; }
+	Out.Title = Title;
+	Out.Tagline = Tagline;
+	Out.Reviews = Lines;
+	return true;
 }
 
 TArray<FString> JamScreens::CreditLines(bool bDirectorsCut)
@@ -200,10 +259,18 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
 	else if (N == TEXT("quit")) { Out = QuitConfirm(S, false); }
 	else if (N == TEXT("pause")) { Out = Pause(S); }
 	else if (N == TEXT("character")) { FJamProgression P; P.ReachMilestone(EJamMilestone::Scene1Wrap); Out = Character(P, S); }
-	else if (N == TEXT("premiere") || N == TEXT("theatrical"))
+	else if (N == TEXT("premiere") || N == TEXT("theatrical") || N == TEXT("generated"))
 	{
 		FJamPremiereTotals T;
-		T.bDirectorsCut = N == TEXT("premiere");
+		T.bDirectorsCut = N != TEXT("theatrical");
+		if (N == TEXT("generated"))
+		{
+			// What the note server might send back for a film about taxes (T16a).
+			T.Title = TEXT("The Dread Land of Candy: Tax Season");
+			T.Tagline = TEXT("Every rat must declare. Every goblin must floss.");
+			T.Reviews = { TEXT("“I have never felt so audited.” — a rat"), TEXT("“Deductible.” — a goblin's accountant"),
+				TEXT("“My vision, fully realised.” — F. Flicker") };
+		}
 		T.FilmGross = 7800;
 		T.Director = 7290;
 		T.Hero = 510;

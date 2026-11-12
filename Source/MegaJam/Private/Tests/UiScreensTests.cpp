@@ -67,6 +67,33 @@ bool FJamUiScreensEndings::RunTest(const FString&)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamUiScreensGeneratedPremiere, "Jam.UI.Screens.GeneratedPremiere", JamUiFlags)
+bool FJamUiScreensGeneratedPremiere::RunTest(const FString&)
+{
+	const FString Good = TEXT("{\"v\":1,\"source\":\"model\",\"title\":\"The Dread Land of Candy: A Study in Shame\",\"tagline\":\"They were big.\\nThey were sorry.\",")
+		TEXT("\"reviews\":[{\"quote\":\"I felt seen.\",\"by\":\"a goblin\"},{\"quote\":\"Long.\",\"by\":\"a rat\"},{\"quote\":\"Mine.\",\"by\":\"F. Flicker\"}],\"extra\":1}");
+	FJamPremiereTotals T;
+	TestTrue(TEXT("a good body reads"), JamScreens::ReadPremiere(Good, T));
+	TestEqual(TEXT("title"), T.Title, FString(TEXT("The Dread Land of Candy: A Study in Shame")));
+	TestEqual(TEXT("newline collapsed"), T.Tagline, FString(TEXT("They were big. They were sorry.")));
+	TestEqual(TEXT("three reviews"), T.Reviews.Num(), 3);
+	const FJamScreenView P = JamScreens::Premiere(T, FJamMenuSettings());
+	TestEqual(TEXT("generated title shown"), P.Title, FString(TEXT("THE DREAD LAND OF CANDY: A STUDY IN SHAME")));
+	TestTrue(TEXT("generated reviews shown"), P.Quotes == T.Reviews);
+
+	FJamPremiereTotals Untouched;
+	TestFalse(TEXT("budget falls back"), JamScreens::ReadPremiere(TEXT("{\"v\":1,\"source\":\"budget\"}"), Untouched));
+	TestFalse(TEXT("garbage falls back"), JamScreens::ReadPremiere(TEXT("not json"), Untouched));
+	TestFalse(TEXT("two reviews fall back"), JamScreens::ReadPremiere(Good.Replace(TEXT(",{\"quote\":\"Mine.\",\"by\":\"F. Flicker\"}"), TEXT("")), Untouched));
+	TestFalse(TEXT("wrong version falls back"), JamScreens::ReadPremiere(Good.Replace(TEXT("\"v\":1"), TEXT("\"v\":2")), Untouched));
+	TestTrue(TEXT("fallbacks leave it untouched"), Untouched.Title.IsEmpty() && Untouched.Reviews.Num() == 0);
+	const FString Long = Good.Replace(TEXT("A Study in Shame"), TEXT("A Study in Shame That Goes On and On and On Forever"));
+	FJamPremiereTotals Cut;
+	TestTrue(TEXT("long title reads"), JamScreens::ReadPremiere(Long, Cut));
+	TestTrue(TEXT("title cut to 48"), Cut.Title.Len() <= 48);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamUiMusicCues, "Jam.UI.Music.Cues", JamUiFlags)
 bool FJamUiMusicCues::RunTest(const FString&)
 {

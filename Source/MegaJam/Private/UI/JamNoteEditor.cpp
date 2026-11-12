@@ -15,11 +15,11 @@
 
 namespace
 {
-	const FLinearColor Violet(0.78f, 0.58f, 1.f);
-	const FLinearColor Dim(0.75f, 0.75f, 0.72f);
-	const FLinearColor Gold(1.f, 0.82f, 0.3f);
+	const FLinearColor NoteViolet(0.78f, 0.58f, 1.f);
+	const FLinearColor NoteDim(0.75f, 0.75f, 0.72f);
+	const FLinearColor NoteGold(1.f, 0.82f, 0.3f);
 
-	FSlateBrush RoundedBrush(float Radius, const FLinearColor& Outline, float OutlineWidth)
+	FSlateBrush NoteRoundedBrush(float Radius, const FLinearColor& Outline, float OutlineWidth)
 	{
 		FSlateBrush B;
 		B.DrawAs = ESlateBrushDrawType::RoundedBox;
@@ -58,7 +58,7 @@ void UJamNoteEditor::BuildTree()
 	};
 
 	UBorder* Panel = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	Panel->SetBrush(RoundedBrush(12.f, Violet, 3.f));
+	Panel->SetBrush(NoteRoundedBrush(12.f, NoteViolet, 3.f));
 	Panel->SetBrushColor(FLinearColor(0.05f, 0.02f, 0.09f, 0.96f));
 	Panel->SetPadding(FMargin(48.f, 30.f));
 	USizeBox* Width = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
@@ -67,10 +67,10 @@ void UJamNoteEditor::BuildTree()
 	Width->SetContent(Box);
 	Panel->SetContent(Width);
 
-	UTextBlock* Title = MakeText(44, Violet, true);
+	UTextBlock* Title = MakeText(44, NoteViolet, true);
 	Title->SetText(FText::FromString(TEXT("YOUR NOTE, DIRECTOR")));
 	Box->AddChildToVerticalBox(Title)->SetHorizontalAlignment(HAlign_Center);
-	PitchText = MakeText(20, Dim, false);
+	PitchText = MakeText(20, NoteDim, false);
 	PitchText->SetJustification(ETextJustify::Center);
 	PitchText->SetWrapTextAt(1000.f);
 	UVerticalBoxSlot* PitchSlot = Box->AddChildToVerticalBox(PitchText);
@@ -79,7 +79,7 @@ void UJamNoteEditor::BuildTree()
 
 	// The text box, in a frame that lights up when it is the selected row.
 	TextFrame = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	TextFrame->SetBrush(RoundedBrush(8.f, Gold, 3.f));
+	TextFrame->SetBrush(NoteRoundedBrush(8.f, NoteGold, 3.f));
 	TextFrame->SetPadding(FMargin(6.f));
 	TextBox = WidgetTree->ConstructWidget<UEditableTextBox>(UEditableTextBox::StaticClass());
 	FEditableTextBoxStyle Style = TextBox->GetWidgetStyle();
@@ -90,12 +90,12 @@ void UJamNoteEditor::BuildTree()
 	TextBox->OnTextChanged.AddDynamic(this, &UJamNoteEditor::OnTextChanged);
 	TextFrame->SetContent(TextBox);
 	Box->AddChildToVerticalBox(TextFrame)->SetHorizontalAlignment(HAlign_Fill);
-	CountText = MakeText(16, Dim, false);
+	CountText = MakeText(16, NoteDim, false);
 	UVerticalBoxSlot* CountSlot = Box->AddChildToVerticalBox(CountText);
 	CountSlot->SetHorizontalAlignment(HAlign_Right);
 	CountSlot->SetPadding(FMargin(0.f, 4.f, 0.f, 14.f));
 
-	UTextBlock* Or = MakeText(20, Violet, true);
+	UTextBlock* Or = MakeText(20, NoteViolet, true);
 	Or->SetText(FText::FromString(TEXT("OR PICK ONE")));
 	Box->AddChildToVerticalBox(Or)->SetPadding(FMargin(0.f, 0.f, 0.f, 6.f));
 
@@ -110,7 +110,7 @@ void UJamNoteEditor::BuildTree()
 		UButton* Button = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass());
 		Button->SetStyle(Plain);
 		UBorder* Row = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-		Row->SetBrush(RoundedBrush(8.f, Gold, 0.f));
+		Row->SetBrush(NoteRoundedBrush(8.f, NoteGold, 0.f));
 		Row->SetPadding(FMargin(20.f, 10.f));
 		Row->SetHorizontalAlignment(HAlign_Left);
 		UTextBlock* RowText = MakeText(26, FLinearColor::White, false);
@@ -126,7 +126,7 @@ void UJamNoteEditor::BuildTree()
 		RowTexts.Add(RowText);
 	}
 
-	HintText = MakeText(19, Dim, false);
+	HintText = MakeText(19, NoteDim, false);
 	HintText->SetJustification(ETextJustify::Center);
 	UVerticalBoxSlot* HintSlot = Box->AddChildToVerticalBox(HintText);
 	HintSlot->SetHorizontalAlignment(HAlign_Center);
@@ -171,7 +171,7 @@ void UJamNoteEditor::Refresh()
 	{
 		const bool bOn = Selection == i + 1;
 		Rows[i]->SetBrushColor(bOn ? FLinearColor(0.45f, 0.25f, 0.75f, 0.95f) : FLinearColor(1.f, 1.f, 1.f, 0.06f));
-		RowTexts[i]->SetColorAndOpacity(FSlateColor(bOn ? FLinearColor::White : Dim));
+		RowTexts[i]->SetColorAndOpacity(FSlateColor(bOn ? FLinearColor::White : NoteDim));
 		Rows[i]->SetVisibility(Suggested.IsValidIndex(i) ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 	}
 	const int32 Len = TextBox ? TextBox->GetText().ToString().Len() : 0;

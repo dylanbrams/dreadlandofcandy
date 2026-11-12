@@ -72,6 +72,10 @@ struct MEGAJAM_API FJamPremiereTotals
 	int32 FilmGross = 0;
 	int32 Director = 0;
 	int32 Hero = 0;
+	/** T16a: the film the player's typed notes made (from the note server). Empty title = the authored ending. */
+	FString Title;
+	FString Tagline;
+	TArray<FString> Reviews;   // quote, then " - by"
 };
 
 /** Settings a menu shows. */
@@ -94,6 +98,13 @@ namespace JamScreens
 	MEGAJAM_API FJamScreenView Character(const FJamProgression& Prog, const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Premiere(const FJamPremiereTotals& T, const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Credits(bool bDirectorsCut, const FJamMenuSettings& S);
+
+	/**
+	 * T16a: reads a /v1/director/premiere body (NoteForm.md) into Out's Title, Tagline and Reviews.
+	 * False (Out untouched) unless v is 1, source is "model", and the title, tagline and exactly three reviews
+	 * survive cleaning (control characters dropped, whitespace collapsed, cut to 48 / 80 / 70 + 30 characters).
+	 */
+	MEGAJAM_API bool ReadPremiere(const FString& Json, FJamPremiereTotals& Out);
 
 	/** BUILD_SPEC 2: mostly taken = the Director's Cut (ties go to her). */
 	inline bool IsDirectorsCut(int32 NotesTaken, int32 NotesRefused) { return NotesTaken >= NotesRefused; }
