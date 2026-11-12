@@ -1006,8 +1006,9 @@ void AJamGameMode::TickBudget()
 	const bool bLastStage = Stage && Shoot.GetStageIndex() == Shoot.GetScene().Stages.Num() - 1;
 	if (!GS->bBudgetOut && bFinale && Stage && Shoot.GetState() == EJamShootState::Rolling)
 	{
-		// Halfway through the last stage (BUILD_SPEC 3); -budgetout does it as soon as the finale rolls (screenshots).
-		if (bForceBudgetOut || (bLastStage && Shoot.GetProgress() * 2 >= Stage->Count)) { BudgetOut(); }
+		// As the finale's last stage rolls, right after its CUT! (BUILD_SPEC 3 says halfway, but the Last Judgment
+		// clears that stage in one frame, and nobody should miss this gag). -budgetout: as soon as the finale rolls.
+		if (bForceBudgetOut || bLastStage) { BudgetOut(); }
 	}
 	// She hums the score in place of the music, now and then.
 	if (GS->bBudgetOut && GS->Phase == EJamFilmPhase::Shooting && GetWorld()->GetTimeSeconds() >= NextHumAt && !GS->IsCaptionVisible() && CaptionQueue.IsEmpty())
