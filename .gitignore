@@ -46,3 +46,6 @@ ImportSource/_gen/run.lock
 ImportSource/_gen/state.json.part
 Assets/Incoming/2D/_drop/
 *.part
+
+# BACKEND service is its own nested repo
+backend/
