@@ -38,6 +38,8 @@ Stage/take machine, ledger, lines, faerie, UI, map, imported assets. Nothing rep
 
 ## Known issues
 
+- The packaged folder is 921 MB with almost no content: `MegaJam.pdb` 356 MB, exe 320 MB, paks 129 MB. The submission zip must stay under 1 GB. Before day 4, make `zip-submission.ps1` leave out `*.pdb` (debug symbols, not needed to run), or package with `-nodebuginfo`.
+
 - The hero's visor block (shows facing) is hard to see from behind; fine until the Meshy hero is imported.
 - Editor `-game` runs log Python errors from the engine's NiagaraToolsets and ToolsetRegistry plugins (`unreal.AgentSkill`, `PythonTestRunner` missing). Editor-only, not in the packaged log.
 - `Config/DefaultEngine.ini` carries the editor's Android file server token block uncommitted. Never commit it; stage config lines from HEAD instead.
