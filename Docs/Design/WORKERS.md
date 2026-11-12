@@ -30,7 +30,31 @@ The critical path. If only one worker is running, it is this one.
 - Day 3: T19, T20, T23, T21, T24, T25, T22 hookup if ahead
 - Day 4: fixes, package, clean-machine test, video capture
 
-Merges `rules` into `main` (fast-forward or a plain merge) before any task that depends on it, then builds and runs tests. Imports from `Assets/Incoming/` at set points (end of T08, start of T20), not continuously. Adds every runtime-loaded folder to `DirectoriesToAlwaysCook`.
+Merges `rules` into `main` (fast-forward or a plain merge) before any task that depends on it, then builds and runs tests. Imports generated assets at set points (end of T08, start of T20, and the approval pass below), not continuously. Adds every runtime-loaded folder to `DirectoriesToAlwaysCook`.
+
+#### Watching asset state
+
+ASSETS (usually Codex, following `Docs/GenerationRunbook.md`) works in this same checkout and never builds, so its results show up on disk at once. Codex can't join Claude's session-to-session messages, so files are the channel:
+
+| File | Changes when | Means |
+| --- | --- | --- |
+| `ImportSource/_gen/last_run.txt` | a 3D run (`gen_batch.py run`) finishes | meshes are done or failed; the summary says which |
+| `ImportSource/_gen/state.json` | any job starts, finishes, is approved, rerouted or ingested | the full picture; read it with `python -I Scripts/gen_batch.py status` (or `--json`) |
+| `Docs/Workers/assets.md` | ASSETS ends a stage and stops for Dylan | **the stage is complete**; its notes say what looks wrong |
+
+- **At the start of every task:** run `python -I Scripts/gen_batch.py status` and read `Docs/Workers/assets.md`. Both are cheap. Fold anything new into `STATUS.md`.
+- **During a long task (Claude Code):** start a background watch, so a finished stage wakes you instead of being found hours later:
+
+  ```bash
+  w() { stat -c %Y ImportSource/_gen/last_run.txt Docs/Workers/assets.md 2>/dev/null | tr '\n' ' '; }
+  s0=$(w); until [ "$(w)" != "$s0" ]; do sleep 60; done
+  echo "asset state changed"; cat ImportSource/_gen/last_run.txt 2>/dev/null; git log -1 --format=%s -- Docs/Workers/assets.md
+  ```
+
+  When it fires, **don't drop the current task**. Note it, finish to the next green checkpoint, then act. Restart the watch afterwards.
+- **When the `test` stage completes, do the approval pass.** Dylan approves meshes in the game camera, not from generator thumbnails. Import the test meshes (including the `*_Rodin` and `*_Fal` twins) into a throwaway review map. Line each subject's versions up side by side at the game camera (about 1100 uu, 50 degrees). Show nuisances at scale 1 and 3, tinted `pink` and `grey`. Then take one screenshot per subject with `screenshot.ps1`. Put the screenshot paths in `STATUS.md`. If Dylan is away, send him a push notification saying the review shots are ready. Approving is still his call: GAME never runs `gen_batch.py approve` or `route`.
+- **Importing:** take only jobs that `status` shows `done` in an approved group. Meshes are at `ImportSource/<Meshy|Hyper3D|Fal|Tripo>/<id>.glb` (`state.json` records which tool made each). The rigged hero is `ImportSource/Meshy/SK_Hero_Rig/SK_Hero_Rig.fbx`, with its animations as `A_SK_Hero_Rig_<Anim>.fbx` (UE5 mannequin skeleton, so mannequin animations retarget). 2D is at `Assets/Incoming/2D/<id>/<id>.png`, keyed and trimmed. For a twin that won, import it under the plain name (`SM_Rat_Fal` becomes `SM_Rat`). Generated props arrive heavier than the budgets in `ASSETS.md` (fal's floor is 40k faces), so reduce them on import.
+- **Asking ASSETS for something** (a redo, a missing asset): add it under a "Requests to ASSETS" heading in `STATUS.md` and tell Dylan. If another Claude session is running ASSETS instead of Codex, message it directly.
 
 ### RULES: headless C++ and tests, safe to leave unattended
 
@@ -56,13 +80,13 @@ Loads the `claude-api` skill before writing the model call. On stream: never pri
 
 ### ASSETS: generate, clean, hand over
 
-Runs `Scripts/meshy.py`, `Scripts/rodin.py`, the Blender clean-up in `Docs/BlenderCleanup.md`. Produces files and a manifest; does not import them.
+Follows `Docs/GenerationRunbook.md`: `Scripts/gen_batch.py` runs the jobs in `Assets/Generation/jobs.json` (3D in parallel through Meshy, Rodin, fal or Tripo; 2D through Codex's own image generation). The Blender clean-up in `Docs/BlenderCleanup.md` comes after. Produces files, manifests and `ImportSource/_gen/state.json`; does not import them. Usually run by Codex on Dylan's ChatGPT plan. It works in the main checkout because it never builds and touches only its own paths, so it commits with `git commit -- <its paths>` and never a bare `git commit`.
 
 - Day 1: the asset list (Dylan's next session), one test asset per type, Dylan approves each, adjust `styles.json` once
 - Day 2: hero (with the Meshy rig time-box), rat, goblin, bug, three villagers, Fenella, house fronts, celery, toothbrush, almonds, clapperboard, one Rodin prop
 - Day 3: set dressing, skill icons, replacements for anything that failed (Fab or Synty packs, chosen by Dylan)
 
-Every generated or bought asset gets a `Docs/Declared.md` line the same session. Hand-over is a folder per asset under `Assets/Incoming/<type>/<name>/` with the mesh, textures and a one-line note on scale and pivot.
+Every generated or bought asset gets a `Docs/Declared.md` line the same session (`gen_batch.py declare`). Hand-over: meshes in `ImportSource/<tool>/<id>.glb`, 2D in `Assets/Incoming/2D/<id>/`, the state in `ImportSource/_gen/state.json`, and notes on what looks wrong in `Docs/Workers/assets.md`. GAME watches these (see "Watching asset state" under GAME).
 
 ### AUDIO: music, sounds, voice
 
@@ -114,7 +138,7 @@ RULES, BACKEND, ASSETS and AUDIO each keep `Docs/Workers/<name>.md`: what is don
 
 ## Start prompts
 
-**GAME:** "You are the GAME worker. Read `CLAUDE.md`, `Docs/STATUS.md`, `Docs/Design/BUILD_SPEC.md` and `Docs/Design/WORKERS.md`. Read `Docs/Workers/*.md` for hand-overs. Merge `rules` if it is ahead. Take the next GAME task, finish it to its 'done when', commit, update STATUS and DEVLOG."
+**GAME:** "You are the GAME worker. Read `CLAUDE.md`, `Docs/STATUS.md`, `Docs/Design/BUILD_SPEC.md` and `Docs/Design/WORKERS.md`. Read `Docs/Workers/*.md` for hand-overs and run `python -I Scripts/gen_batch.py status`. Merge `rules` if it is ahead. Start the asset-state watch (WORKERS.md, GAME, 'Watching asset state'). Take the next GAME task, finish it to its 'done when', commit, update STATUS and DEVLOG."
 
 **RULES:** "You are the RULES worker in the worktree at `D:\Source\Unreal\MegaJam2026-rules` on branch `rules`. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` sections 3, 3a, 3c and 5, and `Docs/Design/WORKERS.md`. Edit only what RULES owns. Take the next RULES task, write the tests first, build and run `Jam.Film.*`, commit to `rules`, update `Docs/Workers/rules.md`, then take the next one."
 
@@ -122,4 +146,4 @@ RULES, BACKEND, ASSETS and AUDIO each keep `Docs/Workers/<name>.md`: what is don
 
 **ASSET LIST (one Opus session, before ASSETS starts generating):** "Read `Docs/Design/BUILD_SPEC.md` (sections 3, 3a, 3c, 6), `Docs/Design/Jokes.md` (set pieces and signs), `Docs/GenerationRouting.md` and `Docs/styles.json`. Write `Docs/Design/ASSETS.md`: every asset the three scenes need, grouped as hero, nuisances, NPCs, set pieces and terrain per scene, props, Niagara effects, materials, UI art, audio. For each: name, which scene or system needs it, tool (Meshy, Rodin, engine, 2D), rigged or static, rough triangle budget, priority (must, should, stretch), and the cheapest acceptable fallback. Reuse aggressively: one mesh with tint and scale beats two meshes. Mark at least one prop for Rodin. Terrain and Niagara are built in the engine by the GAME worker, not generated: for those, write a spec of what to build, not a prompt to run. Remember what the systems imply: typed notes need rain, sprinkle-snow and fog, and tint and scale that work on every nuisance; progression needs four skill effects (cone, line, ring, ultimate) and four icons; the finale needs the grey-checker material swap. End with a generation order for the day 1 test assets and the day 2 batch. Do not generate anything."
 
-**ASSETS:** "You are the ASSETS worker. Work from `Docs/Design/ASSETS.md`. Read `Docs/GenerationRouting.md`, `Docs/styles.json`, `BUILD_SPEC.md` section 6 and `WORKERS.md`. Do not build, do not open the editor, do not touch `Source/` or `Content/`. Generate the next asset on the list, clean it, put it under `Assets/Incoming/`, add its `Docs/Declared.md` line, update `Docs/Workers/assets.md`."
+**ASSETS:** "You are the ASSETS worker. Follow `Docs/GenerationRunbook.md`, stage `test`." (Then `batch1`, `batch2` as Dylan approves.) Do not build, do not open the editor, do not touch `Source/` or `Content/`.

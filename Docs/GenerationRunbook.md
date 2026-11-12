@@ -8,7 +8,8 @@ Hand this file to the agent (Codex, ChatGPT, or a Claude session) with one line:
 - **The jam is streamed.** Never print, `cat`, open or echo `.env` or any key. The scripts read keys themselves.
 - Run Python as `python -I Scripts/<script>.py`.
 - Never approve a group yourself. Approval is Dylan looking at the result.
-- Commit at the end of each step (`git add Assets/Generation Assets/Incoming ImportSource Docs/Declared.md Docs/Workers/assets.md`). Never commit `Config/DefaultEngine.ini`. Never push.
+- Commit at the end of each step, **only your own paths**, because the GAME worker shares this checkout: `git add Assets/Generation Assets/Incoming ImportSource Docs/Declared.md Docs/Workers/assets.md` then `git commit -m "..." -- Assets/Generation Assets/Incoming ImportSource Docs/Declared.md Docs/Workers/assets.md`. Never a bare `git commit`, never `git add -A`. Never commit `Config/DefaultEngine.ini`. Never push.
+- Writing `Docs/Workers/assets.md` is your "stage done" signal: GAME watches it. Update it at the end of a stage, not after every asset.
 
 ## The tools
 
