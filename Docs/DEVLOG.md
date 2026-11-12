@@ -84,3 +84,11 @@
 - T05a: Form A Line, the Disappointed Sigh and the Last Judgment as GAS abilities on the rank tables, with their own cooldowns, a stop and a slow. Tested for line and ring hits.
 - T14a: skill bar and XP bar, points spent by pressing a skill's button on the wrap panel, a character sheet in the pause menu with the six non-refundable passives. Autoplay spends all three points and casts every skill it owns.
 - First skill bar screenshot had "Disappointed Sigh" and "The Last Judgment" overflowing their tiles; the bar uses short names now.
+
+## 17:30 T18 music, T19 lecture, a report for Dylan
+
+- T14a packaged smoke passes (points spent, skills cast, title to credits).
+- Dylan, from the park: keep going, send status reports, make reading material. Published a production report artifact (screenshots, schedule, things only he can decide). Settings: OneMore has a good system; parked as a note for later.
+- T18: imported 18 of Dylan's tracks with the ImportAssets commandlet (first attempt from Git Bash turned `/Game/Audio` into a Windows path; the second landed in a subfolder named after the source folder). The game picks a cue per moment and a random take. Packaged build plays all of them in order.
+- Zip now skips the 359 MB of debug symbols: 379 MB.
+- T19: the brand moment. Sword up, inhale, a cone flash that matches the real cone, jagged lecture bubbles, rats that recoil and talk back ("he started it"). The material for the flash was made by a Python script through the editor commandlet, so no editor session was needed. Took four screenshots to catch a 0.45 s flash in frame.
