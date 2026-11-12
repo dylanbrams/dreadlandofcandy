@@ -400,6 +400,7 @@ void AJamHUD::TickMusic()
 	C.Stage = GS->GetShoot().GetStageIndex();
 	C.bWalking = !GS->Hint.IsEmpty();
 	C.bNotePrompt = GS->IsNotePrompt();
+	C.bBudgetOut = GS->bBudgetOut && GS->Phase == EJamFilmPhase::Shooting;
 	const FName Cue = bNoMusic ? NAME_None : JamMusic::CueFor(C);
 	const UJamSettings* J = Settings();
 	const float Volume = 0.7f * (J ? J->MusicVolume : 0.8f);
@@ -410,7 +411,8 @@ void AJamHUD::TickMusic()
 		return;
 	}
 	MusicCue = Cue;
-	if (Music) { Music->FadeOut(1.5f, 0.f); Music = nullptr; }
+	// The money running out cuts the music dead; everything else crossfades.
+	if (Music) { if (C.bBudgetOut) { Music->Stop(); } else { Music->FadeOut(1.5f, 0.f); } Music = nullptr; }
 	if (Cue.IsNone()) { return; }
 
 	const int32 Take = FMath::RandRange(1, 2);   // Dylan: both takes are fine, play either

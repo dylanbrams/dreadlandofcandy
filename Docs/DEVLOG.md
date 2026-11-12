@@ -92,3 +92,10 @@
 - T18: imported 18 of Dylan's tracks with the ImportAssets commandlet (first attempt from Git Bash turned `/Game/Audio` into a Windows path; the second landed in a subfolder named after the source folder). The game picks a cue per moment and a random take. Packaged build plays all of them in order.
 - Zip now skips the 359 MB of debug symbols: 379 MB.
 - T19: the brand moment. Sword up, inhale, a cone flash that matches the real cone, jagged lecture bubbles, rats that recoil and talk back ("he started it"). The material for the flash was made by a Python script through the editor commandlet, so no editor session was needed. Took four screenshots to catch a 0.45 s flash in frame.
+
+## 18:15 Volume sliders, T22 commentary, T21 budget-out
+
+- Dylan: music and Fenella get separate sliders. Done; the pause menu has seven lines now.
+- T22: the commentary toggle was wired but she never commented: the scheduler measured the commentary gap from any line, and she talks every few seconds. Two-line fix in RULES' scheduler, noted for RULES. Three commentary lines per film now ("It's about ninety minutes. It's eight.").
+- T21: the money runs out halfway through the finale. Grey grid on everything, bugs become boxes labelled BUG, the bubbles say [SHOUTING], the music cuts dead.
+- First commentary check ran at normal speed for 17 minutes because I asked for a screenshot at 999 game seconds without speeding the game up. Use -timescale=4.

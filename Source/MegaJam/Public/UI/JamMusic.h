@@ -11,6 +11,7 @@ struct MEGAJAM_API FJamMusicContext
 	int32 Stage = 0;
 	bool bWalking = false;    // between scenes, on the street
 	bool bNotePrompt = false; // CUT!
+	bool bBudgetOut = false;  // the finale ran out of money: no music at all
 };
 
 /**

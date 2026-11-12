@@ -1,4 +1,5 @@
 #include "Game/JamNuisance.h"
+#include "Components/TextRenderComponent.h"
 #include "Game/JamHero.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamResolveAttributeSet.h"
@@ -64,6 +65,20 @@ AJamNuisance::AJamNuisance()
 	if (Cylinder.Succeeded()) { Body->SetStaticMesh(Cylinder.Object); }
 	if (ShapeMaterial.Succeeded()) { Body->SetMaterial(0, ShapeMaterial.Object); }
 	Body->SetRelativeScale3D(FVector(0.8f, 0.8f, 1.4f));
+
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
+	BoxMesh = Cube.Object;
+	BoxLabel = CreateDefaultSubobject<UTextRenderComponent>(TEXT("BoxLabel"));
+	BoxLabel->SetupAttachment(Capsule);
+	BoxLabel->SetHorizontalAlignment(EHTA_Center);
+	BoxLabel->SetVerticalAlignment(EVRTA_TextCenter);
+	BoxLabel->SetWorldSize(46.f);
+	BoxLabel->SetTextRenderColor(FColor(30, 30, 30));
+	// Lying on the lid, readable from the game camera (which looks along +X).
+	BoxLabel->SetRelativeLocation(FVector(0.f, 0.f, 44.f));
+	BoxLabel->SetRelativeRotation(FRotator(90.f, 180.f, 0.f));
+	BoxLabel->SetUsingAbsoluteRotation(true);
+	BoxLabel->SetHiddenInGame(true);
 
 	AbilitySystem = CreateDefaultSubobject<UJamAbilitySystemComponent>(TEXT("AbilitySystem"));
 	ResolveSet = CreateDefaultSubobject<UJamResolveAttributeSet>(TEXT("ResolveSet"));
@@ -146,6 +161,17 @@ void AJamNuisance::Recoil(const FVector& From)
 	const FVector2D Away = (FVector2D(GetActorLocation()) - FVector2D(From)).GetSafeNormal();
 	RecoilVelocity = Away * 900.f;
 	RecoilAt = GetWorld()->GetTimeSeconds();
+}
+
+void AJamNuisance::BecomeBox(const FString& Label)
+{
+	if (BoxMesh) { Body->SetStaticMesh(BoxMesh); }
+	BodyBaseScale = FVector(0.8f, 0.8f, 0.8f);
+	BodyBaseLocation = FVector(0.f, 0.f, -30.f);
+	Body->SetRelativeScale3D(BodyBaseScale);
+	Body->SetRelativeLocation(BodyBaseLocation);
+	BoxLabel->SetText(FText::FromString(Label));
+	BoxLabel->SetHiddenInGame(false);
 }
 
 void AJamNuisance::Slow(float Factor, float Seconds)

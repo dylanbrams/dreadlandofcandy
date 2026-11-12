@@ -79,6 +79,10 @@ private:
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
 	void Say(EJamLineTrigger Trigger);
+	/** The budget runs out (T21): halfway through the finale's last stage. */
+	void TickBudget();
+	void BudgetOut();
+
 	/** A bubble from a pool over an actor (T19). */
 	void Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& Offset, float Seconds, bool bJagged);
 	void ShowCaption(const FJamLine& Line);
@@ -139,6 +143,8 @@ private:
 	float AfterRunTime = 0.f;
 	bool bAutoplayEndLogged = false;
 	int32 SkillCasts = 0;
+	bool bForceBudgetOut = false;
+	float NextHumAt = 0.f;
 	bool bFailForcedByFlag = false;
 	float AutoplayTime = 0.f;
 	float SceneTime = 0.f;

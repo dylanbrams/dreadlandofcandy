@@ -68,6 +68,9 @@ public:
 	/** A skill hit it (T19): a short shove away from the hero and a squash. Cosmetic; the set bounds still hold. */
 	void Recoil(const FVector& From);
 
+	/** The budget ran out (T21): the body becomes a grey box with its kind stencilled on top. */
+	void BecomeBox(const FString& Label);
+
 	/** The Disappointed Sigh: move at this fraction of speed for a while. */
 	void Slow(float Factor, float Seconds);
 
@@ -97,6 +100,12 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UJamAbilitySystemComponent> AbilitySystem;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<class UTextRenderComponent> BoxLabel;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UStaticMesh> BoxMesh;
 
 	UPROPERTY()
 	TObjectPtr<UJamResolveAttributeSet> ResolveSet;

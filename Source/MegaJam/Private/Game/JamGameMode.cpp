@@ -17,6 +17,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/WorldSettings.h"
 #include "Misc/CommandLine.h"
@@ -117,6 +118,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 
 	const TCHAR* Cmd = FCommandLine::Get();
 	bAutoplay = FParse::Param(Cmd, TEXT("autoplay"));
+	bForceBudgetOut = FParse::Param(Cmd, TEXT("budgetout"));   // the beat as soon as the finale's last stage rolls
 	if (FParse::Param(Cmd, TEXT("forcefail")))
 	{
 		ForceFailAfter = 3.f;
@@ -306,6 +308,7 @@ void AJamGameMode::Tick(float DeltaSeconds)
 	SceneTime += DeltaSeconds;
 	if (bBetweenScenes) { TickBetweenScenes(); }
 	else { TickShoot(DeltaSeconds); }
+	TickBudget();
 	TickFenella(DeltaSeconds);
 	if (bAutoplay && Hero.IsValid())
 	{
@@ -666,7 +669,8 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 		// The lecture itself: one jagged line over the knight, sadder once she sulks (BUILD_SPEC 6, T19).
 		const AJamGameState* GS = GetJamGameState();
 		const bool bSad = GS && GS->GetShoot().IsSulking();
-		Bubble(bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+		const EJamLineTrigger Pool = GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : (bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault);
+		Bubble(Pool, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
 	}
 	else { ++SkillCasts; }
 }
@@ -712,7 +716,7 @@ FJamNagSnapshot AJamGameMode::MakeSnapshot() const
 		Snap.bSilenced = GS->IsNotePrompt();
 		Snap.bSulking = GS->GetShoot().IsSulking();
 		const UJamSettings* Settings = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
-		Snap.bCommentary = Settings && Settings->bCommentary;
+		Snap.bCommentary = (Settings && Settings->bCommentary) || FParse::Param(FCommandLine::Get(), TEXT("commentary"));
 	}
 	return Snap;
 }
@@ -965,4 +969,66 @@ void AJamGameMode::Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& O
 	B.Until = Now + Seconds;
 	B.bJagged = bJagged;
 	GS->Bubbles.Add(B);
+}
+
+// ---- The budget runs out (T21) --------------------------------------------------------------------------------
+
+void AJamGameMode::TickBudget()
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || bBetweenScenes) { return; }
+	const FJamShoot& Shoot = GS->GetShoot();
+	const FJamStageDef* Stage = Shoot.GetStage();
+	const bool bFinale = !JamScenes::All().IsValidIndex(SceneIndex + 1);
+	const bool bLastStage = Stage && Shoot.GetStageIndex() == Shoot.GetScene().Stages.Num() - 1;
+	if (!GS->bBudgetOut && bFinale && Stage && Shoot.GetState() == EJamShootState::Rolling)
+	{
+		// Halfway through the last stage (BUILD_SPEC 3); -budgetout does it as soon as the finale rolls (screenshots).
+		if (bForceBudgetOut || (bLastStage && Shoot.GetProgress() * 2 >= Stage->Count)) { BudgetOut(); }
+	}
+	// She hums the score in place of the music, now and then.
+	if (GS->bBudgetOut && GS->Phase == EJamFilmPhase::Shooting && GetWorld()->GetTimeSeconds() >= NextHumAt && !GS->IsCaptionVisible() && CaptionQueue.IsEmpty())
+	{
+		NextHumAt = GetWorld()->GetTimeSeconds() + 9.f;
+		GS->CaptionLineId = TEXT("Hum");
+		GS->CaptionText = TEXT("\u266A Hmm hm hmmm, hm HMMM \u266A   (Fenella hums the score)");
+		GS->CaptionUntil = GetWorld()->GetTimeSeconds() + 3.5f;
+	}
+}
+
+void AJamGameMode::BudgetOut()
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || GS->bBudgetOut) { return; }
+	GS->bBudgetOut = true;
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: the budget runs out"));
+	Say(EJamLineTrigger::BudgetOut);
+	NextHumAt = GetWorld()->GetTimeSeconds() + 6.f;
+
+	// Every mesh in the world drops to the engine's grey checker, the one every unfinished game has.
+	UMaterialInterface* Grid = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"));
+	if (Grid)
+	{
+		for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+		{
+			TInlineComponentArray<UStaticMeshComponent*> Meshes(*It);
+			for (UStaticMeshComponent* Mesh : Meshes)
+			{
+				for (int32 i = 0; i < Mesh->GetNumMaterials(); ++i) { Mesh->SetMaterial(i, Grid); }
+			}
+		}
+	}
+	// The cast become boxes with their parts written on them.
+	const FJamStageDef* Stage = GS->GetShoot().GetStage();
+	const TCHAR* Label = TEXT("RAT");
+	if (Stage)
+	{
+		switch (Stage->Target)
+		{
+		case EJamTargetKind::Goblin: Label = TEXT("GOBLIN"); break;
+		case EJamTargetKind::Bug:    Label = TEXT("BUG"); break;
+		default: break;
+		}
+	}
+	for (AJamNuisance* N : Nuisances) { if (N) { N->BecomeBox(Label); } }
 }

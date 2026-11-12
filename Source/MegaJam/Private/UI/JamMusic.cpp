@@ -9,6 +9,7 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 	case EJamFilmPhase::Credits:  return TEXT("credits");
 	default: break;
 	}
+	if (C.bBudgetOut) { return NAME_None; }   // she hums it instead (T21)
 	if (C.bWalking) { return TEXT("open_world_exploration"); }
 	if (C.bNotePrompt) { return TEXT("mystery"); }                     // she is thinking. Uh oh.
 	switch (C.Scene)

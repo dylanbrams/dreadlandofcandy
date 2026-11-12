@@ -88,8 +88,10 @@ const FJamLine* FJamNagScheduler::Request(EJamLineTrigger Trigger, const FJamNag
 		if (Trigger == EJamLineTrigger::Commentary && !Snap.bCommentary) { return nullptr; }
 		if (Snap.bSilenced) { return nullptr; }
 
-		const float Gap = Trigger == EJamLineTrigger::Commentary ? Config.CommentaryGap : Config.GlobalGap;
-		if (Snap.Now - LastSpokenAt < Gap) { return nullptr; }
+		// Commentary waits its own gap since the last commentary line (GAME, T22: measured from any line, it never
+		// got a turn, because story and ambient lines come every few seconds), plus the usual gap between lines.
+		if (Snap.Now - LastSpokenAt < Config.GlobalGap) { return nullptr; }
+		if (Trigger == EJamLineTrigger::Commentary && Snap.Now - LastTriggerAt[(int32)Trigger] < Config.CommentaryGap) { return nullptr; }
 		if (Snap.Now - LastTriggerAt[(int32)Trigger] < Config.TriggerCooldown) { return nullptr; }
 		if (Trigger == EJamLineTrigger::LectureCast && Rng.FRand() >= Config.LectureChance) { return nullptr; }
 	}

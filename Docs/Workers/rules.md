@@ -40,6 +40,9 @@
 ## Next
 Day 1 and day 2 RULES backlog is done. Waiting on GAME requests (rule fixes, the T22 commentary toggle is already in `JamLines` as `Commentary` + `FJamNagSnapshot::bCommentary`).
 
+## Changed by GAME (Nov 12, 18:00)
+- `FJamNagScheduler::Request`: the commentary gap (25 s) is now measured from the last commentary line, not from any line, and the global gap still applies. In a real run she speaks every ~8 s, so commentary never fired. `Jam.Film.Nag.*` still pass.
+
 ## Requests to GAME
 - Merge `rules` into `main` (it is ahead; builds and passes `Jam.Film` in this worktree). New headers: `Film/JamLedger.h`, `JamLines.h`, `JamNagScheduler.h`, `JamProgression.h`, `JamNoteClamp.h`.
 - Add `Json` and `HTTP` to `MegaJam.Build.cs` for T12b if you want the engine's JSON; not needed for the clamp.

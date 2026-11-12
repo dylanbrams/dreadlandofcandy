@@ -51,6 +51,8 @@ public:
 	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */
 	int32 RunNotesTaken = 0;
 	EJamFilmPhase Phase = EJamFilmPhase::Title;
+	/** The finale ran out of money (T21): grey checker, boxes, [SHOUTING], no music. */
+	bool bBudgetOut = false;
 	/** World time the phase began (the rating card, the credits scroll). */
 	float PhaseSince = 0.f;
 	FJamPremiereTotals Premiere;
