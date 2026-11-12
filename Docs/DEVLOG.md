@@ -21,3 +21,11 @@
 - Refused casts logged every frame from the bot; moved that to Verbose.
 - Dylan reviewed batch1 in the browser viewer: all fine except Fenella (no wings because the prompt said "no wings", and a 35mm stuck on her eye). Redo wording in STATUS.
 - Screenshot: `Saved/Screenshots/WindowsEditor/t05-flee2.png`.
+
+## 2026-11-12 08:30-08:50, GAME
+
+- No RULES session was running, so Dylan had GAME write T03 itself: `FJamShoot` with events as data, the Scene 1 table, eight `Jam.Film` tests. All passed on the first build.
+- T06: game state holds the shoot; the game mode drains its events to respawn rats, show cards and pace the slate, cleared and failed states. Scene 1 runs end to end under autoplay: take 1 cleared, "Perfect! Again." forces take 2, the rats flee, celery, wrap (`JamAutoplay: PASS scenes=1 takes=2`).
+- Shared-engine friction: one package attempt died on UBT's global mutex (another worktree was building), and one editor run hung waiting for the Zen cache server. Both worked on retry.
+- Not yet done: a human playing it. The feeding prompt has not been seen.
+- Screenshot: `Saved/Screenshots/WindowsEditor/t06-again.png`.
