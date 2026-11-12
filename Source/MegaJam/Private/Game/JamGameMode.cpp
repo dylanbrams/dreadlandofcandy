@@ -1,5 +1,6 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamNoteClient.h"
+#include "Game/JamLook.h"
 #include "Film/JamNoteClamp.h"
 #include "Game/JamBacklot.h"
 #include "Game/JamArtReview.h"
@@ -191,6 +192,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	{
 		Backlot->Build(GroundZ);
 	}
+	JamLook::Apply(GetWorld());
 	const FVector2D Mark = JamBacklot::HeroMark(FirstSceneIndex);
 	NewHero->TeleportTo(FVector(Mark, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
 
@@ -1141,6 +1143,7 @@ void AJamGameMode::BudgetOut()
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: the budget runs out"));
 	Say(EJamLineTrigger::BudgetOut);
 	NextHumAt = GetWorld()->GetTimeSeconds() + 6.f;
+	JamLook::BudgetOut(GetWorld());
 
 	// Every mesh in the world drops to the engine's grey checker, the one every unfinished game has.
 	UMaterialInterface* Grid = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"));
