@@ -84,6 +84,8 @@ void AJamHUD::BuildView()
 		}
 	}
 
+	if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+
 	if (GS->IsCardVisible())
 	{
 		View.CardKind = GS->CardKind;

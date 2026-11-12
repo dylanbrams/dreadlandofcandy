@@ -1,5 +1,6 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamBacklot.h"
+#include "Game/JamFaerie.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
 #include "Game/JamHUD.h"
@@ -24,6 +25,15 @@ namespace JamShootPacing
 	constexpr float ClearedSeconds = 1.2f;
 	constexpr float FailedSeconds = 2.5f;
 	constexpr float WrapCardSeconds = 4.0f;
+}
+
+namespace JamFenellaTuning
+{
+	constexpr int32 RunSeed = 2026;
+	constexpr float WatchRadius = 1500.f;   // she films the nearest loose nuisance within this of the hero
+	float CaptionSeconds(const FString& Text) { return FMath::Clamp(2.f + Text.Len() * 0.055f, 3.f, 7.f); }
+	/** Story triggers come first in the enum; they queue instead of being dropped. */
+	bool IsStory(EJamLineTrigger T) { return (int32)T < (int32)EJamLineTrigger::Idle; }
 }
 
 namespace JamAutoplayTuning
@@ -73,11 +83,6 @@ namespace
 		return FVector2D(X, Y);
 	}
 
-	FString LineText(EJamLineTrigger Trigger, int32 Pick)
-	{
-		const TArray<const FJamLine*> Lines = JamLines::ForTrigger(Trigger);
-		return Lines.Num() > 0 ? Lines[Pick % Lines.Num()]->Text : FString();
-	}
 }
 
 AJamGameMode::AJamGameMode()
@@ -131,6 +136,12 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	}
 	const FVector2D Mark = JamBacklot::HeroMark(FirstSceneIndex);
 	NewHero->TeleportTo(FVector(Mark, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
+
+	Nag.Reset(JamFenellaTuning::RunSeed);
+	FActorSpawnParameters FaerieParams;
+	FaerieParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	Faerie = GetWorld()->SpawnActor<AJamFaerie>(AJamFaerie::StaticClass(), NewHero->GetActorTransform(), FaerieParams);
+	if (Faerie) { Faerie->SetFollow(NewHero); }
 
 	StartScene(FirstSceneIndex);
 }
@@ -246,6 +257,7 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 	if (Stage && Stage->Verb == EJamStageVerb::Pacify)
 	{
 		GS->Shoot.ReportProgress(1);
+		Say(EJamLineTrigger::Pacified);
 	}
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: pacified %s"), Pacified ? *Pacified->GetName() : TEXT("(null)"));
 }
@@ -260,6 +272,7 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 	if (!Target->Treat()) { return false; }
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: Treated %s"), *Target->GetName());
 	GS->Shoot.ReportProgress(1);
+	Say(EJamLineTrigger::Interact);
 	return true;
 }
 
@@ -276,6 +289,7 @@ void AJamGameMode::Tick(float DeltaSeconds)
 	SceneTime += DeltaSeconds;
 	if (bBetweenScenes) { TickBetweenScenes(); }
 	else { TickShoot(DeltaSeconds); }
+	TickFenella(DeltaSeconds);
 	if (bAutoplay && !bRunOver && Hero.IsValid())
 	{
 		TickAutoplay(DeltaSeconds);
@@ -317,6 +331,16 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 				FString::Printf(TEXT("%s\nDirector: F. Flicker. Camera: F. Flicker. %s"), *Shoot.GetScene().Title,
 					TuningFor(Stage ? Stage->Target : EJamTargetKind::Rat).Cast),
 				JamShootPacing::SlateSeconds);
+			// Take 1: she introduces the scene (and, once, the hero). Take 2 already got the failed-take line.
+			if (Shoot.GetTake() == 1)
+			{
+				Say(EJamLineTrigger::SceneStart);
+				if (!bSaidLevel7Intro) { bSaidLevel7Intro = true; Say(EJamLineTrigger::Level7Intro); }
+			}
+			else if (Shoot.GetTake() >= 3)
+			{
+				Say(JamLines::TriggerForTake(Shoot.GetTake()));
+			}
 		}
 		else if (SeenState == EJamShootState::NotePrompt)
 		{
@@ -411,8 +435,11 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 				break;
 			}
 		}
-		ShowCard(EJamCardKind::Action, TEXT("ACTION!"), Event.Take == 1 ? TEXT("Places, everyone! And by everyone I mean you.")
-			: TEXT("And... ACTION! I love saying that. Ninth time today."), 1.2f);
+		ShowCard(EJamCardKind::Action, TEXT("ACTION!"), FString(), 1.2f);   // Fenella's caption carries the line
+		break;
+
+	case EJamShootEventType::Progress:
+		SinceProgress = 0.f;
 		break;
 
 	case EJamShootEventType::StageCleared:
@@ -421,14 +448,15 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 
 	case EJamShootEventType::NoteAnswered:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: note %s"), Event.Value ? TEXT("taken") : TEXT("refused"));
-		ShowCard(EJamCardKind::Info, Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"),
-			LineText(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused, SceneIndex), 2.f);
+		ShowCard(EJamCardKind::Info, Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"), FString(), 2.f);
+		Say(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused);
 		break;
 
 	case EJamShootEventType::TakeFailed:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: take %d failed (%s)"), Event.Take, Event.Value ? TEXT("forced") : TEXT("failure"));
-		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), TEXT("This time the rats know their lines."), JamShootPacing::FailedSeconds); }
+		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), FString(), JamShootPacing::FailedSeconds); }
 		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), TEXT("From the top."), JamShootPacing::FailedSeconds); }
+		Say(Event.Value ? EJamLineTrigger::ForcedRetake : EJamLineTrigger::FailedTake);
 		break;
 
 	case EJamShootEventType::Wrapped:
@@ -439,7 +467,8 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		NotesTaken += Shoot.GetNotesTaken();
 		NotesRefused += Shoot.GetNotesRefused();
 		const bool bLast = !JamScenes::All().IsValidIndex(SceneIndex + 1) || !JamBacklot::Sets().IsValidIndex(SceneIndex + 1);
-		ShowCard(EJamCardKind::Wrap, TEXT("THAT'S A WRAP!"), TEXT("Everyone gets paid. \"Everyone\" is a term of art."), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
+		ShowCard(EJamCardKind::Wrap, TEXT("THAT'S A WRAP!"), FString(), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
+		Say(EJamLineTrigger::Wrap);
 		if (bLast)
 		{
 			FinishRun(true, FString());
@@ -469,8 +498,8 @@ void AJamGameMode::FinishRun(bool bPass, const FString& Why)
 	{
 		// BUILD_SPEC 2: mostly taken = the Director's Cut, mostly refused = the Theatrical Release.
 		const TCHAR* Ending = NotesTaken >= NotesRefused ? TEXT("directors_cut") : TEXT("theatrical");
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d time=%.1f"),
-			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, AutoplayTime);
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d lines=%d time=%.1f"),
+			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, LinesSpoken, AutoplayTime);
 	}
 	else
 	{
@@ -561,4 +590,99 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	if (ToTarget.Size() > Reach) { Bot->AddMovementInput(ToTarget.GetSafeNormal()); }
 	else if (bTreating) { Bot->RequestInteract(); }
 	else { Bot->RequestLecture(); }   // the cooldown refuses the spam
+}
+
+// ---- Fenella (T11) -------------------------------------------------------------------------------------------
+
+void AJamGameMode::NotifyLectureCast(AJamHero* InHero)
+{
+	if (InHero && InHero == Hero.Get()) { Say(EJamLineTrigger::LectureCast); }
+}
+
+FJamNagSnapshot AJamGameMode::MakeSnapshot() const
+{
+	FJamNagSnapshot Snap;
+	Snap.Now = GetWorld()->GetTimeSeconds();
+	Snap.SecondsSinceProgress = SinceProgress;
+	Snap.SecondsStrayed = StrayedFor;
+	if (const AJamGameState* GS = GetJamGameState())
+	{
+		Snap.bSilenced = GS->IsNotePrompt();
+		Snap.bSulking = GS->GetShoot().IsSulking();
+	}
+	return Snap;
+}
+
+void AJamGameMode::Say(EJamLineTrigger Trigger)
+{
+	const FJamLine* Line = Nag.Request(Trigger, MakeSnapshot());
+	if (!Line) { return; }
+	const AJamGameState* GS = GetJamGameState();
+	const bool bBusy = !CaptionQueue.IsEmpty() || (GS && GS->IsCaptionVisible());
+	if (JamFenellaTuning::IsStory(Trigger)) { CaptionQueue.Add(Line->Id); }
+	else if (!bBusy) { ShowCaption(*Line); }
+}
+
+void AJamGameMode::ShowCaption(const FJamLine& Line)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS) { return; }
+	const float Seconds = JamFenellaTuning::CaptionSeconds(Line.Text);
+	GS->CaptionLineId = Line.Id;
+	GS->CaptionText = Line.Text;
+	GS->CaptionUntil = GetWorld()->GetTimeSeconds() + Seconds;
+	if (Faerie) { Faerie->Speak(Seconds); }
+	++LinesSpoken;
+	UE_LOG(LogJam, Log, TEXT("Fenella: %s \"%s\""), *Line.Id.ToString(), *Line.Text);
+}
+
+void AJamGameMode::TickFenella(float DeltaSeconds)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS) { return; }
+	const bool bRolling = !bBetweenScenes && GS->GetShoot().GetState() == EJamShootState::Rolling;
+
+	// Idle and strayed clocks only run while a take rolls.
+	SinceProgress = bRolling ? SinceProgress + DeltaSeconds : 0.f;
+	const bool bOffSet = Hero.IsValid() && !FieldBounds.IsInside(FVector2D(Hero->GetActorLocation()));
+	StrayedFor = (bRolling && bOffSet) ? StrayedFor + DeltaSeconds : 0.f;
+
+	// Story lines wait their turn; ambient lines come from the poll when she has nothing else to say.
+	if (!GS->IsCaptionVisible())
+	{
+		if (!CaptionQueue.IsEmpty())
+		{
+			const FName Id = CaptionQueue[0];
+			CaptionQueue.RemoveAt(0);
+			if (const FJamLine* Line = JamLines::Find(Id)) { ShowCaption(*Line); }
+		}
+		else if (!GS->CaptionLineId.IsNone())
+		{
+			GS->CaptionLineId = NAME_None;
+			GS->CaptionText.Reset();
+		}
+	}
+	NagPollIn -= DeltaSeconds;
+	if (NagPollIn <= 0.f)
+	{
+		NagPollIn = 1.f;
+		if (bRolling && CaptionQueue.IsEmpty() && !GS->IsCaptionVisible())
+		{
+			if (const FJamLine* Line = Nag.Poll(MakeSnapshot())) { ShowCaption(*Line); }
+		}
+	}
+
+	// She films the nearest loose nuisance, or else the hero.
+	if (Faerie && Hero.IsValid())
+	{
+		AActor* Best = nullptr;
+		float BestDist = JamFenellaTuning::WatchRadius;
+		for (AJamNuisance* N : Nuisances)
+		{
+			if (!N || N->IsPacified() || N->IsTreated()) { continue; }
+			const float D = FVector::Dist2D(N->GetActorLocation(), Hero->GetActorLocation());
+			if (D < BestDist) { BestDist = D; Best = N; }
+		}
+		Faerie->SetSubject(Best);
+	}
 }

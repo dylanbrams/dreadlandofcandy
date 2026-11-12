@@ -58,6 +58,9 @@ struct MEGAJAM_API FJamHudView
 	FVector2D PromptPosition = FVector2D::ZeroVector;
 
 	TArray<FJamHudBubble> Bubbles;
+
+	/** Fenella's caption, bottom centre (never over the objective). Empty = none. */
+	FString Caption;
 };
 
 namespace JamHud

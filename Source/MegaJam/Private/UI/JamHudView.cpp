@@ -45,7 +45,7 @@ namespace
 
 TArray<FString> JamHud::SampleNames()
 {
-	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("bubbles") };
+	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("bubbles"), TEXT("caption") };
 }
 
 bool JamHud::Sample(const FString& Name, FJamHudView& V)
@@ -119,6 +119,11 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 		V.Bubbles.Add({ TEXT("Rats! You are vermin, and vermin is a choice."), FVector2D(760.f, 430.f), true });
 		V.Bubbles.Add({ TEXT("Consider your lifestyle!"), FVector2D(1180.f, 520.f), true });
 		V.Bubbles.Add({ TEXT("Ooh, keep that face. That's the poster."), FVector2D(1380.f, 300.f), false });
+	}
+	else if (N == TEXT("caption"))
+	{
+		Rolling(V);
+		V.Caption = LineOr(TEXT("Idle_01"), TEXT("Are we filming the grass now? Is that the movie?"));
 	}
 	else
 	{

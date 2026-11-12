@@ -54,6 +54,9 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UBorder> PromptPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> PromptText;
 
+	UPROPERTY(Transient) TObjectPtr<UBorder> CaptionPanel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionText;
+
 	UPROPERTY(Transient) TObjectPtr<UBorder> CardPanel;
 	UPROPERTY(Transient) TObjectPtr<UBorder> CardAccent;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CardTitle;

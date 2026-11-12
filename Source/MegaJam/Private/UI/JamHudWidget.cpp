@@ -187,6 +187,22 @@ void UJamHudWidget::BuildTree()
 	Place(CardPanel, FAnchors(0.5f, 0.42f), FVector2D(0.5f, 0.5f), FVector2D::ZeroVector, 20);
 	CardPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
+	// Bottom centre: Fenella's caption, film-subtitle style, her name in her colour.
+	CaptionPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.72f), 6.f, FMargin(22.f, 10.f));
+	{
+		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		UTextBlock* Speaker = MakeText(16, FLinearColor(0.8f, 0.6f, 1.f), true);
+		Speaker->SetText(FText::FromString(TEXT("FENELLA")));
+		Box->AddChildToVerticalBox(Speaker)->SetHorizontalAlignment(HAlign_Center);
+		CaptionText = MakeText(28, FLinearColor::White, false);
+		CaptionText->SetJustification(ETextJustify::Center);
+		CaptionText->SetWrapTextAt(1100.f);
+		Box->AddChildToVerticalBox(CaptionText)->SetHorizontalAlignment(HAlign_Center);
+		CaptionPanel->SetContent(Box);
+	}
+	Place(CaptionPanel, FAnchors(0.5f, 1.f), FVector2D(0.5f, 1.f), FVector2D(0.f, -60.f), 15);
+
+	Show(CaptionPanel, false);
 	Show(PromptPanel, false);
 	Show(CardPanel, false);
 	Show(HintPanel, false);
@@ -269,6 +285,9 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(B->Slot)) { S->SetPosition(Data.Position); }
 	}
 	for (int32 i = View.Bubbles.Num(); i < Bubbles.Num(); ++i) { Show(Bubbles[i], false); }
+
+	Show(CaptionPanel, !View.Caption.IsEmpty());
+	SetTextIfChanged(CaptionText, View.Caption);
 
 	// The card, with a short pop when a new one appears.
 	const bool bCard = View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();

@@ -4,12 +4,14 @@
 #include "GameFramework/GameModeBase.h"
 #include "Film/JamFilmTypes.h"
 #include "UI/JamHudView.h"
+#include "Film/JamNagScheduler.h"
 #include "JamGameMode.generated.h"
 
 class AJamHero;
 class AJamNuisance;
 class AJamPickup;
 class AJamGameState;
+class AJamFaerie;
 
 /**
  * The only place that changes shared game state. Drives the FJamShoot held by AJamGameState: feeds it
@@ -38,6 +40,9 @@ public:
 	/** A hero answers CUT!. False unless the note prompt is up. */
 	bool HandleNoteAnswer(AJamHero* Hero, bool bTake);
 
+	/** The hero cast a Lecture (cosmetic: Fenella may remark on it). */
+	void NotifyLectureCast(AJamHero* Hero);
+
 private:
 	AJamGameState* GetJamGameState() const;
 	void StartScene(int32 InSceneIndex);
@@ -53,6 +58,12 @@ private:
 	void HandlePacified(AActor* Pacified);
 	void FinishRun(bool bPass, const FString& Why);
 	void TickAutoplay(float DeltaSeconds);
+
+	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
+	void Say(EJamLineTrigger Trigger);
+	void ShowCaption(const FJamLine& Line);
+	void TickFenella(float DeltaSeconds);
+	FJamNagSnapshot MakeSnapshot() const;
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<AJamNuisance>> Nuisances;
@@ -88,4 +99,15 @@ private:
 	bool bAutoNoteTake = true;
 	float AutoplayTime = 0.f;
 	float SceneTime = 0.f;
+
+	FJamNagScheduler Nag;
+	TArray<FName> CaptionQueue;
+	float NagPollIn = 1.f;
+	float SinceProgress = 0.f;
+	float StrayedFor = 0.f;
+	int32 LinesSpoken = 0;
+	bool bSaidLevel7Intro = false;
+
+	UPROPERTY(Transient)
+	TObjectPtr<AJamFaerie> Faerie;
 };

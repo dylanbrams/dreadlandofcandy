@@ -34,6 +34,12 @@ public:
 
 	bool IsCardVisible() const;
 
+	/** Fenella's caption: the line on screen (a JamLines id, so a client could look the text up). None = quiet. */
+	FName CaptionLineId;
+	FString CaptionText;
+	float CaptionUntil = 0.f;
+	bool IsCaptionVisible() const;
+
 	/** 1-based scene being shot (or just wrapped). */
 	int32 SceneNumber = 1;
 	/** One line under the objective between scenes ("Walk to Set 2"). Empty = none. */

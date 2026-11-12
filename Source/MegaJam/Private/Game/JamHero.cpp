@@ -120,7 +120,11 @@ bool AJamHero::RequestLecture()
 			FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg), FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg),
 			24, FColor::Orange, false, 1.5f, 0, 4.f);
 	}
-	if (bActivated) { UE_LOG(LogJam, Log, TEXT("JamHero: Lecture cast")); }
+	if (bActivated)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamHero: Lecture cast"));
+		if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>()) { GM->NotifyLectureCast(this); }
+	}
 	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: Lecture refused")); }
 	return bActivated;
 }
