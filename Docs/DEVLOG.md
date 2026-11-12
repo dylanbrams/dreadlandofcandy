@@ -99,3 +99,10 @@
 - T22: the commentary toggle was wired but she never commented: the scheduler measured the commentary gap from any line, and she talks every few seconds. Two-line fix in RULES' scheduler, noted for RULES. Three commentary lines per film now ("It's about ninety minutes. It's eight.").
 - T21: the money runs out halfway through the finale. Grey grid on everything, bugs become boxes labelled BUG, the bubbles say [SHOUTING], the music cuts dead.
 - First commentary check ran at normal speed for 17 minutes because I asked for a screenshot at 999 game seconds without speeding the game up. Use -timescale=4.
+
+## 19:30 T20 art pass
+
+- Dylan: do the art pass, keep mechanics tests fast. The art loads by name at runtime and -noart keeps the grey shapes, so no second map is needed.
+- Imported the 30 cleaned models in one commandlet run. A lineup mode (-artreview) showed them at game size with a forward arrow: all the generators' models face +Y, so one -90 turn fixes them all.
+- The cast swapped in (knight, sword, Fenella, rats, goblins, bugs, almonds); nuisance states became a tinted overlay because the models cannot be tinted. Then the sets: houses down the streets, crops, fences, a molar tower and gate at Fort Toothache, the orchard, film gear in every corner. One test (no prop in the walking path) caught the fort gate standing in the street; moved to the entrance and exempted, since it is an arch.
+- Report artifact updated with the art screenshots.
