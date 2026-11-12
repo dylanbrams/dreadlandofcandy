@@ -114,3 +114,12 @@
 - The sword in his hand: sized by world scale (the FBX bones carry x100). A contact sheet of six grips came out identical because FParse::Value stops at commas, so the flag never took; one flip of the default fixed it.
 - The budget gag never fired in the packaged run: the Last Judgment cleared the final stage 7 ms after it began. It now fires as that stage starts; the Judgment's balance is a T15 note.
 - T23: voice clips by convention, captions alone until clips exist.
+
+## Late evening: T15 waves, T12b typed notes, T16a generated Premiere
+
+- Dylan: continue as GAME, say first which side sessions are needed. Asked for: the BACKEND deploy (his SSH and key), sound effects (AUDIO), optionally DESK for the itch page.
+- T15, the part a bot can measure: the Last Judgment cleared the finale's last stage in 7 ms. Its bugs now come over the far wall in waves, so the ultimate gets two and the rest keep coming.
+- T12b: a third button at CUT!, YOUR OWN NOTE. Type anything; she "reads" it while the server answers; the next shot changes size, colour, weather, music, title, bubbles and the loot's name. Built against a local stub server (`Scripts/note-stub.py`) since the real one is not deployed. Offline, a keyword matcher understands the six suggestion buttons.
+- The packaged autoplay stalled on the first typed note: goblins at 2.5x were out of reach because reach was measured to their centre. Now measured to their edge, for the player too.
+- T16a: the Premiere shows the film your notes made ("THE DREAD LAND OF CANDY: TAX SEASON") with three generated reviews.
+- Two traps again: two .cpp files with the same names in anonymous namespaces broke the unity build, and the game target treats a shadowed name as an error, which the editor build allows.
