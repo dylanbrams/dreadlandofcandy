@@ -4,7 +4,7 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers
 
 ## Next task
 
-**T03:** `FJamShoot` + scene/stage/note structs + tests (BUILD_SPEC section 7). Check `Docs/Workers/rules.md` first: RULES may own it in its worktree.
+**T05:** nuisance states and steering, interact (E) with a prompt (BUILD_SPEC section 7). T03 (`FJamShoot`) belongs to RULES in `D:\Source\Unreal\MegaJam2026-rules`; the `rules` branch had no commits past `main` at 08:05. T06 waits on T03 being merged.
 ASSETS is running batch1 (Dylan started it about 07:50); meshes are landing in `ImportSource/`. Import approved ones for T20.
 
 ## Decisions (Dylan, Nov 12, from the browser model viewer)
