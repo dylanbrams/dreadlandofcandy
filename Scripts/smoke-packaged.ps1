@@ -75,8 +75,14 @@ $Checks = @(
     @{ Name = "game module loaded"; Pattern = "LogJam: MegaJam module started"; Want = $true },
     @{ Name = "world began play";   Pattern = "LogJam: World began play"; Want = $true },
     @{ Name = "no fatal errors";    Pattern = "Fatal error|LogWindows: Error: === Critical error"; Want = $false },
-    @{ Name = "no missing widget classes"; Pattern = "widget class '[^']+' could not be loaded"; Want = $false }
+    @{ Name = "no missing widget classes"; Pattern = "widget class '[^']+' could not be loaded"; Want = $false },
+    # ConstructorHelpers paths (e.g. /Engine/BasicShapes) that were not cooked.
+    @{ Name = "no missing constructor assets"; Pattern = "CDO Constructor.*Failed to find"; Want = $false }
 )
+if ($Extra -contains "-autoplay") {
+    $Checks += @{ Name = "autoplay passed"; Pattern = "JamAutoplay: PASS"; Want = $true }
+    $Checks += @{ Name = "autoplay did not fail"; Pattern = "JamAutoplay: FAIL"; Want = $false }
+}
 $Failed = 0
 foreach ($C in $Checks) {
     $Found = [regex]::IsMatch($Log, $C.Pattern)

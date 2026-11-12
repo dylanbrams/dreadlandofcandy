@@ -4,8 +4,8 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers
 
 ## Next task
 
-**T02: package now.** `Scripts\package.ps1`, then `Scripts\smoke-packaged.ps1` with T01 in it. Add `JamAutoplay: PASS` to the smoke checks (launch the packaged exe with `-autoplay`). Watch for `/Engine/BasicShapes` going missing in the cook (added to `DirectoriesToAlwaysCook`).
-Then T03 onward (BUILD_SPEC section 7). ASSETS is running batch1 (Dylan started it at about 07:50): import approved meshes when `last_run.txt` changes (T20).
+**T03:** `FJamShoot` + scene/stage/note structs + tests (BUILD_SPEC section 7). Check `Docs/Workers/rules.md` first: RULES may own it in its worktree.
+ASSETS is running batch1 (Dylan started it about 07:50); meshes are landing in `ImportSource/`. Import approved ones for T20.
 
 ## Decisions (Dylan, Nov 12, from the browser model viewer)
 
@@ -26,6 +26,7 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
   - `AJamNuisance : APawn`: ASC + Resolve, pink basic-shape cylinder, turns grey when pacified.
   - Placeholder bodies are `/Engine/BasicShapes` with `BasicShapeMaterial` (its `Color` parameter tints; the shapes' own default material does not tint).
 - GAS layer (pre-jam port, `Docs/Declared.md`): Resolve, damage, Lecture cone 800 uu / 35 deg / 60 Resolve / 1.5 s cooldown. Two casts pacify a 100-Resolve nuisance.
+- **T02 done.** `package.ps1` then `smoke-packaged.ps1 -Extra "-autoplay"`: all checks pass, including the new `JamAutoplay: PASS` and "no missing constructor assets" checks. The packaged screenshot matches the editor run (`Builds\Win64-Development\MegaJam\Saved\Screenshots\Windows\t02-packaged.png`). Packaging takes about 4 minutes. No Python plugin errors in the packaged log.
 - `-abilitytest` rig still passes alongside the new game mode.
 - Tests: `Jam.Skeleton.ModuleLoaded`, `Jam.Gas.AoeShapes`, `Jam.Gas.ResolveDamage`, `Jam.Gas.LectureCone`, all pass.
 - `Scripts\compare-models.ps1`: browser side-by-side of the generated GLBs (shared orbit camera, clay/wireframe), served on 127.0.0.1:8917. Port 8765 is taken by OneMore.
@@ -33,12 +34,12 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
 
 ## What does not exist yet
 
-Stage/take machine, ledger, lines, faerie, UI, map, imported assets, packaged build. Nothing replicates (solo only, BUILD_SPEC 5).
+Stage/take machine, ledger, lines, faerie, UI, map, imported assets. Nothing replicates (solo only, BUILD_SPEC 5).
 
 ## Known issues
 
 - The hero's visor block (shows facing) is hard to see from behind; fine until the Meshy hero is imported.
-- Editor `-game` runs log Python errors from the engine's NiagaraToolsets and ToolsetRegistry plugins (`unreal.AgentSkill`, `PythonTestRunner` missing). Engine-side, harmless so far; check it does not appear in the packaged log.
+- Editor `-game` runs log Python errors from the engine's NiagaraToolsets and ToolsetRegistry plugins (`unreal.AgentSkill`, `PythonTestRunner` missing). Editor-only, not in the packaged log.
 - `Config/DefaultEngine.ini` carries the editor's Android file server token block uncommitted. Never commit it; stage config lines from HEAD instead.
 
 ## Where other code lives (read source only; never open key/config folders)
