@@ -1,6 +1,8 @@
 #include "Game/JamArt.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/SkeletalMesh.h"
+#include "Animation/AnimSequence.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 
@@ -72,4 +74,17 @@ float JamArt::Height(const FString& Name)
 		{ TEXT("SM_Hat_Straw"), 30.f }, { TEXT("SM_HeadMirror"), 30.f } };
 	const float* H = Heights.Find(Name);
 	return H ? *H : 100.f;
+}
+
+USkeletalMesh* JamArt::LoadHeroRig()
+{
+	if (!Enabled()) { return nullptr; }
+	return LoadObject<USkeletalMesh>(nullptr, TEXT("/Game/Art/Hero/SK_Hero_Rig.SK_Hero_Rig"), nullptr, LOAD_NoWarn | LOAD_Quiet);
+}
+
+UAnimSequence* JamArt::LoadHeroAnim(const FString& Name)
+{
+	if (!Enabled()) { return nullptr; }
+	const FString Asset = TEXT("A_SK_Hero_Rig_") + Name;
+	return LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("/Game/Art/Hero/Anims/%s.%s"), *Asset, *Asset), nullptr, LOAD_NoWarn | LOAD_Quiet);
 }

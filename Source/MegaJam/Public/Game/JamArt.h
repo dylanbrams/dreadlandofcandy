@@ -4,6 +4,8 @@
 
 class UStaticMesh;
 class UStaticMeshComponent;
+class USkeletalMesh;
+class UAnimSequence;
 
 /**
  * The generated art (T20), loaded by name from /Game/Art/Meshes/<Name>/StaticMeshes/<Name> (always cooked).
@@ -26,6 +28,11 @@ namespace JamArt
 
 	/** Every mesh the game uses (the import list and the -artreview lineup). */
 	MEGAJAM_API const TArray<FString>& AllNames();
+
+	/** The rigged hero (Meshy, UE5 mannequin skeleton), or null. */
+	MEGAJAM_API USkeletalMesh* LoadHeroRig();
+	/** One of the hero's animations by short name (Idle, Walk, SwordRaise, Scrub, Sigh, ProudStrut, OneHandUp), or null. */
+	MEGAJAM_API UAnimSequence* LoadHeroAnim(const FString& Name);
 
 	/** How tall the model stands in the game (uu). */
 	MEGAJAM_API float Height(const FString& Name);

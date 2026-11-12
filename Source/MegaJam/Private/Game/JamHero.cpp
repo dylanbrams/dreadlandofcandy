@@ -5,6 +5,9 @@
 #include "Game/JamHUD.h"
 #include "Game/JamSkillFx.h"
 #include "Game/JamArt.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/SkeletalMesh.h"
+#include "Animation/AnimSequence.h"
 #include "Game/JamNuisance.h"
 #include "EngineUtils.h"
 #include "InputTriggers.h"
@@ -111,6 +114,9 @@ AJamHero::AJamHero()
 	ArtBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtBody"));
 	ArtBody->SetupAttachment(RootComponent);
 	ArtBody->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ArtRig = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("ArtRig"));
+	ArtRig->SetupAttachment(RootComponent);
+	ArtRig->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ArtSword = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtSword"));
 	ArtSword->SetupAttachment(SwordPivot);
 	ArtSword->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -154,6 +160,33 @@ void AJamHero::PossessedBy(AController* NewController)
 		SwordBlade->SetHiddenInGame(true);
 		SwordGuard->SetHiddenInGame(true);
 	}
+	// The rigged knight, if imported: fitted to the capsule like the static one, facing +X (the mannequin faces +Y).
+	if (USkeletalMesh* Rig = JamArt::LoadHeroRig())
+	{
+		ArtRig->SetSkeletalMesh(Rig);
+		const FBox Box = Rig->GetImportedBounds().GetBox();
+		const float Scale = JamArt::Height(TEXT("SM_Hero")) / FMath::Max(Box.GetSize().Z, 1.f);
+		ArtRig->SetRelativeScale3D(FVector(Scale));
+		ArtRig->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+		ArtRig->SetRelativeLocation(FVector(0.f, 0.f, Floor - Box.Min.Z * Scale));
+		ArtRig->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+		for (const TCHAR* Name : { TEXT("Idle"), TEXT("Walk"), TEXT("SwordRaise"), TEXT("Scrub"), TEXT("Sigh"), TEXT("ProudStrut") })
+		{
+			if (UAnimSequence* Anim = JamArt::LoadHeroAnim(Name)) { RigAnims.Add(FName(Name), Anim); }
+		}
+		ArtBody->SetHiddenInGame(true);
+		Body->SetHiddenInGame(true);
+		Visor->SetHiddenInGame(true);
+		// The sword goes into his right hand and follows the animation (the Lecture's raise is in the SwordRaise clip).
+		// Keep the fitted size in world terms: the FBX bones carry their own scale, so a relative scale would be wrong.
+		const FVector SwordWorldScale = ArtSword->GetComponentScale();
+		ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
+		ArtSword->SetWorldScale3D(SwordWorldScale);
+		ArtSword->SetRelativeLocation(FVector::ZeroVector);
+		ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, 90.f));
+		UE_LOG(LogJam, Log, TEXT("JamHero: rigged hero, %d animations, bounds %s, scale %.3f, sword scale %s"), RigAnims.Num(),
+			*Box.GetSize().ToString(), Scale, *ArtSword->GetRelativeScale3D().ToString());
+	}
 	if (UMaterialInstanceDynamic* M = SwordBlade->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.88f, 0.95f)); }
 	if (UMaterialInstanceDynamic* M = SwordGuard->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.6f, 0.15f)); }
 }
@@ -192,6 +225,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 	{
 	case EJamSkill::Lecture:
 		const_cast<AJamHero*>(this)->SwordUpAt = GetWorld()->GetTimeSeconds();
+		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("SwordRaise"));
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Fan, Floor, Fwd, N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange,
 			JamHeroTuning::LectureHalfAngleDeg, FLinearColor(1.f, 0.32f, 0.05f), 0.45f);
 		break;
@@ -199,6 +233,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Strip, Floor, Fwd, N.Length, N.Width * 0.5f, FLinearColor(0.3f, 0.85f, 1.f), 0.5f);
 		break;
 	case EJamSkill::DisappointedSigh:
+		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("Sigh"));
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(0.65f, 0.5f, 1.f), 0.8f);
 		break;
 	default:
@@ -421,6 +456,30 @@ void AJamHero::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	UpdateFacing();
 	TickSword();
+	TickRig();
+}
+
+void AJamHero::PlayRigOneShot(FName Anim)
+{
+	const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(Anim);
+	if (!Found || !ArtRig->GetSkeletalMeshAsset()) { return; }
+	ArtRig->PlayAnimation(*Found, false);
+	RigPlaying = Anim;
+	RigOneShotUntil = GetWorld()->GetTimeSeconds() + FMath::Min((*Found)->GetPlayLength(), 1.6f);
+}
+
+void AJamHero::TickRig()
+{
+	if (!ArtRig->GetSkeletalMeshAsset() || GetWorld()->GetTimeSeconds() < RigOneShotUntil) { return; }
+	// Holding interact: he scrubs (teeth) or feeds (celery); otherwise walk or stand.
+	FName Want = GetVelocity().Size2D() > 60.f ? FName(TEXT("Walk")) : FName(TEXT("Idle"));
+	if (InteractPressedAt >= 0.f && RigAnims.Contains(TEXT("Scrub"))) { Want = TEXT("Scrub"); }
+	if (Want == RigPlaying) { return; }
+	if (const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(Want))
+	{
+		ArtRig->PlayAnimation(*Found, true);
+		RigPlaying = Want;
+	}
 }
 
 namespace JamSwordTuning

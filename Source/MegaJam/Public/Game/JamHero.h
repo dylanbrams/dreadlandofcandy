@@ -111,6 +111,16 @@ private:
 	TObjectPtr<UStaticMeshComponent> ArtBody;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> ArtSword;
+	/** The rigged hero (T20): replaces ArtBody when it loads; plays one animation at a time by state. */
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USkeletalMeshComponent> ArtRig;
+	UPROPERTY(Transient)
+	TMap<FName, TObjectPtr<UAnimSequence>> RigAnims;
+	FName RigPlaying;
+	float RigOneShotUntil = -1.f;
+	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
+	void PlayRigOneShot(FName Anim);
+	void TickRig();
 	FVector ArtBodyScale = FVector::OneVector;
 	FVector ArtBodyLocation = FVector::ZeroVector;
 	FRotator ArtBodyRotation = FRotator::ZeroRotator;
