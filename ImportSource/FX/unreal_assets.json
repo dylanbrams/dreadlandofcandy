@@ -1,0 +1,69 @@
+{
+  "meshes": [
+    {
+      "source": "SM_FX_Arc.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Arc.SM_FX_Arc",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Rim.M_FX_Rim"
+    },
+    {
+      "source": "SM_FX_Card.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Card.SM_FX_Card",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh"
+    },
+    {
+      "source": "SM_FX_Celery.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Celery.SM_FX_Celery",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh"
+    },
+    {
+      "source": "SM_FX_Dome.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Dome.SM_FX_Dome",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Rim.M_FX_Rim"
+    },
+    {
+      "source": "SM_FX_Napkin.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Napkin.SM_FX_Napkin",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh"
+    },
+    {
+      "source": "SM_FX_Peppermint.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Peppermint.SM_FX_Peppermint",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Peppermint.M_FX_Peppermint"
+    },
+    {
+      "source": "SM_FX_Pin.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Pin.SM_FX_Pin",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh"
+    },
+    {
+      "source": "SM_FX_Ring.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Ring.SM_FX_Ring",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Rim.M_FX_Rim"
+    },
+    {
+      "source": "SM_FX_Strand.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_Strand.SM_FX_Strand",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Rim.M_FX_Rim"
+    },
+    {
+      "source": "SM_FX_SugarCube.obj",
+      "asset": "/Game/FX/Attacks/Meshes/SM_FX_SugarCube.SM_FX_SugarCube",
+      "material": "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh"
+    }
+  ],
+  "textures": [
+    "/Game/FX/Attacks/Textures/T_FX_Bubble.T_FX_Bubble",
+    "/Game/FX/Attacks/Textures/T_FX_Peppermint.T_FX_Peppermint",
+    "/Game/FX/Attacks/Textures/T_FX_SoftDisc.T_FX_SoftDisc",
+    "/Game/FX/Attacks/Textures/T_FX_Star.T_FX_Star"
+  ],
+  "materials": [
+    "/Game/FX/Attacks/Materials/M_FX_Mesh.M_FX_Mesh",
+    "/Game/FX/Attacks/Materials/M_FX_Particle.M_FX_Particle",
+    "/Game/FX/Attacks/Materials/M_FX_Bubble.M_FX_Bubble",
+    "/Game/FX/Attacks/Materials/M_FX_Star.M_FX_Star",
+    "/Game/FX/Attacks/Materials/M_FX_Rim.M_FX_Rim",
+    "/Game/FX/Attacks/Materials/M_FX_Peppermint.M_FX_Peppermint"
+  ],
+  "visual_review": "pending"
+}

@@ -1,0 +1,719 @@
+[
+  {
+    "attack": "K01",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k01.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
+    "particles": {
+      "NS_K01_PoliteShield:FX_0_ring": 1,
+      "NS_K01_PoliteShield_Layer1:FX_0_impact": 10
+    },
+    "attributes": {
+      "NS_K01_PoliteShield": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            5.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.476190447807312
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_K01_PoliteShield_Layer1": {
+        "position_samples": [
+          [
+            7.025291919708252,
+            43.43552780151367,
+            39.616668701171875
+          ],
+          [
+            -34.5205078125,
+            -27.28249740600586,
+            39.616668701171875
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.476190447807312
+          ],
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.476190447807312
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            35.833335876464844,
+            35.833335876464844
+          ],
+          [
+            35.833335876464844,
+            35.833335876464844
+          ]
+        ]
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "K02",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k02.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_K02_SternInstruction",
+    "particles": {
+      "NS_K02_SternInstruction:FX_0_cone": 16,
+      "NS_K02_SternInstruction_Layer1:FX_0_cone": 6
+    },
+    "attributes": {
+      "NS_K02_SternInstruction": {
+        "position_samples": [
+          [
+            337.896240234375,
+            232.67263793945312,
+            70.0
+          ],
+          [
+            381.1774597167969,
+            -151.70423889160156,
+            70.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.48717933893203735
+          ],
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.48717933893203735
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            70.89745330810547,
+            70.89745330810547
+          ],
+          [
+            70.89745330810547,
+            70.89745330810547
+          ]
+        ]
+      },
+      "NS_K02_SternInstruction_Layer1": {
+        "position_samples": [
+          [
+            337.896240234375,
+            232.67263793945312,
+            70.0
+          ],
+          [
+            381.1774597167969,
+            -151.70423889160156,
+            70.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.48717933893203735
+          ],
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.48717933893203735
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "K03",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k03.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_K03_GoodManners",
+    "particles": {
+      "NS_K03_GoodManners:FX_0_dome": 1,
+      "NS_K03_GoodManners_Layer1:FX_0_ring": 1
+    },
+    "attributes": {
+      "NS_K03_GoodManners": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.9047619104385376
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_K03_GoodManners_Layer1": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            5.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.9047619104385376
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "B01",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-b01.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_B01_FuriousKneading",
+    "particles": {
+      "NS_B01_FuriousKneading:FX_0_impact": 12
+    },
+    "attributes": {
+      "NS_B01_FuriousKneading": {
+        "position_samples": [
+          [
+            7.025291919708252,
+            43.43552780151367,
+            39.616668701171875
+          ],
+          [
+            -34.5205078125,
+            -27.28249740600586,
+            39.616668701171875
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            0.8999999761581421,
+            0.699999988079071,
+            0.385185182094574
+          ],
+          [
+            1.0,
+            0.8999999761581421,
+            0.699999988079071,
+            0.385185182094574
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            31.759258270263672,
+            31.759258270263672
+          ],
+          [
+            31.759258270263672,
+            31.759258270263672
+          ]
+        ]
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "B02",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-b02.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_B02_RollingPinCyclone",
+    "particles": {
+      "NS_B02_RollingPinCyclone:FX_0_orbit": 8,
+      "NS_B02_RollingPinCyclone_Layer1:FX_0_dust": 32
+    },
+    "attributes": {
+      "NS_B02_RollingPinCyclone": {
+        "position_samples": [
+          [
+            -66.90992736816406,
+            -214.82098388671875,
+            84.61044311523438
+          ],
+          [
+            194.44679260253906,
+            113.2053451538086,
+            109.32284545898438
+          ]
+        ],
+        "color_samples": [
+          [
+            0.6499999761581421,
+            0.3199999928474426,
+            0.11999999731779099,
+            0.5557970404624939
+          ],
+          [
+            0.6499999761581421,
+            0.3199999928474426,
+            0.11999999731779099,
+            0.5557970404624939
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_B02_RollingPinCyclone_Layer1": {
+        "position_samples": [
+          [
+            -59.87530517578125,
+            3.8662586212158203,
+            43.333335876464844
+          ],
+          [
+            169.89276123046875,
+            -177.08079528808594,
+            194.13333129882812
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            0.9200000166893005,
+            0.7799999713897705,
+            0.5557970404624939
+          ],
+          [
+            1.0,
+            0.9200000166893005,
+            0.7799999713897705,
+            0.5557970404624939
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            64.49275970458984,
+            64.49275970458984
+          ],
+          [
+            64.49275970458984,
+            64.49275970458984
+          ]
+        ]
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "B03",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-b03.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_B03_AggressiveEncouragement",
+    "particles": {
+      "NS_B03_AggressiveEncouragement:FX_0_cone": 20,
+      "NS_B03_AggressiveEncouragement_Layer1:FX_0_cone": 6
+    },
+    "attributes": {
+      "NS_B03_AggressiveEncouragement": {
+        "position_samples": [
+          [
+            337.896240234375,
+            232.67263793945312,
+            70.0
+          ],
+          [
+            381.1774597167969,
+            -151.70423889160156,
+            70.0
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            0.25,
+            0.05999999865889549,
+            0.48717933893203735
+          ],
+          [
+            1.0,
+            0.25,
+            0.05999999865889549,
+            0.48717933893203735
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            70.89745330810547,
+            70.89745330810547
+          ],
+          [
+            70.89745330810547,
+            70.89745330810547
+          ]
+        ]
+      },
+      "NS_B03_AggressiveEncouragement_Layer1": {
+        "position_samples": [
+          [
+            337.896240234375,
+            232.67263793945312,
+            70.0
+          ],
+          [
+            381.1774597167969,
+            -151.70423889160156,
+            70.0
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            0.25,
+            0.05999999865889549,
+            0.48717933893203735
+          ],
+          [
+            1.0,
+            0.25,
+            0.05999999865889549,
+            0.48717933893203735
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "M01",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-m01.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_M01_SpoonfulOfSugar",
+    "particles": {
+      "NS_M01_SpoonfulOfSugar:FX_0_volley": 6
+    },
+    "attributes": {
+      "NS_M01_SpoonfulOfSugar": {
+        "position_samples": [
+          [
+            419.0476379394531,
+            34.45437240600586,
+            80.0
+          ],
+          [
+            419.0476379394531,
+            -21.64130210876465,
+            80.0
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            0.9300000071525574,
+            0.6000000238418579,
+            0.476190447807312
+          ],
+          [
+            1.0,
+            0.9300000071525574,
+            0.6000000238418579,
+            0.476190447807312
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "M02",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-m02.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_M02_PeppermintPopfall",
+    "particles": {
+      "NS_M02_PeppermintPopfall:FX_0_rain": 6,
+      "NS_M02_PeppermintPopfall_Layer1:FX_0_ring": 1
+    },
+    "attributes": {
+      "NS_M02_PeppermintPopfall": {
+        "position_samples": [
+          [
+            15.14721965789795,
+            93.6512680053711,
+            208.7777099609375
+          ],
+          [
+            -217.50772094726562,
+            -171.90228271484375,
+            555.2864990234375
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.6666666269302368
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.6666666269302368
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_M02_PeppermintPopfall_Layer1": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            5.0
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.6666666269302368
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "M03",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-m03.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_M03_ArcaneSanitization",
+    "particles": {
+      "NS_M03_ArcaneSanitization:FX_0_foam": 48,
+      "NS_M03_ArcaneSanitization_Layer1:FX_0_foam": 32
+    },
+    "attributes": {
+      "NS_M03_ArcaneSanitization": {
+        "position_samples": [
+          [
+            426.6667785644531,
+            126.35794067382812,
+            97.03101348876953
+          ],
+          [
+            121.06675720214844,
+            -22.520479202270508,
+            56.254058837890625
+          ]
+        ],
+        "color_samples": [
+          [
+            0.8999999761581421,
+            1.0,
+            1.0,
+            0.5777778029441833
+          ],
+          [
+            0.8999999761581421,
+            1.0,
+            1.0,
+            0.5777778029441833
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            77.77777862548828,
+            77.77777862548828
+          ],
+          [
+            77.77777862548828,
+            77.77777862548828
+          ]
+        ]
+      },
+      "NS_M03_ArcaneSanitization_Layer1": {
+        "position_samples": [
+          [
+            426.6667785644531,
+            126.35794067382812,
+            97.03101348876953
+          ],
+          [
+            121.06675720214844,
+            -22.520479202270508,
+            56.254058837890625
+          ]
+        ],
+        "color_samples": [
+          [
+            0.1599999964237213,
+            0.8999999761581421,
+            0.800000011920929,
+            0.5777778029441833
+          ],
+          [
+            0.1599999964237213,
+            0.8999999761581421,
+            0.800000011920929,
+            0.5777778029441833
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            46.66666793823242,
+            46.66666793823242
+          ],
+          [
+            46.66666793823242,
+            46.66666793823242
+          ]
+        ]
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "A01",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-a01.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_A01_CeleryShot",
+    "particles": {
+      "NS_A01_CeleryShot:FX_0_volley": 1
+    },
+    "attributes": {
+      "NS_A01_CeleryShot": {
+        "position_samples": [
+          [
+            419.0476379394531,
+            34.45437240600586,
+            80.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.30000001192092896,
+            0.8999999761581421,
+            0.11999999731779099,
+            0.476190447807312
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "A02",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-a02.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_A02_CeleryVolley",
+    "particles": {
+      "NS_A02_CeleryVolley:FX_0_rain": 10,
+      "NS_A02_CeleryVolley_Layer1:FX_0_ring": 1
+    },
+    "attributes": {
+      "NS_A02_CeleryVolley": {
+        "position_samples": [
+          [
+            15.14721965789795,
+            93.6512680053711,
+            208.7777099609375
+          ],
+          [
+            -217.50772094726562,
+            -171.90228271484375,
+            555.2864990234375
+          ]
+        ],
+        "color_samples": [
+          [
+            0.30000001192092896,
+            0.8999999761581421,
+            0.11999999731779099,
+            0.6041666269302368
+          ],
+          [
+            0.30000001192092896,
+            0.8999999761581421,
+            0.11999999731779099,
+            0.6041666269302368
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_A02_CeleryVolley_Layer1": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            5.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.30000001192092896,
+            0.8999999761581421,
+            0.11999999731779099,
+            0.6041666269302368
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "A03",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-a03.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_A03_FlossSnare",
+    "particles": {
+      "NS_A03_FlossSnare:FX_0_strand": 4
+    },
+    "attributes": {
+      "NS_A03_FlossSnare": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            30.0
+          ],
+          [
+            0.0,
+            0.0,
+            39.0
+          ]
+        ],
+        "color_samples": [
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.8666666746139526
+          ],
+          [
+            1.0,
+            1.0,
+            1.0,
+            0.8666666746139526
+          ]
+        ],
+        "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  }
+]

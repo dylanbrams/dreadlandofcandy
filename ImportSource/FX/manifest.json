@@ -1,0 +1,172 @@
+{
+  "units": "centimetres",
+  "origin": "Original procedural geometry and masks",
+  "meshes": [
+    {
+      "name": "SM_FX_Ring",
+      "triangles": 64,
+      "vertices": 66,
+      "bounds_min": [
+        -100.0,
+        -100.0,
+        0
+      ],
+      "bounds_max": [
+        100.0,
+        100.0,
+        0
+      ]
+    },
+    {
+      "name": "SM_FX_Arc",
+      "triangles": 40,
+      "vertices": 42,
+      "bounds_min": [
+        68.80877172027532,
+        -57.35764363510461,
+        0
+      ],
+      "bounds_max": [
+        100.0,
+        57.35764363510461,
+        0
+      ]
+    },
+    {
+      "name": "SM_FX_Card",
+      "triangles": 2,
+      "vertices": 4,
+      "bounds_min": [
+        -20.0,
+        -20.0,
+        0
+      ],
+      "bounds_max": [
+        20.0,
+        20.0,
+        0
+      ]
+    },
+    {
+      "name": "SM_FX_Napkin",
+      "triangles": 2,
+      "vertices": 4,
+      "bounds_min": [
+        -18.0,
+        -14.0,
+        0
+      ],
+      "bounds_max": [
+        18.0,
+        14.0,
+        0
+      ]
+    },
+    {
+      "name": "SM_FX_Strand",
+      "triangles": 2,
+      "vertices": 4,
+      "bounds_min": [
+        0,
+        -0.75,
+        0
+      ],
+      "bounds_max": [
+        100,
+        0.75,
+        0
+      ]
+    },
+    {
+      "name": "SM_FX_Pin",
+      "triangles": 192,
+      "vertices": 98,
+      "bounds_min": [
+        -30,
+        -7.0,
+        -7.0
+      ],
+      "bounds_max": [
+        30,
+        7.0,
+        7.0
+      ]
+    },
+    {
+      "name": "SM_FX_Peppermint",
+      "triangles": 128,
+      "vertices": 66,
+      "bounds_min": [
+        -3,
+        -17.5,
+        -17.5
+      ],
+      "bounds_max": [
+        3,
+        17.5,
+        17.5
+      ]
+    },
+    {
+      "name": "SM_FX_Celery",
+      "triangles": 70,
+      "vertices": 46,
+      "bounds_min": [
+        -32,
+        -12,
+        -4.0
+      ],
+      "bounds_max": [
+        33,
+        14,
+        13
+      ]
+    },
+    {
+      "name": "SM_FX_SugarCube",
+      "triangles": 12,
+      "vertices": 24,
+      "bounds_min": [
+        -5,
+        -5,
+        -5
+      ],
+      "bounds_max": [
+        5,
+        5,
+        5
+      ]
+    },
+    {
+      "name": "SM_FX_Dome",
+      "triangles": 360,
+      "vertices": 225,
+      "bounds_min": [
+        -100.0,
+        -100.0,
+        6.123233995736766e-15
+      ],
+      "bounds_max": [
+        100.0,
+        100.0,
+        100.0
+      ]
+    }
+  ],
+  "sha256": {
+    "SM_FX_Arc.obj": "d85b94752116560fb0d4db3d20b754e52b80803740eb32b8f575bb0eb2a37d47",
+    "SM_FX_Card.obj": "c7100bcdc752223dcae76f6ccde89853830d6b4eebc1127eb48cb4fe23d9535b",
+    "SM_FX_Celery.obj": "ad901b6a6fa6a4eba0055369bf8846cc87a1d7709163f6e8bd3ffad4779acb6b",
+    "SM_FX_Dome.obj": "97607070607c10e159f1245cc8f014b3f994f9a81b20d7aff27d898784b2c405",
+    "SM_FX_Napkin.obj": "6b7f54e708c089b6c105d5c6848d2673a3938fe91db400a297a2e86fa213becd",
+    "SM_FX_Peppermint.obj": "42e93e5250503a1267f47d90241ed94ea6396bbd6da6f9c10c8f96d16edc4be2",
+    "SM_FX_Pin.obj": "727e43029893e3e7e1f14a23c3e4e39240a82034ac8ac2f05f13f61767bef555",
+    "SM_FX_Ring.obj": "fef89062d4e153ccdefd1d2dc6657d7668c757e44b4232910d0fa5676d6ea394",
+    "SM_FX_Strand.obj": "c0eb2e3dad12a788346de8ce6d9588cf96c39408e2118f9dc23a8dda3fa55687",
+    "SM_FX_SugarCube.obj": "15119bdc49e0dbca6b590077de8f8a42dc04746dddabebf729b53694d81bcfd4",
+    "T_FX_Bubble.png": "f47643ebd37ca26f07b1845d38151f4698df47977d2d14e7dea3be62094d6c11",
+    "T_FX_Peppermint.png": "0f73db66f2d6054952185d74d1b26040fb1756aca0ffb40a3173f4b7c9c858d0",
+    "T_FX_SoftDisc.png": "a0e674a05fc90f7e9a1230e249980e07c6c15b2931d24bcae385b7be14d572de",
+    "T_FX_Star.png": "029335f8c68b3941faf07131203712109194c44de247f89b23712840ae87dff4"
+  }
+}

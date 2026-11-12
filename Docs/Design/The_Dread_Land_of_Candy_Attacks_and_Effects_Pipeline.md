@@ -2,6 +2,10 @@ Director’s Cut \| Combat Attacks & Effects Pipeline \| Implementation Handoff 
 
 Status: all 12 core attacks have conceptual designs. This document records decisions from design discussion, plus proposed implementation contracts. Exact timings, balancing, and Unreal asset names are provisional until verified in the project.
 
+Niagara production handoff: [Attack presentation: Niagara production pipeline](Niagara_Attack_Pipeline.md).
+This covers verified project constraints, shared systems, parameter bindings, all 12 attack recipes,
+supporting asset specifications and validation. See [the FX worker handoff](../Workers/fx.md) for delivery status.
+
 # 1. Creative rules
 
 - Four combat identities: Knight enforces manners; Barbarian enforces food preparation and vegetables; Mage applies catastrophic household hygiene and moderation; Archer weaponizes vegetables and dental hygiene.

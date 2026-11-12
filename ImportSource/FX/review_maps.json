@@ -1,0 +1,162 @@
+[
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
+    "system": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
+    "desired_age": 0.2,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
+    ],
+    "duration_cap": 0.35,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_K02_SternInstruction",
+    "system": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
+    "desired_age": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_K02_SternInstruction_Layer1.NS_K02_SternInstruction_Layer1"
+    ],
+    "duration_cap": 0.65,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_K03_GoodManners",
+    "system": "/Game/FX/Attacks/Systems/NS_K03_GoodManners.NS_K03_GoodManners",
+    "desired_age": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1"
+    ],
+    "duration_cap": 3.5,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_B01_FuriousKneading",
+    "system": "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading",
+    "desired_age": 0.2,
+    "layers": [],
+    "duration_cap": 0.45,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_B02_RollingPinCyclone",
+    "system": "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone.NS_B02_RollingPinCyclone",
+    "desired_age": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1"
+    ],
+    "duration_cap": 2.3,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_B03_AggressiveEncouragement",
+    "system": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement.NS_B03_AggressiveEncouragement",
+    "desired_age": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1"
+    ],
+    "duration_cap": 0.65,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_M01_SpoonfulOfSugar",
+    "system": "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar",
+    "desired_age": 0.2,
+    "layers": [],
+    "duration_cap": 0.35,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_M02_PeppermintPopfall",
+    "system": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall.NS_M02_PeppermintPopfall",
+    "desired_age": 0.65,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1"
+    ],
+    "duration_cap": 1.9,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_M03_ArcaneSanitization",
+    "system": "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization.NS_M03_ArcaneSanitization",
+    "desired_age": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization_Layer1.NS_M03_ArcaneSanitization_Layer1"
+    ],
+    "duration_cap": 1.2,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_A01_CeleryShot",
+    "system": "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot",
+    "desired_age": 0.2,
+    "layers": [],
+    "duration_cap": 0.35,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_A02_CeleryVolley",
+    "system": "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley.NS_A02_CeleryVolley",
+    "desired_age": 0.65,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley_Layer1.NS_A02_CeleryVolley_Layer1"
+    ],
+    "duration_cap": 1.6,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_A03_FlossSnare",
+    "system": "/Game/FX/Attacks/Systems/NS_A03_FlossSnare.NS_A03_FlossSnare",
+    "desired_age": 0.35,
+    "layers": [],
+    "duration_cap": 2.5,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  }
+]

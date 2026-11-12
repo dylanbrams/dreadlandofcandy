@@ -1,0 +1,82 @@
+{
+  "K01": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "K02": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
+      "/Game/FX/Attacks/Systems/NS_K02_SternInstruction_Layer1.NS_K02_SternInstruction_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "K03": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners.NS_K03_GoodManners",
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "B01": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading"
+    ],
+    "cosmetic_only": true
+  },
+  "B02": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone.NS_B02_RollingPinCyclone",
+      "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "B03": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement.NS_B03_AggressiveEncouragement",
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "M01": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar"
+    ],
+    "cosmetic_only": true
+  },
+  "M02": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall.NS_M02_PeppermintPopfall",
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "M03": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization.NS_M03_ArcaneSanitization",
+      "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization_Layer1.NS_M03_ArcaneSanitization_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "A01": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot"
+    ],
+    "cosmetic_only": true
+  },
+  "A02": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley.NS_A02_CeleryVolley",
+      "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley_Layer1.NS_A02_CeleryVolley_Layer1"
+    ],
+    "cosmetic_only": true
+  },
+  "A03": {
+    "systems": [
+      "/Game/FX/Attacks/Systems/NS_A03_FlossSnare.NS_A03_FlossSnare"
+    ],
+    "cosmetic_only": true
+  }
+}

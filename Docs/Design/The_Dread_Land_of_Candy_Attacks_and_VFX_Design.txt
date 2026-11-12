@@ -5,6 +5,9 @@ Intended reader: a separate ChatGPT conversation or an Unreal Engine 5.8 effects
 
 PURPOSE
 =======
+Niagara production specification: Docs/Design/Niagara_Attack_Pipeline.md.
+Asset and implementation delivery status: Docs/Workers/fx.md.
+
 This document is self-contained. It inventories EVERY specifically named player attack/skill discussed in the game's prior brainstorming or written briefs, including superseded/alternative names, and turns the selected abilities into concrete effect-building briefs. It also describes reusable VFX systems, encounter reactions, the Director's Cut theme layer, voice variants, replication and a production-priority queue. You do not need to read the larger MMO design to start discussing effects.
 
 Do not infer that any described ability, mesh, animation, voice clip, Niagara system, Blueprint, Gameplay Ability or network feature already exists. These are DESIGNS, not an implementation report. Some names are alternatives, not separate abilities. Avoid silently expanding a class's shippable skill count by treating every brainstorm as a commitment. Before modifying a real Unreal project, inspect its existing GAS setup, GameplayCue conventions, art and reference assets.

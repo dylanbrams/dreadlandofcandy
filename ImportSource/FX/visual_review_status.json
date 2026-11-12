@@ -1,0 +1,12 @@
+{
+  "status": "saved_bytecode_repair_verified",
+  "approved_for_gameplay": false,
+  "reason": "All 33 systems were force-compiled and saved in a fresh commandlet. Fresh samples restore B02's 225 cm orbit and brown colour, rain positions, dome/ring scales and secondary layers. Twelve assemblies contain live particles and pass owner-destruction cleanup.",
+  "prototype_art_status": "Needs polish; not final art approval",
+  "remaining": [
+    "K01's brief shield arc/impact is still weak or missing in the capture despite live attributes; inspect timing/readability before integration.",
+    "Comic cards are plain placeholders; flour/foam, trails and choreography need an art pass.",
+    "Gameplay events, tether endpoints, audio, pooled reuse, live parameter changes and packaged cooking are not integrated or validated."
+  ],
+  "required_build_step": "Run recompile_fx_systems.py in a fresh PythonScript commandlet with -dpcvars=fx.ForceCompileOnLoad=1 after generating systems. An in-memory audit alone does not repair saved assets."
+}
