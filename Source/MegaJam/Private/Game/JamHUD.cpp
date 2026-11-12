@@ -2,97 +2,108 @@
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
 #include "Game/JamNuisance.h"
-#include "Engine/Canvas.h"
-#include "Engine/Engine.h"
-#include "Engine/Font.h"
+#include "UI/JamHudWidget.h"
+#include "MegaJam.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
-namespace
+AJamHUD::AJamHUD()
 {
-	const FLinearColor Panel(0.f, 0.f, 0.f, 0.6f);
-	const FLinearColor RecRed(0.9f, 0.1f, 0.1f);
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bTickEvenWhenPaused = true;
 }
 
-void AJamHUD::DrawTextBox(const FString& Text, float X, float Y, UFont* Font, float Scale, const FLinearColor& Colour, bool bCentred)
+void AJamHUD::BeginPlay()
 {
-	float W = 0.f, H = 0.f;
-	GetTextSize(Text, W, H, Font, Scale);
-	if (bCentred) { X -= W * 0.5f; }
-	DrawRect(Panel, X - 12.f, Y - 6.f, W + 24.f, H + 12.f);
-	DrawText(Text, Colour, X, Y, Font, Scale);
-}
-
-void AJamHUD::DrawHUD()
-{
-	Super::DrawHUD();
-	if (!Canvas) { return; }
-	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
-	const AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
-	UFont* Font = GEngine->GetLargeFont();
-	const float UIScale = Canvas->ClipY / 1080.f;
-
-	if (GS && GS->GetShoot().GetState() != EJamShootState::Idle)
+	Super::BeginPlay();
+	FString Screen;
+	if (FParse::Value(FCommandLine::Get(), TEXT("uiscreen="), Screen))
 	{
-		const FJamShoot& Shoot = GS->GetShoot();
-
-		// Top left: slate label and a blinking REC while rolling.
-		const bool bRolling = Shoot.GetState() == EJamShootState::Rolling;
-		const FString Label = FString::Printf(TEXT("SCENE %d: %s   TAKE %d"), GS->SceneNumber, *Shoot.GetScene().Title.ToUpper(), Shoot.GetTake());
-		DrawTextBox(Label, 40.f * UIScale, 36.f * UIScale, Font, 1.4f * UIScale, FLinearColor::White, false);
-		if (bRolling && FMath::Fmod(GetWorld()->GetTimeSeconds(), 1.f) < 0.6f)
+		FJamHudView Probe;
+		if (JamHud::Sample(Screen, Probe))
 		{
-			DrawTextBox(TEXT("● REC"), 40.f * UIScale, 90.f * UIScale, Font, 1.2f * UIScale, RecRed, false);
+			SampleName = Screen;
+			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s (sample HUD)"), *Screen);
 		}
-
-		// Top centre: objective and progress (and the countdown, when there is one).
-		if (const FJamStageDef* Stage = Shoot.GetStage())
+		else
 		{
-			if (Shoot.GetState() != EJamShootState::Wrap)
-			{
-				FString Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
-				if (Stage->TimeLimit > 0.f) { Objective += FString::Printf(TEXT("   %.0fs"), FMath::CeilToFloat(Shoot.GetTimeLeft())); }
-				if (Stage->FailMeter > 0) { Objective += FString::Printf(TEXT("   crops eaten %d/%d"), Shoot.GetMeter(), Stage->FailMeter); }
-				DrawTextBox(Objective, Canvas->ClipX * 0.5f, 36.f * UIScale, Font, 1.4f * UIScale, FLinearColor::White, true);
-			}
+			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s is not a HUD sample (%s)"), *Screen, *FString::Join(JamHud::SampleNames(), TEXT(", ")));
 		}
+	}
+	if (PlayerOwner && PlayerOwner->IsLocalController())
+	{
+		Widget = CreateWidget<UJamHudWidget>(PlayerOwner, UJamHudWidget::StaticClass());
+		if (Widget) { Widget->AddToViewport(0); }
+	}
+}
 
-		if (!GS->Hint.IsEmpty())
+void AJamHUD::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (SampleName.IsEmpty()) { BuildView(); }
+	else { JamHud::Sample(SampleName, View); }
+	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
+}
+
+void AJamHUD::BuildView()
+{
+	View = FJamHudView();
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || GS->GetShoot().GetState() == EJamShootState::Idle) { return; }
+	const FJamShoot& Shoot = GS->GetShoot();
+	const EJamShootState State = Shoot.GetState();
+
+	View.bShootVisible = true;
+	View.SceneLabel = FString::Printf(TEXT("SCENE %d: %s"), GS->SceneNumber, *Shoot.GetScene().Title.ToUpper());
+	View.Take = Shoot.GetTake();
+	View.bRolling = State == EJamShootState::Rolling;
+	View.FilmSeconds = GS->FilmSeconds;
+	View.Hint = GS->Hint;
+
+	const FJamStageDef* Stage = Shoot.GetStage();
+	if (Stage && State != EJamShootState::Wrap)
+	{
+		View.Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
+		if (Stage->TimeLimit > 0.f)
 		{
-			DrawTextBox(GS->Hint, Canvas->ClipX * 0.5f, 90.f * UIScale, Font, 1.3f * UIScale, FLinearColor(1.f, 0.85f, 0.3f), true);
+			const float Left = Shoot.GetTimeLeft();
+			View.bMeterVisible = true;
+			View.MeterFraction = Left / Stage->TimeLimit;
+			View.MeterLabel = FString::Printf(TEXT("%.0fs left"), FMath::CeilToFloat(Left));
+			View.bMeterDanger = Left <= 10.f;
 		}
-
-		// Centre: the card.
-		if (GS->IsCardVisible())
+		else if (Stage->FailMeter > 0)
 		{
-			const float CY = Canvas->ClipY * 0.38f;
-			DrawTextBox(GS->CardTitle, Canvas->ClipX * 0.5f, CY, Font, 3.2f * UIScale, FLinearColor(1.f, 0.85f, 0.3f), true);
-			if (!GS->CardSubtitle.IsEmpty())
-			{
-				TArray<FString> Lines;
-				GS->CardSubtitle.ParseIntoArray(Lines, TEXT("\n"));
-				float Y = CY + 90.f * UIScale;
-				for (const FString& Line : Lines)
-				{
-					DrawTextBox(Line, Canvas->ClipX * 0.5f, Y, Font, 1.3f * UIScale, FLinearColor::White, true);
-					Y += 40.f * UIScale;
-				}
-			}
+			View.bMeterVisible = true;
+			View.MeterFraction = 1.f - float(Shoot.GetMeter()) / Stage->FailMeter;
+			View.MeterLabel = FString::Printf(TEXT("crops eaten %d/%d"), Shoot.GetMeter(), Stage->FailMeter);
+			View.bMeterDanger = Shoot.GetMeter() * 10 >= Stage->FailMeter * 6;
 		}
 	}
 
-	// Interact prompt over the rat the hero would treat, only while treating counts.
-	if (Hero && GS && GS->CanInteract())
+	if (GS->IsCardVisible())
+	{
+		View.CardKind = GS->CardKind;
+		View.CardTitle = GS->CardTitle;
+		View.CardSubtitle = GS->CardSubtitle;
+	}
+
+	// Interact prompt over the target the hero would treat, only while treating counts.
+	const AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+	if (Hero && GS->CanInteract())
 	{
 		if (const AJamNuisance* Target = Hero->FindInteractTarget())
 		{
-			const FVector Screen = Project(Target->GetActorLocation() + FVector(0.f, 0.f, 140.f));
-			if (Screen.Z > 0.f)
+			FVector2D Screen;
+			if (UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Target->GetActorLocation() + FVector(0.f, 0.f, 140.f), Screen, false))
 			{
-				const FJamStageDef* Stage = GS->GetShoot().GetStage();
 				const TCHAR* Verb = Stage && Stage->Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
-				const FString Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Hold [E]"), Verb);
-				DrawTextBox(Prompt, Screen.X, Screen.Y, Font, 1.2f * UIScale, FLinearColor::White, true);
+				View.bPromptVisible = true;
+				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Hold [E]"), Verb);
+				View.PromptPosition = Screen;
 			}
 		}
 	}

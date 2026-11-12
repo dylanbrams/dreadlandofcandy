@@ -153,10 +153,11 @@ void AJamGameMode::StartScene(int32 InSceneIndex)
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: scene %d %s \"%s\" started"), SceneIndex + 1, *Scenes[SceneIndex].Id.ToString(), *Scenes[SceneIndex].Title);
 }
 
-void AJamGameMode::ShowCard(const FString& Title, const FString& Subtitle, float Seconds)
+void AJamGameMode::ShowCard(EJamCardKind Kind, const FString& Title, const FString& Subtitle, float Seconds)
 {
 	if (AJamGameState* GS = GetJamGameState())
 	{
+		GS->CardKind = Kind;
 		GS->CardTitle = Title;
 		GS->CardSubtitle = Subtitle;
 		GS->CardUntil = Seconds < 0.f ? -1.f : GetWorld()->GetTimeSeconds() + Seconds;
@@ -301,6 +302,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 	if (!GS) { return; }
 	FJamShoot& Shoot = GS->Shoot;
 	Shoot.Tick(DeltaSeconds);
+	if (Shoot.GetState() == EJamShootState::Rolling) { GS->FilmSeconds += DeltaSeconds; }
 	TickStage(DeltaSeconds);
 
 	const float Now = GetWorld()->GetTimeSeconds();
@@ -311,7 +313,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 		if (SeenState == EJamShootState::Slate)
 		{
 			const FJamStageDef* Stage = Shoot.GetStage();
-			ShowCard(FString::Printf(TEXT("SCENE %d - TAKE %d"), SceneIndex + 1, Shoot.GetTake()),
+			ShowCard(EJamCardKind::Slate, FString::Printf(TEXT("SCENE %d - TAKE %d"), SceneIndex + 1, Shoot.GetTake()),
 				FString::Printf(TEXT("%s\nDirector: F. Flicker. Camera: F. Flicker. %s"), *Shoot.GetScene().Title,
 					TuningFor(Stage ? Stage->Target : EJamTargetKind::Rat).Cast),
 				JamShootPacing::SlateSeconds);
@@ -320,7 +322,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 		{
 			const FJamLine* Pitch = JamLines::Find(Shoot.GetScene().Note.PitchLineId);
 			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
-			ShowCard(TEXT("CUT!"), FString::Printf(TEXT("%s\nHold [E] / (A): take the note.   [Q] / (B): refuse."), *PitchText), -1.f);
+			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), FString::Printf(TEXT("%s\nHold [E] / (A): take the note.   [Q] / (B): refuse."), *PitchText), -1.f);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
 		}
 	}
@@ -409,7 +411,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 				break;
 			}
 		}
-		ShowCard(TEXT("ACTION!"), Event.Take == 1 ? TEXT("Places, everyone! And by everyone I mean you.")
+		ShowCard(EJamCardKind::Action, TEXT("ACTION!"), Event.Take == 1 ? TEXT("Places, everyone! And by everyone I mean you.")
 			: TEXT("And... ACTION! I love saying that. Ninth time today."), 1.2f);
 		break;
 
@@ -419,14 +421,14 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 
 	case EJamShootEventType::NoteAnswered:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: note %s"), Event.Value ? TEXT("taken") : TEXT("refused"));
-		ShowCard(Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"),
+		ShowCard(EJamCardKind::Info, Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"),
 			LineText(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused, SceneIndex), 2.f);
 		break;
 
 	case EJamShootEventType::TakeFailed:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: take %d failed (%s)"), Event.Take, Event.Value ? TEXT("forced") : TEXT("failure"));
-		if (Event.Value) { ShowCard(TEXT("Perfect! Again."), TEXT("This time the rats know their lines."), JamShootPacing::FailedSeconds); }
-		else { ShowCard(TEXT("RETAKE!"), TEXT("From the top."), JamShootPacing::FailedSeconds); }
+		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), TEXT("This time the rats know their lines."), JamShootPacing::FailedSeconds); }
+		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), TEXT("From the top."), JamShootPacing::FailedSeconds); }
 		break;
 
 	case EJamShootEventType::Wrapped:
@@ -437,7 +439,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		NotesTaken += Shoot.GetNotesTaken();
 		NotesRefused += Shoot.GetNotesRefused();
 		const bool bLast = !JamScenes::All().IsValidIndex(SceneIndex + 1) || !JamBacklot::Sets().IsValidIndex(SceneIndex + 1);
-		ShowCard(TEXT("THAT'S A WRAP!"), TEXT("Everyone gets paid. \"Everyone\" is a term of art."), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
+		ShowCard(EJamCardKind::Wrap, TEXT("THAT'S A WRAP!"), TEXT("Everyone gets paid. \"Everyone\" is a term of art."), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
 		if (bLast)
 		{
 			FinishRun(true, FString());

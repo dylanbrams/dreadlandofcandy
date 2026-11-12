@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "Film/JamFilmTypes.h"
+#include "UI/JamHudView.h"
 #include "JamGameMode.generated.h"
 
 class AJamHero;
@@ -44,7 +45,7 @@ private:
 	void TickStage(float DeltaSeconds);
 	void TickBetweenScenes();
 	void HandleShootEvent(const FJamShootEvent& Event);
-	void ShowCard(const FString& Title, const FString& Subtitle, float Seconds);
+	void ShowCard(EJamCardKind Kind, const FString& Title, const FString& Subtitle, float Seconds);
 	void ClearStageActors();
 	void SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified);
 	void PrepareTreatStage(const FJamStageDef& Stage);

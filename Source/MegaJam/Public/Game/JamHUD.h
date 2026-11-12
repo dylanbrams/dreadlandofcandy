@@ -2,13 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/HUD.h"
+#include "UI/JamHudView.h"
 #include "JamHUD.generated.h"
 
-class UFont;
+class UJamHudWidget;
 
 /**
- * Plain canvas HUD until the widget HUD exists: scene/take label and REC, objective and progress, the
- * centre card (ACTION!, RETAKE!, wrap), the interact prompt. Reads state only.
+ * Owns the HUD widget and feeds it an FJamHudView each frame, built from the game state (read only).
+ * `-uiscreen=<sample>` shows one of JamHud::SampleNames() instead, for screenshots of each layer and card.
  */
 UCLASS()
 class MEGAJAM_API AJamHUD : public AHUD
@@ -16,8 +17,19 @@ class MEGAJAM_API AJamHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-	virtual void DrawHUD() override;
+	AJamHUD();
+	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
+
+	/** The view built from the world this frame (or the sample). */
+	const FJamHudView& GetView() const { return View; }
 
 private:
-	void DrawTextBox(const FString& Text, float X, float Y, UFont* Font, float Scale, const FLinearColor& Colour, bool bCentred);
+	void BuildView();
+
+	UPROPERTY(Transient)
+	TObjectPtr<UJamHudWidget> Widget;
+
+	FJamHudView View;
+	FString SampleName;
 };

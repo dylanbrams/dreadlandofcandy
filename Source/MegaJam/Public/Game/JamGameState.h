@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
 #include "Film/JamShoot.h"
+#include "UI/JamHudView.h"
 #include "JamGameState.generated.h"
 
 /**
@@ -25,6 +26,7 @@ public:
 	}
 
 	/** The big centre card (ACTION!, RETAKE!, ...). Empty title = no card. */
+	EJamCardKind CardKind = EJamCardKind::None;
 	FString CardTitle;
 	FString CardSubtitle;
 	/** World time the card disappears; negative = stays. */
@@ -36,6 +38,8 @@ public:
 	int32 SceneNumber = 1;
 	/** One line under the objective between scenes ("Walk to Set 2"). Empty = none. */
 	FString Hint;
+	/** Film running time: counts while a take rolls, across the whole film (the HUD timecode). */
+	float FilmSeconds = 0.f;
 	/** Waiting for the hero's answer to CUT!. */
 	bool IsNotePrompt() const { return Shoot.GetState() == EJamShootState::NotePrompt; }
 
