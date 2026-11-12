@@ -30,3 +30,9 @@
 - Not yet done: a human playing it. The feeding prompt has not been seen.
 - Screenshot: `Saved/Screenshots/WindowsEditor/t06-again.png`.
 - Packaged build (08:51) smoke-tested with `-autoplay`: `JamAutoplay: PASS scenes=1 takes=2`, all checks pass.
+
+## 09:10 Merge rules, T08 backlot
+
+- Merged `rules` (ledger, lines and nag scheduler, progression, note clamp, Scenes 2 and 3). ASSETS had 151 files staged in the shared index, so the merge commit was built with `git merge-tree` and `commit-tree` and only the merged paths were checked out. 40/40 tests.
+- T08 MCP spike, about 10 minutes: the engine MCP plugin has no spawn-actor or save-map tool, so no map asset. The backlot is a C++ layout table instead: three sets on one line up the screen, joined by streets, walls with openings, banners. Testable and needs no cooked content.
+- First autoplay run: the bot never left the field. A scripted text replace had missed the line that starts the walk (tabs versus spaces); fixed with the Edit tool. Second run: walks to Fort Toothache in 14.0 s.
