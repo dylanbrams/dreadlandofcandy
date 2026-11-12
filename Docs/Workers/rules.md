@@ -15,8 +15,15 @@
   - Story triggers (SceneStart, Level7Intro, FailedTake, Take3..6, CutPitch, NoteTaken/Refused, ForcedRetake, NarrationCut, Wrap, BudgetOut, Premiere, Pause) always speak. Ambient ones obey gap 8 s (commentary 25 s), per-trigger cooldown 20 s, `bSilenced`. `bSulking` turns ambient reactions into the Sulking pool. Level7Intro and Take3..6 are once per run. `JamLines::TriggerForTake(take)` picks SceneStart / Take3..6.
   - GAME T11: build a `FJamNagSnapshot` from game state each poll; set `bSilenced` for dialogue, menus and the CUT! prompt. The scheduler never touches rules.
 
+- **T04a progression**: `Public/Film/JamProgression.h`, `Private/Film/JamProgression.cpp`, tests `Jam.Film.Progression.*` (Start, LevelsLandOnCards, PointsNeverExceedLevels, StatsTotal, Tables, RollLoot). 27/27 `Jam.Film` pass.
+  - `FJamProgression` (put one on the PlayerState): starts level 7, 0 points. `AddXp(source)` (Pacify 8, Treat 12, Collect 6) fills the bar but is held at `XpForLevel(next)-1`; **only `ReachMilestone(Scene1Wrap | Scene2Wrap | Scene3FinalNote)` raises the level** (8 / 9 / 10; thresholds 100 / 250 / 450). Returns levels gained (0 if repeated), so call it at the wrap card and the Scene 3 CUT!. Level 10 unlocks The Last Judgment by itself.
+  - `SpendPoint(skill)` / `CanSpendPoint`: buys rank 1 of Form A Line / Sigh, or raises any rank (Lecture to 4, others to 3). Never the ultimate. Invariant (tested under random play): `6 passives + spent + points == level - 1`.
+  - `GetStats()`: Lecture Power, Radius, Cooldown Recovery, Move Speed (base 60 / 800 / 1.0 / 600 at rank 1, then rank and loot). `GetSkillNumbers(skill)` is the rank row with loot applied (damage, radius, line length and width, stop/slow seconds, slow factor, cooldown): feed the GAS abilities from it. Rank data also at `JamProgression::RankData`.
+  - Loot: `JamProgression::LootTable()` (the 12 items of Jokes.md, with stat, signed percent, rarity 0 to 3), `RollLoot(seed, 3)` gives three distinct indices ordered worst to best, so the last card is the one she keeps. `AddLoot(index)` stacks (napkin +1% helps every stat incl. cooldown). For the ledger pass `LootRarities` from the same rolls; `KeptLootIndex` is then the best card. Show `RarityName(rarity, bDirectorsPick)`; passives for the pre-spent panel in `Passives()`.
+  - Numbers for ranks and XP are my placeholders (BUILD_SPEC 10 does not set them); tune in `JamProgression.cpp`.
+
 ## Next
-T04a (progression and rank tables), then T12a (note clamp; needs `Docs/Design/NoteForm.md`).
+T12a (note clamp and keyword fallback, against `NoteForm.md`), then the Scene 2 and 3 tables with the finishability test.
 
 ## Requests to GAME
 None yet.
