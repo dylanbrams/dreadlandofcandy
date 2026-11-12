@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Comparison</title>
+<style>
+  :root { --bg:#17171b; --panel:#24242a; --ink:#eee; --dim:#9a9aa4; --accent:#ff7a59; --line:#34343c; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink); font:14px system-ui, sans-serif; overflow:hidden; }
+  header { display:flex; gap:12px; align-items:center; flex-wrap:wrap; padding:10px 16px; border-bottom:1px solid var(--line); }
+  header h1 { font-size:15px; margin:0 8px 0 0; }
+  .tabs button, .opts label, .opts button { background:var(--panel); color:var(--ink); border:1px solid var(--line); border-radius:6px; padding:6px 10px; font:inherit; cursor:pointer; }
+  .tabs button.on { border-color:var(--accent); color:var(--accent); }
+  .opts { display:flex; gap:8px; flex-wrap:wrap; margin-left:auto; align-items:center; }
+  .opts label { display:flex; gap:6px; align-items:center; }
+  #stage { position:relative; height:calc(100% - 52px); }
+  canvas { display:block; width:100%; height:100%; }
+  .cols { position:absolute; inset:0; display:grid; pointer-events:none; }
+  .col { border-right:1px solid var(--line); position:relative; }
+  .col:last-child { border-right:0; }
+  .lab { position:absolute; left:12px; top:10px; background:#000a; padding:6px 10px; border-radius:6px; line-height:1.4; }
+  .lab b { color:var(--accent); }
+  .lab .s { color:var(--dim); font-size:12px; }
+  .hint { position:absolute; right:12px; bottom:10px; color:var(--dim); font-size:12px; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<header>
+  <h1>Test-stage models</h1>
+  <div class="tabs" id="tabs"></div>
+  <div class="opts">
+    <label><input type="checkbox" id="norm" checked> Same size</label>
+    <label><input type="checkbox" id="wire"> Wireframe</label>
+    <label><input type="checkbox" id="clay"> Clay (no texture)</label>
+    <label><input type="checkbox" id="spin"> Spin</label>
+    <button id="front">Front</button>
+    <button id="game">Game camera</button>
+    <button id="back">Back</button>
+  </div>
+</header>
+<div id="stage">
+  <canvas id="c"></canvas>
+  <div class="cols" id="cols"></div>
+  <div class="hint">Drag to orbit (all views move together) · wheel to zoom · right-drag to pan</div>
+</div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+// Paths are relative to the project root (compare-models.ps1 serves it).
+const SUBJECTS = {
+  'Rat': [
+    ['Meshy', 'ImportSource/Meshy/SM_Rat.glb'],
+    ['Rodin', 'ImportSource/Hyper3D/SM_Rat_Rodin.glb'],
+    ['fal (revised prompt)', 'ImportSource/Fal/SM_Rat_Fal.glb'],
+  ],
+  'House front': [
+    ['Meshy', 'ImportSource/Meshy/SM_HouseFront.glb'],
+    ['Rodin', 'ImportSource/Hyper3D/SM_HouseFront_Rodin.glb'],
+    ['fal', 'ImportSource/Fal/SM_HouseFront_Fal.glb'],
+  ],
+  'Peppermint': [
+    ['Meshy', 'ImportSource/Meshy/SM_Peppermint.glb'],
+    ['Rodin', 'ImportSource/Hyper3D/SM_Peppermint_Rodin.glb'],
+    ['fal', 'ImportSource/Fal/SM_Peppermint_Fal.glb'],
+  ],
+  'Hero + sword': [
+    ['Meshy hero', 'ImportSource/Meshy/SK_Hero.glb'],
+    ['Rodin sword', 'ImportSource/Hyper3D/SM_Sword.glb'],
+  ],
+};
+
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.setScissorTest(true);
+const pmrem = new THREE.PMREMGenerator(renderer);
+const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(35, 1, 0.01, 100);
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, 0.5, 0);
+controls.enableDamping = true;
+
+const loader = new GLTFLoader();
+const cache = new Map();   // path -> Promise<{root, tris, bytes}>
+let views = [];            // {scene, entry, label}
+
+function makeScene() {
+  const s = new THREE.Scene();
+  s.background = new THREE.Color(0x2b2b33);
+  s.environment = envTex;
+  s.add(new THREE.HemisphereLight(0xffffff, 0x444455, 0.6));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+  sun.position.set(2, 4, 3);
+  s.add(sun);
+  const grid = new THREE.GridHelper(4, 16, 0x555560, 0x3a3a42);
+  s.add(grid);
+  return s;
+}
+
+function load(path) {
+  if (!cache.has(path)) {
+    cache.set(path, (async () => {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(res.status + ' ' + path);
+      const buf = await res.arrayBuffer();
+      const gltf = await loader.parseAsync(buf, '');
+      let tris = 0;
+      gltf.scene.traverse(o => {
+        if (o.isMesh) {
+          const g = o.geometry;
+          tris += (g.index ? g.index.count : g.attributes.position.count) / 3;
+          o.userData.origMat = o.material;
+        }
+      });
+      const box = new THREE.Box3().setFromObject(gltf.scene);
+      return { root: gltf.scene, tris, bytes: buf.byteLength, box };
+    })());
+  }
+  return cache.get(path);
+}
+
+const clayMat = new THREE.MeshStandardMaterial({ color: 0xbdb6ac, roughness: 0.85 });
+function applyLook(entry) {
+  const wire = document.getElementById('wire').checked;
+  const clay = document.getElementById('clay').checked;
+  entry.root.traverse(o => {
+    if (!o.isMesh) return;
+    const m = clay ? clayMat.clone() : o.userData.origMat;
+    m.wireframe = wire;
+    o.material = m;
+  });
+}
+
+function placeModel(entry) {
+  const norm = document.getElementById('norm').checked;
+  const size = new THREE.Vector3(); entry.box.getSize(size);
+  const center = new THREE.Vector3(); entry.box.getCenter(center);
+  const k = norm ? 1 / Math.max(size.x, size.y, size.z) : 1;
+  entry.root.scale.setScalar(k);
+  entry.root.position.set(-center.x * k, -entry.box.min.y * k, -center.z * k);
+}
+
+function fmt(n) { return n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'k' : String(Math.round(n)); }
+
+async function show(name) {
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.textContent === name));
+  const list = SUBJECTS[name];
+  const cols = document.getElementById('cols');
+  cols.style.gridTemplateColumns = `repeat(${list.length}, 1fr)`;
+  cols.innerHTML = '';
+  views = list.map(([tool, path]) => {
+    const col = document.createElement('div'); col.className = 'col';
+    const lab = document.createElement('div'); lab.className = 'lab';
+    lab.innerHTML = `<b>${tool}</b><div class="s">${path.split('/').pop()}</div><div class="s">loading…</div>`;
+    col.appendChild(lab); cols.appendChild(col);
+    const v = { scene: makeScene(), entry: null, lab };
+    load(path).then(e => {
+      v.entry = e; v.scene.add(e.root); placeModel(e); applyLook(e);
+      const sz = new THREE.Vector3(); e.box.getSize(sz);
+      lab.querySelector('.s:last-child').textContent =
+        `${fmt(e.tris)} tris · ${(e.bytes / 1048576).toFixed(1)} MB · ${sz.x.toFixed(2)} × ${sz.y.toFixed(2)} × ${sz.z.toFixed(2)}`;
+    }).catch(err => { lab.querySelector('.s:last-child').textContent = 'failed: ' + err.message; });
+    return v;
+  });
+  try { localStorage.setItem('cmp-tab', name); } catch {}
+}
+
+function setView(pitchDeg, yawDeg) {
+  const r = camera.position.distanceTo(controls.target) || 2.6;
+  const p = THREE.MathUtils.degToRad(pitchDeg), y = THREE.MathUtils.degToRad(yawDeg);
+  camera.position.set(controls.target.x + r * Math.cos(p) * Math.sin(y),
+                      controls.target.y + r * Math.sin(p),
+                      controls.target.z + r * Math.cos(p) * Math.cos(y));
+  controls.update();
+}
+
+const tabs = document.getElementById('tabs');
+for (const name of Object.keys(SUBJECTS)) {
+  const b = document.createElement('button'); b.textContent = name; b.onclick = () => show(name); tabs.appendChild(b);
+}
+for (const id of ['wire', 'clay']) document.getElementById(id).onchange = () => views.forEach(v => v.entry && applyLook(v.entry));
+document.getElementById('norm').onchange = () => views.forEach(v => v.entry && placeModel(v.entry));
+document.getElementById('spin').onchange = e => controls.autoRotate = e.target.checked;
+document.getElementById('front').onclick = () => setView(10, 0);
+document.getElementById('game').onclick = () => setView(50, 0);   // game camera pitch
+document.getElementById('back').onclick = () => setView(10, 180);
+
+camera.position.set(0, 0.9, 2.6);
+let start = 'Rat';
+try { start = localStorage.getItem('cmp-tab') || start; } catch {}
+show(SUBJECTS[start] ? start : 'Rat');
+
+function frame() {
+  requestAnimationFrame(frame);
+  controls.update();
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  if (canvas.width !== Math.floor(w * renderer.getPixelRatio())) renderer.setSize(w, h, false);
+  const n = views.length || 1, cw = w / n;
+  camera.aspect = cw / h; camera.updateProjectionMatrix();
+  views.forEach((v, i) => {
+    renderer.setViewport(i * cw, 0, cw, h);
+    renderer.setScissor(i * cw, 0, cw, h);
+    renderer.render(v.scene, camera);
+  });
+}
+frame();
+</script>
+</body>
+</html>
