@@ -9,8 +9,14 @@
   - `FJamLedgerCommit::Commit` computes once and returns the stored result thereafter.
   - GAME: seed with scene index and take count; text (item, note) is in the result, footers via `JamLedger::Footers()`.
 
+- **T09 lines + nag scheduler**: `Public/Film/JamLines.h`, `JamNagScheduler.h` (+ `.cpp` in `Private/Film/`), tests `Jam.Film.Nag.*` (Table, GlobalGapAndCooldown, SilentAndStory, NoRepeat, Deterministic, SulkCommentaryOnce, PollThresholds). 21/21 `Jam.Film` pass.
+  - `JamLines::All()` / `ForTrigger(t)` / `Find(id)`. Ids are `<Trigger>_<nn>` in table order (e.g. `Idle_03`), the VO convention. Append only once clips exist. Covers every Fenella pool in Jokes.md plus the commentary and sulking pools (T22's text is in), default/sadder/budget lecture bubbles, nuisance replies and production notes.
+  - `FJamNagScheduler(seed)`: `Request(trigger, snapshot)` for events, `Poll(snapshot)` about once a second (derives strayed after 6 s, idle after 20 s, commentary), `PickFromPool(trigger)` for bubbles, replies and production notes (ungated, no repeats until exhausted), `Reset(seed)` per run.
+  - Story triggers (SceneStart, Level7Intro, FailedTake, Take3..6, CutPitch, NoteTaken/Refused, ForcedRetake, NarrationCut, Wrap, BudgetOut, Premiere, Pause) always speak. Ambient ones obey gap 8 s (commentary 25 s), per-trigger cooldown 20 s, `bSilenced`. `bSulking` turns ambient reactions into the Sulking pool. Level7Intro and Take3..6 are once per run. `JamLines::TriggerForTake(take)` picks SceneStart / Take3..6.
+  - GAME T11: build a `FJamNagSnapshot` from game state each poll; set `bSilenced` for dialogue, menus and the CUT! prompt. The scheduler never touches rules.
+
 ## Next
-T09 (lines table from Jokes.md + nag scheduler), then T04a, T12a.
+T04a (progression and rank tables), then T12a (note clamp; needs `Docs/Design/NoteForm.md`).
 
 ## Requests to GAME
 None yet.
