@@ -66,7 +66,7 @@ private:
 	void HandleShootEvent(const FJamShootEvent& Event);
 	void ShowCard(EJamCardKind Kind, const FString& Title, const FString& Subtitle, float Seconds);
 	void ClearStageActors();
-	void SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified);
+	void SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified, bool bFromFarEdge = false);
 	void PrepareTreatStage(const FJamStageDef& Stage);
 	void SpawnPickups(int32 Count);
 	void HandlePacified(AActor* Pacified);
@@ -123,6 +123,9 @@ private:
 	float StateEnteredAt = 0.f;
 	/** Crops eaten so far, in fractions (meter stages). */
 	float CropsEaten = 0.f;
+	/** The finale's last stage sends its bugs in waves from the far edge, so one Last Judgment cannot clear it (T15). */
+	int32 WaveLeft = 0;
+	float NextWaveAt = 0.f;
 
 	// Run totals, for the PASS line.
 	int32 ScenesWrapped = 0;

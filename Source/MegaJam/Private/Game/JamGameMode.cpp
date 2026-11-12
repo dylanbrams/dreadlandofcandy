@@ -60,6 +60,8 @@ namespace JamStageTuning
 	constexpr float SecondsPerCropPerBug = 15.f;
 	/** The hero steps this far onto the next set before its scene starts. */
 	constexpr float SetEntryDepth = 250.f;
+	/** The finale's last stage: one more bug over the far wall every this many seconds. */
+	constexpr float WaveSeconds = 2.5f;
 }
 
 namespace
@@ -79,6 +81,14 @@ namespace
 	}
 
 	/** Spawn spots on a set: rows of three across, starting 700 uu in from the back edge. */
+	/** The finale's last stage (taken note or not) sends its bugs in waves. */
+	bool IsWaveStage(const FJamShoot& Shoot)
+	{
+		const TArray<FJamSceneDef> All = JamScenes::All();
+		return All.Num() > 0 && Shoot.GetScene().Id == All.Last().Id
+			&& Shoot.GetStageIndex() == Shoot.GetScene().Stages.Num() - 1;
+	}
+
 	FVector2D SpotFor(const FBox2D& Set, int32 Index)
 	{
 		const int32 Row = Index / 3;
@@ -219,15 +229,20 @@ void AJamGameMode::ClearStageActors()
 	}
 	Pickups.Reset();
 	CropsEaten = 0.f;
+	WaveLeft = 0;
 }
 
-void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified)
+void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified, bool bFromFarEdge)
 {
 	const FKindTuning Tuning = TuningFor(Stage.Target);
 	const int32 Already = Nuisances.Num();
 	for (int32 i = 0; i < Count; ++i)
 	{
-		const FVector Loc(SpotFor(FieldBounds, Already + i), GroundZ + 70.f);
+		// Waves come in over the far wall (up the screen), spread across it.
+		const FVector2D Spot = bFromFarEdge
+			? FVector2D(FieldBounds.Max.X - 150.f, FMath::Lerp(FieldBounds.Min.Y + 200.f, FieldBounds.Max.Y - 200.f, FMath::FRand()))
+			: SpotFor(FieldBounds, Already + i);
+		const FVector Loc(Spot, GroundZ + 70.f);
 		AJamNuisance* N = GetWorld()->SpawnActorDeferred<AJamNuisance>(AJamNuisance::StaticClass(), FTransform(Loc),
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!N) { continue; }
@@ -456,6 +471,14 @@ void AJamGameMode::TickStage(float DeltaSeconds)
 		}
 	}
 
+	// Waves: the rest of the finale's bugs arrive one by one.
+	if (WaveLeft > 0 && GetWorld()->GetTimeSeconds() >= NextWaveAt)
+	{
+		SpawnTargets(*Stage, 1, false, true);
+		--WaveLeft;
+		NextWaveAt = GetWorld()->GetTimeSeconds() + JamStageTuning::WaveSeconds;
+	}
+
 	// Meter: loose nuisances eat the crops.
 	if (Stage->FailMeter > 0)
 	{
@@ -487,7 +510,18 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 			{
 			case EJamStageVerb::Pacify:
 				ClearStageActors();
-				SpawnTargets(*Stage, Stage->Count, false);
+				if (IsWaveStage(Shoot))
+				{
+					// Two at once, the rest in waves over the far wall.
+					const int32 First = FMath::Min(2, Stage->Count);
+					SpawnTargets(*Stage, First, false);
+					WaveLeft = Stage->Count - First;
+					NextWaveAt = GetWorld()->GetTimeSeconds() + JamStageTuning::WaveSeconds;
+				}
+				else
+				{
+					SpawnTargets(*Stage, Stage->Count, false);
+				}
 				// "This time the rats know their lines": no fleeing until the forced retake.
 				if (!Shoot.TargetsFlee()) { for (AJamNuisance* N : Nuisances) { if (N) { N->FleeRadius = 0.f; } } }
 				break;
