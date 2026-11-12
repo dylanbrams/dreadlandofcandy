@@ -128,3 +128,7 @@
 
 - The grade: the template's sun warmed, the sky fill raised, one unbound grade. Three tries: lime and glaring, then dark olive, then in between. Dylan judges it.
 - Dylan added section 3e (the open world, O1 to O9) to the spec. STATUS is rewritten as a hand-over: the next GAME thread starts at O1; Dylan's own checklist is separate.
+
+## O1 verified
+
+- Merged game/open-world, built, 57 Jam.* tests pass, Backlot autoplay still PASS, open-world fallback screenshot looks right (camps, scatter, biomes, road). Next: O2.
