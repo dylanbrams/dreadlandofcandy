@@ -1,0 +1,285 @@
+{
+  "meshes": [
+    {
+      "id": "SM_Toothbrush",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 28174876
+    },
+    {
+      "id": "SM_Goblin",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 23118200
+    },
+    {
+      "id": "SM_Villager",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 22078092
+    },
+    {
+      "id": "SM_Fenella",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 24168832
+    },
+    {
+      "id": "SM_LollyBug",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 23180660
+    },
+    {
+      "id": "SM_Almond",
+      "tool": "rodin",
+      "valid_header": true,
+      "triangles": 500000,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 21467312
+    },
+    {
+      "id": "SM_CandyCrop",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40012,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 13193360
+    },
+    {
+      "id": "SM_CandyFence",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 12029344
+    },
+    {
+      "id": "SM_Celery",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40008,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 14505104
+    },
+    {
+      "id": "SM_Molar",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 12984524
+    },
+    {
+      "id": "SM_Signpost",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 14200692
+    },
+    {
+      "id": "SM_CardboardBox",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 12219776
+    },
+    {
+      "id": "SM_CandyTree",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 13839172
+    },
+    {
+      "id": "SM_Boulder",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 12969720
+    },
+    {
+      "id": "SM_Clapperboard",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 14251312
+    },
+    {
+      "id": "SM_DirectorsChair",
+      "tool": "fal",
+      "valid_header": true,
+      "triangles": 40000,
+      "materials": 1,
+      "textures": 1,
+      "bytes": 13956064
+    },
+    {
+      "id": "SM_Stanchion",
+      "tool": "meshy",
+      "valid_header": true,
+      "triangles": 404,
+      "materials": 1,
+      "textures": 3,
+      "bytes": 3225220
+    }
+  ],
+  "images": [
+    {
+      "id": "T_Skill_FormALine",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        23,
+        1240,
+        1254
+      ],
+      "kind": "icon"
+    },
+    {
+      "id": "T_Skill_DisappointedSigh",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        19,
+        1218,
+        1254
+      ],
+      "kind": "icon"
+    },
+    {
+      "id": "T_Skill_LastJudgment",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        41,
+        21,
+        1232,
+        1254
+      ],
+      "kind": "icon"
+    },
+    {
+      "id": "T_Loot_Sword",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        31,
+        1234,
+        1238
+      ],
+      "kind": "icon"
+    },
+    {
+      "id": "T_Loot_Toothbrush",
+      "size": [
+        1254,
+        1254
+      ],
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "visible_bounds": [
+        0,
+        37,
+        1216,
+        1254
+      ],
+      "kind": "icon"
+    },
+    {
+      "id": "T_Frame_Title",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "visible_bounds": [
+        8,
+        9,
+        1535,
+        1024
+      ],
+      "kind": "frame"
+    },
+    {
+      "id": "T_Frame_NotesCard",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "visible_bounds": [
+        0,
+        4,
+        1535,
+        1024
+      ],
+      "kind": "frame"
+    }
+  ]
+}

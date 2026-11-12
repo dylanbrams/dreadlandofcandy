@@ -8,11 +8,7 @@
       "tool": "meshy"
     },
     "SM_Sword": {
-      "status": "done",
-      "error": "",
-      "finished": "Thu Nov 12 07:10:22 2026",
-      "via": "api",
-      "tool": "rodin"
+      "status": "redo"
     },
     "SM_Rat": {
       "status": "done",
@@ -93,13 +89,209 @@
       "status": "done",
       "finished": "Thu Nov 12 07:15:46 2026",
       "via": "codex"
+    },
+    "SM_Toothbrush": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:42:46 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Goblin": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:43:06 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Villager": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:43:07 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_CandyCrop": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:44:44 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_CandyFence": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:44:17 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Celery": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:46:29 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Molar": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:47:18 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Stanchion": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:42:51 2026",
+      "via": "api",
+      "tool": "meshy"
+    },
+    "SM_Fenella": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:44:13 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_LollyBug": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:44:29 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Almond": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:44:26 2026",
+      "via": "api",
+      "tool": "rodin"
+    },
+    "SM_Signpost": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:47:18 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_CardboardBox": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:49:13 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_CandyTree": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:50:26 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Boulder": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:52:20 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_Clapperboard": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:50:03 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "SM_DirectorsChair": {
+      "status": "done",
+      "error": "",
+      "finished": "Thu Nov 12 07:52:52 2026",
+      "via": "api",
+      "tool": "fal"
+    },
+    "T_Skill_FormALine": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:48 2026",
+      "via": "codex"
+    },
+    "T_Skill_DisappointedSigh": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:48 2026",
+      "via": "codex"
+    },
+    "T_Skill_LastJudgment": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:49 2026",
+      "via": "codex"
+    },
+    "T_Loot_Sword": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:50 2026",
+      "via": "codex"
+    },
+    "T_Loot_Toothbrush": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:50 2026",
+      "via": "codex"
+    },
+    "T_Frame_Title": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:51 2026",
+      "via": "codex"
+    },
+    "T_Frame_NotesCard": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:54:52 2026",
+      "via": "codex"
+    },
+    "T_Loot_Celery": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:56:15 2026",
+      "via": "codex"
+    },
+    "T_Card_CutBurst": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:56:15 2026",
+      "via": "codex"
+    },
+    "T_Card_Retake": {
+      "status": "done",
+      "finished": "Thu Nov 12 07:56:16 2026",
+      "via": "codex"
+    },
+    "T_Card_CallSheet": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:06:46 2026",
+      "via": "codex"
+    },
+    "T_Stamp_ReservedForSequel": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:06:47 2026",
+      "via": "codex"
+    },
+    "T_Portrait_Fenella": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:07:45 2026",
+      "via": "codex"
+    },
+    "T_Portrait_Fenella_Sulk": {
+      "status": "done",
+      "finished": "Thu Nov 12 08:07:47 2026",
+      "via": "codex"
     }
   },
-  "approved": [],
+  "approved": [
+    "character",
+    "npc",
+    "terrain_piece",
+    "particle_mesh",
+    "equipment",
+    "2d_knight",
+    "2d_fenella"
+  ],
   "declared": [
     "SK_Hero",
     "SK_Hero_Rig",
-    "SM_Sword",
     "SM_Rat",
     "SM_HouseFront",
     "SM_Peppermint",
@@ -110,6 +302,37 @@
     "SM_Peppermint_Fal",
     "T_Skill_Lecture",
     "T_Card_Clapper",
-    "SM_Rat_Fal"
-  ]
+    "SM_Rat_Fal",
+    "SM_Toothbrush",
+    "SM_Goblin",
+    "SM_Villager",
+    "SM_Fenella",
+    "SM_LollyBug",
+    "SM_Almond",
+    "SM_CandyCrop",
+    "SM_CandyFence",
+    "SM_Celery",
+    "SM_Molar",
+    "SM_Signpost",
+    "SM_CardboardBox",
+    "SM_CandyTree",
+    "SM_Boulder",
+    "SM_Clapperboard",
+    "SM_DirectorsChair",
+    "SM_Stanchion",
+    "T_Skill_FormALine",
+    "T_Skill_DisappointedSigh",
+    "T_Skill_LastJudgment",
+    "T_Loot_Sword",
+    "T_Loot_Toothbrush",
+    "T_Loot_Celery",
+    "T_Frame_Title",
+    "T_Frame_NotesCard",
+    "T_Card_CutBurst",
+    "T_Card_Retake"
+  ],
+  "routes": {
+    "npc": "rodin",
+    "terrain_piece": "fal"
+  }
 }

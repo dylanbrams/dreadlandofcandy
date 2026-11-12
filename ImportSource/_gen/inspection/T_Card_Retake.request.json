@@ -1,0 +1,10 @@
+{
+  "id": "T_Card_Retake",
+  "path": "C:\\Users\\dylan\\.codex\\generated_images\\01a1ce43-ef21-7801-aa16-e22b29edf8a4\\exec-b9ca26b6-adf3-4329-9f5c-ae4fd10e3cf0.png",
+  "prompt": "REFERENCE ROLE: The attached image is a STYLE REFERENCE ONLY for painting, materials and palette. Generate a NEW standalone game asset specified below. Subject and composition come only from the asset prompt. Do not copy the reference's objects or add accessories, ribbons, weapons, frames, comic bursts, hands or text unless expressly requested in the asset prompt. Use 1024x1024 aspect ratio. The background must be genuinely transparent.\n\nASSET PROMPT (verbatim):\nBright bold-outlined cartoon video game UI art: thick dark outlines around every shape, saturated candy colours, paper and cardboard textures, slightly scrappy handmade low-budget film-production props, simple flat shading, crisp readable shapes. A cardboard panel with a big rewind symbol (two left-pointing triangles), room below it for a word. Exactly one item, centred, filling about 80 percent of a square canvas, isolated on a fully transparent background. No text, no letters, no numbers, no border, no frame, no scenery, no cast shadow.",
+  "reference": [
+    "Assets/Incoming/2D/T_Card_Clapper/T_Card_Clapper.png"
+  ],
+  "aspect": "1024x1024",
+  "builtin": true
+}
