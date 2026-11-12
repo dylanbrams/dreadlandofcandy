@@ -91,6 +91,17 @@ void UJamHudWidget::BuildTree()
 		return S;
 	};
 
+	// Failure flash: a red film-burn over the world, under the panels.
+	FlashLayer = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	FlashLayer->SetBrushColor(FLinearColor(0.9f, 0.15f, 0.05f, 1.f));
+	FlashLayer->SetVisibility(ESlateVisibility::Collapsed);
+	{
+		UCanvasPanelSlot* S = Root->AddChildToCanvas(FlashLayer);
+		S->SetAnchors(FAnchors(0.f, 0.f, 1.f, 1.f));
+		S->SetOffsets(FMargin(0.f));
+		S->SetZOrder(1);   // tints the world, not the panels
+	}
+
 	// Bubble layer: fills the screen, under the panels and the card.
 	BubbleLayer = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass());
 	BubbleLayer->SetVisibility(ESlateVisibility::HitTestInvisible);
@@ -320,6 +331,9 @@ UBorder* UJamHudWidget::GetBubble(int32 Index)
 void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 {
 	if (!Root) { return; }
+
+	Show(FlashLayer, View.FailFlash > 0.f);
+	if (View.FailFlash > 0.f) { FlashLayer->SetRenderOpacity(0.55f * View.FailFlash * View.FailFlash); }
 
 	// Slate label, REC, timecode.
 	Show(SlatePanel, View.bShootVisible);

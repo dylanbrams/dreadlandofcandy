@@ -48,6 +48,8 @@ public:
 	float FilmSeconds = 0.f;
 	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */
 	int32 RunNotesTaken = 0;
+	/** World time the last take failed (the HUD's flash); negative = never. */
+	float TakeFailedAt = -100.f;
 	int32 RunNotesRefused = 0;
 	/** Waiting for the hero's answer to CUT!. */
 	bool IsNotePrompt() const { return Shoot.GetState() == EJamShootState::NotePrompt; }

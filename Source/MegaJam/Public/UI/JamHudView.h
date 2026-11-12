@@ -69,6 +69,9 @@ struct MEGAJAM_API FJamHudView
 	int32 NotesRefused = 0;
 	bool bSulking = false;
 
+	/** A take just failed: a red film-burn over the whole screen, 1 fading to 0. */
+	float FailFlash = 0.f;
+
 	TArray<FJamHudBubble> Bubbles;
 
 	/** Fenella's caption, bottom centre (never over the objective). Empty = none. */

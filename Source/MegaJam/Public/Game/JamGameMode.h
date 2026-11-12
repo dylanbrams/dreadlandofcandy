@@ -65,6 +65,11 @@ private:
 	void TickFenella(float DeltaSeconds);
 	FJamNagSnapshot MakeSnapshot() const;
 
+	/** "Back to one": the hero returns to the set's mark for the next take. */
+	void ResetHeroToMark();
+	/** Why the take just failed, for the RETAKE! card. */
+	FString FailReason(bool bForcedByFlag) const;
+
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<AJamNuisance>> Nuisances;
 
@@ -97,6 +102,10 @@ private:
 
 	bool bAutoplay = false;
 	bool bAutoNoteTake = true;
+	/** -forcefail[=seconds]: the first take of the run fails after this long rolling (T13 check). Negative = off. */
+	float ForceFailAfter = -1.f;
+	bool bForceFailDone = false;
+	bool bFailForcedByFlag = false;
 	float AutoplayTime = 0.f;
 	float SceneTime = 0.f;
 

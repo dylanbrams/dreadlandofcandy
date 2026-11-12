@@ -50,6 +50,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UBorder> HintPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> HintText;
 
+	UPROPERTY(Transient) TObjectPtr<UBorder> FlashLayer;
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> BubbleLayer;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> Bubbles;
 	UPROPERTY(Transient) TObjectPtr<UBorder> PromptPanel;

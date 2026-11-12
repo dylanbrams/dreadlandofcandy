@@ -13,6 +13,7 @@
 #include "MegaJam.h"
 #include "AbilitySystemGlobals.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/WorldSettings.h"
@@ -114,6 +115,12 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 
 	const TCHAR* Cmd = FCommandLine::Get();
 	bAutoplay = FParse::Param(Cmd, TEXT("autoplay"));
+	if (FParse::Param(Cmd, TEXT("forcefail")))
+	{
+		ForceFailAfter = 3.f;
+		FParse::Value(Cmd, TEXT("forcefail="), ForceFailAfter);
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: -forcefail, the first take fails after %.1f s"), ForceFailAfter);
+	}
 	FString AutoNote;
 	if (FParse::Value(Cmd, TEXT("autonote="), AutoNote)) { bAutoNoteTake = !AutoNote.Equals(TEXT("refuse"), ESearchCase::IgnoreCase); }
 	int32 SceneArg = 1;
@@ -357,7 +364,18 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 	{
 	case EJamShootState::Slate:        if (InState >= JamShootPacing::SlateSeconds)   { Shoot.Action(); } break;
 	case EJamShootState::StageCleared: if (InState >= JamShootPacing::ClearedSeconds) { Shoot.Action(); } break;
-	case EJamShootState::FailedTake:   if (InState >= JamShootPacing::FailedSeconds)  { Shoot.Retake(); } break;
+	case EJamShootState::FailedTake:
+		if (InState >= JamShootPacing::FailedSeconds && Shoot.Retake()) { ResetHeroToMark(); }
+		break;
+	case EJamShootState::Rolling:
+		if (ForceFailAfter >= 0.f && !bForceFailDone && InState >= ForceFailAfter)
+		{
+			bForceFailDone = true;
+			bFailForcedByFlag = true;
+			UE_LOG(LogJam, Log, TEXT("JamGameMode: -forcefail fails take %d"), Shoot.GetTake());
+			Shoot.ReportFail();
+		}
+		break;
 	default: break;
 	}
 
@@ -456,7 +474,9 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 	case EJamShootEventType::TakeFailed:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: take %d failed (%s)"), Event.Take, Event.Value ? TEXT("forced") : TEXT("failure"));
 		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), FString(), JamShootPacing::FailedSeconds); }
-		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), TEXT("From the top."), JamShootPacing::FailedSeconds); }
+		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), FailReason(bFailForcedByFlag), JamShootPacing::FailedSeconds); }
+		bFailForcedByFlag = false;
+		GS->TakeFailedAt = GetWorld()->GetTimeSeconds();
 		Say(Event.Value ? EJamLineTrigger::ForcedRetake : EJamLineTrigger::FailedTake);
 		break;
 
@@ -687,4 +707,26 @@ void AJamGameMode::TickFenella(float DeltaSeconds)
 		Faerie->SetSubject(Best);
 		Faerie->SetSulking(GS->GetShoot().IsSulking());
 	}
+}
+
+// ---- Failure (T13) -------------------------------------------------------------------------------------------
+
+FString AJamGameMode::FailReason(bool bForcedByFlag) const
+{
+	const AJamGameState* GS = GetJamGameState();
+	const FJamStageDef* Stage = GS ? GS->GetShoot().GetStage() : nullptr;
+	if (bForcedByFlag || !Stage) { return TEXT("Director's call. Back to one!"); }
+	if (Stage->FailMeter > 0 && GS->GetShoot().GetMeter() >= Stage->FailMeter) { return TEXT("The crops are gone. Back to one!"); }
+	if (Stage->TimeLimit > 0.f && GS->GetShoot().GetTimeLeft() <= 0.f) { return TEXT("Out of time. Back to one!"); }
+	return TEXT("From the top. Back to one!");
+}
+
+void AJamGameMode::ResetHeroToMark()
+{
+	AJamHero* H = Hero.Get();
+	if (!H || !JamBacklot::Sets().IsValidIndex(SceneIndex)) { return; }
+	const FVector2D Mark = JamBacklot::HeroMark(SceneIndex);
+	H->TeleportTo(FVector(Mark, GroundZ + H->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
+	H->GetCharacterMovement()->StopMovementImmediately();
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: back to one (take %d)"), GetJamGameState()->GetShoot().GetTake());
 }

@@ -85,6 +85,7 @@ void AJamHUD::BuildView()
 	}
 
 	if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+	View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
 	View.NotesTaken = GS->RunNotesTaken;
 	View.NotesRefused = GS->RunNotesRefused;
 	View.bSulking = Shoot.IsSulking();

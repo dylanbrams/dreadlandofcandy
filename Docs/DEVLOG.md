@@ -57,3 +57,9 @@
 - CUT! is now a panel with Fenella's pitch and two choice tiles (take: hold E / A with a fill; refuse: Q / B), a run counter of notes, and a sulking tag on her caption. She turns her back on the hero while she sulks ("I'm filming that bush").
 - The pitch lines start with "CUT!", which doubled the panel's title; the panel strips it.
 - Autoplay passes both ways: take gives the Director's Cut ending, refuse the Theatrical Release.
+
+## 13:30 T13 failure
+
+- The T12 package was killed by Claude Code for low memory (another session was cleaning up models). Code went on; packaging reruns with T13.
+- Failed takes now say why (out of time, crops gone), flash the world red, and send the hero back to his mark. `-forcefail` makes the first take fail so a screenshot or smoke run reaches the Take 2 slate without waiting for a real failure.
+- First flash covered the HUD panels too; moved it under them so only the world burns.

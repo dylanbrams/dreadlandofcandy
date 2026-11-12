@@ -93,9 +93,16 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 	{
 		Rolling(V);
 		V.bRolling = false;
+		V.SceneLabel = FString::Printf(TEXT("SCENE 2: %s"), *JamScenes::Scene2().Title.ToUpper());
+		V.Objective = TEXT("Brush the goblins' teeth   1/3");
+		V.bMeterVisible = true;
+		V.MeterFraction = 0.f;
+		V.MeterLabel = TEXT("0s left");
+		V.bMeterDanger = true;
 		V.CardKind = EJamCardKind::Retake;
 		V.CardTitle = TEXT("RETAKE!");
-		V.CardSubtitle = TEXT("From the top.");
+		V.CardSubtitle = TEXT("Out of time. Back to one!");
+		V.FailFlash = 0.5f;
 	}
 	else if (N == TEXT("wrap"))
 	{
