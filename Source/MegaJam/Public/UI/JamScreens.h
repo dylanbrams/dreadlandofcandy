@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Film/JamProgression.h"
 
 /** Where the film is: BUILD_SPEC 3 flow, Title -> the three scenes -> Premiere -> Credits -> Title. */
 enum class EJamFilmPhase : uint8 { Title, Shooting, Premiere, Credits };
@@ -14,6 +15,7 @@ enum class EJamScreen : uint8
 	Options,      // "Notes"
 	QuitConfirm,
 	Pause,
+	Character,    // the character sheet and the six passives already spent
 	Premiere,
 	Credits,
 };
@@ -32,6 +34,7 @@ enum class EJamMenuAction : uint8
 	Commentary,       // toggles
 	Back,
 	Locked,           // "Budget: Low (locked)", never selectable
+	CharacterSheet,
 };
 
 struct MEGAJAM_API FJamMenuOption
@@ -85,6 +88,8 @@ namespace JamScreens
 	MEGAJAM_API FJamScreenView Options(const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView QuitConfirm(const FJamMenuSettings& S, bool bFromPause);
 	MEGAJAM_API FJamScreenView Pause(const FJamMenuSettings& S);
+	/** Stats, level, points, and the greyed passives panel (BUILD_SPEC 3c). */
+	MEGAJAM_API FJamScreenView Character(const FJamProgression& Prog, const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Premiere(const FJamPremiereTotals& T, const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Credits(bool bDirectorsCut, const FJamMenuSettings& S);
 

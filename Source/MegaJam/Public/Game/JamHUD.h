@@ -48,6 +48,7 @@ private:
 	FJamScreenView ScreenView;
 	EJamScreen SubScreen = EJamScreen::None;   // Options or QuitConfirm over the title or the pause menu
 	int32 Selected = 0;
+	int32 ParentSelected = 0;                  // the line to return to when a sub-screen closes
 	bool bPaused = false;
 	bool bMenuGamepad = false;
 	int32 InputModeState = -1;                 // 0 game, 1 UI

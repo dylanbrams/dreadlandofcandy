@@ -538,8 +538,8 @@ void AJamGameMode::FinishRun(bool bPass, const FString& Why)
 	{
 		// BUILD_SPEC 2: mostly taken = the Director's Cut, mostly refused = the Theatrical Release.
 		const TCHAR* Ending = NotesTaken >= NotesRefused ? TEXT("directors_cut") : TEXT("theatrical");
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d lines=%d time=%.1f"),
-			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, LinesSpoken, AutoplayTime);
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d lines=%d skills=%d time=%.1f"),
+			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, LinesSpoken, SkillCasts, AutoplayTime);
 	}
 	else
 	{
@@ -576,6 +576,7 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	// never pushes into the wall beside an opening.
 	if (bBetweenScenes)
 	{
+		AutoSpendPoints();
 		Bot->SetAimOverride(FVector::ZeroVector);
 		const FVector2D Goal = JamBacklot::HeroMark(SceneIndex + 1) + FVector2D(JamStageTuning::SetEntryDepth, 0.f);
 		const FVector2D Here(Bot->GetActorLocation());
@@ -639,14 +640,56 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 		: JamAutoplayTuning::LectureDistance;
 	if (ToTarget.Size() > Reach) { Bot->AddMovementInput(ToTarget.GetSafeNormal()); }
 	else if (bTreating) { Bot->RequestInteract(); }
-	else { Bot->RequestLecture(); }   // the cooldown refuses the spam
+	else
+	{
+		// Bigger skills first when they are unlocked and cool; the cooldowns refuse the spam.
+		bool bCast = false;
+		for (EJamSkill Skill : { EJamSkill::LastJudgment, EJamSkill::DisappointedSigh, EJamSkill::FormALine })
+		{
+			const AJamPlayerState* PS = GetHeroState();
+			if (!bCast && PS && PS->GetProgression().IsUnlocked(Skill)) { bCast = Bot->RequestSkill(Skill); }
+		}
+		if (!bCast) { Bot->RequestLecture(); }
+	}
 }
 
 // ---- Fenella (T11) -------------------------------------------------------------------------------------------
 
-void AJamGameMode::NotifyLectureCast(AJamHero* InHero)
+void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 {
-	if (InHero && InHero == Hero.Get()) { Say(EJamLineTrigger::LectureCast); }
+	if (!InHero || InHero != Hero.Get()) { return; }
+	if (Skill == EJamSkill::Lecture) { Say(EJamLineTrigger::LectureCast); }
+	else { ++SkillCasts; }
+}
+
+bool AJamGameMode::IsNotePromptUp() const
+{
+	const AJamGameState* GS = GetJamGameState();
+	return GS && GS->IsNotePrompt();
+}
+
+bool AJamGameMode::HandleSpendPoint(AJamHero* InHero, EJamSkill Skill)
+{
+	AJamGameState* GS = GetJamGameState();
+	AJamPlayerState* PS = GetHeroState();
+	if (!GS || !PS || !InHero || InHero != Hero.Get() || !GS->IsWrapVisible()) { return false; }
+	FJamProgression& Prog = PS->EditProgression();
+	if (!Prog.SpendPoint(Skill)) { return false; }
+	ApplyHeroStats();
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: point spent on %s, rank %d, %d left"), JamProgression::SkillName(Skill), Prog.GetRank(Skill), Prog.GetPoints());
+	return true;
+}
+
+void AJamGameMode::AutoSpendPoints()
+{
+	const AJamGameState* GS = GetJamGameState();
+	AJamPlayerState* PS = GetHeroState();
+	if (!GS || !PS || !Hero.IsValid() || !GS->IsWrapVisible() || PS->GetProgression().GetPoints() <= 0) { return; }
+	for (EJamSkill Skill : { EJamSkill::FormALine, EJamSkill::DisappointedSigh, EJamSkill::Lecture })
+	{
+		// Through the same validation the button uses, but never falling back to a cast.
+		if ((!PS->GetProgression().IsUnlocked(Skill) || Skill == EJamSkill::Lecture) && HandleSpendPoint(Hero.Get(), Skill)) { return; }
+	}
 }
 
 FJamNagSnapshot AJamGameMode::MakeSnapshot() const
@@ -883,6 +926,7 @@ void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
 	AJamGameState* GS = GetJamGameState();
 	if (!GS || bAutoplayEndLogged) { return; }
 	AfterRunTime += DeltaSeconds;
+	AutoSpendPoints();
 	const float InPhase = GetWorld()->GetTimeSeconds() - GS->PhaseSince;
 	if (GS->Phase == EJamFilmPhase::Shooting && bLastWrapped && AfterRunTime > 3.f) { RequestPremiere(); }
 	else if (GS->Phase == EJamFilmPhase::Premiere && InPhase > 4.f) { RequestCredits(); }

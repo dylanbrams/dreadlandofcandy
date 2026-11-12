@@ -36,6 +36,8 @@ private:
 	UTextBlock* MakeText(int32 Size, const FLinearColor& Colour, bool bBold);
 	UBorder* GetBubble(int32 Index);
 	void BuildWrapPanel();
+	void BuildSkillBar();
+	void ApplySkills(const FJamHudView& View, float RealSeconds);
 	void ApplyWrap(const FJamWrapView& Wrap);
 	UBorder* MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill);
 
@@ -69,6 +71,17 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> TakeSubText;
 	UPROPERTY(Transient) TObjectPtr<UProgressBar> TakeFill;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> RefuseKeyText;
+
+	// Skill bar and XP bar (T14a), bottom left.
+	UPROPERTY(Transient) TObjectPtr<UWidget> SkillBar;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> LevelText;
+	UPROPERTY(Transient) TObjectPtr<UProgressBar> XpBar;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> PointsText;
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillTiles;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillKeys;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillNames;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillRanks;
+	UPROPERTY(Transient) TArray<TObjectPtr<UProgressBar>> SkillCooldowns;
 
 	// The wrap panel (T14): ledger on the left, loot cards and the character sheet on the right.
 	UPROPERTY(Transient) TObjectPtr<UBorder> WrapPanel;

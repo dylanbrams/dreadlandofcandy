@@ -93,6 +93,7 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 		Opt(EJamMenuAction::Volume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.Volume))),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
+		Opt(EJamMenuAction::CharacterSheet, TEXT("Character Sheet")),
 		Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
 	V.Caption = FirstLine(EJamLineTrigger::Pause, 0);
 	V.Footer = MenuFooter(S);
@@ -196,6 +197,7 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
 	else if (N == TEXT("options")) { Out = Options(S); Out.Selected = 1; }
 	else if (N == TEXT("quit")) { Out = QuitConfirm(S, false); }
 	else if (N == TEXT("pause")) { Out = Pause(S); }
+	else if (N == TEXT("character")) { FJamProgression P; P.ReachMilestone(EJamMilestone::Scene1Wrap); Out = Character(P, S); }
 	else if (N == TEXT("premiere") || N == TEXT("theatrical"))
 	{
 		FJamPremiereTotals T;
@@ -208,4 +210,30 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
 	else if (N == TEXT("credits")) { Out = Credits(true, S); Out.Scroll = 0.35f; }
 	else { return false; }
 	return true;
+}
+
+FJamScreenView JamScreens::Character(const FJamProgression& Prog, const FJamMenuSettings& S)
+{
+	FJamScreenView V;
+	V.Screen = EJamScreen::Character;
+	V.Kicker = TEXT("CHARACTER SHEET");
+	V.Title = TEXT("The Hero");
+	V.Subtitle = FString::Printf(TEXT("Level %d. %d skill point%s unspent (spend them on a wrap card)."),
+		Prog.GetLevel(), Prog.GetPoints(), Prog.GetPoints() == 1 ? TEXT("") : TEXT("s"));
+	const FJamStatBlock St = Prog.GetStats();
+	V.Rows = {
+		{ TEXT("Lecture Power"), FString::Printf(TEXT("%.0f"), St.LecturePower) },
+		{ TEXT("Radius"), FString::Printf(TEXT("%.0f uu"), St.Radius) },
+		{ TEXT("Cooldown Recovery"), FString::Printf(TEXT("%.2fx"), St.CooldownRecovery) },
+		{ TEXT("Move Speed"), FString::Printf(TEXT("%.0f uu/s"), St.MoveSpeed) } };
+	// Levels 1 to 6, already spent before the film, cannot be refunded.
+	V.Quotes.Add(TEXT("ALREADY SPENT, LEVELS 1 TO 6 (NON-REFUNDABLE):"));
+	for (const FJamPassive& P : JamProgression::Passives())
+	{
+		V.Quotes.Add(FString::Printf(TEXT("%s (rank %d): %s"), *P.Name, P.Rank, *P.Tooltip));
+	}
+	V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
+	V.Footer = FString::Printf(TEXT("%s back"), Confirm(S));
+	V.bOpaque = true;
+	return V;
 }

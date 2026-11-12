@@ -262,3 +262,15 @@ FJamSkillRank FJamProgression::GetSkillNumbers(EJamSkill Skill) const
 	R.Cooldown /= S.CooldownRecovery;
 	return R;
 }
+
+const TCHAR* JamProgression::SkillName(EJamSkill Skill)
+{
+	switch (Skill)
+	{
+	case EJamSkill::Lecture:          return TEXT("Lecture");
+	case EJamSkill::FormALine:        return TEXT("Form A Line");
+	case EJamSkill::DisappointedSigh: return TEXT("Disappointed Sigh");
+	case EJamSkill::LastJudgment:     return TEXT("The Last Judgment");
+	default:                          return TEXT("?");
+	}
+}

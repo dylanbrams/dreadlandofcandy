@@ -26,8 +26,21 @@ FJamCardStyle JamHud::CardStyle(EJamCardKind Kind)
 
 namespace
 {
+	void SampleSkills(FJamHudView& V)
+	{
+		V.Level = 8;
+		V.Xp = 0.45f;
+		V.Points = 1;
+		V.Skills = {
+			{ TEXT("Lecture"), TEXT("LMB"), 2, 4, true, 0.f, true },
+			{ TEXT("Form A Line"), TEXT("RMB"), 1, 3, true, 0.6f, true },
+			{ TEXT("Sigh"), TEXT("Q"), 0, 3, false, 0.f, true },
+			{ TEXT("Judgment"), TEXT("R"), 0, 1, false, 0.f, false } };
+	}
+
 	void Rolling(FJamHudView& V)
 	{
+		SampleSkills(V);
 		V.bShootVisible = true;
 		V.SceneLabel = FString::Printf(TEXT("SCENE 1: %s"), *JamScenes::Scene1().Title.ToUpper());
 		V.Take = 2;

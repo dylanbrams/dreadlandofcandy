@@ -77,3 +77,10 @@
 - T15 is mostly tuning by play, so it waits for Dylan; T16 went first. The film now has a title, a pause menu, a Premiere with both endings and scrolling credits, all from the Jokes.md text, with keyboard, gamepad and mouse handled in one C++ screen widget.
 - First title screenshot had the DIRECTOR'S CUT stamp sitting on the subtitle; it now crosses the end of the title, with a clear fill so the words show through. The game HUD (and its caption) showed under the pause menu; it hides under every screen now.
 - Autoplay goes title -> film -> Premiere -> credits; nobody has pressed the menu keys yet.
+
+## 16:00 T05a skills, T14a skill bar
+
+- The T16 package failed and the smoke test ran on the previous exe, because my command piped the package output through `tail` and lost the exit code. The failure itself: the game target is a unity build, and the new screen widget's helper names clashed with the HUD widget's in one translation unit. Renamed; `build.ps1 -Game` now catches it. Repackaged: title -> film -> Premiere -> credits passes in the packaged build.
+- T05a: Form A Line, the Disappointed Sigh and the Last Judgment as GAS abilities on the rank tables, with their own cooldowns, a stop and a slow. Tested for line and ring hits.
+- T14a: skill bar and XP bar, points spent by pressing a skill's button on the wrap panel, a character sheet in the pause menu with the six non-refundable passives. Autoplay spends all three points and casts every skill it owns.
+- First skill bar screenshot had "Disappointed Sigh" and "The Last Judgment" overflowing their tiles; the bar uses short names now.

@@ -4,6 +4,9 @@
 #include "Game/JamNuisance.h"
 #include "UI/JamHudWidget.h"
 #include "UI/JamScreenWidget.h"
+#include "Game/JamPlayerState.h"
+#include "Gas/JamGameplayTags.h"
+#include "AbilitySystemComponent.h"
 #include "Game/JamGameMode.h"
 #include "Game/JamSettings.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -129,6 +132,44 @@ void AJamHUD::BuildView()
 			: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
 				? TEXT("Hold (A) to continue") : TEXT("Hold [E] to continue"));
 	}
+	// Skill bar and XP from the hero's progression; cooldowns from the ability system.
+	if (const AJamPlayerState* PS = PlayerOwner ? PlayerOwner->GetPlayerState<AJamPlayerState>() : nullptr)
+	{
+		const FJamProgression& Prog = PS->GetProgression();
+		const bool bPad = PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad();
+		static const TCHAR* KeysKb[] = { TEXT("LMB"), TEXT("RMB"), TEXT("Q"), TEXT("R") };
+		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT("LB"), TEXT("Y") };
+		const FGameplayTag CooldownTags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Sigh, JamGameplayTags::Cooldown_Judgment };
+		const bool bWrap = GS->IsWrapVisible();
+		UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
+		for (int32 i = 0; i < (int32)EJamSkill::Count; ++i)
+		{
+			const EJamSkill Skill = (EJamSkill)i;
+			FJamHudSkill Slot;
+			static const TCHAR* Short[] = { TEXT("Lecture"), TEXT("Form A Line"), TEXT("Sigh"), TEXT("Judgment") };
+			Slot.Name = Short[i];   // the bar is small; the full names are on the character sheet
+			Slot.Key = bPad ? KeysPad[i] : KeysKb[i];
+			Slot.Rank = Prog.GetRank(Skill);
+			Slot.MaxRank = JamProgression::MaxRank(Skill);
+			Slot.bUnlocked = Prog.IsUnlocked(Skill);
+			Slot.bSpendable = bWrap && Prog.CanSpendPoint(Skill);
+			if (ASC && Slot.bUnlocked)
+			{
+				const TArray<TPair<float, float>> Left = ASC->GetActiveEffectsTimeRemainingAndDuration(
+					FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(CooldownTags[i])));
+				for (const TPair<float, float>& L : Left) { if (L.Value > 0.f) { Slot.Cooldown = FMath::Max(Slot.Cooldown, L.Key / L.Value); } }
+			}
+			View.Skills.Add(Slot);
+		}
+		View.Level = Prog.GetLevel();
+		View.Xp = Prog.GetLevelProgress();
+		View.Points = Prog.GetPoints();
+		if (bWrap && View.Points > 0)
+		{
+			View.Wrap.LevelLine = FString::Printf(TEXT("LEVEL %d!  %d skill point%s: press a skill's button (%s) to rank it up"),
+				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB / Y") : TEXT("LMB / RMB / Q / R"));
+		}
+	}
 	View.NotesTaken = GS->RunNotesTaken;
 	View.NotesRefused = GS->RunNotesRefused;
 	View.bSulking = Shoot.IsSulking();
@@ -209,7 +250,9 @@ FJamScreenView AJamHUD::BuildScreen() const
 	}
 	else if (bPaused)
 	{
-		V = SubScreen == EJamScreen::QuitConfirm ? JamScreens::QuitConfirm(S, true) : JamScreens::Pause(S);
+		const AJamPlayerState* PS = PlayerOwner ? PlayerOwner->GetPlayerState<AJamPlayerState>() : nullptr;
+		V = SubScreen == EJamScreen::QuitConfirm ? JamScreens::QuitConfirm(S, true)
+			: (SubScreen == EJamScreen::Character && PS) ? JamScreens::Character(PS->GetProgression(), S) : JamScreens::Pause(S);
 	}
 	else if (GS->Phase == EJamFilmPhase::Premiere)
 	{
@@ -275,10 +318,11 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	switch (Option.Action)
 	{
 	case EJamMenuAction::RollCamera:  if (GM) { GM->RequestRollCamera(); } break;
-	case EJamMenuAction::OpenOptions: SubScreen = EJamScreen::Options; Selected = 0; break;
-	case EJamMenuAction::WalkOffSet:  SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
+	case EJamMenuAction::OpenOptions:    ParentSelected = Selected; SubScreen = EJamScreen::Options; Selected = 0; break;
+	case EJamMenuAction::CharacterSheet: ParentSelected = Selected; SubScreen = EJamScreen::Character; Selected = 0; break;
+	case EJamMenuAction::WalkOffSet:     ParentSelected = Selected; SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
 	case EJamMenuAction::Fine:
-	case EJamMenuAction::Back:        Selected = SubScreen == EJamScreen::Options ? 1 : (bTitle ? 2 : 4); SubScreen = EJamScreen::None; break;
+	case EJamMenuAction::Back:           Selected = ParentSelected; SubScreen = EJamScreen::None; break;
 	case EJamMenuAction::Resume:      SetPaused(false); break;
 	case EJamMenuAction::Volume:      Adjust(Option, 1); break;
 	case EJamMenuAction::Commentary:  Adjust(Option, 1); break;

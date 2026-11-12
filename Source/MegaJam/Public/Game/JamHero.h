@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AbilitySystemInterface.h"
+#include "Film/JamProgression.h"
 #include "JamHero.generated.h"
 
 class USpringArmComponent;
@@ -31,6 +32,12 @@ public:
 
 	/** Validates and casts the Lecture. Input and the autoplay bot both come through here. */
 	bool RequestLecture();
+
+	/**
+	 * A skill button (LMB / RMB / Q / R, or RT / RB / LB / Y). While the wrap panel is up it spends a skill point on
+	 * that skill instead (BUILD_SPEC 3c); otherwise it casts. Input and the bot both come through here.
+	 */
+	bool RequestSkill(EJamSkill Skill);
 
 	/** Asks the game mode to treat the best interact target. Input and the autoplay bot come through here. */
 	bool RequestInteract();
@@ -68,6 +75,10 @@ private:
 	void OnRefuse(const FInputActionValue& Value);
 	void OnInteractPressed(const FInputActionValue& Value);
 	void OnPause(const FInputActionValue& Value);
+	void OnSkill2(const FInputActionValue& Value);
+	void OnSkill3(const FInputActionValue& Value);
+	void OnSkill4(const FInputActionValue& Value);
+	void DrawSkillShape(EJamSkill Skill, const struct FJamSkillRank& Numbers) const;
 	void OnInteractReleased(const FInputActionValue& Value);
 	void UpdateFacing();
 
@@ -104,6 +115,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> PauseAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> SkillActions[3];
 
 	enum class EAimSource : uint8 { Movement, Mouse, Stick };
 	EAimSource AimSource = EAimSource::Movement;

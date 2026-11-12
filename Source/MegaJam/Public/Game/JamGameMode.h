@@ -50,8 +50,12 @@ public:
 	/** Interact while the wrap panel is up closes it (the last one opens the Premiere). True if it did. */
 	bool HandleDismissWrap(AJamHero* Hero);
 
-	/** The hero cast a Lecture (cosmetic: Fenella may remark on it). */
-	void NotifyLectureCast(AJamHero* Hero);
+	/** The hero cast a skill (cosmetic: Fenella may remark on the Lecture; autoplay counts casts). */
+	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
+
+	/** While the wrap panel is up, a skill button spends a point on that skill. True if it did. */
+	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill);
+	bool IsNotePromptUp() const;
 
 private:
 	AJamGameState* GetJamGameState() const;
@@ -69,6 +73,8 @@ private:
 	void FinishRun(bool bPass, const FString& Why);
 	void TickAutoplay(float DeltaSeconds);
 	void TickAutoplayAfterRun(float DeltaSeconds);
+	/** The bot's fixed policy: Form A Line, then the Sigh, then Lecture ranks. */
+	void AutoSpendPoints();
 	void SetPhase(EJamFilmPhase Phase);
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
@@ -130,6 +136,7 @@ private:
 	bool bLastWrapped = false;
 	float AfterRunTime = 0.f;
 	bool bAutoplayEndLogged = false;
+	int32 SkillCasts = 0;
 	bool bFailForcedByFlag = false;
 	float AutoplayTime = 0.f;
 	float SceneTime = 0.f;

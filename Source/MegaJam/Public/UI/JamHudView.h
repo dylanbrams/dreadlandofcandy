@@ -21,6 +21,18 @@ struct MEGAJAM_API FJamCardStyle
 	FLinearColor Panel;    // card background
 };
 
+/** One slot of the skill bar. */
+struct MEGAJAM_API FJamHudSkill
+{
+	FString Name;
+	FString Key;
+	int32 Rank = 0;
+	int32 MaxRank = 1;
+	bool bUnlocked = false;
+	float Cooldown = 0.f;      // 1 = just cast, 0 = ready
+	bool bSpendable = false;   // a point can go here now (the wrap panel is up)
+};
+
 /** One speech bubble on screen: text over a screen position (already projected, 1920x1080 design units). */
 struct MEGAJAM_API FJamHudBubble
 {
@@ -69,6 +81,12 @@ struct MEGAJAM_API FJamHudView
 	int32 NotesTaken = 0;
 	int32 NotesRefused = 0;
 	bool bSulking = false;
+
+	/** Skill bar and XP bar (BUILD_SPEC 3c). */
+	TArray<FJamHudSkill> Skills;
+	int32 Level = 0;
+	float Xp = 0.f;
+	int32 Points = 0;
 
 	/** The wrap panel; replaces the card while up. */
 	FJamWrapView Wrap;

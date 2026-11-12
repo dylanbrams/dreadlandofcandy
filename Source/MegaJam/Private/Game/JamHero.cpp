@@ -114,23 +114,47 @@ void AJamHero::PossessedBy(AController* NewController)
 
 bool AJamHero::RequestLecture()
 {
+	return RequestSkill(EJamSkill::Lecture);
+}
+
+bool AJamHero::RequestSkill(EJamSkill Skill)
+{
 	AJamPlayerState* PS = GetPlayerState<AJamPlayerState>();
+	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
 	if (!PS) { return false; }
-	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetLectureHandle());
+	if (GM && GM->HandleSpendPoint(this, Skill)) { return true; }   // the wrap panel: this button ranks the skill up
+	if (GM && GM->IsNotePromptUp()) { return false; }                // CUT!: Q refuses the note, it does not sigh
+	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetSkillHandle(Skill));
 	if (bActivated)
 	{
-		const float Range = PS->GetProgression().GetSkillNumbers(EJamSkill::Lecture).Radius;
-		DrawDebugCone(GetWorld(), GetActorLocation(), GetActorForwardVector(), Range > 0.f ? Range : JamHeroTuning::LectureRange,
+		DrawSkillShape(Skill, PS->GetProgression().GetSkillNumbers(Skill));
+		UE_LOG(LogJam, Log, TEXT("JamHero: %s cast"), JamProgression::SkillName(Skill));
+		if (GM) { GM->NotifySkillCast(this, Skill); }
+	}
+	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: %s refused"), JamProgression::SkillName(Skill)); }
+	return bActivated;
+}
+
+void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
+{
+	// Debug shapes until the T19 presentation: the cone, the line, the rings.
+	const FVector At = GetActorLocation();
+	const FVector Fwd = GetActorForwardVector();
+	switch (Skill)
+	{
+	case EJamSkill::Lecture:
+		DrawDebugCone(GetWorld(), At, Fwd, N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange,
 			FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg), FMath::DegreesToRadians(JamHeroTuning::LectureHalfAngleDeg),
 			24, FColor::Orange, false, 1.5f, 0, 4.f);
+		break;
+	case EJamSkill::FormALine:
+		DrawDebugBox(GetWorld(), At + Fwd * N.Length * 0.5f, FVector(N.Length * 0.5f, N.Width * 0.5f, 60.f), GetActorQuat(), FColor::Cyan, false, 1.5f, 0, 4.f);
+		break;
+	default:
+		DrawDebugCircle(GetWorld(), At, N.Radius, 48, Skill == EJamSkill::LastJudgment ? FColor::Red : FColor(150, 120, 255), false, 1.5f, 0, 6.f,
+			FVector::ForwardVector, FVector::RightVector, false);
+		break;
 	}
-	if (bActivated)
-	{
-		UE_LOG(LogJam, Log, TEXT("JamHero: Lecture cast"));
-		if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>()) { GM->NotifyLectureCast(this); }
-	}
-	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: Lecture refused")); }
-	return bActivated;
 }
 
 void AJamHero::CreateInput()
@@ -154,6 +178,11 @@ void AJamHero::CreateInput()
 	RefuseAction->ValueType = EInputActionValueType::Boolean;
 	PauseAction = NewObject<UInputAction>(this, TEXT("IA_Pause"));
 	PauseAction->ValueType = EInputActionValueType::Boolean;
+	for (int32 i = 0; i < 3; ++i)
+	{
+		SkillActions[i] = NewObject<UInputAction>(this, *FString::Printf(TEXT("IA_Skill%d"), i + 2));
+		SkillActions[i]->ValueType = EInputActionValueType::Boolean;
+	}
 
 	InputContext = NewObject<UInputMappingContext>(this, TEXT("IMC_Hero"));
 
@@ -191,6 +220,13 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(RefuseAction, EKeys::Q);
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 	InputContext->MapKey(PauseAction, EKeys::Escape);
+	// Skills 2 to 4 (BUILD_SPEC 3 controls): RMB / Q / R, RB / LB / Y.
+	InputContext->MapKey(SkillActions[0], EKeys::RightMouseButton);
+	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
+	InputContext->MapKey(SkillActions[1], EKeys::Q);
+	InputContext->MapKey(SkillActions[1], EKeys::Gamepad_LeftShoulder);
+	InputContext->MapKey(SkillActions[2], EKeys::R);
+	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_FaceButton_Top);
 	InputContext->MapKey(PauseAction, EKeys::Gamepad_Special_Right);
 }
 
@@ -210,6 +246,9 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(InteractAction, ETriggerEvent::Completed, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
 		Input->BindAction(PauseAction, ETriggerEvent::Started, this, &AJamHero::OnPause);
+		Input->BindAction(SkillActions[0], ETriggerEvent::Started, this, &AJamHero::OnSkill2);
+		Input->BindAction(SkillActions[1], ETriggerEvent::Started, this, &AJamHero::OnSkill3);
+		Input->BindAction(SkillActions[2], ETriggerEvent::Started, this, &AJamHero::OnSkill4);
 	}
 	else
 	{
@@ -377,3 +416,7 @@ void AJamHero::OnPause(const FInputActionValue& /*Value*/)
 		if (AJamHUD* HUD = Cast<AJamHUD>(PC->GetHUD())) { HUD->RequestPause(); }
 	}
 }
+
+void AJamHero::OnSkill2(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::FormALine); }
+void AJamHero::OnSkill3(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::DisappointedSigh); }
+void AJamHero::OnSkill4(const FInputActionValue& /*Value*/) { RequestSkill(EJamSkill::LastJudgment); }

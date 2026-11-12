@@ -222,7 +222,7 @@ void UJamHudWidget::BuildTree()
 		Box->AddChildToVerticalBox(CaptionSpeaker)->SetHorizontalAlignment(HAlign_Center);
 		CaptionText = MakeText(28, FLinearColor::White, false);
 		CaptionText->SetJustification(ETextJustify::Center);
-		CaptionText->SetWrapTextAt(1100.f);
+		CaptionText->SetWrapTextAt(980.f);
 		Box->AddChildToVerticalBox(CaptionText)->SetHorizontalAlignment(HAlign_Center);
 		CaptionPanel->SetContent(Box);
 	}
@@ -275,6 +275,7 @@ void UJamHudWidget::BuildTree()
 	NotePanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
 	BuildWrapPanel();
+	BuildSkillBar();
 
 	Show(NotePanel, false);
 	Show(CaptionPanel, false);
@@ -416,6 +417,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		TakeFill->SetPercent(View.HoldFraction);
 	}
 
+	ApplySkills(View, RealSeconds);
 	ApplyWrap(View.Wrap);
 	if (View.Wrap.bVisible)
 	{
@@ -709,4 +711,107 @@ void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
 	SetTextIfChanged(WrapLevel, Wrap.LevelLine);
 	Show(WrapContinue, !Wrap.ContinueHint.IsEmpty());
 	SetTextIfChanged(WrapContinue, Wrap.ContinueHint);
+}
+
+// ---- Skill bar (T14a) -------------------------------------------------------------------------------------------
+
+void UJamHudWidget::BuildSkillBar()
+{
+	UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+	UBorder* Panel = MakePanel(PanelDark, 8.f, FMargin(12.f, 10.f));
+	Panel->SetContent(Box);
+	SkillBar = Panel;
+
+	UHorizontalBox* XpRow = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+	LevelText = MakeText(18, Gold, true);
+	XpRow->AddChildToHorizontalBox(LevelText)->SetVerticalAlignment(VAlign_Center);
+	USizeBox* XpSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	XpSize->SetWidthOverride(220.f);
+	XpSize->SetHeightOverride(8.f);
+	XpBar = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
+	XpBar->SetFillColorAndOpacity(FLinearColor(0.55f, 0.75f, 1.f));
+	XpSize->SetContent(XpBar);
+	UHorizontalBoxSlot* XpSlot = XpRow->AddChildToHorizontalBox(XpSize);
+	XpSlot->SetVerticalAlignment(VAlign_Center);
+	XpSlot->SetPadding(FMargin(10.f, 0.f));
+	PointsText = MakeText(16, Gold, true);
+	XpRow->AddChildToHorizontalBox(PointsText)->SetVerticalAlignment(VAlign_Center);
+	Box->AddChildToVerticalBox(XpRow)->SetPadding(FMargin(0.f, 0.f, 0.f, 8.f));
+
+	UHorizontalBox* Tiles = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+	for (int32 i = 0; i < (int32)EJamSkill::Count; ++i)
+	{
+		UOverlay* Stack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
+		UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 6.f, FMargin(6.f, 4.f));
+		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		Size->SetWidthOverride(86.f);
+		Size->SetHeightOverride(80.f);
+		UVerticalBox* V = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		UTextBlock* Key = MakeText(15, Gold, true);
+		UTextBlock* Name = MakeText(12, FLinearColor::White, true);
+		Name->SetWrapTextAt(80.f);
+		Name->SetJustification(ETextJustify::Center);
+		UTextBlock* Rank = MakeText(13, Gold, false);
+		V->AddChildToVerticalBox(Key)->SetHorizontalAlignment(HAlign_Center);
+		UVerticalBoxSlot* NameSlot = V->AddChildToVerticalBox(Name);
+		NameSlot->SetHorizontalAlignment(HAlign_Center);
+		NameSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
+		V->AddChildToVerticalBox(Rank)->SetHorizontalAlignment(HAlign_Center);
+		Size->SetContent(V);
+		Tile->SetContent(Size);
+		Stack->AddChildToOverlay(Tile);
+		// Cooldown sweep: a dark fill that drains from the top as the skill comes back.
+		UProgressBar* Cool = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
+		Cool->SetBarFillType(EProgressBarFillType::TopToBottom);
+		Cool->SetFillColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.65f));
+		FProgressBarStyle CoolStyle = Cool->GetWidgetStyle();
+		CoolStyle.BackgroundImage.TintColor = FSlateColor(FLinearColor::Transparent);
+		Cool->SetWidgetStyle(CoolStyle);
+		UOverlaySlot* CoolSlot = Stack->AddChildToOverlay(Cool);
+		CoolSlot->SetHorizontalAlignment(HAlign_Fill);
+		CoolSlot->SetVerticalAlignment(VAlign_Fill);
+		Tiles->AddChildToHorizontalBox(Stack)->SetPadding(FMargin(i == 0 ? 0.f : 6.f, 0.f, 0.f, 0.f));
+		SkillTiles.Add(Tile);
+		SkillKeys.Add(Key);
+		SkillNames.Add(Name);
+		SkillRanks.Add(Rank);
+		SkillCooldowns.Add(Cool);
+	}
+	Box->AddChildToVerticalBox(Tiles);
+
+	UCanvasPanelSlot* S = Root->AddChildToCanvas(Panel);
+	S->SetAnchors(FAnchors(0.f, 1.f));
+	S->SetAlignment(FVector2D(0.f, 1.f));
+	S->SetPosition(FVector2D(36.f, -28.f));
+	S->SetAutoSize(true);
+	S->SetZOrder(5);
+}
+
+void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
+{
+	const bool bBar = View.bShootVisible && View.Skills.Num() > 0;
+	Show(SkillBar, bBar);
+	if (!bBar) { return; }
+	SetTextIfChanged(LevelText, FString::Printf(TEXT("LV %d"), View.Level));
+	XpBar->SetPercent(FMath::Clamp(View.Xp, 0.f, 1.f));
+	Show(PointsText, View.Points > 0);
+	SetTextIfChanged(PointsText, FString::Printf(TEXT("+%d point%s"), View.Points, View.Points == 1 ? TEXT("") : TEXT("s")));
+	const bool bPulse = FMath::Fmod(RealSeconds, 0.8f) < 0.4f;
+	for (int32 i = 0; i < SkillTiles.Num(); ++i)
+	{
+		const bool bSlot = View.Skills.IsValidIndex(i);
+		Show(SkillTiles[i]->GetParent(), bSlot);
+		if (!bSlot) { continue; }
+		const FJamHudSkill& K = View.Skills[i];
+		SetTextIfChanged(SkillKeys[i], K.Key);
+		SetTextIfChanged(SkillNames[i], K.Name);
+		FString Pips;
+		for (int32 r = 0; r < K.MaxRank; ++r) { Pips += r < K.Rank ? TEXT("\u25CF") : TEXT("\u25CB"); }
+		SetTextIfChanged(SkillRanks[i], K.bUnlocked ? Pips : FString(TEXT("locked")));
+		const FLinearColor Edge = K.bSpendable ? (bPulse ? Gold : FLinearColor(1.f, 0.95f, 0.7f)) : FLinearColor(1.f, 1.f, 1.f, K.bUnlocked ? 0.25f : 0.1f);
+		SkillTiles[i]->SetBrush(Rounded(FLinearColor::White, 6.f, Edge, K.bSpendable ? 3.f : 1.f));
+		SkillTiles[i]->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
+		SkillTiles[i]->GetParent()->SetRenderOpacity(K.bUnlocked || K.bSpendable ? 1.f : 0.45f);
+		SkillCooldowns[i]->SetPercent(FMath::Clamp(K.Cooldown, 0.f, 1.f));
+	}
 }

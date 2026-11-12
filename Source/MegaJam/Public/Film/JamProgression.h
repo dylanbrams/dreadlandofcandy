@@ -88,6 +88,8 @@ namespace JamProgression
 	/** Three (or Count) distinct drops, deterministic for the seed, always including the highest rarity on offer. */
 	MEGAJAM_API TArray<int32> RollLoot(int32 Seed, int32 Count = 3);
 	MEGAJAM_API const TCHAR* RarityName(int32 Rarity, bool bDirectorsPick);
+	/** "Lecture", "Form A Line", "Disappointed Sigh", "The Last Judgment". */
+	MEGAJAM_API const TCHAR* SkillName(EJamSkill Skill);
 }
 
 class MEGAJAM_API FJamProgression
