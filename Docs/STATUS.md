@@ -14,6 +14,7 @@ Test-stage verdicts. Dylan ran the approvals and routes himself and started batc
 - Rat / NPCs: Rodin looks best but is 500k tris; GAME reduces on import unless ASSETS got Rodin to send fewer faces.
 - House / terrain: fal looks good, Rodin is terrible. fal adds side walls and a ground platform; strip the platform on import if it shows from the game camera.
 - Sword (Rodin): good but too short. Proposed `redo SM_Sword` with "blade four times the grip length, sword nearly as tall as a man". Not yet confirmed by Dylan.
+- Batch1 meshes (Dylan, 08:10, browser viewer): all okay **except `SM_Fenella`: "TERRIBLE. That's no fairy, it doesn't even have wings."** Her prompt said "no wings" (ASSET LIST's choice). Redo with wings: replace "no wings" in her `jobs.json` subject with something like "two small translucent dragonfly wings on her back", then `gen_batch.py redo SM_Fenella`. ASSETS runs it once Dylan confirms the wording.
 - 2D: `T_Skill_Lecture` "fantastic", `T_Card_Clapper` fine.
 - Camera (T01 tuning): arm **1700 uu** (not 1100), 50 degree pitch, FOV 55, looks 300 uu ahead of the hero. At 1100 the hero filled a third of the screen and the nuisances were off the top. The hero is now about a fifth of the screen height.
 
