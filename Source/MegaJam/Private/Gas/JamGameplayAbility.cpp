@@ -3,6 +3,7 @@
 #include "Gas/JamGameplayEffects.h"
 #include "Gas/JamGameplayTags.h"
 #include "Game/JamPlayerState.h"
+#include "Game/JamNuisance.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayEffect.h"
@@ -145,4 +146,90 @@ void UJamGA_LectureCone::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, 
 		Spec.Data->SetDuration(Seconds, true);
 		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, Spec);
 	}
+}
+
+// ---- Skills 2 to 4 (T05a) ---------------------------------------------------------------------------------------
+
+FJamSkillRank UJamGA_Skill::Numbers() const
+{
+	const FJamProgression* Prog = OwnerProgression(this);
+	return Prog ? Prog->GetSkillNumbers(Skill) : JamProgression::RankData(Skill, 1);
+}
+
+bool UJamGA_Skill::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
+{
+	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags)) { return false; }
+	const AJamPlayerState* PS = ActorInfo ? Cast<AJamPlayerState>(ActorInfo->OwnerActor.Get()) : nullptr;
+	return !PS || PS->GetProgression().IsUnlocked(Skill);   // the rig (no PlayerState) may cast anything
+}
+
+FJamAoePatternParams UJamGA_Skill::ResolveParams() const
+{
+	const FJamSkillRank N = Numbers();
+	FJamAoePatternParams P;
+	if (Skill == EJamSkill::FormALine)
+	{
+		P.Shape = EJamAoeShape::Line;
+		P.Radius = N.Length;
+		P.Width = N.Width * 0.5f;   // the table's width is the whole line; the shape takes half
+	}
+	else
+	{
+		P.Shape = EJamAoeShape::Circle;   // the Sigh and the Judgment ring the hero
+		P.Radius = N.Radius;
+	}
+	return P;
+}
+
+float UJamGA_Skill::ResolveDamage() const
+{
+	return Numbers().Damage;
+}
+
+void UJamGA_Skill::ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo) const
+{
+	UGameplayEffect* CooldownGE = GetCooldownGameplayEffect();
+	const float Seconds = Numbers().Cooldown;
+	if (!CooldownGE || Seconds <= 0.f) { return; }
+	FGameplayEffectSpecHandle Spec = MakeOutgoingGameplayEffectSpec(Handle, ActorInfo, ActivationInfo, CooldownGE->GetClass(), GetAbilityLevel(Handle, ActorInfo));
+	if (Spec.IsValid())
+	{
+		Spec.Data->SetDuration(Seconds, true);
+		ApplyGameplayEffectSpecToOwner(Handle, ActorInfo, ActivationInfo, Spec);
+	}
+}
+
+void UJamGA_Skill::ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+	const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData)
+{
+	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+	// The status rides on the hit: the line stops them, the sigh slows them. Pacified targets keep sitting.
+	const FJamSkillRank N = Numbers();
+	for (const TWeakObjectPtr<AActor>& Hit : LastHitTargets)
+	{
+		AJamNuisance* Target = Cast<AJamNuisance>(Hit.Get());
+		if (!Target || N.StatusSeconds <= 0.f) { continue; }
+		if (Skill == EJamSkill::FormALine) { Target->Fluster(N.StatusSeconds); }
+		else if (Skill == EJamSkill::DisappointedSigh) { Target->Slow(N.SlowFactor, N.StatusSeconds); }
+	}
+}
+
+UJamGA_FormALine::UJamGA_FormALine()
+{
+	Skill = EJamSkill::FormALine;
+	CooldownGameplayEffectClass = UJamGE_LineCooldown::StaticClass();
+}
+
+UJamGA_DisappointedSigh::UJamGA_DisappointedSigh()
+{
+	Skill = EJamSkill::DisappointedSigh;
+	CooldownGameplayEffectClass = UJamGE_SighCooldown::StaticClass();
+}
+
+UJamGA_LastJudgment::UJamGA_LastJudgment()
+{
+	Skill = EJamSkill::LastJudgment;
+	CooldownGameplayEffectClass = UJamGE_JudgmentCooldown::StaticClass();
 }

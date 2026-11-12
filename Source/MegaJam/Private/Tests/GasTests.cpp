@@ -184,4 +184,47 @@ bool FJamLectureConeTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamSkillsTest, "Jam.Gas.Skills", JamFlags)
+bool FJamSkillsTest::RunTest(const FString& Parameters)
+{
+	// Skills 2 to 4 at rank 1 (no PlayerState: the rig may cast anything; numbers come from the rank table).
+	UAbilitySystemGlobals::Get().InitGlobalData();
+	UWorld* World = CreateTestWorld();
+	AJamTestCombatant* Hero = SpawnCombatant(World, FVector::ZeroVector, JamGameplayTags::Team_Hero);
+	UAbilitySystemComponent* ASC = Hero->GetAbilitySystemComponent();
+	const FJamSkillRank Line = JamProgression::RankData(EJamSkill::FormALine, 1);
+	const FJamSkillRank Sigh = JamProgression::RankData(EJamSkill::DisappointedSigh, 1);
+
+	// Form A Line: a rectangle ahead, Length long and Width wide in total.
+	AJamTestCombatant* OnLine  = SpawnCombatant(World, FVector(Line.Length * 0.8f, 0, 0), JamGameplayTags::Team_Nuisance);
+	AJamTestCombatant* Beside  = SpawnCombatant(World, FVector(Line.Length * 0.5f, Line.Width * 0.5f + 60.f, 0), JamGameplayTags::Team_Nuisance);
+	AJamTestCombatant* Behind  = SpawnCombatant(World, FVector(-200, 0, 0), JamGameplayTags::Team_Nuisance);
+	const FGameplayAbilitySpecHandle LineHandle = ASC->GiveAbility(FGameplayAbilitySpec(UJamGA_FormALine::StaticClass(), 1));
+	TestTrue(TEXT("line casts"), ASC->TryActivateAbility(LineHandle));
+	TestEqual(TEXT("on the line takes its damage"), OnLine->GetResolve(), 100.f - Line.Damage);
+	TestEqual(TEXT("beside the line untouched"), Beside->GetResolve(), 100.f);
+	TestEqual(TEXT("behind untouched"), Behind->GetResolve(), 100.f);
+	TestTrue(TEXT("line has its own cooldown"), ASC->HasMatchingGameplayTag(JamGameplayTags::Cooldown_Line));
+	TestFalse(TEXT("and not the Lecture's"), ASC->HasMatchingGameplayTag(JamGameplayTags::Cooldown_Lecture));
+	TestFalse(TEXT("line refused on cooldown"), ASC->TryActivateAbility(LineHandle));
+
+	// The Sigh: a ring around the hero, behind included.
+	const FGameplayAbilitySpecHandle SighHandle = ASC->GiveAbility(FGameplayAbilitySpec(UJamGA_DisappointedSigh::StaticClass(), 1));
+	const float BehindBefore = Behind->GetResolve();
+	TestTrue(TEXT("sigh casts while the line cools down"), ASC->TryActivateAbility(SighHandle));
+	TestEqual(TEXT("sigh reaches behind"), Behind->GetResolve(), BehindBefore - Sigh.Damage);
+	TestTrue(TEXT("sigh radius is smaller than the line is long"), Sigh.Radius < Line.Length * 0.8f);
+	TestEqual(TEXT("far target outside the sigh"), OnLine->GetResolve(), 100.f - Line.Damage);
+	TestTrue(TEXT("sigh cooldown"), ASC->HasMatchingGameplayTag(JamGameplayTags::Cooldown_Sigh));
+
+	// The Last Judgment: the big ring catches everything here.
+	const FGameplayAbilitySpecHandle JudgmentHandle = ASC->GiveAbility(FGameplayAbilitySpec(UJamGA_LastJudgment::StaticClass(), 1));
+	TestTrue(TEXT("judgment casts"), ASC->TryActivateAbility(JudgmentHandle));
+	TestEqual(TEXT("judgment pacifies the far one"), OnLine->GetResolve(), 0.f);
+	TestTrue(TEXT("judgment cooldown"), ASC->HasMatchingGameplayTag(JamGameplayTags::Cooldown_Judgment));
+
+	DestroyTestWorld(World);
+	return true;
+}
+
 #endif

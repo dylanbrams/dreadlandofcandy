@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
 #include "Gas/JamAoePattern.h"
+#include "Film/JamProgression.h"
 #include "JamGameplayAbility.generated.h"
 
 class UGameplayEffect;
@@ -93,4 +94,54 @@ protected:
 	/** The cooldown's length comes from the progression too (rank, loot, Cooldown Recovery). */
 	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
 		const FGameplayAbilityActivationInfo ActivationInfo) const override;
+};
+
+/**
+ * Skills 2 to 4 (BUILD_SPEC 3c, T05a). Shape, damage, status and cooldown come from the owner's progression at
+ * the skill's current rank; the ability refuses until the skill is unlocked. Hits apply the skill's status to
+ * nuisances: Form A Line stops them (Flustered), the Sigh slows them.
+ */
+UCLASS(Abstract)
+class MEGAJAM_API UJamGA_Skill : public UJamGA_AoeAttack
+{
+	GENERATED_BODY()
+
+public:
+	EJamSkill Skill = EJamSkill::FormALine;
+
+	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
+
+protected:
+	virtual FJamAoePatternParams ResolveParams() const override;
+	virtual float ResolveDamage() const override;
+	virtual void ApplyCooldown(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,
+		const FGameplayAbilityActivationInfo ActivationInfo) const override;
+	FJamSkillRank Numbers() const;
+};
+
+UCLASS()
+class MEGAJAM_API UJamGA_FormALine : public UJamGA_Skill
+{
+	GENERATED_BODY()
+public:
+	UJamGA_FormALine();
+};
+
+UCLASS()
+class MEGAJAM_API UJamGA_DisappointedSigh : public UJamGA_Skill
+{
+	GENERATED_BODY()
+public:
+	UJamGA_DisappointedSigh();
+};
+
+UCLASS()
+class MEGAJAM_API UJamGA_LastJudgment : public UJamGA_Skill
+{
+	GENERATED_BODY()
+public:
+	UJamGA_LastJudgment();
 };

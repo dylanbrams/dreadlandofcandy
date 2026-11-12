@@ -10,4 +10,7 @@ namespace JamGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(State_Pacified, "State.Pacified");
 
 	UE_DEFINE_GAMEPLAY_TAG(Cooldown_Lecture, "Cooldown.Ability.Lecture");
+	UE_DEFINE_GAMEPLAY_TAG(Cooldown_Line, "Cooldown.Ability.Line");
+	UE_DEFINE_GAMEPLAY_TAG(Cooldown_Sigh, "Cooldown.Ability.Sigh");
+	UE_DEFINE_GAMEPLAY_TAG(Cooldown_Judgment, "Cooldown.Ability.Judgment");
 }

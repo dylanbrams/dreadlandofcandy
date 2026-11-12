@@ -34,3 +34,18 @@ UJamGE_LectureCooldown::UJamGE_LectureCooldown()
 	TagsComponent->SetAndApplyTargetTagChanges(Granted);
 	GEComponents.Add(TagsComponent);
 }
+
+void UJamGE_SkillCooldown::GrantTag(const FGameplayTag& Tag)
+{
+	DurationPolicy = EGameplayEffectDurationType::HasDuration;
+	DurationMagnitude = FGameplayEffectModifierMagnitude(FScalableFloat(1.f));   // replaced per cast
+	UTargetTagsGameplayEffectComponent* TagsComponent = CreateDefaultSubobject<UTargetTagsGameplayEffectComponent>(TEXT("GrantedTags"));
+	FInheritedTagContainer Granted;
+	Granted.Added.AddTag(Tag);
+	TagsComponent->SetAndApplyTargetTagChanges(Granted);
+	GEComponents.Add(TagsComponent);
+}
+
+UJamGE_LineCooldown::UJamGE_LineCooldown() { GrantTag(JamGameplayTags::Cooldown_Line); }
+UJamGE_SighCooldown::UJamGE_SighCooldown() { GrantTag(JamGameplayTags::Cooldown_Sigh); }
+UJamGE_JudgmentCooldown::UJamGE_JudgmentCooldown() { GrantTag(JamGameplayTags::Cooldown_Judgment); }

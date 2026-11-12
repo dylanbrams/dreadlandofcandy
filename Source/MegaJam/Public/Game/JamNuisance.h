@@ -63,6 +63,11 @@ public:
 	/** Spawns already sitting (retakes of a treat stage). */
 	bool bStartPacified = false;
 
+	/** Form A Line: stop (Flustered) for at least this long. Ignored once pacified. */
+	void Fluster(float Seconds);
+	/** The Disappointed Sigh: move at this fraction of speed for a while. */
+	void Slow(float Factor, float Seconds);
+
 	/** Treated back to Pacified: a retake of a treat stage. */
 	void ResetToPacified();
 
@@ -98,6 +103,9 @@ private:
 
 	EJamNuisanceState State = EJamNuisanceState::Wander;
 	int32 FleeCount = 0;
+	float FlusterHold = 0.f;     // this Flustered lasts this long (a hit: FlusteredSeconds; the line: longer)
+	float SlowFactor = 1.f;
+	float SlowUntil = -1.f;
 	float StateTime = 0.f;
 	FVector2D WanderTarget = FVector2D::ZeroVector;
 	FVector BodyBaseScale = FVector::OneVector;

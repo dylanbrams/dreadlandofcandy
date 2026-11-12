@@ -16,8 +16,8 @@
 
 namespace
 {
-	const FLinearColor Gold(1.f, 0.82f, 0.3f);
-	const FLinearColor Dim(0.72f, 0.72f, 0.7f);
+	const FLinearColor ScreenGold(1.f, 0.82f, 0.3f);
+	const FLinearColor ScreenDim(0.72f, 0.72f, 0.7f);
 	const FLinearColor StampRed(1.f, 0.2f, 0.12f);
 	constexpr int32 MaxRows = 4;
 	constexpr int32 MaxQuotes = 3;
@@ -26,19 +26,19 @@ namespace
 	constexpr float CreditsClipHeight = 560.f;
 	constexpr float CreditLineHeight = 46.f;
 
-	void SetTextIfChanged(UTextBlock* Block, const FString& Text)
+	void SetScreenText(UTextBlock* Block, const FString& Text)
 	{
 		if (Block && !Block->GetText().ToString().Equals(Text, ESearchCase::CaseSensitive)) { Block->SetText(FText::FromString(Text)); }
 	}
 
-	void Show(UWidget* W, bool bVisible)
+	void ShowScreenPart(UWidget* W, bool bVisible)
 	{
 		if (!W) { return; }
 		const ESlateVisibility V = bVisible ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed;
 		if (W->GetVisibility() != V) { W->SetVisibility(V); }
 	}
 
-	FSlateBrush Rounded(const FLinearColor& Outline, float Radius, float OutlineWidth)
+	FSlateBrush ScreenRounded(const FLinearColor& Outline, float Radius, float OutlineWidth)
 	{
 		FSlateBrush B;
 		B.DrawAs = ESlateBrushDrawType::RoundedBox;
@@ -81,7 +81,7 @@ UTextBlock* UJamScreenWidget::MakeText(int32 Size, const FLinearColor& Colour, b
 UBorder* UJamScreenWidget::MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding)
 {
 	UBorder* B = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	B->SetBrush(Rounded(FLinearColor::Transparent, Radius, 0.f));
+	B->SetBrush(ScreenRounded(FLinearColor::Transparent, Radius, 0.f));
 	B->SetBrushColor(Colour);
 	B->SetPadding(InPadding);
 	return B;
@@ -109,16 +109,16 @@ void UJamScreenWidget::BuildTree()
 		return S;
 	};
 
-	Kicker = MakeText(24, Dim, true);
+	Kicker = MakeText(24, ScreenDim, true);
 	Add(Kicker, FMargin(0.f, 0.f, 0.f, 6.f));
 
 	// The title, with a rubber stamp slapped across it.
 	UOverlay* TitleStack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
-	Title = MakeText(84, Gold, true);
+	Title = MakeText(84, ScreenGold, true);
 	Title->SetShadowOffset(FVector2D(5.f, 5.f));
 	TitleStack->AddChildToOverlay(Title)->SetHorizontalAlignment(HAlign_Center);
 	Stamp = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	Stamp->SetBrush(Rounded(StampRed, 6.f, 5.f));
+	Stamp->SetBrush(ScreenRounded(StampRed, 6.f, 5.f));
 	Stamp->SetBrushColor(FLinearColor::Transparent);   // outline and ink only; the title reads through it
 	Stamp->SetPadding(FMargin(18.f, 4.f));
 	StampText = MakeText(46, StampRed, true);
@@ -142,7 +142,7 @@ void UJamScreenWidget::BuildTree()
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 		Size->SetWidthOverride(720.f);
 		UHorizontalBox* Row = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
-		UTextBlock* L = MakeText(32, Dim, true);
+		UTextBlock* L = MakeText(32, ScreenDim, true);
 		UTextBlock* V = MakeText(32, FLinearColor::White, true);
 		UHorizontalBoxSlot* LS = Row->AddChildToHorizontalBox(L);
 		LS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
@@ -192,7 +192,7 @@ void UJamScreenWidget::BuildTree()
 		Size->SetWidthOverride(620.f);
 		UHorizontalBox* H = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
 		UTextBlock* L = MakeText(32, FLinearColor::White, true);
-		UTextBlock* V = MakeText(28, Dim, false);
+		UTextBlock* V = MakeText(28, ScreenDim, false);
 		UHorizontalBoxSlot* LS = H->AddChildToHorizontalBox(L);
 		LS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
 		LS->SetHorizontalAlignment(HAlign_Left);
@@ -225,7 +225,7 @@ void UJamScreenWidget::BuildTree()
 		S->SetAutoSize(true);
 	}
 
-	FooterText = MakeText(20, Dim, true);
+	FooterText = MakeText(20, ScreenDim, true);
 	{
 		UCanvasPanelSlot* S = Root->AddChildToCanvas(FooterText);
 		S->SetAnchors(FAnchors(0.5f, 1.f));
@@ -242,54 +242,54 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 
 	Backdrop->SetBrushColor(View.bOpaque ? FLinearColor(0.02f, 0.015f, 0.03f, 0.95f) : FLinearColor(0.f, 0.f, 0.f, 0.6f));
 
-	SetTextIfChanged(Kicker, View.Kicker);
-	Show(Kicker, !View.Kicker.IsEmpty());
-	SetTextIfChanged(Title, View.Title);
+	SetScreenText(Kicker, View.Kicker);
+	ShowScreenPart(Kicker, !View.Kicker.IsEmpty());
+	SetScreenText(Title, View.Title);
 	// The rating card's single letter is huge; everything else is a title.
 	Title->SetFont(FCoreStyle::GetDefaultFontStyle("Bold", View.Screen == EJamScreen::Rating ? 220 : (View.Title.Len() > 18 ? 72 : 84)));
-	SetTextIfChanged(StampText, View.Stamp);
-	Show(Stamp, !View.Stamp.IsEmpty());
+	SetScreenText(StampText, View.Stamp);
+	ShowScreenPart(Stamp, !View.Stamp.IsEmpty());
 	// The stamp lands a beat after the title.
 	const float StampT = FMath::Clamp((RealSeconds - ShownAt - 0.5f) / 0.15f, 0.f, 1.f);
 	Stamp->SetRenderScale(FVector2D(FMath::Lerp(2.2f, 1.f, StampT)));
 	Stamp->SetRenderOpacity(StampT);
-	SetTextIfChanged(Subtitle, View.Subtitle);
-	Show(Subtitle, !View.Subtitle.IsEmpty());
+	SetScreenText(Subtitle, View.Subtitle);
+	ShowScreenPart(Subtitle, !View.Subtitle.IsEmpty());
 
-	Show(RowsBox, View.Rows.Num() > 0);
+	ShowScreenPart(RowsBox, View.Rows.Num() > 0);
 	for (int32 i = 0; i < RowWidgets.Num(); ++i)
 	{
 		const bool bRow = View.Rows.IsValidIndex(i);
-		Show(RowWidgets[i], bRow);
-		if (bRow) { SetTextIfChanged(RowLabels[i], View.Rows[i].Key); SetTextIfChanged(RowValues[i], View.Rows[i].Value); }
+		ShowScreenPart(RowWidgets[i], bRow);
+		if (bRow) { SetScreenText(RowLabels[i], View.Rows[i].Key); SetScreenText(RowValues[i], View.Rows[i].Value); }
 	}
-	Show(QuotesBox, View.Quotes.Num() > 0);
+	ShowScreenPart(QuotesBox, View.Quotes.Num() > 0);
 	for (int32 i = 0; i < QuoteTexts.Num(); ++i)
 	{
-		Show(QuoteTexts[i], View.Quotes.IsValidIndex(i));
-		if (View.Quotes.IsValidIndex(i)) { SetTextIfChanged(QuoteTexts[i], View.Quotes[i]); }
+		ShowScreenPart(QuoteTexts[i], View.Quotes.IsValidIndex(i));
+		if (View.Quotes.IsValidIndex(i)) { SetScreenText(QuoteTexts[i], View.Quotes[i]); }
 	}
 
 	const bool bCredits = View.Body.Num() > 0;
-	Show(CreditsClip, bCredits);
+	ShowScreenPart(CreditsClip, bCredits);
 	if (bCredits)
 	{
 		for (int32 i = 0; i < CreditTexts.Num(); ++i)
 		{
 			const bool bLine = View.Body.IsValidIndex(i);
-			Show(CreditTexts[i]->GetParent(), bLine);
+			ShowScreenPart(CreditTexts[i]->GetParent(), bLine);
 			if (!bLine) { continue; }
-			SetTextIfChanged(CreditTexts[i], View.Body[i]);
+			SetScreenText(CreditTexts[i], View.Body[i]);
 			// Section heads and the real credits read differently from the jokes.
 			const bool bHead = View.Body[i].StartsWith(TEXT("—"));
-			CreditTexts[i]->SetColorAndOpacity(FSlateColor(bHead ? Gold : FLinearColor::White));
+			CreditTexts[i]->SetColorAndOpacity(FSlateColor(bHead ? ScreenGold : FLinearColor::White));
 		}
 		const float Content = FMath::Min(View.Body.Num(), MaxCredits) * CreditLineHeight;
 		CreditsBox->SetRenderTranslation(FVector2D(0.f, CreditsClipHeight - FMath::Clamp(View.Scroll, 0.f, 1.f) * (CreditsClipHeight + Content)));
 	}
 
 	ShownOptions = FMath::Min(View.Options.Num(), OptionRows.Num());
-	Show(OptionsBox, ShownOptions > 0);
+	ShowScreenPart(OptionsBox, ShownOptions > 0);
 	for (int32 i = 0; i < OptionRows.Num(); ++i)
 	{
 		const bool bOpt = i < ShownOptions;
@@ -300,20 +300,20 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 		if (!bOpt) { continue; }
 		const FJamMenuOption& O = View.Options[i];
 		const bool bSel = i == View.Selected && O.bEnabled;
-		OptionRows[i]->SetBrush(Rounded(bSel ? Gold : FLinearColor(1.f, 1.f, 1.f, 0.15f), 8.f, bSel ? 3.f : 1.f));
+		OptionRows[i]->SetBrush(ScreenRounded(bSel ? ScreenGold : FLinearColor(1.f, 1.f, 1.f, 0.15f), 8.f, bSel ? 3.f : 1.f));
 		OptionRows[i]->SetBrushColor(bSel ? FLinearColor(0.25f, 0.18f, 0.04f, 0.85f) : FLinearColor(0.f, 0.f, 0.f, 0.45f));
-		SetTextIfChanged(OptionLabels[i], bSel ? FString::Printf(TEXT("▶  %s"), *O.Label) : O.Label);
-		OptionLabels[i]->SetColorAndOpacity(FSlateColor(!O.bEnabled ? FLinearColor(0.4f, 0.4f, 0.4f) : (bSel ? Gold : FLinearColor::White)));
-		SetTextIfChanged(OptionValues[i], O.Value);
-		OptionValues[i]->SetColorAndOpacity(FSlateColor(O.bEnabled ? Dim : FLinearColor(0.35f, 0.35f, 0.35f)));
+		SetScreenText(OptionLabels[i], bSel ? FString::Printf(TEXT("▶  %s"), *O.Label) : O.Label);
+		OptionLabels[i]->SetColorAndOpacity(FSlateColor(!O.bEnabled ? FLinearColor(0.4f, 0.4f, 0.4f) : (bSel ? ScreenGold : FLinearColor::White)));
+		SetScreenText(OptionValues[i], O.Value);
+		OptionValues[i]->SetColorAndOpacity(FSlateColor(O.bEnabled ? ScreenDim : FLinearColor(0.35f, 0.35f, 0.35f)));
 	}
 
 	// Credits keep the post-credits pitch for the end of the scroll.
 	const bool bCaption = !View.Caption.IsEmpty() && (!bCredits || View.Scroll >= 1.f);
-	Show(CaptionPanel, bCaption);
-	SetTextIfChanged(CaptionText, View.Caption);
-	SetTextIfChanged(FooterText, View.Footer);
-	Show(FooterText, !View.Footer.IsEmpty());
+	ShowScreenPart(CaptionPanel, bCaption);
+	SetScreenText(CaptionText, View.Caption);
+	SetScreenText(FooterText, View.Footer);
+	ShowScreenPart(FooterText, !View.Footer.IsEmpty());
 }
 
 int32 UJamScreenWidget::OptionUnder(const FVector2D& ScreenPosition) const

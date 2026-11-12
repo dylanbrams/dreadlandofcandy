@@ -32,3 +32,37 @@ public:
 
 	static constexpr float DurationSeconds = 1.5f;
 };
+
+/** Cooldowns of skills 2 to 4 (T05a). Length is set per cast from the rank table; each grants its own tag. */
+UCLASS(Abstract)
+class MEGAJAM_API UJamGE_SkillCooldown : public UGameplayEffect
+{
+	GENERATED_BODY()
+
+protected:
+	void GrantTag(const FGameplayTag& Tag);
+};
+
+UCLASS()
+class MEGAJAM_API UJamGE_LineCooldown : public UJamGE_SkillCooldown
+{
+	GENERATED_BODY()
+public:
+	UJamGE_LineCooldown();
+};
+
+UCLASS()
+class MEGAJAM_API UJamGE_SighCooldown : public UJamGE_SkillCooldown
+{
+	GENERATED_BODY()
+public:
+	UJamGE_SighCooldown();
+};
+
+UCLASS()
+class MEGAJAM_API UJamGE_JudgmentCooldown : public UJamGE_SkillCooldown
+{
+	GENERATED_BODY()
+public:
+	UJamGE_JudgmentCooldown();
+};

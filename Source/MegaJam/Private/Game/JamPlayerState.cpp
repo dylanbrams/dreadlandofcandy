@@ -21,5 +21,9 @@ void AJamPlayerState::InitForAvatar(AActor* Avatar)
 	{
 		AbilitySystem->AddLooseGameplayTag(JamGameplayTags::Team_Hero);
 		LectureHandle = AbilitySystem->GiveAbility(FGameplayAbilitySpec(UJamGA_LectureCone::StaticClass(), 1));
+		// Skills 2 to 4 are granted now and refuse until the progression unlocks them (T05a).
+		SkillHandles[(int32)EJamSkill::FormALine] = AbilitySystem->GiveAbility(FGameplayAbilitySpec(UJamGA_FormALine::StaticClass(), 1));
+		SkillHandles[(int32)EJamSkill::DisappointedSigh] = AbilitySystem->GiveAbility(FGameplayAbilitySpec(UJamGA_DisappointedSigh::StaticClass(), 1));
+		SkillHandles[(int32)EJamSkill::LastJudgment] = AbilitySystem->GiveAbility(FGameplayAbilitySpec(UJamGA_LastJudgment::StaticClass(), 1));
 	}
 }

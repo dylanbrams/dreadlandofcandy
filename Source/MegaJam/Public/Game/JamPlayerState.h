@@ -25,6 +25,8 @@ public:
 	void InitForAvatar(AActor* Avatar);
 
 	FGameplayAbilitySpecHandle GetLectureHandle() const { return LectureHandle; }
+	/** The ability for a skill slot (Lecture, Form A Line, the Sigh, the Judgment). */
+	FGameplayAbilitySpecHandle GetSkillHandle(EJamSkill Skill) const { return Skill == EJamSkill::Lecture ? LectureHandle : SkillHandles[(int32)Skill]; }
 
 	/** Level, points, ranks, loot and stats (BUILD_SPEC 3c). Written only by the game mode. */
 	const FJamProgression& GetProgression() const { return Progression; }
@@ -38,5 +40,6 @@ private:
 	TObjectPtr<UJamAbilitySystemComponent> AbilitySystem;
 
 	FGameplayAbilitySpecHandle LectureHandle;
+	FGameplayAbilitySpecHandle SkillHandles[(int32)EJamSkill::Count];
 	FJamProgression Progression;
 };

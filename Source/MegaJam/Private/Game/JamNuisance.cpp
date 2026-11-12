@@ -130,8 +130,21 @@ void AJamNuisance::HandleResolveChanged(const FOnAttributeChangeData& Data)
 	// A hit that did not pacify: stop briefly. Pacify itself is handled by OnPacified.
 	if (Data.NewValue < Data.OldValue && Data.NewValue > 0.f && !IsPacified() && !IsTreated())
 	{
-		SetState(EJamNuisanceState::Flustered);
+		Fluster(FlusteredSeconds);
 	}
+}
+
+void AJamNuisance::Fluster(float Seconds)
+{
+	if (IsPacified() || IsTreated()) { return; }
+	if (State != EJamNuisanceState::Flustered) { SetState(EJamNuisanceState::Flustered); FlusterHold = Seconds; }
+	else { FlusterHold = FMath::Max(FlusterHold, StateTime + Seconds); }
+}
+
+void AJamNuisance::Slow(float Factor, float Seconds)
+{
+	SlowFactor = FMath::Clamp(Factor, 0.05f, 1.f);
+	SlowUntil = GetWorld()->GetTimeSeconds() + Seconds;
 }
 
 bool AJamNuisance::Treat()
@@ -161,7 +174,8 @@ const AActor* AJamNuisance::FindNearestHero(float& OutDistance) const
 void AJamNuisance::Steer(const FVector2D& DesiredVelocity, float DeltaSeconds)
 {
 	const FVector Here = GetActorLocation();
-	FVector2D Next = FVector2D(Here) + DesiredVelocity * DeltaSeconds;
+	const float Slowed = GetWorld()->GetTimeSeconds() < SlowUntil ? SlowFactor : 1.f;
+	FVector2D Next = FVector2D(Here) + DesiredVelocity * Slowed * DeltaSeconds;
 	// Stay inside the set: clamping each axis removes the blocked component, so it slides along walls.
 	const float Margin = Capsule->GetScaledCapsuleRadius();
 	Next.X = FMath::Clamp(Next.X, SetBounds.Min.X + Margin, SetBounds.Max.X - Margin);
@@ -185,7 +199,7 @@ void AJamNuisance::Tick(float DeltaSeconds)
 	switch (State)
 	{
 	case EJamNuisanceState::Flustered:
-		if (StateTime >= FlusteredSeconds) { SetState(EJamNuisanceState::Wander); }
+		if (StateTime >= FMath::Max(FlusterHold, FlusteredSeconds)) { FlusterHold = 0.f; SetState(EJamNuisanceState::Wander); }
 		break;
 
 	case EJamNuisanceState::Wander:

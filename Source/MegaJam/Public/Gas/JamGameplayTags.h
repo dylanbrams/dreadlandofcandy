@@ -19,4 +19,7 @@ namespace JamGameplayTags
 
 	// Granted while the Lecture ability is cooling down (see UJamGE_Cooldown).
 	MEGAJAM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Lecture);
+	MEGAJAM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Line);
+	MEGAJAM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Sigh);
+	MEGAJAM_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Judgment);
 }
