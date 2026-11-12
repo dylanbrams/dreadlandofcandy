@@ -1,0 +1,20 @@
+RIG AND ANIMATION BRIEF (not a text-to-3D prompt)
+
+Input: SK_Hero textured humanoid mesh. Target height: 2.1 m.
+Requested export: UE5 mannequin skeleton via the existing rig client.
+Preset actions (id:name):
+0:Idle
+30:Walk
+114:ProudStrut
+306:OneHandUp
+
+Text-to-motion requests (name=duration:prompt):
+SwordRaise=3:A heavy armoured knight raises his right hand from a ready grip to straight overhead in the first 0.3 seconds, as if lifting a greatsword attached later, then holds that pose for the rest of the clip, chest out, feet planted, no swing or jump.
+Scrub=3:A standing knight holds his right hand in a tool grip at chest height in front of him and scrubs it rapidly side to side, like brushing teeth, feet planted. The toothbrush is attached later; do not create a prop or another character.
+Sigh=3:A standing knight lets his shoulders drop in a long heavy disappointed sigh, head tilting down and shaking slowly side to side, then straightens up.
+
+Must: idle and walk. Sword raise is optional; code can rotate the sword.
+Keep feet planted for raise, scrub and sigh. No combat swings or jumps.
+Separate hand props are attached in Unreal, not generated into the body.
+Review grip alignment and timing in the game camera.
+Rig success is untested; retain the two-hour day-2 time-box and fallback.
