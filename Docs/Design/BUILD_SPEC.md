@@ -62,6 +62,8 @@ A complete eight-minute comedy with a beginning and an end. Solo, offline, one m
 
 ### Not building (do not start any of these without Dylan saying so)
 
+(Dylan, Nov 12 evening: the open world, the follow camera and the quest generator are now being built as section 3e. This list still describes Backlot mode, and section 3e ends with its own list.)
+
 Multiplayer features (sessions, host/join, replication code, RPCs): not built, but see "Multiplayer-ready rules" in section 5, which every task follows. Any backend use other than the typed-notes feature in section 3a (no accounts, no player persistence). Save games. Quest generator, seeds, stage weights. Classes other than the knight (in the shipped flow; section 3d allows them as expansion work behind `-class=`). Inventory, stash, equipment UI, vendors. Reputation bands. Minimap, overworld map. Composure, Energy, resistances, any status other than Flustered. GAS beyond what section 3c needs (no new attribute sets, GameplayCues or cost effects). Skill trees, respec, talents. Auto-cast. Level 1 restart. Procedural terrain.
 
 (Dylan, Nov 11: no multiplayer feature work in the jam plan, but keep the preparation: no architectural choice that makes adding it miserable later.)
@@ -156,7 +158,93 @@ A class is a set of attack rows, a hero mesh on the mannequin skeleton, and its 
 
 `The_Dread_Land_of_Candy_Attacks_and_Effects_Pipeline.md` is the roster and the contract; `The_Dread_Land_of_Candy_Attacks_and_VFX_Design.txt` is an inventory and mood reference (most of its entries are brainstorm, not commitments). Where they disagree the pipeline document wins; where either disagrees with this file, this file wins. Ignore their replication, owner/teammate tier and runtime-localization parts for now. Neither is evidence that anything exists. Shouted lines go into `Jokes.md` before they go into code.
 
-**Still not building:** replication, sessions, quest generator, inventory, backend beyond typed notes.
+**Still not building:** replication, sessions, inventory, backend beyond typed notes. (The quest generator was on this list until the evening of Nov 12; it is now section 3e.)
+
+## 3e. The open world (Dylan, Nov 12 evening)
+
+The slice was finished on day 1, and Dylan's verdict is that three arenas, a fixed camera and one quest are too small. Days 2 and 3 widen it into the game he pitched: a village in the middle, three candy biomes around it, a third-person camera, villagers who hand out generated quests, and the three film scenes as the main questline. This section overrules, for open-world work: "one map", the locked camera in section 3 and answer 6 in section 11, "Quest generator" and "Minimap" in "Not building", and rule 8 in section 9.
+
+**Who builds what.** Claude quota is nearly spent for the week, so the work is split by kind, not by size:
+
+- **GAME (Claude) builds the framework only**, in the order O1 to O9 (section 7), and stops. Framework means: the types, the game loop, the flags, the tests, and placeholder numbers that make the autoplay bot pass. GAME does not tune, dress or write content beyond what a test needs. RULES is off, so GAME also writes the headless parts under `Film/` and `World/` itself.
+- **TERRAIN (ChatGPT)** makes the terrain models, the scatter palettes, the PCG graph and the map (`Docs/Design/TerrainTask.md` is its brief; the hand-over contract below wins where they differ).
+- **FX (ChatGPT)** continues the combat and attack effects under section 3d.
+- **TUNING (ChatGPT, Nov 13 to 15)** changes numbers and table rows on the tuning surface below, and nothing else.
+
+**Protecting what works**
+
+- Before O1, tag the last green slice commit `slice-day1`. That build is shippable as it stands.
+- The world has two modes. `Backlot` is the slice, unchanged. `Open` is this section. `-open` selects Open, `-backlot` selects Backlot; until the gate below, no flag means Backlot.
+- Both modes keep their autoplay line green after every commit: `JamAutoplay: PASS scenes=3 ...` in Backlot, `JamAutoplay: PASS mode=open main=3 side=<n> ...` in Open. The smoke test runs both.
+- **Gate, end of Nov 14:** if the packaged Open build passes its smoke test and Dylan prefers it, the default flips to Open and Backlot stays behind `-backlot`. Otherwise the slice ships and Open stays behind `-open`.
+
+**The world as data** (new folder `Source/MegaJam/*/World/`, headless, tests `Jam.World.*`)
+
+- `EJamBiome`: `Village`, `Meadow` (the field), `Molars` (Fort Toothache's hills), `Orchard`. Display names come from `Jokes.md`.
+- `FJamLocation`: id, kind (`Village`, `Giver`, `Camp`, `FilmSet`, `Landmark`), biome, position (x, y; z is found by tracing down), radius, yaw, and for camps the kinds it can spawn and its capacity.
+- `FJamBiomeDef`: nuisance kinds, tint, music cue, default weather (none, rain, sprinkle-snow, fog: the typed-note weather, reused), grade offsets for `JamLook`.
+- `JamWorld::Def()` returns the bounds, the biomes and the locations from one table, `Private/World/JamWorldTable.cpp`. Everything else asks `JamWorld` where things are; nothing reads `JamBacklot::Sets()` directly in Open mode. The three film sets are `FilmSet` locations with the same floor sizes as the backlot.
+- Tests: every location is inside the bounds; the village and three film sets exist; each biome has at least two camps and one giver; camps do not overlap each other or the village; every camp's capacity is at least 3.
+- Starting size (tune later): playable square 24,000 uu, village at the origin with a 2,500 uu radius, biomes as three wedges around it, film sets 5,000 to 7,000 uu out, camps 1,200 uu across.
+- **Flat fallback:** on the template map, Open mode builds the world from the table alone: ground plane, biome-tinted floor patches, the existing houses, trees, crops, molars and fences placed by a seeded scatter. This is what GAME develops against and what ships if the terrain does not arrive.
+
+**Hand-over contract with TERRAIN**
+
+- TERRAIN owns `/Game/World/` (map `/Game/World/L_Sugarborough`, PCG graphs, palettes, terrain meshes), `ImportSource/Terrain/`, the rows of `JamWorldTable.cpp` (positions, radii, biomes; not the struct), and `Docs/Workers/terrain.md`. It may also add the PCG plugin to the `.uproject` and its folders to `DirectoriesToAlwaysCook`, saying so in its notes. It touches nothing else under `Source/`, `Config/` or `Content/`.
+- The village centre is at the world origin. Terrain meshes block the `Pawn` and `WorldStatic` channels; scatter does not block pawns unless it is as big as a house. Camps and film sets sit on ground flat enough to walk (under 15 degrees) across their radius.
+- Launching `MegaJam.exe /Game/World/L_Sugarborough -open` must work: when Open mode starts on any map other than the template, the game skips the flat fallback and only spawns gameplay actors at the table's locations.
+- Scatter props 500 to 1,500 triangles with 1k textures, set pieces up to 8,000; the zip stays under 1 GB (379 MB before terrain).
+- The PCG result must exist in a cooked build: baked into the map, or generated at runtime and proven by `smoke-packaged.ps1`. A world that only exists in the editor is not delivered.
+
+**Camera and controls (Open mode)**
+
+- Third-person follow camera on the existing spring arm: the arm uses the controller's rotation, collision test on, about 500 uu long and 15 degrees down to start. Mouse or right stick turns the camera; the cursor is hidden during play and returns for screens.
+- Movement is relative to the camera's yaw. The hero turns to face where they walk, and turns to the camera's yaw when a skill is cast, so skills aim where the player looks. Skill and interact buttons do not change.
+- `AJamHero` gets `EJamCameraMode { Fixed, Follow }`; Backlot uses `Fixed` exactly as now. `SetAimOverride` also turns the camera in `Follow`, so the bot films what it does.
+- `-camyaw=<deg> -campitch=<deg> -camdist=<uu>` pin the camera for repeatable screenshots. Sensitivity and invert-Y go in `UJamSettings` and the pause menu.
+- Fenella keeps her shoulder offset; she must stay in frame at the default distance.
+
+**Quests** (headless, under `Film/`, tests `Jam.Film.Quest.*`)
+
+A quest is a scene. Everything a quest needs to run already exists: `FJamShoot` plays any `FJamSceneDef`, with the slate, ACTION!, CUT!, RETAKE! and the wrap. Fenella films every quest, which keeps the theme.
+
+- `FJamQuestTemplate`: id, allowed biomes, one to three stage patterns (verb, kinds, count range, resolve and speed ranges, chance and length of a countdown), whether it carries a note, title patterns, giver line ids, gross tier.
+- `JamQuestGen::Make(seed, giver, camp, hero level, motif)` returns an `FJamSceneDef` and an `FJamQuestInfo` (title, the giver's pitch, tier). Pure and deterministic. Verbs stay Pacify, Interact and Collect; no new verbs.
+- Tests: the same inputs give the same quest; every quest is finishable in its camp (count within capacity, kinds the camp spawns); a giver never offers the same template twice running; a thousand seeds use every template; difficulty rises with level inside fixed bounds.
+- `FJamQuestLog` (on the PlayerState): per quest `Offered -> Accepted -> Shooting -> Done`. One active quest at a time. The main questline is three fixed quests wrapping `JamScenes::Scene1()` to `Scene3()` at the film sets, gated by level (7, 8, 9).
+- Text comes from `JamLines` and `Jokes.md` patterns. The generator fills slots; it does not invent sentences.
+- **Typed requests (O8):** at a giver, "Ask for something else" opens the existing note editor. The text goes to the existing note endpoint with the quest's first stage as context, comes back through `JamNoteClamp`, and replaces that stage. No backend change. Offline, the keyword matcher answers, as at CUT!.
+
+**The Open game loop** (`AJamGameMode`, still the only writer of shared state)
+
+1. Title, then the hero stands in the village square. Fenella pitches the film and a marker points to the field.
+2. Main quest 1 is Scene 1 as built, forced retake included. Its wrap opens the world: givers get offers.
+3. `AJamVillager` (the `SM_Villager` model) stands at each `Giver` location with a marker over their head when they have an offer. Interact opens the Candy Rock dialogue: title, pitch, Accept, Not now, Ask for something else.
+4. Accepting puts a compass marker and distance on the HUD. Entering the camp's radius starts the shoot there; stage actors spawn inside the camp's bounds and are leashed to them, as nuisances already are to a set.
+5. The wrap pays out through the existing ledger and loot at the quest's tier. There is no walk back to hand in; the giver reacts with an approval toast the next time the hero passes.
+6. Idle camps keep a few of their biome's nuisances wandering when the hero is within 6,000 uu and remove them beyond 9,000. Pacifying them gives XP and nothing else.
+7. Scene 3's wrap leads to the Premiere and credits exactly as now, so the game still ends. Side quests are optional breadth on the way.
+
+Also needed: nuisances, pickups and villagers find the ground by tracing down, so uneven terrain works; XP continues past level 10 on a second threshold table (cap 14, one point a level, existing rank caps) used only in Open mode; a retake returns the hero to the camp's edge, not a set mark.
+
+**Presentation hooks** (GAME wires them, TUNING fills them): music cue, weather and grade change on entering a biome; the HUD gains a compass marker, a quest tracker line under the objective, the giver marker and the dialogue screen (`-uiscreen=giver|tracker|compass`). No minimap.
+
+**Classes.** Section 3d stands. GAME adds one hook (O9): `FJamClassDef` (hero mesh, clips, four attack ids) with the knight as row 0, read by `AJamHero` and the skill bar, so a class is a row plus assets.
+
+**The tuning surface.** Every number and row a tuner may change lives at the top of one of these files, each guarded by a bounds test. TUNING edits these and nothing else, and after each change runs the build, `run-tests.ps1` and both autoplay modes.
+
+| File | Holds |
+| --- | --- |
+| `Private/World/JamWorldTable.cpp` | Locations, camp kinds and capacity, biome definitions (shared with TERRAIN) |
+| `Private/Film/JamQuestTemplates.cpp` | Quest templates, count and difficulty ranges, tiers |
+| `Private/Film/JamScenes*.cpp`, section 10 numbers | The three film scenes, nuisance stats |
+| `Private/Film/JamProgression.cpp` | XP thresholds, rank tables, loot stat sizes |
+| `Private/Game/JamOpenTuning.h` | Camera distance and pitch, ambient spawn counts and ranges, compass range, fallback scatter density |
+| `Private/Film/JamLines*.cpp` | Lines, after they are in `Jokes.md` |
+
+GAME lists the real file names in `STATUS.md` when O-tasks create them; where a name above differs from what was built, STATUS is right.
+
+**Still not building:** save games, inventory or vendors, a minimap or map screen, turn-in walks, new stage verbs, navmesh pathfinding, world streaming, replication.
 
 ## 4. Theme checklist (the "Theme" score)
 
@@ -301,11 +389,27 @@ End of day 2: package, smoke, and **have someone who has not seen it play it**. 
 | T24 | Street gags from `Jokes.md` (signs, plywood backs, deleted-scene door), opening narration interrupt, gag credits | Opus | Dylan picks which; each is a screenshot |
 | T25 | Fixes from the playtest: first-minute clarity, prompts, pacing | Opus | Second outside playtest finishes without help |
 
+**Open world (section 3e), from the evening of Nov 12. GAME takes these in order, ahead of T24 and T25, and stops after O9.** Each ends with the build, `Jam.*` tests, both autoplay modes and a screenshot. Each is a commit, so the work can stop after any of them and leave a working game. Numbers are placeholders that make the bot pass; tuning is not GAME's job.
+
+| ID | Task | Done when |
+| --- | --- | --- |
+| O1 | Tag `slice-day1`. World mode switch (`-open`, `-backlot`). `World/` types, `JamWorldTable.cpp` with a first layout, `Jam.World.*` tests. Flat fallback world built from the table. Write the table's shape into `Docs/Workers/terrain.md` for TERRAIN | `-open` screenshot from above shows village, three tinted biomes, film sets and camps; Backlot autoplay unchanged |
+| O2 | Follow camera, camera-relative movement, cast-faces-camera, `-camyaw` / `-campitch` / `-camdist`, sensitivity and invert-Y settings; bot turns the camera | Screenshot behind the hero in the village with Fenella in frame; Scene 1 passes by bot in `-open` |
+| O3 | `FJamQuestTemplate`, `JamQuestGen`, `FJamQuestLog`, four starter templates, tests | `Jam.Film.Quest.*` pass |
+| O4 | Open game loop: main questline at the film sets, `AJamVillager` givers, accept, camp start with leashed spawns, wrap at tier, ground tracing, ambient camps, Open-mode XP table; bot plays it | `JamAutoplay: PASS mode=open main=3 side=2` in the editor `-game` |
+| O5 | HUD and screens: compass marker and distance, quest tracker, giver marker, Candy Rock dialogue (keyboard, gamepad, mouse) | `-uiscreen=giver`, `tracker`, `compass` screenshots |
+| O6 | Biome hooks: music, weather and grade on entering a biome; kinds per biome from the table | Three screenshots, one per biome, visibly different |
+| O7 | Package and smoke `-open`; add the Open PASS line and a cooked-world check to `smoke-packaged.ps1`. If TERRAIN's map exists: launch on it, fix what ground tracing and collision get wrong | Packaged Open run passes on the flat fallback (and on the map, if delivered) |
+| O8 | Typed quest requests at a giver, through the existing note client and clamp | Stub-tested: a typed request visibly changes the quest; offline run passes |
+| O9 | `FJamClassDef` hook with the knight as row 0; `-class=` picks a row | Knight unchanged in both autoplay modes and the T19 screenshots |
+
+After O9, GAME writes the real tuning-surface file names into `STATUS.md` and hands over to TUNING.
+
 **Day 4 (Nov 15): no features.** Bugs, tuning, audio levels, a clean-machine unzip test, the 30 to 60 second video (cut: sword fakeout, CUT! prompt, ledger, budget running out), declarations, itch page. **Upload by 2:00 PM PST**; the last four hours are spare.
 
 ## 8. Cut order when behind
 
-Drop from the top. 0) All expansion work (section 3d): it goes before anything in the slice does. 1) Commentary track. 2) Street gags beyond signs. 3) Skill 3, the Disappointed Sigh (two skills and the ultimate still give a choice). 3a) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
+Drop from the top. 0) All expansion work (sections 3d and 3e): it goes before anything in the slice does. Within 3e, drop from the end: O9, O8, O6, then TERRAIN's map (ship the flat fallback); if O4 is not green by the end of Nov 13, Open mode stays behind `-open` and the slice ships. 1) Commentary track. 2) Street gags beyond signs. 3) Skill 3, the Disappointed Sigh (two skills and the ultimate still give a choice). 3a) Second ending (ship one Premiere card). 4) Scene 3's almond-collect stage. 5) Loot stat effects (names only). 6) Voice-over (captions only). 7) Generated 3D for anything but the hero (flats). 8) Scene 3 entirely: two scenes and a Premiere is still a complete film.
 
 Typed notes are outside this order: they are decided by their own gate at the end of day 2 (section 3a), and if they pass they rank above everything in the list except Scene 3 entirely.
 
@@ -348,7 +452,7 @@ Answered Nov 11:
 4. **Voice:** tabled; fallback is a paid generator, decided later. Captions ship.
 5. **Art:** dark fantasy high poly for the hero, bright kiddie low poly for everything else, through the generators. In `styles.json`.
 
-6. **Camera:** Dylan considered a Fortnite-style over-the-shoulder camera and left the choice to whichever is easiest. Decision: **fixed three-quarter camera, pulled in close** (start at about 1100 uu arm length, 50 degree pitch, no player camera control; tune in T01 so the hero fills roughly a sixth of the screen height). Reasons: every screenshot shows the whole set from a known angle, which is how sessions verify their work; no camera collision, mouse-look, sensitivity or invert settings to build; Fenella and her camera stay in frame; nuisances cannot hide behind the player; strafing and backpedal animations are not needed. Do not revisit.
+6. **Camera:** Dylan considered a Fortnite-style over-the-shoulder camera and left the choice to whichever is easiest. Decision: **fixed three-quarter camera, pulled in close** (start at about 1100 uu arm length, 50 degree pitch, no player camera control; tune in T01 so the hero fills roughly a sixth of the screen height). Reasons: every screenshot shows the whole set from a known angle, which is how sessions verify their work; no camera collision, mouse-look, sensitivity or invert settings to build; Fenella and her camera stay in frame; nuisances cannot hide behind the player; strafing and backpedal animations are not needed. Do not revisit. **Revisited by Dylan, Nov 12 evening:** this holds for Backlot mode only; Open mode uses the follow camera in section 3e.
 
 7. **Backend:** second Gunicorn service and second Postgres database; Haiku; database cache first; about 50 dollars must go a long way (section 3a).
 8. **Commits:** regularly, at the end of each green task (section 9).

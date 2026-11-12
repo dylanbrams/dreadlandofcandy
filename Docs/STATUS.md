@@ -4,6 +4,8 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers
 
 ## Next task
 
+**Changed by Dylan, Nov 12 evening: the open world is next.** Read `BUILD_SPEC.md` section 3e, then take **O1 to O9** (section 7, "Open world") in order, ahead of T24 and T25. GAME builds the framework only and stops after O9; ChatGPT does terrain, effects and tuning (`WORKERS.md`, "Open world"). First step of O1: tag the last green commit `slice-day1`. The paragraph below describes the slice, which stays shippable throughout.
+
 **Schedule: well ahead.** Everything on the GAME backlog that does not need a human or a deploy is done, now including T12b (typed notes) and T16a (generated Premiere), both tested against a local stub. **Left:** T15 tuning that needs a human playing (only the Judgment one-shot is fixed); lighting and a colour grade (the rest of T20); T24 street gags (Dylan picks which); T25 fixes from a playtest; T17 only if new assets land. Lighting and grade are in (`JamLook`, needs Dylan's eye). Next GAME task: T24 gags once Dylan picks, otherwise the cheapest ones (signs, plywood backs).
 **Dylan, needs you (in order of value):**
 1. **BACKEND deploy** (`backend/DEPLOY.md`, "First deploy", SSH and API key off stream). Then put the base URL in `Config/DefaultGame.ini` as `[/Script/MegaJam.JamNoteClient]` `BaseUrl=https://<host>` (or tell GAME), and run the packaged check below against it. Until then the game is offline: typed notes go through the keyword matcher, which understands all six suggestions.

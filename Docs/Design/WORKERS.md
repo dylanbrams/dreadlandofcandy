@@ -16,6 +16,8 @@ How the backlog in `BUILD_SPEC.md` section 7 is split across sessions that can r
 | **GAME** | Opus | Main checkout, branch `main`. The only one with the editor open | `Source/MegaJam/*/Game/`, `*/UI/`, `*/Gas/`, `*/Testing/`, `Content/`, `Config/`, `Scripts/`, `Docs/STATUS.md`, `Docs/DEVLOG.md` |
 | **RULES** | Sonnet | Worktree `D:\Source\Unreal\MegaJam2026-rules`, branch `rules` | `Source/MegaJam/*/Film/`, `Source/MegaJam/Private/Tests/Film*.cpp`, `Docs/Workers/rules.md` |
 | **FX** | Codex | Worktree `D:\Source\Unreal\MegaJam2026-fx`, branch `fx`. Builds and runs tests; never opens the editor | `Source/MegaJam/*/Combat/`, `Source/MegaJam/Private/Tests/Combat*.cpp`, `Docs/Workers/fx.md` |
+| **TERRAIN** | ChatGPT (Codex), from Nov 12 evening | Main checkout. Opens the editor only for `/Game/World/`, and never while GAME has it open | `Content/World/` (map, PCG graphs, palettes, terrain meshes), `ImportSource/Terrain/`, the rows of `Source/MegaJam/Private/World/JamWorldTable.cpp`, `Docs/Design/TerrainTask.md`, `Docs/Workers/terrain.md` |
+| **TUNING** | ChatGPT (Codex), Nov 13 to 15, after GAME finishes O9 | Main checkout, once GAME is idle | The tuning-surface files listed in `BUILD_SPEC.md` section 3e (numbers and table rows only), `Docs/Workers/tuning.md` |
 | **BACKEND** | Opus for B1, Sonnet after | Its own repo, beside OneMore's server; never this repo's source | The note service and its database; `Docs/Workers/backend.md` in this repo (notes only) |
 | **ASSETS** | Sonnet, with Dylan approving | Main repo files outside `Source/` and `Content/`; no builds, no editor | `Assets/Incoming/` (generated meshes, textures, manifests), `Docs/styles.json`, `Docs/Workers/assets.md` |
 | **AUDIO** | Dylan, ACE Studio | Outside the repo, delivering files | `Assets/Incoming/Audio/`, `Docs/Workers/audio.md` |
@@ -85,6 +87,14 @@ Does not edit `Game/`, `UI/`, `Gas/`, `Content/`, `Config/`, `MegaJam.Build.cs` 
 
 Commits to `fx` at the end of each task, once the build and `Jam.*` tests pass. Set-up once: `git worktree add ..\MegaJam2026-fx -b fx`.
 
+### Open world (Nov 12 evening): GAME, TERRAIN, TUNING
+
+`BUILD_SPEC.md` section 3e governs. Claude quota is short, so GAME builds only the framework (O1 to O9 in section 7, ahead of T24 and T25) and then stops; RULES is off and GAME writes the headless `Film/` and `World/` code itself. ChatGPT does the rest in three roles: FX (above), TERRAIN and TUNING.
+
+- **TERRAIN** follows the hand-over contract in section 3e: village at the origin, map `/Game/World/L_Sugarborough` that works with `-open` in a packaged build, locations as rows in `JamWorldTable.cpp` (GAME creates the file and its struct in O1; until then TERRAIN lists its locations in `Docs/Workers/terrain.md`). It may add the PCG plugin to the `.uproject` and its folders to `DirectoriesToAlwaysCook`, and says so in its notes. It commits with `git commit -- <its paths>`, never a bare `git commit`.
+- **TUNING** changes numbers and rows in the tuning-surface files and nothing else: no new types, functions, flags or files. After every change: `Scripts\build.ps1`, `Scripts\run-tests.ps1`, the Backlot autoplay and the Open autoplay, all green, then a commit of its own paths. A bounds test that fails means the number is out of range, not that the test is wrong. Anything that needs code is a request in `Docs/Workers/tuning.md`.
+- **Checkout sharing:** FX, TERRAIN and TUNING all work in the main checkout, so only one of them builds at a time, and none of them builds or opens the editor while GAME is mid-task. GAME's commits come first; the others rebase their uncommitted work on them.
+
 ### BACKEND: the typed-note service
 
 Runs entirely outside Unreal. Contract is `Docs/Design/NoteForm.md`; if the contract has to change, change that file first and tell RULES.
@@ -142,6 +152,8 @@ GAME never waits idle: every task above has engine work that can go first agains
 | GAME | all day | all day | all day | all day |
 | RULES | all day, unattended | all day, unattended | morning only | off |
 | FX | off | when the slice is ahead | when the slice is ahead; freeze at end of day | off |
+| TERRAIN | evening: brief and first models | models, palettes, PCG map | map in a packaged build; freeze at end of day | off |
+| TUNING | off | once GAME finishes O9 | all day; freeze at end of day | numbers only, from playtests |
 | BACKEND | B1 | B2 and deploy | prompt tuning, short | off |
 | ASSETS | list and test assets | main batch | replacements | off |
 | AUDIO | off | music and sounds | song, voice | levels only |
@@ -161,6 +173,10 @@ RULES, FX, BACKEND, ASSETS and AUDIO each keep `Docs/Workers/<name>.md`: what is
 **RULES:** "You are the RULES worker in the worktree at `D:\Source\Unreal\MegaJam2026-rules` on branch `rules`. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` sections 3, 3a, 3c and 5, and `Docs/Design/WORKERS.md`. Edit only what RULES owns. Take the next RULES task, write the tests first, build and run `Jam.Film.*`, commit to `rules`, update `Docs/Workers/rules.md`, then take the next one."
 
 **FX:** "You are the FX worker in the worktree at `D:\Source\Unreal\MegaJam2026-fx` on branch `fx`. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` sections 3, 3c, 3d and 5, and `Docs/Design/WORKERS.md`. Then read `Docs/Design/The_Dread_Land_of_Candy_Attacks_and_Effects_Pipeline.md` (roster and contract) and skim the `..._VFX_Design.txt` bible (reference only); where they disagree with the spec, the spec wins. Read the existing code you build on: `Gas/JamGameplayAbility.h`, `Gas/JamAoePattern.h`, `Film/JamProgression.h`, `Game/JamSkillFx.h` and `AJamHero::RequestSkill`. Edit only what FX owns. Take the next FX task, write the tests first, build and run `Jam.*`, commit to `fx`, write requests for GAME and what you finished in `Docs/Workers/fx.md`, then take the next one. Never open the editor, never print or open config or key files (this is streamed)."
+
+**TERRAIN:** "You are the TERRAIN worker in the main checkout. Read `CLAUDE.md`, `Docs/Design/BUILD_SPEC.md` section 3e (the hand-over contract governs), `Docs/Design/WORKERS.md`, `Docs/Design/TerrainTask.md`, `Docs/GenerationRunbook.md` and `Docs/Workers/terrain.md`. Edit only what TERRAIN owns. Deliver terrain models, scatter palettes, the PCG graph and `/Game/World/L_Sugarborough`, proven in a packaged build with `-open`. Never print or open config or key files (this is streamed)."
+
+**TUNING:** "You are the TUNING worker in the main checkout. Read `CLAUDE.md`, `Docs/STATUS.md` (it lists the real tuning files), `Docs/Design/BUILD_SPEC.md` sections 3e and 10, and `Docs/Design/WORKERS.md`. Change only numbers and table rows in the tuning-surface files. After each change run the build, the tests and both autoplay modes; commit only your paths; write what you changed and why in `Docs/Workers/tuning.md`."
 
 **BACKEND:** "You are the BACKEND worker. Read `Docs/Design/NoteForm.md` and `BUILD_SPEC.md` section 3a in the MegaJam2026 repo, and the route and client pattern in OneMore's word server (source only; never open config, env or key files; this is streamed). Build the next B task as a separate Gunicorn service with its own database. Load the `claude-api` skill before the model call. Record progress in `Docs/Workers/backend.md`."
 
