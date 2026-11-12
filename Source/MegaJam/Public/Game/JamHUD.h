@@ -34,6 +34,11 @@ private:
 	void BuildView();
 	/** The music (T18): one cue per moment, a random take, crossfaded, at the "Fenella" volume. */
 	void TickMusic();
+	/** Fenella's voice (T23): when her caption changes, play /Game/Audio/VO/VO_<LineId> if it exists. */
+	void TickVoice();
+	UPROPERTY(Transient)
+	TObjectPtr<class UAudioComponent> Voice;
+	FName VoiceLine;
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Music;
 	FName MusicCue;

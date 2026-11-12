@@ -73,6 +73,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 	else { JamHud::Sample(SampleName, View); }
 	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
 	TickMusic();
+	TickVoice();
 
 	if (Screen)
 	{
@@ -430,4 +431,24 @@ void AJamHUD::TickMusic()
 		Music->FadeIn(1.5f, 1.f);
 		UE_LOG(LogJam, Log, TEXT("JamMusic: %s take %d"), *Cue.ToString(), Take);
 	}
+}
+
+// ---- Voice-over (T23) -------------------------------------------------------------------------------------------
+
+void AJamHUD::TickVoice()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || !PlayerOwner || !PlayerOwner->IsLocalController()) { return; }
+	const FName Line = GS->IsCaptionVisible() ? GS->CaptionLineId : NAME_None;
+	if (Line == VoiceLine) { return; }
+	VoiceLine = Line;
+	if (Voice) { Voice->Stop(); Voice = nullptr; }   // a new line cuts the old one off, like a director would
+	if (Line.IsNone()) { return; }
+	// Clips are found by convention (BUILD_SPEC 5A); a missing one means the caption alone, which is the default.
+	const FString Name = FString::Printf(TEXT("VO_%s"), *Line.ToString());
+	USoundBase* Clip = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/%s.%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!Clip) { return; }
+	const UJamSettings* J = Settings();
+	Voice = UGameplayStatics::CreateSound2D(this, Clip, FMath::Max(J ? J->VoiceVolume : 0.8f, 0.001f), 1.f, 0.f, nullptr, false, true);
+	if (Voice) { Voice->bIsUISound = true; Voice->Play(); }
 }
