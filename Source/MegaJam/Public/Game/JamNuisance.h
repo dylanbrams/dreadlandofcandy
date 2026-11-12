@@ -55,6 +55,17 @@ public:
 	float WanderSpeedScale = 0.4f;
 	float FlusteredSeconds = 0.6f;
 
+	// Set by the game mode before FinishSpawning (per kind, BUILD_SPEC 10).
+	float MaxResolveValue = 100.f;
+	FLinearColor BaseColour = FLinearColor(1.0f, 0.35f, 0.6f);
+	/** Changes heading often while wandering (bugs). */
+	bool bErratic = false;
+	/** Spawns already sitting (retakes of a treat stage). */
+	bool bStartPacified = false;
+
+	/** Treated back to Pacified: a retake of a treat stage. */
+	void ResetToPacified();
+
 	/** Called by the game mode only (it validated the request). Returns false if not pacified. */
 	bool Treat();
 

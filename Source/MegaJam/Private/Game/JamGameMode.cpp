@@ -4,14 +4,17 @@
 #include "Game/JamHero.h"
 #include "Game/JamHUD.h"
 #include "Game/JamNuisance.h"
+#include "Game/JamPickup.h"
 #include "Game/JamPlayerState.h"
+#include "Film/JamLines.h"
+#include "Film/JamShoot.h"
 #include "Gas/JamResolveAttributeSet.h"
 #include "MegaJam.h"
 #include "AbilitySystemGlobals.h"
 #include "Components/CapsuleComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/WorldSettings.h"
 #include "Misc/CommandLine.h"
 
 namespace JamShootPacing
@@ -20,22 +23,61 @@ namespace JamShootPacing
 	constexpr float SlateSeconds = 2.0f;
 	constexpr float ClearedSeconds = 1.2f;
 	constexpr float FailedSeconds = 2.5f;
+	constexpr float WrapCardSeconds = 4.0f;
 }
 
 namespace JamAutoplayTuning
 {
-	constexpr float TimeoutSeconds = 90.f;
+	/** Per scene, in game time (walking to it included). */
+	constexpr float SceneTimeoutSeconds = 180.f;
 	// Close in to this before lecturing (cone is 800). Inside the rats' 500 flee radius on purpose, like a
 	// player would: the bot then has to chase and corner them, which exercises Flee and the set edges.
 	constexpr float LectureDistance = 450.f;
 	constexpr float InteractDistance = 110.f;   // walk this close before treating
+	constexpr float NoteThinkSeconds = 1.5f;    // reads the CUT! card before answering
 }
 
-namespace JamRatTuning
+namespace JamStageTuning
+{
+	constexpr float CollectRadius = 120.f;
+	/** Meter stages: each loose nuisance eats one crop per this many seconds. */
+	constexpr float SecondsPerCropPerBug = 15.f;
+	/** The hero steps this far onto the next set before its scene starts. */
+	constexpr float SetEntryDepth = 250.f;
+}
+
+namespace
 {
 	// BUILD_SPEC section 10.
-	constexpr float Speed = 300.f;
-	constexpr float FleeRadius = 500.f;
+	struct FKindTuning { float Resolve; float Speed; float FleeRadius; bool bErratic; FLinearColor Colour; const TCHAR* Cast; const TCHAR* Treat; };
+
+	FKindTuning TuningFor(EJamTargetKind Kind)
+	{
+		switch (Kind)
+		{
+		case EJamTargetKind::Goblin: return { 150.f, 350.f, 600.f, false, FLinearColor(0.35f, 0.75f, 0.3f), TEXT("Goblins: Themselves, sadly."), TEXT("Brush teeth") };
+		case EJamTargetKind::Bug:    return { 60.f, 450.f, 400.f, true, FLinearColor(0.6f, 0.3f, 0.95f), TEXT("Lollypop bugs: Uncredited."), TEXT("") };
+		case EJamTargetKind::Almond: return { 1.f, 0.f, 0.f, false, FLinearColor(0.55f, 0.35f, 0.18f), TEXT("Almonds: Nuts."), TEXT("") };
+		default:                     return { 100.f, 300.f, 500.f, false, FLinearColor(1.0f, 0.35f, 0.6f), TEXT("Rats: Themselves."), TEXT("Feed celery") };
+		}
+	}
+
+	/** Spawn spots on a set: rows of three across, starting 700 uu in from the back edge. */
+	FVector2D SpotFor(const FBox2D& Set, int32 Index)
+	{
+		const int32 Row = Index / 3;
+		const int32 Col = Index % 3;
+		const float HalfY = Set.GetExtent().Y;
+		const float Y = Set.GetCenter().Y + (Col - 1) * HalfY * 0.5f + (Row % 2) * HalfY * 0.2f;
+		const float X = FMath::Min(Set.Min.X + 700.f + Row * 350.f, Set.Max.X - 150.f);
+		return FVector2D(X, Y);
+	}
+
+	FString LineText(EJamLineTrigger Trigger, int32 Pick)
+	{
+		const TArray<const FJamLine*> Lines = JamLines::ForTrigger(Trigger);
+		return Lines.Num() > 0 ? Lines[Pick % Lines.Num()]->Text : FString();
+	}
 }
 
 AJamGameMode::AJamGameMode()
@@ -64,33 +106,51 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 		return;
 	}
 	Hero = NewHero;
-	// The camera looks along +X; start the hero facing up-screen, into the set.
-	NewHero->SetActorRotation(FRotator::ZeroRotator);
+
+	const TCHAR* Cmd = FCommandLine::Get();
+	bAutoplay = FParse::Param(Cmd, TEXT("autoplay"));
+	FString AutoNote;
+	if (FParse::Value(Cmd, TEXT("autonote="), AutoNote)) { bAutoNoteTake = !AutoNote.Equals(TEXT("refuse"), ESearchCase::IgnoreCase); }
+	int32 SceneArg = 1;
+	FParse::Value(Cmd, TEXT("scene="), SceneArg);
+	FirstSceneIndex = FMath::Clamp(SceneArg - 1, 0, JamScenes::All().Num() - 1);
+	float TimeScale = 1.f;
+	if (FParse::Value(Cmd, TEXT("timescale="), TimeScale) && GetWorldSettings())
+	{
+		GetWorldSettings()->SetTimeDilation(FMath::Clamp(TimeScale, 0.25f, 8.f));
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: time scale %.2f"), GetWorldSettings()->TimeDilation);
+	}
 
 	// The backlot (T08): built from its table with floor tops just above the template map's floor, so the two
-	// never z-fight. Scene 1 plays on set 0, the field; the hero starts on its mark.
+	// never z-fight. The hero starts on the first scene's set mark.
 	const float TemplateFloorZ = NewHero->GetActorLocation().Z - NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	GroundZ = TemplateFloorZ + 2.f;
 	if (AJamBacklot* Backlot = GetWorld()->SpawnActor<AJamBacklot>(AJamBacklot::StaticClass(), FTransform::Identity))
 	{
 		Backlot->Build(GroundZ);
 	}
-	CurrentSet = 0;
-	FieldBounds = JamBacklot::Sets()[CurrentSet].Bounds;
-	const FVector2D Mark = JamBacklot::HeroMark(CurrentSet);
+	const FVector2D Mark = JamBacklot::HeroMark(FirstSceneIndex);
 	NewHero->TeleportTo(FVector(Mark, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
 
-	bAutoplay = FParse::Param(FCommandLine::Get(), TEXT("autoplay"));
-	StartScene(JamScenes::Scene1());
+	StartScene(FirstSceneIndex);
 }
 
-void AJamGameMode::StartScene(const FJamSceneDef& Scene)
+void AJamGameMode::StartScene(int32 InSceneIndex)
 {
 	AJamGameState* GS = GetJamGameState();
-	if (!GS) { return; }
-	GS->Shoot.Start(Scene);
+	const TArray<FJamSceneDef> Scenes = JamScenes::All();
+	if (!GS || !Scenes.IsValidIndex(InSceneIndex) || !JamBacklot::Sets().IsValidIndex(InSceneIndex)) { return; }
+
+	SceneIndex = InSceneIndex;
+	FieldBounds = JamBacklot::Sets()[SceneIndex].Bounds;
+	bBetweenScenes = false;
+	SceneTime = 0.f;
+	ClearStageActors();
+	GS->SceneNumber = SceneIndex + 1;
+	GS->Hint.Reset();
+	GS->Shoot.Start(Scenes[SceneIndex]);
 	SeenState = EJamShootState::Idle;   // TickShoot notices the Slate and shows its card
-	UE_LOG(LogJam, Log, TEXT("JamGameMode: scene %s \"%s\" started"), *Scene.Id.ToString(), *Scene.Title);
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: scene %d %s \"%s\" started"), SceneIndex + 1, *Scenes[SceneIndex].Id.ToString(), *Scenes[SceneIndex].Title);
 }
 
 void AJamGameMode::ShowCard(const FString& Title, const FString& Subtitle, float Seconds)
@@ -103,29 +163,78 @@ void AJamGameMode::ShowCard(const FString& Title, const FString& Subtitle, float
 	}
 }
 
-void AJamGameMode::RespawnTargets(EJamTargetKind Kind, int32 Count)
+void AJamGameMode::ClearStageActors()
 {
 	for (AJamNuisance* N : Nuisances)
 	{
 		if (N) { FleeCountTotal += N->GetFleeCount(); N->Destroy(); }
 	}
 	Nuisances.Reset();
-
-	// T06: rats only; other kinds arrive with their scenes.
-	const FVector2D Spots[] = { FVector2D(700.f, -450.f), FVector2D(900.f, 0.f), FVector2D(700.f, 450.f) };
-	const FVector2D Origin(FieldBounds.Min.X + 300.f, FieldBounds.GetCenter().Y);
-	for (int32 i = 0; i < Count && i < UE_ARRAY_COUNT(Spots); ++i)
+	for (AJamPickup* P : Pickups)
 	{
-		const FVector Loc(Origin + Spots[i], GroundZ + 70.f);
+		if (P) { P->Destroy(); }
+	}
+	Pickups.Reset();
+	CropsEaten = 0.f;
+}
+
+void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified)
+{
+	const FKindTuning Tuning = TuningFor(Stage.Target);
+	const int32 Already = Nuisances.Num();
+	for (int32 i = 0; i < Count; ++i)
+	{
+		const FVector Loc(SpotFor(FieldBounds, Already + i), GroundZ + 70.f);
 		AJamNuisance* N = GetWorld()->SpawnActorDeferred<AJamNuisance>(AJamNuisance::StaticClass(), FTransform(Loc),
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!N) { continue; }
 		N->SetBounds = FieldBounds;
-		N->Speed = JamRatTuning::Speed;
-		N->FleeRadius = JamRatTuning::FleeRadius;
+		N->Speed = Tuning.Speed * Stage.SpeedMultiplier;
+		// Boss-sized note targets (Resolve x3 and up) do not flee (BUILD_SPEC 10).
+		N->FleeRadius = Stage.ResolveMultiplier >= 3.f ? 0.f : Tuning.FleeRadius;
+		N->MaxResolveValue = Tuning.Resolve * Stage.ResolveMultiplier;
+		N->BaseColour = Tuning.Colour;
+		N->bErratic = Tuning.bErratic;
+		N->bStartPacified = bPacified;
 		N->FinishSpawning(FTransform(Loc));
+		if (Stage.ResolveMultiplier >= 3.f) { N->SetActorScale3D(FVector(1.8f)); }
 		N->GetResolveSet()->OnPacified.AddUObject(this, &AJamGameMode::HandlePacified);
 		Nuisances.Add(N);
+	}
+}
+
+void AJamGameMode::PrepareTreatStage(const FJamStageDef& Stage)
+{
+	// A note can swap in a different target (the very large goblin): fresh, un-pacified, pacify then treat.
+	if (!FMath::IsNearlyEqual(Stage.ResolveMultiplier, 1.f))
+	{
+		ClearStageActors();
+		SpawnTargets(Stage, Stage.Count, false);
+		return;
+	}
+	// Otherwise treat the ones the previous stage pacified; a retake un-treats them.
+	int32 Ready = 0;
+	for (AJamNuisance* N : Nuisances)
+	{
+		if (!N) { continue; }
+		N->ResetToPacified();
+		if (N->IsPacified()) { ++Ready; }
+	}
+	if (Ready < Stage.Count) { SpawnTargets(Stage, Stage.Count - Ready, true); }
+}
+
+void AJamGameMode::SpawnPickups(int32 Count)
+{
+	for (AJamPickup* P : Pickups) { if (P) { P->Destroy(); } }
+	Pickups.Reset();
+	for (int32 i = 0; i < Count; ++i)
+	{
+		// Pickups sit between the nuisance rows, so they don't land under a sitting bug.
+		const FVector2D Spot = SpotFor(FieldBounds, i + 1) + FVector2D(175.f, 0.f);
+		if (AJamPickup* P = GetWorld()->SpawnActor<AJamPickup>(AJamPickup::StaticClass(), FTransform(FVector(Spot, GroundZ + 25.f))))
+		{
+			Pickups.Add(P);
+		}
 	}
 }
 
@@ -153,18 +262,36 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 	return true;
 }
 
+bool AJamGameMode::HandleNoteAnswer(AJamHero* InHero, bool bTake)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !InHero || !GS->IsNotePrompt()) { return false; }
+	return GS->Shoot.AnswerNote(bTake);
+}
+
 void AJamGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-	TickShoot(DeltaSeconds);
-	if (bAutoplay && !bAutoplayDone && Hero.IsValid())
+	SceneTime += DeltaSeconds;
+	if (bBetweenScenes) { TickBetweenScenes(); }
+	else { TickShoot(DeltaSeconds); }
+	if (bAutoplay && !bRunOver && Hero.IsValid())
 	{
 		TickAutoplay(DeltaSeconds);
 	}
-	else if (bAutoplay && bAutoplayWalk && Hero.IsValid())
+}
+
+void AJamGameMode::TickBetweenScenes()
+{
+	const int32 Next = SceneIndex + 1;
+	const AJamHero* H = Hero.Get();
+	if (!H || !JamBacklot::Sets().IsValidIndex(Next)) { return; }
+	const FBox2D& Set = JamBacklot::Sets()[Next].Bounds;
+	const FVector2D Here(H->GetActorLocation());
+	if (Set.IsInside(Here) && Here.X > Set.Min.X + JamStageTuning::SetEntryDepth)
 	{
-		TickAutoplayWalk(DeltaSeconds);
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: hero reached set %s"), *JamBacklot::Sets()[Next].Id.ToString());
+		StartScene(Next);
 	}
 }
 
@@ -174,6 +301,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 	if (!GS) { return; }
 	FJamShoot& Shoot = GS->Shoot;
 	Shoot.Tick(DeltaSeconds);
+	TickStage(DeltaSeconds);
 
 	const float Now = GetWorld()->GetTimeSeconds();
 	if (Shoot.GetState() != SeenState)
@@ -182,9 +310,18 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 		StateEnteredAt = Now;
 		if (SeenState == EJamShootState::Slate)
 		{
-			ShowCard(FString::Printf(TEXT("SCENE 1 - TAKE %d"), Shoot.GetTake()),
-				FString::Printf(TEXT("%s\nDirector: F. Flicker. Camera: F. Flicker. Rats: Themselves."), *Shoot.GetScene().Title),
+			const FJamStageDef* Stage = Shoot.GetStage();
+			ShowCard(FString::Printf(TEXT("SCENE %d - TAKE %d"), SceneIndex + 1, Shoot.GetTake()),
+				FString::Printf(TEXT("%s\nDirector: F. Flicker. Camera: F. Flicker. %s"), *Shoot.GetScene().Title,
+					TuningFor(Stage ? Stage->Target : EJamTargetKind::Rat).Cast),
 				JamShootPacing::SlateSeconds);
+		}
+		else if (SeenState == EJamShootState::NotePrompt)
+		{
+			const FJamLine* Pitch = JamLines::Find(Shoot.GetScene().Note.PitchLineId);
+			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
+			ShowCard(TEXT("CUT!"), FString::Printf(TEXT("%s\nHold [E] / (A): take the note.   [Q] / (B): refuse."), *PitchText), -1.f);
+			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
 		}
 	}
 
@@ -206,6 +343,43 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 	}
 }
 
+void AJamGameMode::TickStage(float DeltaSeconds)
+{
+	AJamGameState* GS = GetJamGameState();
+	FJamShoot& Shoot = GS->Shoot;
+	const FJamStageDef* Stage = Shoot.GetStage();
+	if (!Stage || Shoot.GetState() != EJamShootState::Rolling) { return; }
+
+	// Collect: walking over a pickup gathers it.
+	if (Stage->Verb == EJamStageVerb::Collect && Hero.IsValid())
+	{
+		for (int32 i = Pickups.Num() - 1; i >= 0; --i)
+		{
+			AJamPickup* P = Pickups[i];
+			if (P && FVector::Dist2D(P->GetActorLocation(), Hero->GetActorLocation()) < JamStageTuning::CollectRadius)
+			{
+				P->Destroy();
+				Pickups.RemoveAt(i);
+				UE_LOG(LogJam, Log, TEXT("JamGameMode: collected a pickup"));
+				Shoot.ReportProgress(1);
+			}
+		}
+	}
+
+	// Meter: loose nuisances eat the crops.
+	if (Stage->FailMeter > 0)
+	{
+		int32 Loose = 0;
+		for (const AJamNuisance* N : Nuisances) { Loose += (N && !N->IsPacified() && !N->IsTreated()) ? 1 : 0; }
+		CropsEaten += DeltaSeconds * Loose / JamStageTuning::SecondsPerCropPerBug;
+		while (CropsEaten >= 1.f && Shoot.GetState() == EJamShootState::Rolling)
+		{
+			CropsEaten -= 1.f;
+			Shoot.ReportMeter(1);
+		}
+	}
+}
+
 void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 {
 	AJamGameState* GS = GetJamGameState();
@@ -215,14 +389,24 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 	switch (Event.Type)
 	{
 	case EJamShootEventType::StageStarted:
-		UE_LOG(LogJam, Log, TEXT("JamShoot: stage %d (%s) take %d rolling"), Event.Stage, Stage ? *Stage->Id.ToString() : TEXT("?"), Event.Take);
-		if (Stage && Stage->Verb == EJamStageVerb::Pacify)
+		UE_LOG(LogJam, Log, TEXT("JamShoot: scene %d stage %d (%s) take %d rolling"), SceneIndex + 1, Event.Stage, Stage ? *Stage->Id.ToString() : TEXT("?"), Event.Take);
+		CropsEaten = 0.f;
+		if (Stage)
 		{
-			RespawnTargets(Stage->Target, Stage->Count);
-			for (AJamNuisance* N : Nuisances)
+			switch (Stage->Verb)
 			{
+			case EJamStageVerb::Pacify:
+				ClearStageActors();
+				SpawnTargets(*Stage, Stage->Count, false);
 				// "This time the rats know their lines": no fleeing until the forced retake.
-				if (N) { N->FleeRadius = Shoot.TargetsFlee() ? JamRatTuning::FleeRadius : 0.f; }
+				if (!Shoot.TargetsFlee()) { for (AJamNuisance* N : Nuisances) { if (N) { N->FleeRadius = 0.f; } } }
+				break;
+			case EJamStageVerb::Interact:
+				PrepareTreatStage(*Stage);
+				break;
+			case EJamStageVerb::Collect:
+				SpawnPickups(Stage->Count);
+				break;
 			}
 		}
 		ShowCard(TEXT("ACTION!"), Event.Take == 1 ? TEXT("Places, everyone! And by everyone I mean you.")
@@ -233,6 +417,12 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		UE_LOG(LogJam, Log, TEXT("JamShoot: stage %d cleared on take %d"), Event.Stage, Event.Take);
 		break;
 
+	case EJamShootEventType::NoteAnswered:
+		UE_LOG(LogJam, Log, TEXT("JamShoot: note %s"), Event.Value ? TEXT("taken") : TEXT("refused"));
+		ShowCard(Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"),
+			LineText(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused, SceneIndex), 2.f);
+		break;
+
 	case EJamShootEventType::TakeFailed:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: take %d failed (%s)"), Event.Take, Event.Value ? TEXT("forced") : TEXT("failure"));
 		if (Event.Value) { ShowCard(TEXT("Perfect! Again."), TEXT("This time the rats know their lines."), JamShootPacing::FailedSeconds); }
@@ -240,23 +430,49 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		break;
 
 	case EJamShootEventType::Wrapped:
-		UE_LOG(LogJam, Log, TEXT("JamShoot: wrapped after %d takes"), Event.Take);
-		ShowCard(TEXT("THAT'S A WRAP!"), TEXT("Everyone gets paid. \"Everyone\" is a term of art."), -1.f);
-		if (bAutoplay && !bAutoplayDone)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamShoot: scene %d wrapped after %d takes"), SceneIndex + 1, Shoot.GetTakesUsed());
+		++ScenesWrapped;
+		TakesTotal += Shoot.GetTakesUsed();
+		NotesTaken += Shoot.GetNotesTaken();
+		NotesRefused += Shoot.GetNotesRefused();
+		const bool bLast = !JamScenes::All().IsValidIndex(SceneIndex + 1) || !JamBacklot::Sets().IsValidIndex(SceneIndex + 1);
+		ShowCard(TEXT("THAT'S A WRAP!"), TEXT("Everyone gets paid. \"Everyone\" is a term of art."), bLast ? -1.f : JamShootPacing::WrapCardSeconds);
+		if (bLast)
 		{
-			bAutoplayDone = true;
-			int32 Flees = FleeCountTotal;
-			for (const AJamNuisance* N : Nuisances) { Flees += N ? N->GetFleeCount() : 0; }
-			UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=1 takes=%d flees=%d time=%.1f"), Event.Take, Flees, AutoplayTime);
-			if (Hero.IsValid()) { Hero->SetAimOverride(FVector::ZeroVector); }
-			// Then walk the street to the next set, which proves the backlot is connected (T08).
-			bAutoplayWalk = JamBacklot::Sets().IsValidIndex(CurrentSet + 1);
-			WalkStartedAt = AutoplayTime;
+			FinishRun(true, FString());
+		}
+		else
+		{
+			bBetweenScenes = true;
+			SceneTime = 0.f;
+			GS->Hint = FString::Printf(TEXT("Walk up the street to %s"), *JamBacklot::Sets()[SceneIndex + 1].Sign);
 		}
 		break;
+	}
 
 	default:
 		break;
+	}
+}
+
+void AJamGameMode::FinishRun(bool bPass, const FString& Why)
+{
+	if (bRunOver) { return; }
+	bRunOver = true;
+	for (const AJamNuisance* N : Nuisances) { FleeCountTotal += N ? N->GetFleeCount() : 0; }
+	if (Hero.IsValid()) { Hero->SetAimOverride(FVector::ZeroVector); }
+	if (!bAutoplay) { return; }
+	if (bPass)
+	{
+		// BUILD_SPEC 2: mostly taken = the Director's Cut, mostly refused = the Theatrical Release.
+		const TCHAR* Ending = NotesTaken >= NotesRefused ? TEXT("directors_cut") : TEXT("theatrical");
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d time=%.1f"),
+			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, AutoplayTime);
+	}
+	else
+	{
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: FAIL %s"), *Why);
 	}
 }
 
@@ -264,60 +480,83 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 {
 	AJamHero* Bot = Hero.Get();
 	AutoplayTime += DeltaSeconds;
-	if (AutoplayTime > JamAutoplayTuning::TimeoutSeconds)
+	AJamGameState* GS = GetJamGameState();
+	if (!GS) { return; }
+	const FJamShoot& Shoot = GS->GetShoot();
+
+	if (SceneTime > JamAutoplayTuning::SceneTimeoutSeconds)
 	{
-		bAutoplayDone = true;
-		const AJamGameState* GS = GetJamGameState();
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: FAIL timeout stage=%d take=%d progress=%d"),
-			GS ? GS->GetShoot().GetStageIndex() : -1, GS ? GS->GetShoot().GetTake() : -1, GS ? GS->GetShoot().GetProgress() : -1);
+		FinishRun(false, FString::Printf(TEXT("timeout scene=%d between=%d stage=%d take=%d progress=%d"),
+			SceneIndex + 1, bBetweenScenes ? 1 : 0, Shoot.GetStageIndex(), Shoot.GetTake(), Shoot.GetProgress()));
 		return;
 	}
 
-	const AJamGameState* GS = GetJamGameState();
-	const FJamStageDef* Stage = GS ? GS->GetShoot().GetStage() : nullptr;
-	if (!Stage || GS->GetShoot().GetState() != EJamShootState::Rolling) { return; }
+	// Between scenes: walk up the street onto the next set. Line up with the street (Y = 0) first, so the bot
+	// never pushes into the wall beside an opening.
+	if (bBetweenScenes)
+	{
+		Bot->SetAimOverride(FVector::ZeroVector);
+		const FVector2D Goal = JamBacklot::HeroMark(SceneIndex + 1) + FVector2D(JamStageTuning::SetEntryDepth, 0.f);
+		const FVector2D Here(Bot->GetActorLocation());
+		FVector2D Dir = Goal - Here;
+		if (FMath::Abs(Here.Y) > 60.f && Here.X < Goal.X - 600.f) { Dir = FVector2D(0.3f, -Here.Y); }
+		Bot->AddMovementInput(FVector(Dir.GetSafeNormal(), 0.f));
+		return;
+	}
 
-	// Target: the nearest rat this stage still needs.
-	const bool bTreating = Stage->Verb == EJamStageVerb::Interact;
+	if (Shoot.GetState() == EJamShootState::NotePrompt)
+	{
+		if (GetWorld()->GetTimeSeconds() - StateEnteredAt >= JamAutoplayTuning::NoteThinkSeconds)
+		{
+			if (bAutoNoteTake) { Bot->RequestInteract(); } else { Bot->RequestRefuseNote(); }
+		}
+		return;
+	}
+
+	const FJamStageDef* Stage = Shoot.GetStage();
+	if (!Stage || Shoot.GetState() != EJamShootState::Rolling) { return; }
+
+	// Collect: walk to the nearest pickup.
+	if (Stage->Verb == EJamStageVerb::Collect)
+	{
+		const AJamPickup* Best = nullptr;
+		float BestD = TNumericLimits<float>::Max();
+		for (const AJamPickup* P : Pickups)
+		{
+			const float D = P ? FVector::Dist2D(P->GetActorLocation(), Bot->GetActorLocation()) : BestD;
+			if (D < BestD) { BestD = D; Best = P; }
+		}
+		if (Best)
+		{
+			const FVector To = (Best->GetActorLocation() - Bot->GetActorLocation()) * FVector(1.f, 1.f, 0.f);
+			Bot->SetAimOverride(To);
+			Bot->AddMovementInput(To.GetSafeNormal());
+		}
+		return;
+	}
+
+	// Pacify: the nearest loose target. Interact: lecture any loose target first (a note's boss), then treat.
+	bool bTreating = false;
 	AJamNuisance* Target = nullptr;
 	float Best = TNumericLimits<float>::Max();
-	for (AJamNuisance* N : Nuisances)
+	for (int32 Pass = 0; Pass < 2 && !Target; ++Pass)
 	{
-		if (!N || N->IsTreated() || N->IsPacified() != bTreating) { continue; }
-		const float D = FVector::Dist2D(N->GetActorLocation(), Bot->GetActorLocation());
-		if (D < Best) { Best = D; Target = N; }
+		bTreating = Pass == 1;
+		if (bTreating && Stage->Verb != EJamStageVerb::Interact) { break; }
+		for (AJamNuisance* N : Nuisances)
+		{
+			if (!N || N->IsTreated() || N->IsPacified() != bTreating) { continue; }
+			const float D = FVector::Dist2D(N->GetActorLocation(), Bot->GetActorLocation());
+			if (D < Best) { Best = D; Target = N; }
+		}
 	}
 	if (!Target) { return; }
 
 	const FVector ToTarget = (Target->GetActorLocation() - Bot->GetActorLocation()) * FVector(1.f, 1.f, 0.f);
 	Bot->SetAimOverride(ToTarget);
-	const float Reach = bTreating ? JamAutoplayTuning::InteractDistance : JamAutoplayTuning::LectureDistance;
+	const float Reach = bTreating ? JamAutoplayTuning::InteractDistance + Target->GetSimpleCollisionRadius() * (Target->GetActorScale3D().X - 1.f)
+		: JamAutoplayTuning::LectureDistance;
 	if (ToTarget.Size() > Reach) { Bot->AddMovementInput(ToTarget.GetSafeNormal()); }
 	else if (bTreating) { Bot->RequestInteract(); }
 	else { Bot->RequestLecture(); }   // the cooldown refuses the spam
-}
-
-void AJamGameMode::TickAutoplayWalk(float DeltaSeconds)
-{
-	AJamHero* Bot = Hero.Get();
-	AutoplayTime += DeltaSeconds;
-	const FJamSetLayout& Next = JamBacklot::Sets()[CurrentSet + 1];
-	const FVector2D Goal = Next.Bounds.GetCenter();
-	const FVector2D Here(Bot->GetActorLocation());
-	if (Next.Bounds.IsInside(Here) && FVector2D::Distance(Here, Goal) < 200.f)
-	{
-		bAutoplayWalk = false;
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: walked to set %s in %.1f s"), *Next.Id.ToString(), AutoplayTime - WalkStartedAt);
-		return;
-	}
-	if (AutoplayTime - WalkStartedAt > JamAutoplayTuning::TimeoutSeconds)
-	{
-		bAutoplayWalk = false;
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: FAIL could not walk to set %s (stuck at %.0f, %.0f)"), *Next.Id.ToString(), Here.X, Here.Y);
-		return;
-	}
-	// Line up with the street (Y = 0) before heading up it, so the bot never pushes into a wall beside an opening.
-	FVector2D Dir = Goal - Here;
-	if (FMath::Abs(Here.Y) > 60.f && !Next.Bounds.IsInside(Here)) { Dir = FVector2D(Dir.X > 0.f ? 0.3f : 0.f, -Here.Y); }
-	Bot->AddMovementInput(FVector(Dir.GetSafeNormal(), 0.f));
 }

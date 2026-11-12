@@ -35,6 +35,9 @@ public:
 	/** Asks the game mode to treat the best interact target. Input and the autoplay bot come through here. */
 	bool RequestInteract();
 
+	/** At the CUT! prompt: refuse the note. */
+	bool RequestRefuseNote();
+
 	/** Nearest pacified nuisance inside interact range, or null. The HUD shows the prompt for it. */
 	AJamNuisance* FindInteractTarget() const;
 
@@ -56,6 +59,7 @@ private:
 	void OnLecture(const FInputActionValue& Value);
 	void OnAim(const FInputActionValue& Value);
 	void OnInteract(const FInputActionValue& Value);
+	void OnRefuse(const FInputActionValue& Value);
 	void UpdateFacing();
 
 	UPROPERTY(VisibleAnywhere)
@@ -85,6 +89,9 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> InteractAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> RefuseAction;
 
 	enum class EAimSource : uint8 { Movement, Mouse, Stick };
 	EAimSource AimSource = EAimSource::Movement;

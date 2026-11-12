@@ -38,7 +38,7 @@ void AJamHUD::DrawHUD()
 
 		// Top left: slate label and a blinking REC while rolling.
 		const bool bRolling = Shoot.GetState() == EJamShootState::Rolling;
-		const FString Label = FString::Printf(TEXT("SCENE 1: %s   TAKE %d"), *Shoot.GetScene().Title.ToUpper(), Shoot.GetTake());
+		const FString Label = FString::Printf(TEXT("SCENE %d: %s   TAKE %d"), GS->SceneNumber, *Shoot.GetScene().Title.ToUpper(), Shoot.GetTake());
 		DrawTextBox(Label, 40.f * UIScale, 36.f * UIScale, Font, 1.4f * UIScale, FLinearColor::White, false);
 		if (bRolling && FMath::Fmod(GetWorld()->GetTimeSeconds(), 1.f) < 0.6f)
 		{
@@ -52,8 +52,14 @@ void AJamHUD::DrawHUD()
 			{
 				FString Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
 				if (Stage->TimeLimit > 0.f) { Objective += FString::Printf(TEXT("   %.0fs"), FMath::CeilToFloat(Shoot.GetTimeLeft())); }
+				if (Stage->FailMeter > 0) { Objective += FString::Printf(TEXT("   crops eaten %d/%d"), Shoot.GetMeter(), Stage->FailMeter); }
 				DrawTextBox(Objective, Canvas->ClipX * 0.5f, 36.f * UIScale, Font, 1.4f * UIScale, FLinearColor::White, true);
 			}
+		}
+
+		if (!GS->Hint.IsEmpty())
+		{
+			DrawTextBox(GS->Hint, Canvas->ClipX * 0.5f, 90.f * UIScale, Font, 1.3f * UIScale, FLinearColor(1.f, 0.85f, 0.3f), true);
 		}
 
 		// Centre: the card.
@@ -83,7 +89,9 @@ void AJamHUD::DrawHUD()
 			const FVector Screen = Project(Target->GetActorLocation() + FVector(0.f, 0.f, 140.f));
 			if (Screen.Z > 0.f)
 			{
-				const FString Prompt = Hero->IsUsingGamepad() ? TEXT("Hold (A)  Feed celery") : TEXT("Hold [E]  Feed celery");
+				const FJamStageDef* Stage = GS->GetShoot().GetStage();
+				const TCHAR* Verb = Stage && Stage->Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
+				const FString Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Hold [E]"), Verb);
 				DrawTextBox(Prompt, Screen.X, Screen.Y, Font, 1.2f * UIScale, FLinearColor::White, true);
 			}
 		}

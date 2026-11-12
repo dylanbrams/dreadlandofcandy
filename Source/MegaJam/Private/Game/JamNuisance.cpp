@@ -17,14 +17,14 @@
 
 namespace
 {
-	FLinearColor ColourFor(EJamNuisanceState State)
+	FLinearColor ColourFor(EJamNuisanceState State, const FLinearColor& Base)
 	{
 		switch (State)
 		{
 		case EJamNuisanceState::Flustered: return FLinearColor(1.0f, 0.8f, 0.2f);   // yellow
 		case EJamNuisanceState::Pacified:  return FLinearColor(0.75f, 0.75f, 0.78f); // calmed grey
 		case EJamNuisanceState::Treated:   return FLinearColor(0.35f, 0.9f, 0.6f);   // mint
-		default:                           return FLinearColor(1.0f, 0.35f, 0.6f);   // candy pink
+		default:                           return Base;                              // the kind's own colour
 		}
 	}
 
@@ -49,6 +49,9 @@ AJamNuisance::AJamNuisance()
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	Capsule->InitCapsuleSize(40.f, 70.f);
 	Capsule->SetCollisionProfileName(TEXT("Pawn"));
+	// Never block the hero (Dylan: stuck behind pacified rats). Still a Pawn object, so the Lecture's
+	// overlap-by-object-type query finds it; nuisances steer by clamping, not by collision.
+	Capsule->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	RootComponent = Capsule;
 
 	// Placeholder body until the approved rat mesh is imported (T20).
@@ -93,15 +96,23 @@ void AJamNuisance::BeginPlay()
 	BodyBaseScale = Body->GetRelativeScale3D();
 	BodyBaseLocation = Body->GetRelativeLocation();
 	BodyMaterial = Body->CreateAndSetMaterialInstanceDynamic(0);
+	// Max first: PreAttributeChange clamps Resolve to it.
+	AbilitySystem->SetNumericAttributeBase(UJamResolveAttributeSet::GetMaxResolveAttribute(), MaxResolveValue);
+	AbilitySystem->SetNumericAttributeBase(UJamResolveAttributeSet::GetResolveAttribute(), MaxResolveValue);
 	PickWanderTarget();
-	SetState(EJamNuisanceState::Wander);
+	SetState(bStartPacified ? EJamNuisanceState::Pacified : EJamNuisanceState::Wander);
+}
+
+void AJamNuisance::ResetToPacified()
+{
+	if (IsTreated()) { SetState(EJamNuisanceState::Pacified); }
 }
 
 void AJamNuisance::SetState(EJamNuisanceState NewState)
 {
 	State = NewState;
 	StateTime = 0.f;
-	if (BodyMaterial) { BodyMaterial->SetVectorParameterValue(TEXT("Color"), ColourFor(State)); }
+	if (BodyMaterial) { BodyMaterial->SetVectorParameterValue(TEXT("Color"), ColourFor(State, BaseColour)); }
 
 	// Pacified sits (squashed); everything else stands.
 	const bool bSitting = State == EJamNuisanceState::Pacified || State == EJamNuisanceState::Treated;
@@ -199,7 +210,8 @@ void AJamNuisance::Tick(float DeltaSeconds)
 		else
 		{
 			const FVector2D ToTarget = WanderTarget - FVector2D(GetActorLocation());
-			if (ToTarget.Size() < 40.f) { PickWanderTarget(); }
+			// Erratic (bugs): a new heading every half second or so, not only on arrival.
+			if (ToTarget.Size() < 40.f || (bErratic && FMath::Fmod(StateTime, 0.5f) < DeltaSeconds)) { PickWanderTarget(); }
 			Steer(ToTarget.GetSafeNormal() * Speed * WanderSpeedScale, DeltaSeconds);
 		}
 		break;
@@ -211,5 +223,5 @@ void AJamNuisance::Tick(float DeltaSeconds)
 	}
 
 	// Development aid: state label (debug draws are compiled out of Shipping).
-	DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State).ToFColor(true), 0.f, true, 1.1f);
+	DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State, BaseColour).ToFColor(true), 0.f, true, 1.1f);
 }

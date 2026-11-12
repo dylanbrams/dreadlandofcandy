@@ -32,6 +32,13 @@ public:
 
 	bool IsCardVisible() const;
 
+	/** 1-based scene being shot (or just wrapped). */
+	int32 SceneNumber = 1;
+	/** One line under the objective between scenes ("Walk to Set 2"). Empty = none. */
+	FString Hint;
+	/** Waiting for the hero's answer to CUT!. */
+	bool IsNotePrompt() const { return Shoot.GetState() == EJamShootState::NotePrompt; }
+
 private:
 	friend class AJamGameMode;   // the only writer
 	FJamShoot Shoot;

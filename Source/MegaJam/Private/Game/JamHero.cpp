@@ -142,6 +142,9 @@ void AJamHero::CreateInput()
 	Hold->bIsOneShot = true;
 	InteractAction->Triggers.Add(Hold);
 
+	RefuseAction = NewObject<UInputAction>(this, TEXT("IA_Refuse"));
+	RefuseAction->ValueType = EInputActionValueType::Boolean;
+
 	InputContext = NewObject<UInputMappingContext>(this, TEXT("IMC_Hero"));
 
 	// Move value: X = right, Y = forward (screen up).
@@ -174,6 +177,9 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(LectureAction, EKeys::Gamepad_RightTrigger);
 	InputContext->MapKey(InteractAction, EKeys::E);
 	InputContext->MapKey(InteractAction, EKeys::Gamepad_FaceButton_Bottom);
+	// At the CUT! prompt: hold E / A takes the note, Q / B refuses it (placeholder until the T12 prompt UI).
+	InputContext->MapKey(RefuseAction, EKeys::Q);
+	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 }
 
 void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -187,6 +193,7 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
 		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
 		Input->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AJamHero::OnInteract);
+		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
 	}
 	else
 	{
@@ -252,9 +259,22 @@ AJamNuisance* AJamHero::FindInteractTarget() const
 
 bool AJamHero::RequestInteract()
 {
-	AJamNuisance* Target = FindInteractTarget();
 	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
-	return Target && GM && GM->HandleInteract(this, Target);
+	if (!GM) { return false; }
+	if (GM->HandleNoteAnswer(this, true)) { return true; }   // at the CUT! prompt, interact takes the note
+	AJamNuisance* Target = FindInteractTarget();
+	return Target && GM->HandleInteract(this, Target);
+}
+
+bool AJamHero::RequestRefuseNote()
+{
+	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
+	return GM && GM->HandleNoteAnswer(this, false);
+}
+
+void AJamHero::OnRefuse(const FInputActionValue& /*Value*/)
+{
+	RequestRefuseNote();
 }
 
 void AJamHero::Tick(float DeltaSeconds)

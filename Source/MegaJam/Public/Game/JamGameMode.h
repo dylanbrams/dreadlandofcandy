@@ -7,14 +7,19 @@
 
 class AJamHero;
 class AJamNuisance;
+class AJamPickup;
 class AJamGameState;
 
 /**
  * The only place that changes shared game state. Drives the FJamShoot held by AJamGameState: feeds it
- * world reports (pacified, treated), drains its events, spawns and resets stage actors, shows cards.
- * Scene 1 plays on set 0 of the backlot (AJamBacklot, T08).
- *   -autoplay   a bot plays the scene: chases, lectures, treats; logs JamAutoplay PASS/FAIL at the wrap,
- *               then walks the street to the next set and logs that too
+ * world reports (pacified, treated, collected, crops eaten), drains its events, spawns and resets stage
+ * actors, shows cards. Scene n plays on backlot set n; after a wrap the hero walks the street to the next
+ * set, and stepping onto it starts the next scene.
+ *   -autoplay             a bot plays: chases, lectures, treats, collects, answers notes, walks between sets;
+ *                         logs JamAutoplay: PASS scenes=N ... ending=<name> after the last wrap, or FAIL <why>
+ *   -autonote=take|refuse how the bot answers CUT! (default take)
+ *   -scene=<n>            start at scene n (1-based), hero on that set's mark
+ *   -timescale=<x>        world time dilation (0.25 to 8), for faster unattended runs
  */
 UCLASS()
 class MEGAJAM_API AJamGameMode : public AGameModeBase
@@ -29,35 +34,57 @@ public:
 
 	/** A hero asks to treat a nuisance. Validates stage, range and state, then treats it. */
 	bool HandleInteract(AJamHero* Hero, AJamNuisance* Target);
+	/** A hero answers CUT!. False unless the note prompt is up. */
+	bool HandleNoteAnswer(AJamHero* Hero, bool bTake);
 
 private:
 	AJamGameState* GetJamGameState() const;
-	void StartScene(const FJamSceneDef& Scene);
+	void StartScene(int32 InSceneIndex);
 	void TickShoot(float DeltaSeconds);
+	void TickStage(float DeltaSeconds);
+	void TickBetweenScenes();
 	void HandleShootEvent(const FJamShootEvent& Event);
 	void ShowCard(const FString& Title, const FString& Subtitle, float Seconds);
-	void RespawnTargets(EJamTargetKind Kind, int32 Count);
+	void ClearStageActors();
+	void SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPacified);
+	void PrepareTreatStage(const FJamStageDef& Stage);
+	void SpawnPickups(int32 Count);
 	void HandlePacified(AActor* Pacified);
+	void FinishRun(bool bPass, const FString& Why);
 	void TickAutoplay(float DeltaSeconds);
-	void TickAutoplayWalk(float DeltaSeconds);
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<AJamNuisance>> Nuisances;
 
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<AJamPickup>> Pickups;
+
 	TWeakObjectPtr<AJamHero> Hero;
-	/** Backlot set the current scene plays on, and its floor inside the walls. */
-	int32 CurrentSet = 0;
-	FBox2D FieldBounds = FBox2D(ForceInit);
 	float GroundZ = 0.f;
+
+	/** Scene (and backlot set) index being shot; FieldBounds is that set's floor. */
+	int32 SceneIndex = 0;
+	int32 FirstSceneIndex = 0;
+	FBox2D FieldBounds = FBox2D(ForceInit);
+	/** After a wrap: the next scene starts when the hero steps onto its set. */
+	bool bBetweenScenes = false;
+	bool bRunOver = false;
 
 	/** The shoot state last seen, and when it was entered (drives the automatic slate/next/retake). */
 	EJamShootState SeenState = EJamShootState::Idle;
 	float StateEnteredAt = 0.f;
+	/** Crops eaten so far, in fractions (meter stages). */
+	float CropsEaten = 0.f;
+
+	// Run totals, for the PASS line.
+	int32 ScenesWrapped = 0;
+	int32 TakesTotal = 0;
+	int32 NotesTaken = 0;
+	int32 NotesRefused = 0;
+	int32 FleeCountTotal = 0;
 
 	bool bAutoplay = false;
-	bool bAutoplayDone = false;
-	bool bAutoplayWalk = false;
-	float WalkStartedAt = 0.f;
+	bool bAutoNoteTake = true;
 	float AutoplayTime = 0.f;
-	int32 FleeCountTotal = 0;
+	float SceneTime = 0.f;
 };
