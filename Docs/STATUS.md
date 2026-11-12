@@ -4,7 +4,7 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers
 
 ## Next task
 
-**T08:** MCP spike (30 min) then the Sugarborough blockout (BUILD_SPEC section 7). T06 (Scene 1 playable) waits on RULES' T03 (`FJamShoot`) being merged from the `rules` branch (worktree `D:\Source\Unreal\MegaJam2026-rules`); check `git log main..rules` first and take T06 if it is there.
+**T06 in progress** (Scene 1 playable). **T03 was done by GAME on `main`** (Dylan, 08:30: no RULES session was running): `Source/MegaJam/*/Film/JamFilmTypes.h`, `JamShoot.*`, tests `Jam.Film.Shoot.*` and `Jam.Film.Scenes.Finishable`. **RULES: skip T03**, merge `main` into `rules` first, start at T04 or T09. Then T08 (MCP spike and blockout).
 ASSETS is running batch1 (Dylan started it about 07:50); meshes are landing in `ImportSource/`. Import approved ones for T20.
 
 ## Decisions (Dylan, Nov 12, from the browser model viewer)
