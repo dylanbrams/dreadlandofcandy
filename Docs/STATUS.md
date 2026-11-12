@@ -13,6 +13,8 @@ Workers: RULES says days 1 and 2 are done (`rules` merged at `d9d9b51`). ASSETS:
 
 - **Music (T18):** every track comes in two takes, and both are fine; play one of the two at random each time a track starts. The boss music is "ridiculously over-the-top", as intended. Files are in `music/` (untracked; T18 imports them).
 - Batch 2 models: Dylan is having another session clean them up and pull them (12:20).
+- **Settings (16:40, Dylan): OneMore has a decent settings system. Parked: revisit with Dylan later.** The game has a minimal `UJamSettings` (volume, commentary, GameUserSettings.ini) that is enough for the jam. Not looked at OneMore; port only if it turns out to be an easy import.
+- Reading material for Dylan away from the desk: https://claude.ai/artifact/KVpaHjPs63C4zgChamtCpS (production report; GAME republishes it as tasks land).
 
 ### From the browser model viewer
 

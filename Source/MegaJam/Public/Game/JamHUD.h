@@ -32,6 +32,13 @@ public:
 
 private:
 	void BuildView();
+	/** The music (T18): one cue per moment, a random take, crossfaded, at the "Fenella" volume. */
+	void TickMusic();
+	UPROPERTY(Transient)
+	TObjectPtr<class UAudioComponent> Music;
+	FName MusicCue;
+	TSet<FName> MissingCues;
+	bool bNoMusic = false;
 	// Screens (T16): which one is up, its view, and what its inputs do.
 	FJamScreenView BuildScreen() const;
 	void HandleMenu(EJamMenuInput Input, int32 Index);

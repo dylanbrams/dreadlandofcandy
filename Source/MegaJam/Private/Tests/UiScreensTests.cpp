@@ -1,5 +1,6 @@
 #include "Misc/AutomationTest.h"
 #include "UI/JamScreens.h"
+#include "UI/JamMusic.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -62,6 +63,42 @@ bool FJamUiScreensEndings::RunTest(const FString&)
 	{
 		FJamScreenView V;
 		TestTrue(FString::Printf(TEXT("sample %s"), Name), JamScreens::Sample(Name, V));
+	}
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamUiMusicCues, "Jam.UI.Music.Cues", JamUiFlags)
+bool FJamUiMusicCues::RunTest(const FString&)
+{
+	FJamMusicContext C;
+	TestEqual(TEXT("title"), JamMusic::CueFor(C), FName(TEXT("quest_accepted")));
+	C.Phase = EJamFilmPhase::Shooting;
+	TSet<FName> Scenes;
+	for (int32 Scene = 1; Scene <= 3; ++Scene) { C.Scene = Scene; Scenes.Add(JamMusic::CueFor(C)); }
+	TestEqual(TEXT("each scene has its own music"), Scenes.Num(), 3);
+	C.Stage = 2;
+	TestEqual(TEXT("the finale changes after its CUT!"), JamMusic::CueFor(C), FName(TEXT("final_boss")));
+	C.bWalking = true;
+	TestEqual(TEXT("the street"), JamMusic::CueFor(C), FName(TEXT("open_world_exploration")));
+	for (const FName Cue : JamMusic::AllCues())
+	{
+		TestTrue(FString::Printf(TEXT("%s path"), *Cue.ToString()), JamMusic::AssetPath(Cue, 2).StartsWith(TEXT("/Game/Audio/Music/M_")));
+	}
+	// Every cue the plan can produce is in the import list.
+	for (const EJamFilmPhase Phase : { EJamFilmPhase::Title, EJamFilmPhase::Shooting, EJamFilmPhase::Premiere, EJamFilmPhase::Credits })
+	{
+		for (int32 Scene = 1; Scene <= 3; ++Scene)
+		{
+			for (int32 Stage = 0; Stage < 3; ++Stage)
+			{
+				for (int32 Flags = 0; Flags < 4; ++Flags)
+				{
+					FJamMusicContext X;
+					X.Phase = Phase; X.Scene = Scene; X.Stage = Stage; X.bWalking = (Flags & 1) != 0; X.bNotePrompt = (Flags & 2) != 0;
+					TestTrue(TEXT("cue is imported"), JamMusic::AllCues().Contains(JamMusic::CueFor(X)));
+				}
+			}
+		}
 	}
 	return true;
 }

@@ -10,6 +10,10 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamSettings.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundWave.h"
+#include "UI/JamMusic.h"
 #include "MegaJam.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/World.h"
@@ -46,6 +50,7 @@ void AJamHUD::BeginPlay()
 			UE_LOG(LogJam, Log, TEXT("JamHUD: -uiscreen=%s is not a HUD sample (%s)"), *Arg, *FString::Join(JamHud::SampleNames(), TEXT(", ")));
 		}
 	}
+	bNoMusic = FParse::Param(FCommandLine::Get(), TEXT("nomusic"));
 	if (PlayerOwner && PlayerOwner->IsLocalController())
 	{
 		Widget = CreateWidget<UJamHudWidget>(PlayerOwner, UJamHudWidget::StaticClass());
@@ -67,6 +72,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 	if (SampleName.IsEmpty()) { BuildView(); }
 	else { JamHud::Sample(SampleName, View); }
 	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
+	TickMusic();
 
 	if (Screen)
 	{
@@ -366,5 +372,47 @@ void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
 		if (SubScreen != EJamScreen::None) { Activate(FJamMenuOption{ EJamMenuAction::Back }); }
 		else if (bPaused) { SetPaused(false); }
 		break;
+	}
+}
+
+// ---- Music (T18) ------------------------------------------------------------------------------------------------
+
+void AJamHUD::TickMusic()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || !PlayerOwner || !PlayerOwner->IsLocalController()) { return; }
+	FJamMusicContext C;
+	C.Phase = GS->Phase;
+	C.Scene = GS->SceneNumber;
+	C.Stage = GS->GetShoot().GetStageIndex();
+	C.bWalking = !GS->Hint.IsEmpty();
+	C.bNotePrompt = GS->IsNotePrompt();
+	const FName Cue = bNoMusic ? NAME_None : JamMusic::CueFor(C);
+	const UJamSettings* J = Settings();
+	const float Volume = 0.7f * (J ? J->Volume : 0.8f);
+
+	if (Cue == MusicCue)
+	{
+		if (Music) { Music->SetVolumeMultiplier(FMath::Max(Volume, 0.001f)); }
+		return;
+	}
+	MusicCue = Cue;
+	if (Music) { Music->FadeOut(1.5f, 0.f); Music = nullptr; }
+	if (Cue.IsNone()) { return; }
+
+	const int32 Take = FMath::RandRange(1, 2);   // Dylan: both takes are fine, play either
+	USoundWave* Wave = LoadObject<USoundWave>(nullptr, *JamMusic::AssetPath(Cue, Take));
+	if (!Wave)
+	{
+		if (!MissingCues.Contains(Cue)) { MissingCues.Add(Cue); UE_LOG(LogJam, Log, TEXT("JamMusic: no asset for %s"), *JamMusic::AssetPath(Cue, Take)); }
+		return;
+	}
+	Wave->bLooping = true;
+	Music = UGameplayStatics::CreateSound2D(this, Wave, FMath::Max(Volume, 0.001f), 1.f, 0.f, nullptr, false, true);
+	if (Music)
+	{
+		Music->bIsUISound = true;   // keeps playing under the pause menu
+		Music->FadeIn(1.5f, 1.f);
+		UE_LOG(LogJam, Log, TEXT("JamMusic: %s take %d"), *Cue.ToString(), Take);
 	}
 }
