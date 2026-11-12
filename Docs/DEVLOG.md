@@ -106,3 +106,11 @@
 - Imported the 30 cleaned models in one commandlet run. A lineup mode (-artreview) showed them at game size with a forward arrow: all the generators' models face +Y, so one -90 turn fixes them all.
 - The cast swapped in (knight, sword, Fenella, rats, goblins, bugs, almonds); nuisance states became a tinted overlay because the models cannot be tinted. Then the sets: houses down the streets, crops, fences, a molar tower and gate at Fort Toothache, the orchard, film gear in every corner. One test (no prop in the walking path) caught the fort gate standing in the street; moved to the entrance and exempted, since it is an arch.
 - Report artifact updated with the art screenshots.
+
+## 22:00 Rigged hero, voice hookup, packaged
+
+- Three background packages were stopped by Claude Code for low memory while the session was idle; Dylan said keep going, so packages run in the foreground now and pass.
+- The rigged knight: the first import made eight copies of the mesh (destination_name forced one name on everything, so the skeleton was overwritten); the second worked. He idles, walks, scrubs, sighs and raises his sword.
+- The sword in his hand: sized by world scale (the FBX bones carry x100). A contact sheet of six grips came out identical because FParse::Value stops at commas, so the flag never took; one flip of the default fixed it.
+- The budget gag never fired in the packaged run: the Last Judgment cleared the final stage 7 ms after it began. It now fires as that stage starts; the Judgment's balance is a T15 note.
+- T23: voice clips by convention, captions alone until clips exist.

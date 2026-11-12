@@ -2,7 +2,18 @@
 
 Updated 2026-11-12. **Batch1 complete: 17 models and 34 UI images. Batch2 complete: 8 models and 16 UI images.** Dylan authorized both batches. All 75 batch jobs are done; none failed or remain pending. This is a generation/file-delivery status, not in-engine validation. ASSETS has not opened Unreal. The separate test-stage sword redo remains outside these batches and was not run.
 
-## Current handoff
+## Cleanup handoff — 2026-11-12
+
+Dylan authorized reprocessing and repair after the decimation review. Use **`ImportSource/_decimated/`** for GAME's next import pass. [Current report, previews, validation and placement notes](../../ImportSource/_decimated/_review/REPORT.md). This supersedes the first decimation review. No editor/content changes or commits were made by the cleanup session.
+
+- **31 clean GLBs:** 30 Hyper3D/Fal plus batch-2 Meshy shard. Closed saved-file topology, finite normals/UVs, original hashes, base-colour pixels and triangle budgets pass. Characters are 25k; most props are 8k; simple repaired accessories/shard are lighter. Raw originals and `_v1` remain intact.
+- Removed the knight in the gate, table chairs, clapper limbs/stubs, shard stick, cable and unwanted bases; capped cuts. Rebuilt hollow Hat/HeadMirror/LeafMegaphone and a cable-free lamp lower assembly. Wearables were rendered on Villager. Their openings and five gate passage rays pass.
+- Sword blade length/proportions were corrected from the existing source, retaining overall height/paint. No paid redo was submitted; the runner's separate old sword redo status is not a new source model.
+- Clean exports have ground/grip/particle/wearable origins and material regions: Goblin Teeth/Skin, Molar Enamel, LollyBug Wings. **12 UCX collision FBX companions** and per-asset policies are in `_decimated/_collision/`. These FBXs have neutral preview materials; retain GLB appearance. Unreal import/camera checks, material instances, socket hookups and gameplay traversal remain GAME's integration work.
+- Scale-1 Villager wearable mounts in Blender local metres: Hat `(0, -0.03, 1.898)`; HeadMirror `(0, -0.03, 1.65)`. Gate needs about **7.72×** uniform scale for a 2.20 m high passage; scale collision with it. See report for axes, actor capsule offsets and reproducibility.
+- **Batch 2 was already complete** (eight 3D and sixteen UI jobs). Existing meshes were repaired; generation was not repeated and no API credit was spent.
+
+## Current handoff (original generation)
 
 - Approved groups from Dylan's recorded review: character, equipment, NPC, terrain piece, particle mesh and both 2D layers. Effective routes: NPCs on Rodin, terrain pieces on fal, particles on Meshy. Equipment stays on Rodin. No credit fallback was needed.
 - Batch1's 3D run: 17 done, 0 failed, 11.1 minutes. Fenella was subsequently rejected and regenerated successfully with Dylan's new direction. Batch2's 3D run: 8 done, 0 failed, 8.0 minutes. Actual service delivery does not establish gameplay suitability.

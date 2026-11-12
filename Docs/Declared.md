@@ -157,3 +157,9 @@ AI-generated assets, added by `Scripts/gen_batch.py declare`. Full prompts (with
 | `T_Clock_HourHand` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_HourHand/T_Clock_HourHand.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Clock_MinuteHand` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Clock_MinuteHand/T_Clock_MinuteHand.png`; prompt in `Assets/Generation/jobs.json` |
 | `T_Villager_Moustache` | ChatGPT image generation (Codex) | 2026-11-12 | `Assets/Incoming/2D/T_Villager_Moustache/T_Villager_Moustache.png`; prompt in `Assets/Generation/jobs.json` |
+
+### Derived mesh cleanup — 2026-11-12
+
+The 30 current Hyper3D/Fal meshes above and batch-2 Meshy `SM_LollyShard` were processed in Blender 3.3 with new jam-authored `decimate.py`, `ImportSource/_decimated/cleanup.py`, and companion validation/preview/collision scripts. No cleanup code was copied from another project and no extra generator/API requests were made. Derived GLBs live under `ImportSource/_decimated/{Hyper3D,Fal,Meshy}`; original generator files and provenance remain intact.
+
+Work includes welding before Collapse, removal of unwanted attachments/bases, cap repairs, normals/pivots, blade proportion adjustment, material regions and UCX collision companions. Hat, HeadMirror and LeafMegaphone were procedurally rebuilt to remove fused heads/interior ornaments while retaining their original embedded base-colour atlases as paint; lamp tripod and clapper slate were rebuilt around retained textured parts. See `ImportSource/_decimated/_review/REPORT.md`, `cleanup_results.json` and `validation.json` for per-file actions and verification. These derivatives retain the provenance and licence obligations of their source assets; Unreal import/gameplay acceptance was not performed by ASSETS.
