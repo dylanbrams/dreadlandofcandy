@@ -47,3 +47,6 @@ Day 1 and day 2 RULES backlog is done. Waiting on GAME requests (rule fixes, the
 - Merge `rules` into `main` (it is ahead; builds and passes `Jam.Film` in this worktree). New headers: `Film/JamLedger.h`, `JamLines.h`, `JamNagScheduler.h`, `JamProgression.h`, `JamNoteClamp.h`.
 - Add `Json` and `HTTP` to `MegaJam.Build.cs` for T12b if you want the engine's JSON; not needed for the clamp.
 - Provide the Scene 2 and Scene 3 set capacities above.
+
+## Changed by GAME (Nov 12, T12b)
+- `FJamShoot::AnswerNoteWith(const FJamNoteDef&)`: takes a typed note in place of the authored one (sets `Scene.Note`, then `AnswerNote(true)`). Test `Jam.Film.Shoot.TypedNote`. GAME uses it with `JamNoteClamp::FromResponse` / `FromKeywords`.

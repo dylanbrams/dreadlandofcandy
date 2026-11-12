@@ -4,6 +4,8 @@
 #include "Game/JamNuisance.h"
 #include "UI/JamHudWidget.h"
 #include "UI/JamScreenWidget.h"
+#include "UI/JamNoteEditor.h"
+#include "Engine/Canvas.h"
 #include "Game/JamPlayerState.h"
 #include "Gas/JamGameplayTags.h"
 #include "AbilitySystemComponent.h"
@@ -63,6 +65,28 @@ void AJamHUD::BeginPlay()
 			Screen->OnMenuInput.BindUObject(this, &AJamHUD::HandleMenu);
 			Screen->OnDevice.BindLambda([this](bool bGamepad) { bMenuGamepad = bGamepad; });
 		}
+		NoteEditor = CreateWidget<UJamNoteEditor>(PlayerOwner, UJamNoteEditor::StaticClass());
+		if (NoteEditor)
+		{
+			NoteEditor->AddToViewport(5);
+			NoteEditor->SetVisibility(ESlateVisibility::Collapsed);
+			NoteEditor->OnSubmit.BindLambda([this](const FString& Note)
+			{
+				AJamGameMode* GM = AuthGameMode();
+				AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+				if (GM && H) { GM->HandleTypedNote(H, Note); }
+			});
+		}
+		if (Arg == TEXT("rain")) { WeatherSample = 1; }
+		if (Arg == TEXT("snow")) { WeatherSample = 2; }
+		if (Arg == TEXT("fog")) { WeatherSample = 3; }
+		if (Arg == TEXT("noteeditor") && NoteEditor)
+		{
+			// Sample: the editor over the running game, for screenshots.
+			bEditorSample = true;
+			NoteEditor->Open(TEXT("Stronger antagonist. Much stronger."), { TEXT("One enormous goblin"), TEXT("Same scene, but sadder"), TEXT("More. Just... more.") }, false);
+		}
+
 	}
 }
 
@@ -90,8 +114,77 @@ void AJamHUD::Tick(float DeltaSeconds)
 			const ESlateVisibility HudVis = bShown ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible;
 			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
 		}
-		if (!bSample) { UpdateInputMode(bShown && ScreenView.Screen != EJamScreen::Rating); }
+		TickNoteEditor();
+		const bool bEditor = NoteEditor && NoteEditor->IsOpen();
+		if (!bSample) { UpdateInputMode(bShown && ScreenView.Screen != EJamScreen::Rating ? 1 : (bEditor ? 2 : 0)); }
 	}
+}
+
+void AJamHUD::DrawHUD()
+{
+	Super::DrawHUD();
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	uint8 Weather = GS && GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut ? GS->Weather : 0;
+	if (WeatherSample > 0) { Weather = WeatherSample; }
+	if (!Canvas || Weather == 0) { return; }
+	const float W = Canvas->ClipX;
+	const float H = Canvas->ClipY;
+	const float T = GetWorld()->GetRealTimeSeconds();
+	const float Px = H / 1080.f;
+	auto Frac = [](float X) { return X - FMath::FloorToFloat(X); };
+	if (Weather == 1)   // rain: slanted streaks
+	{
+		for (int32 i = 0; i < 220; ++i)
+		{
+			const float X = Frac(i * 0.6180339f + T * 0.03f) * (W + 200.f) - 100.f;
+			const float Y = Frac(i * 0.3711f + T * (1.3f + (i % 5) * 0.12f)) * (H + 60.f) - 30.f;
+			DrawLine(X, Y, X - 9.f * Px, Y + 34.f * Px, FLinearColor(0.7f, 0.8f, 1.f, 0.45f), 1.5f * Px);
+		}
+		DrawRect(FLinearColor(0.1f, 0.15f, 0.3f, 0.18f), 0.f, 0.f, W, H);
+	}
+	else if (Weather == 2)   // sprinkle snow: candy sprinkles drifting down
+	{
+		static const FLinearColor Sprinkles[] = { FLinearColor(1.f, 0.4f, 0.7f, 0.9f), FLinearColor(0.4f, 1.f, 0.75f, 0.9f),
+			FLinearColor(1.f, 0.85f, 0.3f, 0.9f), FLinearColor(0.6f, 0.5f, 1.f, 0.9f), FLinearColor(1.f, 1.f, 1.f, 0.9f) };
+		for (int32 i = 0; i < 160; ++i)
+		{
+			const float Sway = FMath::Sin(T * 1.3f + i) * 18.f * Px;
+			const float X = Frac(i * 0.6180339f) * W + Sway;
+			const float Y = Frac(i * 0.4142f + T * (0.07f + (i % 4) * 0.015f)) * (H + 20.f) - 10.f;
+			const bool bFlat = (i % 2) == 0;
+			DrawRect(Sprinkles[i % 5], X, Y, (bFlat ? 10.f : 4.f) * Px, (bFlat ? 4.f : 10.f) * Px);
+		}
+	}
+	else if (Weather == 3)   // fog: a milky wash, thicker at the top of the screen (further away)
+	{
+		for (int32 Band = 0; Band < 8; ++Band)
+		{
+			const float A = 0.32f - Band * 0.03f;
+			DrawRect(FLinearColor(0.92f, 0.9f, 0.95f, A), 0.f, Band * H / 8.f, W, H / 8.f + 1.f);
+		}
+	}
+}
+
+bool AJamHUD::OpenNoteEditor(bool bGamepad)
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!NoteEditor || !GS || !GS->IsNotePrompt() || GS->bReadingNote || bPaused || NoteEditor->IsOpen()) { return false; }
+	FString Pitch = GS->CardSubtitle;
+	if (Pitch.StartsWith(TEXT("CUT!"))) { Pitch.RightChopInline(4); Pitch.TrimStartInline(); }
+	NoteEditor->Open(Pitch, GS->SuggestedNotes, bGamepad);
+	UE_LOG(LogJam, Log, TEXT("JamHUD: note editor open"));
+	return true;
+}
+
+void AJamHUD::TickNoteEditor()
+{
+	if (!NoteEditor) { return; }
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	// It closes itself on give or back; it also goes when CUT! does (or a pause covers it).
+	if (NoteEditor->IsOpen() && !bEditorSample && (!GS || !GS->IsNotePrompt() || GS->bReadingNote)) { NoteEditor->Close(); }
+	const bool bShow = NoteEditor->IsOpen() && !bPaused;
+	const ESlateVisibility Vis = bShow ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
+	if (NoteEditor->GetVisibility() != Vis) { NoteEditor->SetVisibility(Vis); }
 }
 
 void AJamHUD::BuildView()
@@ -103,7 +196,8 @@ void AJamHUD::BuildView()
 	const EJamShootState State = Shoot.GetState();
 
 	View.bShootVisible = true;
-	View.SceneLabel = FString::Printf(TEXT("SCENE %d: %s"), GS->SceneNumber, *Shoot.GetScene().Title.ToUpper());
+	View.SceneLabel = FString::Printf(TEXT("SCENE %d: %s"), GS->SceneNumber,
+		*(GS->SceneTitleOverride.IsEmpty() ? Shoot.GetScene().Title : GS->SceneTitleOverride).ToUpper());
 	View.Take = Shoot.GetTake();
 	View.bRolling = State == EJamShootState::Rolling;
 	View.FilmSeconds = GS->FilmSeconds;
@@ -200,6 +294,8 @@ void AJamHUD::BuildView()
 		View.bNotePrompt = true;
 		View.NotePitch = GS->CardSubtitle;
 		View.NoteGross = Shoot.GetScene().Note.GrossMultiplier;
+		View.bReadingNote = GS->bReadingNote;
+		View.ReadingNote = GS->ReadingNote;
 	}
 
 	if (GS->IsCardVisible())
@@ -285,15 +381,15 @@ FJamScreenView AJamHUD::BuildScreen() const
 	return V;
 }
 
-void AJamHUD::UpdateInputMode(bool bInteractive)
+void AJamHUD::UpdateInputMode(int32 Want)
 {
-	const int32 Want = bInteractive ? 1 : 0;
 	if (!PlayerOwner || Want == InputModeState) { return; }
 	InputModeState = Want;
-	if (bInteractive && Screen)
+	UWidget* Focus = Want == 1 ? static_cast<UWidget*>(Screen.Get()) : Want == 2 && NoteEditor ? NoteEditor->FocusTarget() : nullptr;
+	if (Focus)
 	{
 		FInputModeUIOnly Mode;
-		Mode.SetWidgetToFocus(Screen->TakeWidget());
+		Mode.SetWidgetToFocus(Focus->TakeWidget());
 		Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 		PlayerOwner->SetInputMode(Mode);
 	}
@@ -402,6 +498,7 @@ void AJamHUD::TickMusic()
 	C.bWalking = !GS->Hint.IsEmpty();
 	C.bNotePrompt = GS->IsNotePrompt();
 	C.bBudgetOut = GS->bBudgetOut && GS->Phase == EJamFilmPhase::Shooting;
+	C.Mood = GS->Mood;
 	const FName Cue = bNoMusic ? NAME_None : JamMusic::CueFor(C);
 	const UJamSettings* J = Settings();
 	const float Volume = 0.7f * (J ? J->MusicVolume : 0.8f);

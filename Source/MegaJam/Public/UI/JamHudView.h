@@ -76,6 +76,9 @@ struct MEGAJAM_API FJamHudView
 	FString NotePitch;
 	float NoteGross = 1.f;        // what taking it does to the box office
 	bool bGamepad = false;        // key glyphs
+	/** T12b: she is reading the player's own note (the tiles give way to it). */
+	bool bReadingNote = false;
+	FString ReadingNote;
 
 	/** Run counters on the slate panel, and her mood. */
 	int32 NotesTaken = 0;

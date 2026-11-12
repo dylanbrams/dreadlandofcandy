@@ -182,7 +182,9 @@ void AJamNuisance::UpdateStateOverlay()
 	// Wandering shows the model as it is; every other state washes it in its colour.
 	const bool bPlain = State == EJamNuisanceState::Wander;
 	StateOverlay->SetVectorParameterValue(TEXT("Color"), ColourFor(State, BaseColour));
-	StateOverlay->SetScalarParameterValue(TEXT("Opacity"), bPlain ? 0.f : (State == EJamNuisanceState::Flee ? 0.2f : 0.45f));
+	float Opacity = bPlain ? 0.f : (State == EJamNuisanceState::Flee ? 0.2f : 0.45f);
+	if (State == EJamNuisanceState::Wander || State == EJamNuisanceState::Flee) { Opacity = FMath::Max(Opacity, NoteTintOpacity); }
+	StateOverlay->SetScalarParameterValue(TEXT("Opacity"), Opacity);
 }
 
 void AJamNuisance::BecomeBox(const FString& Label)

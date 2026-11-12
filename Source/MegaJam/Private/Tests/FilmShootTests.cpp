@@ -131,6 +131,29 @@ bool FJamFilmShootNoteRefused::RunTest(const FString&)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamFilmShootTypedNote, "Jam.Film.Shoot.TypedNote", JamFilmFlags)
+bool FJamFilmShootTypedNote::RunTest(const FString&)
+{
+	// T12b: a typed note replaces the authored one and counts as taken.
+	const FJamSceneDef Def = MakeScene(true);
+	FJamShoot Shoot;
+	Shoot.Start(Def);
+	FJamNoteDef Typed;
+	Typed.Id = TEXT("TypedNote");
+	Typed.Replacement = MakeStage(TEXT("B_Typed"), 2);
+	Typed.GrossMultiplier = 1.25f;
+	TestFalse(TEXT("refused outside the prompt"), Shoot.AnswerNoteWith(Typed));
+	Shoot.Action();
+	Shoot.ReportProgress(2);
+	Shoot.Action();
+	TestTrue(TEXT("typed note taken"), Shoot.AnswerNoteWith(Typed));
+	TestTrue(TEXT("stage 1 is the typed one"), Shoot.GetScene().Stages[1] == Typed.Replacement);
+	TestEqual(TEXT("counts as taken"), Shoot.GetNotesTaken(), 1);
+	TestEqual(TEXT("its gross"), Shoot.GetGrossMultiplier(), 1.25f);
+	TestEqual(TEXT("rolling stage 1"), Shoot.GetState(), EJamShootState::Rolling);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamFilmShootCutOutsideTransition, "Jam.Film.Shoot.CutRefusedOutsideTransition", JamFilmFlags)
 bool FJamFilmShootCutOutsideTransition::RunTest(const FString&)
 {

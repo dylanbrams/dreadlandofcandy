@@ -1,4 +1,6 @@
 #include "Game/JamGameMode.h"
+#include "Game/JamNoteClient.h"
+#include "Film/JamNoteClamp.h"
 #include "Game/JamBacklot.h"
 #include "Game/JamArtReview.h"
 #include "Game/JamArt.h"
@@ -51,6 +53,33 @@ namespace JamAutoplayTuning
 	constexpr float LectureDistance = 450.f;
 	constexpr float InteractDistance = 110.f;   // walk this close before treating
 	constexpr float NoteThinkSeconds = 1.5f;    // reads the CUT! card before answering
+}
+
+namespace JamNoteSuggestions
+{
+	/** The three buttons per CUT! (BACKEND pre-warms these; the keyword matcher understands each offline too). */
+	TArray<FString> For(FName SceneId)
+	{
+		if (SceneId == FName(TEXT("Scene2"))) { return { TEXT("One enormous goblin"), TEXT("Same scene, but sadder"), TEXT("More. Just... more.") }; }
+		if (SceneId == FName(TEXT("Scene3"))) { return { TEXT("Add a ticking clock"), TEXT("Make it rain"), TEXT("Everything is gold now") }; }
+		return { TEXT("Bigger"), TEXT("Sadder"), TEXT("Make it rain") };
+	}
+
+	FLinearColor TintColour(EJamTint Tint)
+	{
+		switch (Tint)
+		{
+		case EJamTint::Pink:   return FLinearColor(1.f, 0.35f, 0.7f);
+		case EJamTint::Mint:   return FLinearColor(0.35f, 1.f, 0.7f);
+		case EJamTint::Gold:   return FLinearColor(1.f, 0.78f, 0.15f);
+		case EJamTint::Grey:   return FLinearColor(0.45f, 0.45f, 0.5f);
+		case EJamTint::Purple: return FLinearColor(0.6f, 0.3f, 1.f);
+		default:               return FLinearColor::White;
+		}
+	}
+
+	/** Seconds she "reads" a note when nothing has to be fetched (offline). */
+	constexpr float OfflineReadSeconds = 1.2f;
 }
 
 namespace JamStageTuning
@@ -138,7 +167,12 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 		UE_LOG(LogJam, Log, TEXT("JamGameMode: -forcefail, the first take fails after %.1f s"), ForceFailAfter);
 	}
 	FString AutoNote;
-	if (FParse::Value(Cmd, TEXT("autonote="), AutoNote)) { bAutoNoteTake = !AutoNote.Equals(TEXT("refuse"), ESearchCase::IgnoreCase); }
+	if (FParse::Value(Cmd, TEXT("autonote="), AutoNote))
+	{
+		bAutoNoteTake = !AutoNote.Equals(TEXT("refuse"), ESearchCase::IgnoreCase);
+		bAutoSuggest = AutoNote.Equals(TEXT("suggest"), ESearchCase::IgnoreCase);
+		if (AutoNote.StartsWith(TEXT("typed:"))) { AutoTypedNote = AutoNote.RightChop(6).Replace(TEXT("_"), TEXT(" ")); }
+	}
 	int32 SceneArg = 1;
 	FParse::Value(Cmd, TEXT("scene="), SceneArg);
 	FirstSceneIndex = FMath::Clamp(SceneArg - 1, 0, JamScenes::All().Num() - 1);
@@ -198,6 +232,7 @@ void AJamGameMode::StartScene(int32 InSceneIndex)
 	bBetweenScenes = false;
 	SceneTime = 0.f;
 	ClearStageActors();
+	ClearNoteCosmetics();
 	GS->SceneNumber = SceneIndex + 1;
 	GS->Hint.Reset();
 	GS->Shoot.Start(Scenes[SceneIndex]);
@@ -254,6 +289,11 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 		N->BaseColour = Tuning.Colour;
 		N->bErratic = Tuning.bErratic;
 		N->bStartPacified = bPacified;
+		if (bTypedNoteActive && Stage.Id == FName(TEXT("TypedNote")) && NoteCosmetics.Tint != EJamTint::None)
+		{
+			N->BaseColour = JamNoteSuggestions::TintColour(NoteCosmetics.Tint);
+			N->NoteTintOpacity = 0.55f;
+		}
 		switch (Stage.Target)
 		{
 		case EJamTargetKind::Goblin: N->ArtMesh = TEXT("SM_Goblin"); break;
@@ -262,7 +302,11 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 		}
 		N->ArtHeight = JamArt::Height(N->ArtMesh);
 		N->FinishSpawning(FTransform(Loc));
-		if (Stage.ResolveMultiplier >= 3.f) { N->SetActorScale3D(FVector(1.8f)); }
+		if (bTypedNoteActive && Stage.Id == FName(TEXT("TypedNote")))
+		{
+			if (!FMath::IsNearlyEqual(NoteCosmetics.Scale, 1.f)) { N->SetActorScale3D(FVector(NoteCosmetics.Scale)); }
+		}
+		else if (Stage.ResolveMultiplier >= 3.f) { N->SetActorScale3D(FVector(1.8f)); }
 		N->GetResolveSet()->OnPacified.AddUObject(this, &AJamGameMode::HandlePacified);
 		Nuisances.Add(N);
 	}
@@ -336,7 +380,7 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 bool AJamGameMode::HandleNoteAnswer(AJamHero* InHero, bool bTake)
 {
 	AJamGameState* GS = GetJamGameState();
-	if (!GS || !InHero || !GS->IsNotePrompt()) { return false; }
+	if (!GS || !InHero || !GS->IsNotePrompt() || GS->bReadingNote) { return false; }
 	return GS->Shoot.AnswerNote(bTake);
 }
 
@@ -406,6 +450,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 			const FJamLine* Pitch = JamLines::Find(Shoot.GetScene().Note.PitchLineId);
 			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
 			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), PitchText, -1.f);
+			GS->SuggestedNotes = JamNoteSuggestions::For(Shoot.GetScene().Id);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
 			if (SceneIndex == 2)
 			{
@@ -548,7 +593,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		UE_LOG(LogJam, Log, TEXT("JamShoot: note %s"), Event.Value ? TEXT("taken") : TEXT("refused"));
 		ShowCard(EJamCardKind::Info, Event.Value ? TEXT("NOTE TAKEN") : TEXT("NOTE REFUSED"), FString(), 2.f);
 		(Event.Value ? GS->RunNotesTaken : GS->RunNotesRefused) += 1;
-		Say(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused);
+		if (!(Event.Value && bTypedNoteActive)) { Say(Event.Value ? EJamLineTrigger::NoteTaken : EJamLineTrigger::NoteRefused); }
 		break;
 
 	case EJamShootEventType::TakeFailed:
@@ -652,7 +697,15 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	{
 		if (GetWorld()->GetTimeSeconds() - StateEnteredAt >= JamAutoplayTuning::NoteThinkSeconds)
 		{
-			if (bAutoNoteTake) { Bot->RequestInteract(); } else { Bot->RequestRefuseNote(); }
+			if (!AutoTypedNote.IsEmpty() || bAutoSuggest)
+			{
+				if (!GS->bReadingNote)
+				{
+					HandleTypedNote(Bot, bAutoSuggest && GS->SuggestedNotes.Num() > 0 ? GS->SuggestedNotes[0] : AutoTypedNote);
+				}
+			}
+			else if (bAutoNoteTake) { Bot->RequestInteract(); }
+			else { Bot->RequestRefuseNote(); }
 		}
 		return;
 	}
@@ -915,7 +968,16 @@ void AJamGameMode::RollWrap(bool bLastScene)
 	PS->Sprinkles += Out.Ledger.HeroCut;
 	ApplyHeroStats();
 
-	GS->Wrap = JamWrap::MakeView(Out, Shoot.GetScene().Title, Before, Prog.GetStats(), Gained, Seed);
+	GS->Wrap = JamWrap::MakeView(Out, GS->SceneTitleOverride.IsEmpty() ? Shoot.GetScene().Title : GS->SceneTitleOverride,
+		Before, Prog.GetStats(), Gained, Seed);
+	// The note named the loot: the hero's piece takes the name (the stats stay the table's).
+	if (bTypedNoteActive && !NoteCosmetics.LootName.IsEmpty())
+	{
+		for (FJamWrapLoot& L : GS->Wrap.Loot)
+		{
+			if (L.bEquipped) { L.Name = NoteCosmetics.LootName; if (!NoteCosmetics.LootFlavour.IsEmpty()) { L.Flavour = NoteCosmetics.LootFlavour; } }
+		}
+	}
 	FilmGross += Out.Ledger.Gross;
 	DirectorTotal += Out.Ledger.DeductionsTotal;
 	bLastWrapped = bLastScene;
@@ -1012,7 +1074,20 @@ void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
 void AJamGameMode::Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& Offset, float Seconds, bool bJagged)
 {
 	AJamGameState* GS = GetJamGameState();
+	FJamLine Typed;
 	const FJamLine* Line = Nag.PickFromPool(Pool);
+	// A typed note rewrote what the knight shouts and what they answer, until the money runs out.
+	if (GS && bTypedNoteActive && !GS->bBudgetOut)
+	{
+		const TArray<FString>* Own = Pool == EJamLineTrigger::NuisanceReply ? &NoteCosmetics.Replies
+			: (Pool == EJamLineTrigger::BubbleDefault || Pool == EJamLineTrigger::BubbleSadder) ? &NoteCosmetics.LectureBubbles : nullptr;
+		if (Own && Own->Num() > 0)
+		{
+			Typed.Id = TEXT("TypedNote");
+			Typed.Text = (*Own)[FMath::RandRange(0, Own->Num() - 1)];
+			Line = &Typed;
+		}
+	}
 	if (!GS || !Line || !Anchor) { return; }
 	const float Now = GetWorld()->GetTimeSeconds();
 	GS->Bubbles.RemoveAll([Now](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid(); });
@@ -1089,4 +1164,130 @@ void AJamGameMode::BudgetOut()
 		}
 	}
 	for (AJamNuisance* N : Nuisances) { if (N) { N->BecomeBox(Label); } }
+}
+
+// ---- Typed notes (T12b) ---------------------------------------------------------------------------------------
+
+namespace
+{
+	const TCHAR* KindName(EJamTargetKind Kind)
+	{
+		switch (Kind)
+		{
+		case EJamTargetKind::Rat:    return TEXT("rat");
+		case EJamTargetKind::Goblin: return TEXT("goblin");
+		case EJamTargetKind::Bug:    return TEXT("bug");
+		case EJamTargetKind::Almond: return TEXT("almond");
+		default:                     return TEXT("rat");
+		}
+	}
+}
+
+bool AJamGameMode::HandleTypedNote(AJamHero* InHero, const FString& InTyped)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !InHero || !GS->IsNotePrompt() || GS->bReadingNote) { return false; }
+	const FString Typed = JamNoteClamp::SanitizeNote(InTyped);
+	if (Typed.IsEmpty()) { return false; }
+
+	GS->bReadingNote = true;
+	GS->ReadingNote = Typed;
+	const int32 Serial = ++NoteSerial;
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: typed note \"%s\""), *Typed);
+
+	const FJamShoot& Shoot = GS->GetShoot();
+	const FJamSceneDef& Scene = Shoot.GetScene();
+	const FJamNoteContext Ctx = JamNoteClamp::MakeContext(Scene, Scene.NoteBeforeStage);
+	UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
+	if (Client && Client->IsOnline())
+	{
+		TArray<FString> Kinds;
+		for (const TPair<EJamTargetKind, int32>& K : Ctx.Kinds) { Kinds.Add(KindName(K.Key)); }
+		const AJamPlayerState* PS = GetHeroState();
+		TWeakObjectPtr<AJamGameMode> WeakThis(this);
+		Client->RequestNote(Scene.Id.ToString(), Ctx.BaseStage.Id.ToString(), Kinds, Ctx.MaxCapacity(), PS ? PS->Motif : FString(), Typed,
+			[WeakThis, Serial, Typed](bool bOk, const FString& Body)
+			{
+				if (WeakThis.IsValid()) { WeakThis->ResolveTypedNote(Serial, Typed, bOk, Body); }
+			});
+	}
+	else
+	{
+		// Offline: she still takes a moment to read it.
+		FTimerHandle Handle;
+		GetWorldTimerManager().SetTimer(Handle, FTimerDelegate::CreateWeakLambda(this, [this, Serial, Typed]()
+			{
+				ResolveTypedNote(Serial, Typed, false, FString());
+			}), JamNoteSuggestions::OfflineReadSeconds, false);
+	}
+	return true;
+}
+
+void AJamGameMode::ResolveTypedNote(int32 Serial, const FString& Typed, bool bOk, const FString& Body)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || Serial != NoteSerial || !GS->bReadingNote) { return; }
+	GS->bReadingNote = false;
+	GS->ReadingNote.Reset();
+	if (!GS->IsNotePrompt()) { return; }   // the film moved on (back to the title) while she read
+
+	FJamShoot& Shoot = GS->Shoot;
+	const FJamSceneDef& Scene = Shoot.GetScene();
+	const FJamNoteContext Ctx = JamNoteClamp::MakeContext(Scene, Scene.NoteBeforeStage);
+	FJamClampedNote Note;
+	FString Why = bOk ? FString() : FString(TEXT("offline or no answer"));
+	bool bHave = bOk && JamNoteClamp::FromResponse(Body, Ctx, Note, Why);
+	if (!bHave)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: note service fallback (%s)"), *Why);
+		bHave = JamNoteClamp::FromKeywords(Typed, Ctx, SceneIndex * 7 + NoteSerial, Note);
+	}
+
+	AJamPlayerState* PS = GetHeroState();
+	if (PS) { PS->TypedNotes.Add(Typed); }
+	if (!bHave)
+	{
+		// She can't read the handwriting: her own note it is.
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: typed note not understood; her own note"));
+		Shoot.AnswerNote(true);
+		FJamLine Line;
+		Line.Id = TEXT("TypedNote_Handwriting");
+		Line.Text = TEXT("I can't read your handwriting. We'll do mine. It's better anyway.");
+		ShowCaption(Line);
+		return;
+	}
+
+	NoteCosmetics = Note.Cosmetics;
+	bTypedNoteActive = true;
+	if (PS && !NoteCosmetics.Motif.IsEmpty()) { PS->Motif = NoteCosmetics.Motif; }
+	GS->Weather = (uint8)NoteCosmetics.Weather;
+	GS->Mood = (uint8)NoteCosmetics.Mood;
+	if (!NoteCosmetics.SceneTitle.IsEmpty()) { GS->SceneTitleOverride = NoteCosmetics.SceneTitle; }
+	const FJamStageDef& R = Note.Def.Replacement;
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: typed note applied (%s): count %d resolve x%.2f speed x%.2f scale %.2f time %.0f tint %d weather %d mood %d gross x%.2f \"%s\""),
+		*Note.Source, R.Count, R.ResolveMultiplier, R.SpeedMultiplier, NoteCosmetics.Scale, R.TimeLimit, (int32)NoteCosmetics.Tint,
+		(int32)NoteCosmetics.Weather, (int32)NoteCosmetics.Mood, Note.Def.GrossMultiplier, *NoteCosmetics.SceneTitle);
+
+	Shoot.AnswerNoteWith(Note.Def);
+	// Her own reaction, in place of the generic "note taken" line (HandleShootEvent skips it for a typed note).
+	FJamLine Reaction;
+	Reaction.Id = TEXT("TypedNote_Reaction");
+	Reaction.Text = NoteCosmetics.FenellaReaction;
+	if (!Reaction.Text.IsEmpty()) { ShowCaption(Reaction); }
+}
+
+void AJamGameMode::ClearNoteCosmetics()
+{
+	bTypedNoteActive = false;
+	NoteCosmetics = FJamNoteCosmetics();
+	++NoteSerial;   // an answer still in flight is for a scene that is gone
+	if (AJamGameState* GS = GetJamGameState())
+	{
+		GS->bReadingNote = false;
+		GS->ReadingNote.Reset();
+		GS->SuggestedNotes.Reset();
+		GS->Weather = 0;
+		GS->Mood = 0;
+		GS->SceneTitleOverride.Reset();
+	}
 }

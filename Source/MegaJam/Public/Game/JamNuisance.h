@@ -58,6 +58,8 @@ public:
 	// Set by the game mode before FinishSpawning (per kind, BUILD_SPEC 10).
 	float MaxResolveValue = 100.f;
 	FLinearColor BaseColour = FLinearColor(1.0f, 0.35f, 0.6f);
+	/** A typed note's tint (T12b): wandering and fleeing models wash in BaseColour at this opacity. 0 = plain. */
+	float NoteTintOpacity = 0.f;
 	/** Changes heading often while wandering (bugs). */
 	bool bErratic = false;
 	/** The generated model for this kind and its height (T20); empty keeps the placeholder. */

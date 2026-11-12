@@ -205,7 +205,11 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
 	if (!PS) { return false; }
 	if (GM && GM->HandleSpendPoint(this, Skill)) { return true; }   // the wrap panel: this button ranks the skill up
-	if (GM && GM->IsNotePromptUp()) { return false; }                // CUT!: Q refuses the note, it does not sigh
+	if (GM && GM->IsNotePromptUp())                                  // CUT!: Q refuses the note, it does not sigh
+	{
+		if (Skill == EJamSkill::LastJudgment) { RequestWriteNote(); }   // Y / R write your own
+		return false;
+	}
 	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetSkillHandle(Skill));
 	if (bActivated)
 	{
@@ -281,6 +285,7 @@ void AJamHero::CreateInput()
 	RefuseAction = NewObject<UInputAction>(this, TEXT("IA_Refuse"));
 	RefuseAction->ValueType = EInputActionValueType::Boolean;
 	PauseAction = NewObject<UInputAction>(this, TEXT("IA_Pause"));
+	WriteAction = NewObject<UInputAction>(this, TEXT("IA_WriteNote"));
 	PauseAction->ValueType = EInputActionValueType::Boolean;
 	for (int32 i = 0; i < 3; ++i)
 	{
@@ -324,6 +329,7 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(RefuseAction, EKeys::Q);
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 	InputContext->MapKey(PauseAction, EKeys::Escape);
+	InputContext->MapKey(WriteAction, EKeys::T);
 	// Skills 2 to 4 (BUILD_SPEC 3 controls): RMB / Q / R, RB / LB / Y.
 	InputContext->MapKey(SkillActions[0], EKeys::RightMouseButton);
 	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
@@ -350,6 +356,7 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(InteractAction, ETriggerEvent::Completed, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
 		Input->BindAction(PauseAction, ETriggerEvent::Started, this, &AJamHero::OnPause);
+		Input->BindAction(WriteAction, ETriggerEvent::Started, this, &AJamHero::OnWrite);
 		Input->BindAction(SkillActions[0], ETriggerEvent::Started, this, &AJamHero::OnSkill2);
 		Input->BindAction(SkillActions[1], ETriggerEvent::Started, this, &AJamHero::OnSkill3);
 		Input->BindAction(SkillActions[2], ETriggerEvent::Started, this, &AJamHero::OnSkill4);
@@ -441,6 +448,18 @@ bool AJamHero::RequestInteract()
 	if (GM->HandleDismissWrap(this)) { return true; }   // the wrap panel: interact closes it
 	AJamNuisance* Target = FindInteractTarget();
 	return Target && GM->HandleInteract(this, Target);
+}
+
+bool AJamHero::RequestWriteNote()
+{
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	AJamHUD* HUD = PC ? Cast<AJamHUD>(PC->GetHUD()) : nullptr;
+	return HUD && HUD->OpenNoteEditor(bUsingGamepad);
+}
+
+void AJamHero::OnWrite()
+{
+	RequestWriteNote();
 }
 
 bool AJamHero::RequestRefuseNote()

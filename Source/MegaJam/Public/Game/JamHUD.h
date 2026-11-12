@@ -23,9 +23,14 @@ public:
 	AJamHUD();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
+	/** A typed note's weather over the world (T12b): rain, sprinkle snow or fog, drawn under the widgets. */
+	virtual void DrawHUD() override;
 
 	/** Esc / Start in play: pause and open the Pause menu. */
 	void RequestPause();
+
+	/** CUT!: open the note editor (T12b). False unless the note prompt is up and she is not already reading one. */
+	bool OpenNoteEditor(bool bGamepad);
 
 	/** The view built from the world this frame (or the sample). */
 	const FJamHudView& GetView() const { return View; }
@@ -50,7 +55,13 @@ private:
 	void Activate(const FJamMenuOption& Option);
 	void Adjust(const FJamMenuOption& Option, int32 Delta);
 	void SetPaused(bool bPause);
-	void UpdateInputMode(bool bInteractive);
+	/** 0 game, 1 a screen, 2 the note editor. */
+	void UpdateInputMode(int32 Want);
+	UPROPERTY(Transient)
+	TObjectPtr<class UJamNoteEditor> NoteEditor;
+	void TickNoteEditor();
+	bool bEditorSample = false;
+	uint8 WeatherSample = 0;
 	FJamMenuSettings MenuSettings() const;
 	class UJamSettings* Settings() const;
 	class AJamGameMode* AuthGameMode() const;

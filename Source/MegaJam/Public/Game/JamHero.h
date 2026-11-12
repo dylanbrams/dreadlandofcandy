@@ -44,6 +44,8 @@ public:
 
 	/** At the CUT! prompt: refuse the note. */
 	bool RequestRefuseNote();
+	/** CUT!: open the note editor to write her note yourself (T, or Y / R, which do nothing else at CUT!). */
+	bool RequestWriteNote();
 
 	/** Nearest pacified nuisance inside interact range, or null. The HUD shows the prompt for it. */
 	AJamNuisance* FindInteractTarget() const;
@@ -149,6 +151,10 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> PauseAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> WriteAction;
+	void OnWrite();
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> SkillActions[3];

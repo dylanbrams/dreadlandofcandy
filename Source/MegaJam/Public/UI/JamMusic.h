@@ -12,6 +12,7 @@ struct MEGAJAM_API FJamMusicContext
 	bool bWalking = false;    // between scenes, on the street
 	bool bNotePrompt = false; // CUT!
 	bool bBudgetOut = false;  // the finale ran out of money: no music at all
+	uint8 Mood = 0;           // a typed note's mood (T12b): 0 the scene's own, 1 epic, 2 sad
 };
 
 /**

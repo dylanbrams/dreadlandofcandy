@@ -6,6 +6,7 @@
 #include "UI/JamHudView.h"
 #include "UI/JamScreens.h"
 #include "Film/JamNagScheduler.h"
+#include "Film/JamNoteClamp.h"
 #include "JamGameMode.generated.h"
 
 class AJamHero;
@@ -21,7 +22,9 @@ class AJamFaerie;
  * set, and stepping onto it starts the next scene.
  *   -autoplay             a bot plays: chases, lectures, treats, collects, answers notes, walks between sets;
  *                         logs JamAutoplay: PASS scenes=N ... ending=<name> after the last wrap, or FAIL <why>
- *   -autonote=take|refuse how the bot answers CUT! (default take)
+ *   -autonote=take|refuse how the bot answers CUT! (default take); =suggest gives the first suggested note,
+ *                         =typed:<words_with_underscores> types its own (T12b)
+ *   -noteurl=<base>, -nonotes   the typed-note server (UJamNoteClient); offline uses keywords, then her own note
  *   -scene=<n>            start at scene n (1-based), hero on that set's mark
  *   -timescale=<x>        world time dilation (0.25 to 8), for faster unattended runs
  */
@@ -57,6 +60,12 @@ public:
 	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill);
 	bool IsNotePromptUp() const;
 
+	/**
+	 * The player's own note at CUT! (T12b, BUILD_SPEC 3a). She "reads" it while the server answers (6 s at most);
+	 * the clamped form, or the keyword matcher, or her own note replaces the next stage. False if not at CUT!.
+	 */
+	bool HandleTypedNote(AJamHero* Hero, const FString& Typed);
+
 private:
 	AJamGameState* GetJamGameState() const;
 	void StartScene(int32 InSceneIndex);
@@ -79,6 +88,16 @@ private:
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
 	void Say(EJamLineTrigger Trigger);
+
+	// Typed notes (T12b).
+	void ResolveTypedNote(int32 Serial, const FString& Typed, bool bOk, const FString& Body);
+	void ClearNoteCosmetics();
+	bool bTypedNoteActive = false;
+	FJamNoteCosmetics NoteCosmetics;
+	int32 NoteSerial = 0;
+	/** The bot's typed note (-autonote=suggest / typed:...). */
+	FString AutoTypedNote;
+	bool bAutoSuggest = false;
 	/** The budget runs out (T21): halfway through the finale's last stage. */
 	void TickBudget();
 	void BudgetOut();

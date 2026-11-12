@@ -32,6 +32,10 @@ public:
 	const FJamProgression& GetProgression() const { return Progression; }
 	FJamProgression& EditProgression() { return Progression; }
 
+	/** Every note the player typed, oldest first (BUILD_SPEC 3a), and the motif the last one came back with. */
+	TArray<FString> TypedNotes;
+	FString Motif;
+
 	/** The score: the hero's cut over the run. */
 	int32 Sprinkles = 0;
 

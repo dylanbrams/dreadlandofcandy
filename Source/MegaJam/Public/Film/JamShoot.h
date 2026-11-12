@@ -23,6 +23,8 @@ public:
 	bool ReportMeter(int32 Amount = 1);
 	bool ReportFail();
 	bool AnswerNote(bool bTake);
+	/** Takes a different note in place of the authored one (a typed note, T12b): counts as taken. */
+	bool AnswerNoteWith(const FJamNoteDef& Note);
 	bool Retake();
 	void Tick(float DeltaSeconds);
 

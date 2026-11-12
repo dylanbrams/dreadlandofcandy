@@ -71,6 +71,9 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> TakeSubText;
 	UPROPERTY(Transient) TObjectPtr<UProgressBar> TakeFill;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> RefuseKeyText;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> WriteKeyText;
+	UPROPERTY(Transient) TObjectPtr<UWidget> NoteTiles;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> NoteReadingText;
 
 	// Skill bar and XP bar (T14a), bottom left.
 	UPROPERTY(Transient) TObjectPtr<UWidget> SkillBar;

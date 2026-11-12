@@ -128,6 +128,13 @@ bool FJamShoot::Retake()
 	return true;
 }
 
+bool FJamShoot::AnswerNoteWith(const FJamNoteDef& Note)
+{
+	if (State != EJamShootState::NotePrompt) { return false; }
+	Scene.Note = Note;
+	return AnswerNote(true);
+}
+
 bool FJamShoot::AnswerNote(bool bTake)
 {
 	if (State != EJamShootState::NotePrompt) { return false; }

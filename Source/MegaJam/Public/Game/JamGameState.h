@@ -77,6 +77,18 @@ public:
 	/** World time the last take failed (the HUD's flash); negative = never. */
 	float TakeFailedAt = -100.f;
 	int32 RunNotesRefused = 0;
+	/** T12b: the player's own note. While she reads it the CUT! panel says so; then its cosmetics hold for the scene. */
+	bool bReadingNote = false;
+	FString ReadingNote;
+	/** The three suggestion buttons at this CUT! (pre-warmed on the server; understood offline too). */
+	TArray<FString> SuggestedNotes;
+	/** Set by a typed note for the rest of its scene. 0 none, 1 rain, 2 sprinkle snow, 3 fog (EJamWeather). */
+	uint8 Weather = 0;
+	/** 0 cheerful (the scene's own music), 1 epic, 2 sad (EJamMood). */
+	uint8 Mood = 0;
+	/** The note renamed the scene (empty = its own title). */
+	FString SceneTitleOverride;
+
 	/** Waiting for the hero's answer to CUT!. */
 	bool IsNotePrompt() const { return Shoot.GetState() == EJamShootState::NotePrompt; }
 

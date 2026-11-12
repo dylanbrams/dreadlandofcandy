@@ -259,16 +259,29 @@ void UJamHudWidget::BuildTree()
 		UProgressBar* Fill = nullptr;
 		UTextBlock* RefuseKey = nullptr;
 		UTextBlock* RefuseSub = nullptr;
+		UTextBlock* WriteKey = nullptr;
+		UTextBlock* WriteSub = nullptr;
 		UBorder* TakeTile = MakeChoiceTile(FLinearColor(0.45f, 1.f, 0.55f), TEXT("TAKE THE NOTE"), TakeKey, TakeSub, &Fill);
 		UBorder* RefuseTile = MakeChoiceTile(FLinearColor(1.f, 0.55f, 0.3f), TEXT("REFUSE"), RefuseKey, RefuseSub, nullptr);
+		UBorder* WriteTile = MakeChoiceTile(FLinearColor(0.75f, 0.55f, 1.f), TEXT("YOUR OWN NOTE"), WriteKey, WriteSub, nullptr);
+		WriteKeyText = WriteKey;
+		WriteSub->SetText(FText::FromString(TEXT("Type anything. She'll shoot it.\nProbably.")));
 		TakeKeyText = TakeKey;
 		TakeSubText = TakeSub;
 		TakeFill = Fill;
 		RefuseKeyText = RefuseKey;
 		RefuseSub->SetText(FText::FromString(TEXT("Your film, your way.\nShe will sulk. Audibly.")));
 		Tiles->AddChildToHorizontalBox(TakeTile)->SetPadding(FMargin(0.f, 0.f, 14.f, 0.f));
+		Tiles->AddChildToHorizontalBox(WriteTile)->SetPadding(FMargin(14.f, 0.f, 14.f, 0.f));
 		Tiles->AddChildToHorizontalBox(RefuseTile)->SetPadding(FMargin(14.f, 0.f, 0.f, 0.f));
 		Box->AddChildToVerticalBox(Tiles)->SetHorizontalAlignment(HAlign_Center);
+		NoteTiles = Tiles;
+		NoteReadingText = MakeText(28, FLinearColor(0.8f, 0.6f, 1.f), true);
+		NoteReadingText->SetJustification(ETextJustify::Center);
+		NoteReadingText->SetWrapTextAt(1100.f);
+		UVerticalBoxSlot* ReadingSlot = Box->AddChildToVerticalBox(NoteReadingText);
+		ReadingSlot->SetHorizontalAlignment(HAlign_Center);
+		ReadingSlot->SetPadding(FMargin(0.f, 10.f, 0.f, 10.f));
 		NotePanel->SetContent(Box);
 	}
 	Place(NotePanel, FAnchors(0.5f, 0.45f), FVector2D(0.5f, 0.5f), FVector2D::ZeroVector, 21);
@@ -413,6 +426,15 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		SetTextIfChanged(NotePitchText, FString::Printf(TEXT("\u201C%s\u201D"), *Pitch));
 		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("HOLD [E]"));
 		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("PRESS [Q]"));
+		SetTextIfChanged(WriteKeyText, View.bGamepad ? TEXT("PRESS (Y)") : TEXT("PRESS [T]"));
+		Show(NoteTiles, !View.bReadingNote);
+		Show(NoteReadingText, View.bReadingNote);
+		if (View.bReadingNote)
+		{
+			// Dots that count up while she reads.
+			const int32 Dots = 1 + (int32)(RealSeconds * 2.f) % 3;
+			SetTextIfChanged(NoteReadingText, FString::Printf(TEXT("“%s”\n\nShe is reading it%s"), *View.ReadingNote, *FString::ChrN(Dots, TEXT('.'))));
+		}
 		SetTextIfChanged(TakeSubText, FString::Printf(TEXT("Her way. Box office x%.1f.\nThe next shot changes."), View.NoteGross));
 		TakeFill->SetPercent(View.HoldFraction);
 	}
