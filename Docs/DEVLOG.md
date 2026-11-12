@@ -123,3 +123,8 @@
 - The packaged autoplay stalled on the first typed note: goblins at 2.5x were out of reach because reach was measured to their centre. Now measured to their edge, for the player too.
 - T16a: the Premiere shows the film your notes made ("THE DREAD LAND OF CANDY: TAX SEASON") with three generated reviews.
 - Two traps again: two .cpp files with the same names in anonymous namespaces broke the unity build, and the game target treats a shadowed name as an error, which the editor build allows.
+
+## End of day 1: hand-over
+
+- The grade: the template's sun warmed, the sky fill raised, one unbound grade. Three tries: lime and glaring, then dark olive, then in between. Dylan judges it.
+- Dylan added section 3e (the open world, O1 to O9) to the spec. STATUS is rewritten as a hand-over: the next GAME thread starts at O1; Dylan's own checklist is separate.

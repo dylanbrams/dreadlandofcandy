@@ -1,18 +1,26 @@
-# STATUS (GAME, 2026-11-12 late evening, day 1)
+# STATUS (GAME, 2026-11-12 end of day 1, hand-over)
 
-Read this, then `Docs/Design/BUILD_SPEC.md` (governs), then `CLAUDE.md`. Workers: `Docs/Design/WORKERS.md`.
+Read this, then `Docs/Design/BUILD_SPEC.md` (governs; **section 3e and the "Open world" rows of section 7 are the current work**), then `CLAUDE.md`. Workers: `Docs/Design/WORKERS.md` (see "Open world" for GAME, TERRAIN, TUNING).
 
-## Next task
+## Next GAME session starts here
 
-**Changed by Dylan, Nov 12 evening: the open world is next.** Read `BUILD_SPEC.md` section 3e, then take **O1 to O9** (section 7, "Open world") in order, ahead of T24 and T25. GAME builds the framework only and stops after O9; ChatGPT does terrain, effects and tuning (`WORKERS.md`, "Open world"). First step of O1: tag the last green commit `slice-day1`. The paragraph below describes the slice, which stays shippable throughout.
+1. **First, tell Dylan which side sessions you need him to start** (he asks for this at the start of every thread). For O1 to O9 that is probably TERRAIN (the map, from `Docs/Workers/terrain.md`, which O1 writes) and nothing else until O7.
+2. **Take O1 to O9 in order** (BUILD_SPEC section 7, "Open world"), ahead of T24 and T25. Stop after O9. O1 starts by tagging the last green commit `slice-day1` (currently `6810924`, spec only; the last code commit is `4a661b9`). Each O task is one commit with the build, `Jam.*` tests, **both** autoplay modes and a screenshot.
+3. **The slice must stay shippable** throughout: `-backlot` (the current game) keeps passing `smoke-packaged.ps1 -Extra "-autoplay","-timescale=4"`.
+4. Small leftovers from the slice, if a moment comes up: the title screen should say in one line that typed notes are sent to a server (BUILD_SPEC 3a; today only the note editor says it); the bot answers CUT! without its 1.5 s think (stale `StateEnteredAt`); missing VO clips log a `SkipPackage` warning per caption.
 
-**Schedule: well ahead.** Everything on the GAME backlog that does not need a human or a deploy is done, now including T12b (typed notes) and T16a (generated Premiere), both tested against a local stub. **Left:** T15 tuning that needs a human playing (only the Judgment one-shot is fixed); lighting and a colour grade (the rest of T20); T24 street gags (Dylan picks which); T25 fixes from a playtest; T17 only if new assets land. Lighting and grade are in (`JamLook`, needs Dylan's eye). Next GAME task: T24 gags once Dylan picks, otherwise the cheapest ones (signs, plywood backs).
-**Dylan, needs you (in order of value):**
-1. **BACKEND deploy** (`backend/DEPLOY.md`, "First deploy", SSH and API key off stream). Then put the base URL in `Config/DefaultGame.ini` as `[/Script/MegaJam.JamNoteClient]` `BaseUrl=https://<host>` (or tell GAME), and run the packaged check below against it. Until then the game is offline: typed notes go through the keyword matcher, which understands all six suggestions.
-2. **Play title to title** once with keyboard and once with a gamepad, and at a CUT! press T (or Y) and type a note. Menus: W/S or D-pad, E/Enter/A, Esc/B; Esc or Start pauses. Tuning (T15) waits on this.
-3. **Sound effects** (AUDIO): the game has none. Fenella VO clips are optional (`/Game/Audio/VO/VO_<LineId>`).
-4. Check the real credits lines in `JamScreens::CreditLines` ("Made by Dylan"; music not credited: which tool made it?).
-**Testing typed notes without the server:** `python -I Scripts/note-stub.py` (port 8011; `--delay 8` tests the timeout, `--status 503` the fallback), then add `-noteurl=http://127.0.0.1:8011`. Packaged check: `smoke-packaged.ps1 -RunSeconds 110 -Extra "-autoplay","-timescale=4","-autonote=typed:make_it_rain_on_enormous_sad_goblins","-noteurl=<url>"`.
+State at hand-over: 54 `Jam.*` tests pass. Packaged Win64 Development passes title to title offline and with typed notes through `Scripts/note-stub.py`. The working tree has Dylan's uncommitted edits to `Docs/BlenderCleanup.md` and two `Docs/Design/*Attacks*` files (not GAME's; leave them) and the editor's `DefaultEngine.ini` token block (never commit it).
+
+## Dylan's checklist (nothing here blocks the next GAME thread)
+
+1. **Deploy the backend** (`backend/DEPLOY.md`, "First deploy"; SSH and the API key off stream). Pass the two corrections under "Requests to BACKEND" below to BACKEND before it pre-warms. Then add `BaseUrl=https://<host>` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini` (or give GAME the URL) and run the packaged check: `.\Scripts\smoke-packaged.ps1 -RunSeconds 110 -Extra "-autoplay","-timescale=4","-autonote=typed:make_it_rain_on_enormous_sad_goblins"`. Until then typed notes run offline through the keyword matcher.
+2. **Play the slice once with the keyboard and once with a gamepad.** At a CUT!, press T (or Y) and type a note. Menus: W/S or D-pad, E/Enter/A, Esc/B; Esc or Start pauses. T15 tuning and T25 fixes wait on this (or on TUNING, under 3e).
+3. **Judge the look**: compare `Saved/Screenshots/WindowsEditor/look-before.png` with `look-after3.png`, or run with and without `-nograde`. Numbers are in `Game/JamLook.cpp`.
+4. **Sound effects** (AUDIO): the game has none. Fenella's VO clips are optional and drop in by name (`/Game/Audio/VO/VO_<LineId>`).
+5. **Credits**: check `JamScreens::CreditLines` ("Made by Dylan"; the music's tool is not credited). Optionally run DESK for the itch page and the tools list (add Claude Haiku 5.5, Meshy, Rodin, fal, the music tool).
+6. **Pick the T24 street gags** (Jokes.md), whenever GAME gets back to the slice.
+
+**Testing typed notes without the server:** `python -I Scripts/note-stub.py` (port 8011; `--delay 8` tests the timeout, `--status 503` the fallback), then add `-noteurl=http://127.0.0.1:8011` to any run.
 
 ## Requests to BACKEND (from GAME)
 
