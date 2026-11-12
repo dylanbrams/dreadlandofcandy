@@ -3,6 +3,17 @@
 Read this first, then `Docs/Design/BUILD_SPEC.md`, then `CLAUDE.md`. **BUILD_SPEC.md governs** (added Nov 11 by a design review): it narrows the game to a solo eight-minute film with three scenes and an ending, replaces the build order and "First steps tomorrow" below with a task backlog (T01 onward), and lists questions for Dylan in its section 11. Authored text and jokes: `Docs/Design/Jokes.md`. The three briefs are reference only; do not read them unless a task names a section.
 Everything under `Docs/Design/` except Appendix C was drafted with ChatGPT before the jam and is a proposal, not evidence that anything works. Appendix C was written in a Claude session the same night.
 
+## Decisions (Dylan, Nov 12, from `Scripts/compare-models.ps1`, the browser side-by-side viewer)
+
+Test-stage verdicts. ASSETS runs these; GAME does not:
+`gen_batch.py approve character npc terrain_piece particle_mesh equipment 2d_knight 2d_fenella`, `route npc rodin`, `route terrain_piece fal`.
+
+- Hero (Meshy): approved, "pretty damn good". Peppermint: Meshy (Rodin reads as a regular candy).
+- Rat / NPCs: Rodin looks best but is 500k tris. Ask Rodin for fewer faces if its API allows; otherwise GAME reduces on import.
+- House / terrain: fal looks good, Rodin is terrible. fal adds side walls and a ground platform; GAME strips the platform on import if it shows. 17 jobs at about $0.53 each.
+- Sword (Rodin): good but too short. Proposed: `redo SM_Sword` with "blade four times the grip length, sword nearly as tall as a man" (0.5 credits). Not yet confirmed by Dylan.
+- 2D: `T_Skill_Lecture` "fantastic", `T_Card_Clapper` fine.
+
 ## The game in one paragraph
 
 **The Dread Land of Candy: Director's Cut** (jam theme: "Director's Cut"). A grim, serious dark-fantasy hero does absurd nonviolent chores in a cheerful candy village. A bossy low-budget **Production Faerie** (working name Fenella Flicker, original character, no franchise lines) floats behind the hero "shooting a movie": she nags, yells, and rewrites quests mid-scene, and she takes most of the villagers' pay, leaving the hero a cut. The player can edit scenes with CUT! at stage transitions.
