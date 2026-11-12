@@ -1,4 +1,5 @@
 #include "Game/JamGameMode.h"
+#include "Game/JamBacklot.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
 #include "Game/JamHUD.h"
@@ -66,10 +67,18 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	// The camera looks along +X; start the hero facing up-screen, into the set.
 	NewHero->SetActorRotation(FRotator::ZeroRotator);
 
-	// Placeholder field set until the blockout (T08): an 1800 x 1800 box starting just behind the hero.
-	const FVector HeroLoc = NewHero->GetActorLocation();
-	GroundZ = HeroLoc.Z - NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
-	FieldBounds = FBox2D(FVector2D(HeroLoc.X - 300.f, HeroLoc.Y - 900.f), FVector2D(HeroLoc.X + 1500.f, HeroLoc.Y + 900.f));
+	// The backlot (T08): built from its table with floor tops just above the template map's floor, so the two
+	// never z-fight. Scene 1 plays on set 0, the field; the hero starts on its mark.
+	const float TemplateFloorZ = NewHero->GetActorLocation().Z - NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	GroundZ = TemplateFloorZ + 2.f;
+	if (AJamBacklot* Backlot = GetWorld()->SpawnActor<AJamBacklot>(AJamBacklot::StaticClass(), FTransform::Identity))
+	{
+		Backlot->Build(GroundZ);
+	}
+	CurrentSet = 0;
+	FieldBounds = JamBacklot::Sets()[CurrentSet].Bounds;
+	const FVector2D Mark = JamBacklot::HeroMark(CurrentSet);
+	NewHero->TeleportTo(FVector(Mark, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
 
 	bAutoplay = FParse::Param(FCommandLine::Get(), TEXT("autoplay"));
 	StartScene(JamScenes::Scene1());
@@ -148,18 +157,14 @@ void AJamGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	// Development aid: the set's edges.
-	if (FieldBounds.bIsValid)
-	{
-		const FVector Center(FieldBounds.GetCenter(), GroundZ + 2.f);
-		const FVector Extent(FieldBounds.GetExtent(), 1.f);
-		DrawDebugBox(GetWorld(), Center, Extent, FColor(255, 200, 80), false, -1.f, 0, 6.f);
-	}
-
 	TickShoot(DeltaSeconds);
 	if (bAutoplay && !bAutoplayDone && Hero.IsValid())
 	{
 		TickAutoplay(DeltaSeconds);
+	}
+	else if (bAutoplay && bAutoplayWalk && Hero.IsValid())
+	{
+		TickAutoplayWalk(DeltaSeconds);
 	}
 }
 
@@ -244,6 +249,9 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 			for (const AJamNuisance* N : Nuisances) { Flees += N ? N->GetFleeCount() : 0; }
 			UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=1 takes=%d flees=%d time=%.1f"), Event.Take, Flees, AutoplayTime);
 			if (Hero.IsValid()) { Hero->SetAimOverride(FVector::ZeroVector); }
+			// Then walk the street to the next set, which proves the backlot is connected (T08).
+			bAutoplayWalk = JamBacklot::Sets().IsValidIndex(CurrentSet + 1);
+			WalkStartedAt = AutoplayTime;
 		}
 		break;
 
@@ -287,4 +295,29 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	if (ToTarget.Size() > Reach) { Bot->AddMovementInput(ToTarget.GetSafeNormal()); }
 	else if (bTreating) { Bot->RequestInteract(); }
 	else { Bot->RequestLecture(); }   // the cooldown refuses the spam
+}
+
+void AJamGameMode::TickAutoplayWalk(float DeltaSeconds)
+{
+	AJamHero* Bot = Hero.Get();
+	AutoplayTime += DeltaSeconds;
+	const FJamSetLayout& Next = JamBacklot::Sets()[CurrentSet + 1];
+	const FVector2D Goal = Next.Bounds.GetCenter();
+	const FVector2D Here(Bot->GetActorLocation());
+	if (Next.Bounds.IsInside(Here) && FVector2D::Distance(Here, Goal) < 200.f)
+	{
+		bAutoplayWalk = false;
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: walked to set %s in %.1f s"), *Next.Id.ToString(), AutoplayTime - WalkStartedAt);
+		return;
+	}
+	if (AutoplayTime - WalkStartedAt > JamAutoplayTuning::TimeoutSeconds)
+	{
+		bAutoplayWalk = false;
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: FAIL could not walk to set %s (stuck at %.0f, %.0f)"), *Next.Id.ToString(), Here.X, Here.Y);
+		return;
+	}
+	// Line up with the street (Y = 0) before heading up it, so the bot never pushes into a wall beside an opening.
+	FVector2D Dir = Goal - Here;
+	if (FMath::Abs(Here.Y) > 60.f && !Next.Bounds.IsInside(Here)) { Dir = FVector2D(Dir.X > 0.f ? 0.3f : 0.f, -Here.Y); }
+	Bot->AddMovementInput(FVector(Dir.GetSafeNormal(), 0.f));
 }

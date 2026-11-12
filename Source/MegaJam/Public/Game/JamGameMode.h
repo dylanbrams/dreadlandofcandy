@@ -12,8 +12,9 @@ class AJamGameState;
 /**
  * The only place that changes shared game state. Drives the FJamShoot held by AJamGameState: feeds it
  * world reports (pacified, treated), drains its events, spawns and resets stage actors, shows cards.
- * T06: Scene 1 on a placeholder field set (an orange box in front of the hero).
- *   -autoplay   a bot plays the scene: chases, lectures, treats; logs JamAutoplay PASS/FAIL at the wrap
+ * Scene 1 plays on set 0 of the backlot (AJamBacklot, T08).
+ *   -autoplay   a bot plays the scene: chases, lectures, treats; logs JamAutoplay PASS/FAIL at the wrap,
+ *               then walks the street to the next set and logs that too
  */
 UCLASS()
 class MEGAJAM_API AJamGameMode : public AGameModeBase
@@ -38,11 +39,14 @@ private:
 	void RespawnTargets(EJamTargetKind Kind, int32 Count);
 	void HandlePacified(AActor* Pacified);
 	void TickAutoplay(float DeltaSeconds);
+	void TickAutoplayWalk(float DeltaSeconds);
 
 	UPROPERTY(Transient)
 	TArray<TObjectPtr<AJamNuisance>> Nuisances;
 
 	TWeakObjectPtr<AJamHero> Hero;
+	/** Backlot set the current scene plays on, and its floor inside the walls. */
+	int32 CurrentSet = 0;
 	FBox2D FieldBounds = FBox2D(ForceInit);
 	float GroundZ = 0.f;
 
@@ -52,6 +56,8 @@ private:
 
 	bool bAutoplay = false;
 	bool bAutoplayDone = false;
+	bool bAutoplayWalk = false;
+	float WalkStartedAt = 0.f;
 	float AutoplayTime = 0.f;
 	int32 FleeCountTotal = 0;
 };
