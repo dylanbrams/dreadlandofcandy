@@ -12,6 +12,8 @@ One runner at a time (lock file ImportSource/_gen/run.lock).
   python -I Scripts/gen_batch.py approve npc terrain_piece   # Dylan approved the test asset: unlock that group's batches
   python -I Scripts/gen_batch.py redo SM_Rat                 # make it again (old files kept as _v1, _v2 ...)
   python -I Scripts/gen_batch.py declare                     # add a Docs/Declared.md line for each finished asset
+  python -I Scripts/gen_batch.py route terrain_piece rodin   # run that group's batches on rodin / tripo / meshy / default
+  python -I Scripts/gen_batch.py run --stage batch1 --fallback rodin   # if a mesh tool runs dry mid-batch, finish on Rodin
 
 Images: by default they are made by the agent's own image tool (Codex/ChatGPT, on the subscription) through
 `images` + `ingest`. `run --images api` makes them with the OpenAI Images API instead (needs OPENAI_API_KEY).
@@ -37,12 +39,17 @@ LOGS = GEN / "logs"
 LOCK = GEN / "run.lock"
 DROP = ROOT / "Assets" / "Incoming" / "2D" / "_drop"
 STAGES = ["test", "batch1", "batch2"]
-LIMITS = {"meshy": 8, "rodin": 3, "meshy_rig": 1, "image": 4}
-SCRIPTS = {"meshy": "meshy.py", "rodin": "rodin.py", "meshy_rig": "meshy_rig.py", "image": "openai_image.py"}
+LIMITS = {"meshy": 8, "rodin": 3, "tripo": 4, "meshy_rig": 1, "image": 4}
+SCRIPTS = {"meshy": "meshy.py", "rodin": "rodin.py", "tripo": "tripo.py", "meshy_rig": "meshy_rig.py",
+           "image": "openai_image.py"}
+MESH_TOOLS = ("meshy", "rodin", "tripo")
+OUT_DIRS = {"meshy": "Meshy", "rodin": "Hyper3D", "tripo": "Tripo"}
+DEFAULT_RODIN_TIER = "Gen-2.5-Medium"
+ROUTES = {}  # group -> mesh tool, from state["routes"]; set in main()
 NO_RETRY = ("HTTP 400", "HTTP 401", "HTTP 403", "HTTP 404", "HTTP 422", "refusing to download", "No key found",
             "over Meshy's 800", "not found")
 OUT_OF_CREDITS = ("HTTP 402", "insufficient", "Insufficient", "quota", "credit balance", "not enough credits")
-TOOL_NAMES = {"meshy": "Meshy text-to-3D", "rodin": "Hyper3D Rodin Gen-2.5",
+TOOL_NAMES = {"meshy": "Meshy text-to-3D", "rodin": "Hyper3D Rodin Gen-2.5", "tripo": "Tripo text-to-3D",
               "meshy_rig": "Meshy rigging + animation (library presets and text-to-motion)",
               "image": "ChatGPT image generation"}
 
@@ -90,11 +97,22 @@ def arg_after(args, flag):
     return args[args.index(flag) + 1] if flag in args else None
 
 
-def primary_output(j):
-    if j["tool"] == "meshy":
-        return ROOT / "ImportSource" / "Meshy" / f"{j['id']}.glb"
-    if j["tool"] == "rodin":
-        return ROOT / "ImportSource" / "Hyper3D" / f"{j['id']}.glb"
+def tool_of(j, override=None):
+    """The mesh tool a job actually runs on: an explicit override (credit fallback), else the group's route
+    (never for test jobs, which are the comparison), else the job's own tool."""
+    if j["tool"] not in MESH_TOOLS:
+        return j["tool"]
+    if override:
+        return override
+    if j["stage"] != "test" and not j.get("pin_tool") and ROUTES.get(j["group"]):
+        return ROUTES[j["group"]]
+    return j["tool"]
+
+
+def primary_output(j, tool=None):
+    t = tool or tool_of(j)
+    if t in MESH_TOOLS:
+        return ROOT / "ImportSource" / OUT_DIRS[t] / f"{j['id']}.glb"
     if j["tool"] == "meshy_rig":
         name = arg_after(j.get("args", []), "--name") or arg_after(j.get("args", []), "--from")
         return ROOT / "ImportSource" / "Meshy" / name / f"{name}.fbx"
@@ -152,10 +170,31 @@ def image_flags(j):
     return flags
 
 
-def command(j, doc, jobs, state):
-    py = [sys.executable, "-I", str(ROOT / "Scripts" / SCRIPTS[j["tool"]])]
-    if j["tool"] in ("meshy", "rodin"):
-        return py + [j["subject"], "--name", j["id"], "--type", j["group"]] + j.get("args", [])
+def mesh_args(j, tool):
+    """Translate a job's args to the tool it runs on. Jobs carry --polycount (Meshy) and/or --tier (Rodin)."""
+    args = list(j.get("args", []))
+    poly = arg_after(args, "--polycount")
+    tier = arg_after(args, "--tier")
+    if tool == j["tool"]:
+        return args
+    if tool == "meshy":
+        return ["--polycount", poly] if poly else []
+    if tool == "rodin":
+        return ["--tier", tier or DEFAULT_RODIN_TIER]  # face count is reduced in UE/Blender afterwards
+    if tool == "tripo":
+        return ["--face-limit", poly] if poly else []
+    return args
+
+
+def command(j, doc, jobs, state, tool=None):
+    t = tool_of(j, tool)
+    py = [sys.executable, "-I", str(ROOT / "Scripts" / SCRIPTS[t])]
+    if t in ("meshy", "rodin"):
+        return py + [j["subject"], "--name", j["id"], "--type", j["group"]] + mesh_args(j, t)
+    if t == "tripo":  # tripo.py has no --type: apply the locked style words here
+        sys.path.insert(0, str(ROOT / "Scripts"))
+        import genlib
+        return py + [genlib.apply_style(j["subject"], j["group"]), "--name", j["id"]] + mesh_args(j, t)
     if j["tool"] == "meshy_rig":
         return py + j.get("args", [])
     refs = image_refs(j, jobs, state) or []
@@ -197,13 +236,14 @@ def cmd_status(a, doc, jobs, state):
             continue
         st = status_of(j, state)
         rec = state["jobs"].get(j["id"], {})
-        rows.append({"id": j["id"], "tool": j["tool"], "group": j["group"], "stage": j["stage"], "pri": j.get("pri"),
+        rows.append({"id": j["id"], "tool": tool_of(j), "group": j["group"], "stage": j["stage"], "pri": j.get("pri"),
                      "status": st, "gate": "open" if gate_ok(j, state) else "locked",
                      "error": rec.get("error", "") if st == "failed" else ""})
     if a.json:
         print(json.dumps({"approved": state["approved"], "jobs": rows}, indent=2))
         return
     print("approved groups:", ", ".join(state["approved"]) or "(none)")
+    print("routes:", ", ".join(f"{k} -> {v}" for k, v in sorted(ROUTES.items())) or "(each job's own tool)")
     for stage in STAGES:
         rs = [r for r in rows if r["stage"] == stage]
         if not rs:
@@ -239,6 +279,22 @@ def cmd_redo(a, doc, jobs, state):
             state["declared"].remove(i)
     save_state(state)
     print("marked for redo:", ", ".join(a.ids), "(edit the subject in jobs.json first if the prompt was the problem)")
+
+
+def cmd_route(a, doc, jobs, state):
+    groups = {j["group"] for j in jobs.values() if j["tool"] in MESH_TOOLS}
+    if a.group not in groups:
+        sys.exit(f"unknown mesh group {a.group}; groups: {', '.join(sorted(groups))}")
+    routes = state.setdefault("routes", {})
+    if a.tool == "default":
+        routes.pop(a.group, None)
+    else:
+        routes[a.group] = a.tool
+    save_state(state)
+    ROUTES.clear()
+    ROUTES.update(routes)
+    n = sum(1 for j in jobs.values() if j["group"] == a.group and j["stage"] != "test" and j["tool"] in MESH_TOOLS)
+    print(f"{a.group}: {n} non-test job(s) now run on {a.tool if a.tool != 'default' else 'their own tool'}")
 
 
 def selected(a, jobs):
@@ -311,10 +367,16 @@ def cmd_run(a, doc, jobs, state):
         if was_redo:
             keep_old(j)
         log = LOGS / f"{j['id']}.log"
+        use = None
         for attempt in range(a.retries + 1):
-            if j["tool"] in exhausted:
-                return "failed", f"{j['tool']} is out of credits"
-            cmd = command(j, doc, jobs, state)
+            t = tool_of(j, use)
+            if t in exhausted:
+                fb = a.fallback if t in MESH_TOOLS else None
+                if not fb or fb in exhausted or fb == t:
+                    return "failed", f"{t} is out of credits"
+                use = fb
+                say(f"  {j['id']}: {t} is out of credits, using {fb}")
+            cmd = command(j, doc, jobs, state, use)
             with open(log, "a", encoding="utf-8") as f:
                 f.write(f"\n===== {time.ctime()} attempt {attempt + 1}\n")
                 f.flush()
@@ -327,11 +389,28 @@ def cmd_run(a, doc, jobs, state):
             text = log.read_text(encoding="utf-8", errors="replace")
             tail = text[text.rfind("===== "):]
             if code == 0:
+                if use:
+                    j["_used"] = use
                 return "done", ""
             kind = classify(tail)
             last = [ln for ln in tail.strip().splitlines() if ln.strip()][-1:] or ["(no output)"]
             if kind == "credits":
-                exhausted.add(j["tool"])
+                exhausted.add(tool_of(j, use))
+                fb = a.fallback
+                if fb and fb not in exhausted and tool_of(j, use) in MESH_TOOLS:
+                    use = fb
+                    say(f"  {j['id']}: out of credits, retrying on {fb}")
+                    cmd = command(j, doc, jobs, state, use)
+                    with open(log, "a", encoding="utf-8") as f:
+                        f.write(f"\n===== {time.ctime()} fallback to {fb}\n")
+                        f.flush()
+                        p2 = subprocess.run(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, timeout=a.job_timeout)
+                    if p2.returncode == 0:
+                        j["_used"] = fb
+                        return "done", ""
+                    text = log.read_text(encoding="utf-8", errors="replace")
+                    last = [ln for ln in text[text.rfind("===== "):].strip().splitlines() if ln.strip()][-1:]
+                    return "failed", f"fallback {fb} failed too: {(last or ['?'])[0]}"
                 return "failed", f"OUT OF CREDITS: {last[0]}"
             if kind == "fatal" or attempt == a.retries:
                 return "failed", last[0]
@@ -362,28 +441,29 @@ def cmd_run(a, doc, jobs, state):
                         results[jid] = "failed"
                         say(f"BLOCKED {jid}: its group's anchor image isn't done")
                         continue
-                    if active[j["tool"]] >= LIMITS[j["tool"]]:
+                    if active[tool_of(j)] >= LIMITS[tool_of(j)]:
                         continue
                     del pending[jid]
-                    active[j["tool"]] += 1
+                    j["_slot"] = tool_of(j)
+                    active[j["_slot"]] += 1
                     prev = state["jobs"].get(jid, {}).get("status")
                     state["jobs"][jid] = {"status": "redo" if prev == "redo" else "running", "started": time.ctime()}
                     save_state(state)
-                    say(f"START {jid} ({j['tool']})")
+                    say(f"START {jid} ({j['_slot']})")
                     running[ex.submit(run_one, j)] = j
                 if not running:
                     break
                 done, _ = wait(list(running), return_when=FIRST_COMPLETED)
                 for fut in done:
                     j = running.pop(fut)
-                    active[j["tool"]] -= 1
+                    active[j["_slot"]] -= 1
                     try:
                         st, err = fut.result()
                     except Exception as e:  # a bug in this runner, not in the job
                         st, err = "failed", f"runner error: {e}"
                     results[j["id"]] = st
                     state["jobs"][j["id"]] = {"status": st, "error": err, "finished": time.ctime(),
-                                              "via": "api"}
+                                              "via": "api", "tool": j.get("_used") or j["_slot"]}
                     save_state(state)
                     say(f"{'DONE' if st == 'done' else 'FAIL'} {j['id']}" + (f": {err[:160]}" if err else ""))
     finally:
@@ -519,7 +599,7 @@ def cmd_declare(a, doc, jobs, state):
         if j["id"] in state["declared"] or status_of(j, state) != "done":
             continue
         via = state["jobs"].get(j["id"], {}).get("via", "")
-        tool = TOOL_NAMES[j["tool"]]
+        tool = TOOL_NAMES[state["jobs"].get(j["id"], {}).get("tool") or tool_of(j)]
         if j["tool"] == "image":
             tool = "OpenAI Images API" if via == "api" else "ChatGPT image generation (Codex)"
         where = primary_output(j).relative_to(ROOT).as_posix()
@@ -550,6 +630,8 @@ def main():
     r.add_argument("--images", choices=["codex", "api"], default="codex")
     r.add_argument("--retries", type=int, default=1)
     r.add_argument("--job-timeout", type=int, default=3600)
+    r.add_argument("--fallback", choices=list(MESH_TOOLS), default=None,
+                   help="when a mesh tool runs out of credits, run its remaining jobs on this one")
     r.add_argument("--dry-run", action="store_true")
     im = sub.add_parser("images"); im.add_argument("--stage", choices=STAGES); im.add_argument("--json", action="store_true")
     im.add_argument("--no-gate", action="store_true")
@@ -560,14 +642,18 @@ def main():
     un = sub.add_parser("unapprove"); un.add_argument("groups", nargs="+")
     rd = sub.add_parser("redo"); rd.add_argument("ids", nargs="+")
     sub.add_parser("declare")
+    ro = sub.add_parser("route", help="run a group's non-test mesh jobs on another tool")
+    ro.add_argument("group")
+    ro.add_argument("tool", choices=list(MESH_TOOLS) + ["default"])
     a = p.parse_args()
     doc, jobs = load_jobs()
     state = load_state()
+    ROUTES.update(state.get("routes", {}))
     if a.cmd == "run":
         sys.exit(cmd_run(a, doc, jobs, state))
     {"status": cmd_status, "images": cmd_images, "ingest": cmd_ingest, "review": cmd_review,
      "approve": cmd_approve, "unapprove": lambda *x: cmd_approve(*x, on=False), "redo": cmd_redo,
-     "declare": cmd_declare}[a.cmd](a, doc, jobs, state)
+     "declare": cmd_declare, "route": cmd_route}[a.cmd](a, doc, jobs, state)
 
 
 if __name__ == "__main__":

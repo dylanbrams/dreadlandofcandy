@@ -22,6 +22,8 @@ Hand this file to the agent (Codex, ChatGPT, or a Claude session) with one line:
 | `python -I Scripts/gen_batch.py review` | Writes `ImportSource/_gen/review.html`, a thumbnail grid of everything made so far |
 | `python -I Scripts/gen_batch.py redo <id>` | Makes a job again; the old files are kept as `_v1` |
 | `python -I Scripts/gen_batch.py declare` | Adds a `Docs/Declared.md` line for each finished asset (the jam requires it) |
+| `python -I Scripts/gen_batch.py route <group> <rodin\|tripo\|meshy\|default>` | Runs a group's batch jobs on another mesh tool. Only when Dylan picks it |
+| `run ... --fallback rodin` | If a mesh tool runs out of credits mid-batch, its remaining jobs finish on Rodin instead of failing |
 
 **3D** comes from Meshy (characters, creatures, props, rigging, animations) and Rodin (sword, toothbrush) through their APIs; the runner calls them. **2D** comes from your own image generation (Codex/ChatGPT), on Dylan's subscription. If you can't generate images yourself, `run --stage S --images api` makes them through the OpenAI Images API instead (needs `OPENAI_API_KEY` in `.env`; costs API credit).
 
@@ -38,18 +40,18 @@ For each item `images` lists:
 ## Stage `test` (the morning of Nov 12)
 
 1. `check-balances.py`. If Meshy shows under about 300 credits, stop and tell Dylan.
-2. `gen_batch.py run --stage test --dry-run`, then start `gen_batch.py run --stage test` **in the background**. This makes the hero, the sword, the rat, the house front and the peppermint, then rigs the hero and makes his animations (idle, walk, proud strut, one hand up, plus text-to-motion clips: sword raise, scrub, sigh).
+2. `gen_batch.py run --stage test --dry-run`, then start `gen_batch.py run --stage test` **in the background**. This makes the hero, the sword, the rat, the house front and the peppermint, then rigs the hero and makes his animations (idle, walk, proud strut, one hand up, plus text-to-motion clips: sword raise, scrub, sigh). It also makes **Rodin twins** of the rat, house front and peppermint (`*_Rodin`), so Dylan can choose a tool per group from real results.
 3. While it runs, make the two 2D anchors from `gen_batch.py images --stage test`: `T_Skill_Lecture` (the knight layer) and `T_Card_Clapper` (Fenella's layer).
 4. When the run finishes, read `ImportSource/_gen/last_run.txt`. For any failure, read `ImportSource/_gen/logs/<id>.log`. If the cause was transient (timeout, network), re-run the same command, once; it only redoes what isn't done. If it was a bad prompt, leave it for Dylan.
-5. Look at every thumbnail (`ImportSource/Meshy/*.png`, `ImportSource/Hyper3D/*`, and the 2D PNGs) and write `Docs/Workers/assets.md`: for each test asset, one line on what it looks like and anything wrong with it (wrong object, wrong style, text baked in, not A-pose, back of the house not flat). Say which of the hero's animations exist, and whether the rig worked at all. That answers the open question of whether the Meshy rig route works.
+5. Look at every thumbnail (`ImportSource/Meshy/*.png`, `ImportSource/Hyper3D/*`, and the 2D PNGs) and write `Docs/Workers/assets.md`: for each test asset, one line on what it looks like and anything wrong with it (wrong object, wrong style, text baked in, not A-pose, back of the house not flat). For each Meshy/Rodin pair, say which looks closer to the style and why. Say which of the hero's animations exist, and whether the rig worked at all. That answers the open question of whether the Meshy rig route works.
 6. `gen_batch.py review`, `gen_batch.py declare`, commit.
 7. **Stop.** Tell Dylan the test set is ready for approval and point him to `Docs/Workers/assets.md` and `ImportSource/_gen/review.html`. The 3D assets get approved in the game camera, which the GAME worker sets up.
 
 ## Stage `batch1` (after Dylan approves)
 
-Dylan approves one or more groups: `character`, `equipment`, `npc`, `terrain_piece`, `particle_mesh`, `2d_knight`, `2d_fenella`. Run `gen_batch.py approve <the groups he named>` (only those), then:
+Dylan approves one or more groups: `character`, `equipment`, `npc`, `terrain_piece`, `particle_mesh`, `2d_knight`, `2d_fenella`. He may also pick a tool per group (e.g. "props on Rodin"). Run `gen_batch.py approve <the groups he named>` and `gen_batch.py route <group> <tool>` for each tool choice (only those), then:
 
-1. `gen_batch.py run --stage batch1` in the background. That's about 20 meshes and the toothbrush, in parallel. Unapproved groups are skipped and listed.
+1. `gen_batch.py run --stage batch1 --fallback rodin` in the background. That's about 20 meshes and the toothbrush, in parallel. Unapproved groups are skipped and listed.
 2. Meanwhile, work through `gen_batch.py images --stage batch1`, must-priority items first. About 40 images, each attached to its layer's anchor as the style reference.
 3. Same failure handling, look-over and `Docs/Workers/assets.md` notes as in the test stage. Then `review`, `declare`, commit.
 4. **Stop** and report: what's done, what failed and why, and the credits left (`check-balances.py`).

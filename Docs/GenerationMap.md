@@ -11,6 +11,8 @@ Written 2026-11-11. **To run generation, hand an agent `Docs/GenerationRunbook.m
 | **Meshy** (3D) | The hero, every candy creature and villager, every candy prop and set piece, small particle meshes | 1 hero + 6 creatures + about 20 props + 3 particle meshes | Test assets Nov 12, batch Nov 13 |
 | **Meshy rigging** | Hero only: rig, then idle / walk / sword-raise | 1 | Probe Nov 12, two-hour time-box Nov 13 |
 | **Rodin** (3D) | The hero's two hand props (sword, toothbrush). Needed for the Hyper3D prize | 2 | Sword Nov 12, toothbrush Nov 13 |
+| **Rodin, if picked** | Any mesh group Dylan moves off Meshy after the morning comparison (rat, house front and peppermint are made on both). 0.5 credits a model, so props on Rodin leave Meshy's 1,100 credits for the hero, rig and creatures | up to ~23 | From batch1 |
+| **Tripo** | Same routing, if its API balance is topped up (it is 0 now) | - | - |
 | **ChatGPT images** (2D) | UI art: icons, stamps, cards, portraits, posters, paper textures | 11 sheets | Skill icons Nov 12, the rest Nov 13 |
 | **Google Fonts** | Three fonts (pick, don't generate) | 3 | Any time |
 | **Not you** (Claude in Blender / Unreal / scripts) | Bubble meshes, word atlas, ground, materials, all Niagara effects, cardboard flats made from renders | - | Claude does these |
