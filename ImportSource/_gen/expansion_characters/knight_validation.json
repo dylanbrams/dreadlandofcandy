@@ -1,0 +1,92 @@
+[
+  {
+    "character": "SK_Knight",
+    "static": {
+      "file": "ImportSource\\Meshy\\SK_Knight.glb",
+      "bytes": 8702928,
+      "triangles": 41119,
+      "materials": 1,
+      "images": 3,
+      "skins": 0,
+      "joints": [],
+      "skinned_primitives": 0
+    },
+    "rig": {
+      "file": "ImportSource\\Meshy\\SK_Knight_Rig\\SK_Knight_Rig.glb",
+      "bytes": 10396116,
+      "triangles": 41119,
+      "materials": 1,
+      "images": 3,
+      "skins": 1,
+      "joints": [
+        "pelvis",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "neck_01",
+        "head",
+        "head_end",
+        "headfront",
+        "clavicle_l",
+        "upperarm_l",
+        "lowerarm_l",
+        "hand_l",
+        "LeftHand_End",
+        "clavicle_r",
+        "upperarm_r",
+        "lowerarm_r",
+        "hand_r",
+        "RightHand_End",
+        "thigh_l",
+        "calf_l",
+        "foot_l",
+        "ball_l",
+        "LeftToe_end",
+        "thigh_r",
+        "calf_r",
+        "foot_r",
+        "ball_r",
+        "RightToe_end"
+      ],
+      "skinned_primitives": 1
+    },
+    "fbx": [
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\SK_Knight_Rig.fbx",
+        "bytes": 10561100
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_Idle.fbx",
+        "bytes": 10704732
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_Walk.fbx",
+        "bytes": 10708956
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_BasicWalk.fbx",
+        "bytes": 10609644
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_ProudStrut.fbx",
+        "bytes": 10720956
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_OneHandUp.fbx",
+        "bytes": 10624716
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_SwordRaise.fbx",
+        "bytes": 10670620
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_Scrub.fbx",
+        "bytes": 10670140
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Knight_Rig\\A_SK_Knight_Rig_Sigh.fbx",
+        "bytes": 10669996
+      }
+    ]
+  }
+]

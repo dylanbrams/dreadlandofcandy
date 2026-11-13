@@ -209,3 +209,15 @@ its rig were preserved under
 with a newly generated complete body. Blender 3.3 was used for solid geometry
 and posed FBX review renders. These are new jam-generated assets, not imported
 pre-jam work. Unreal import and gameplay integration are not part of this batch.
+
+## 2026-11-13 — knight continuity refresh
+
+Dylan preferred the new cast's smoother aesthetic and requested a matching
+knight. Codex authored the `SK_Knight` prompt and generated a new textured
+model through Meshy, followed by UE5 mannequin auto-rigging and library
+animations. The original knight's SwordRaise, Scrub and Sigh text-to-motion
+task IDs were reused and retargeted onto the new rig. Source/configuration:
+`Assets/Generation/knight_refresh.json`; outputs:
+`ImportSource/Meshy/SK_Knight*`. Blender 3.3 is used for geometry and posed
+FBX review. The original `SK_Hero` assets are retained. No pre-jam assets or
+third-party code were copied; Unreal integration remains a GAME task.

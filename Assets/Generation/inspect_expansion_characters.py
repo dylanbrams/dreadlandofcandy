@@ -1,5 +1,6 @@
 """Validate delivered GLBs/FBXs and record geometry and rig structure, without Unreal."""
 import json
+import argparse
 from pathlib import Path
 import struct
 import sys
@@ -27,7 +28,11 @@ def inspect_glb(path):
 
 
 reports = []
-characters = json.loads(Path(__file__).with_name("expansion_characters.json").read_text())["characters"]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--config', type=Path, default=Path(__file__).with_name("expansion_characters.json"))
+parser.add_argument('--report', default='validation.json')
+args = parser.parse_args()
+characters = json.loads(args.config.read_text())["characters"]
 for character in characters:
     name = character["name"]
     directory = ROOT / "ImportSource/Meshy" / (name + "_Rig")
@@ -36,13 +41,20 @@ for character in characters:
     assert rig["skins"] and rig["skinned_primitives"], (name, "No skin weights")
     assert {"pelvis", "hand_l", "hand_r", "foot_l", "foot_r"}.issubset(rig["joints"]), (name, "Missing humanoid bones")
     files = [directory / (name + "_Rig.fbx")]
-    files += [directory / ("A_" + name + "_Rig_" + label + ".fbx") for label in ("Idle", "Walk", "BasicWalk")]
+    labels = ['Idle', 'Walk', 'BasicWalk']
+    rig_args = character.get('rig_args', [])
+    for i, option in enumerate(rig_args):
+        if option == '--action':
+            labels.append(rig_args[i + 1].split(':', 1)[1])
+        elif option == '--motion':
+            labels.append(rig_args[i + 1].split('=', 1)[0])
+    files += [directory / ("A_" + name + "_Rig_" + label + ".fbx") for label in labels]
     for path in files:
         g.validate_fbx(path)
         assert path.stat().st_size > 10000, (path, "Unexpectedly small FBX")
     reports.append({"character": name, "static": static, "rig": rig,
                     "fbx": [{"file": str(p.relative_to(ROOT)), "bytes": p.stat().st_size} for p in files]})
-dest = ROOT / "ImportSource/_gen/expansion_characters/validation.json"
+dest = ROOT / "ImportSource/_gen/expansion_characters" / args.report
 dest.write_text(json.dumps(reports, indent=2), encoding="utf-8")
 for record in reports:
     print(record["character"], record["static"]["triangles"], "static triangles;",

@@ -184,3 +184,31 @@ desaturated palette and realistic body proportions. The new characters have
 smoother surfaces and more stylized exposed faces; the knight has sharper,
 more ornate and menacing armour. They are compatible first passes, not an exact
 style match. A shared material pass and an in-game lineup are still needed.
+
+## 2026-11-13 — knight refreshed to match the new cast
+
+Dylan prefers the expansion cast's aesthetic and requested a matching knight.
+`SK_Knight` is delivered separately; the original `SK_Hero` and its runtime
+assets are intact. The refreshed design has smoother broad plates, rounded
+pauldrons, simpler ornament, a closed visor and a short split tabard. It is a
+closer visual fit with the new cast, although the metal remains fairly glossy.
+Source prompt: `Assets/Prompts/3D/SK_Knight.txt`; config and instructions:
+`Assets/Generation/knight_refresh.json` and `KNIGHT_REFRESH.md`.
+
+Delivered `ImportSource/Meshy/SK_Knight_Rig/`: rigged FBX/GLB plus Idle, Walk,
+ProudStrut, OneHandUp, SwordRaise, Scrub, Sigh and BasicWalk FBXs. UE5 mannequin
+target, height 2.1 m, 41,119 triangles, 28 joints, one material, three embedded
+texture images. SwordRaise/Scrub/Sigh reused original motion task IDs and were
+retargeted to this new rig; their motion generation was not repeated.
+
+Validation passed: GLB integrity, skin weights, key pelvis/hand/foot bones and
+all nine FBXs. Inspected full static geometry and posed Blender FBX renders
+(Idle frame 15 and SwordRaise frame 30); complete limbs and no obvious major
+deformation failure. Check coat/armour clipping through complete animations,
+weapon grip and retargeting in Unreal before replacing the runtime hero.
+
+Comparison page: `ImportSource/_gen/expansion_characters/knight_review.html`.
+Report: `ImportSource/_gen/expansion_characters/knight_validation.json`.
+Meshy balance **640 before, 584 after: 56 credits used**.
+No game code or Unreal assets changed; GAME should import the new knight and
+his clips, update the hero references, and check the sword socket and autoplay.

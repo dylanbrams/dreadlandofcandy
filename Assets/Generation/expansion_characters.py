@@ -1,4 +1,4 @@
-"""Generate and rig the three expansion heroes; resume saved Meshy task IDs.
+"""Generate and rig a character batch; resume saved Meshy task IDs.
 
 python -I Assets/Generation/expansion_characters.py --dry-run
 python -I Assets/Generation/expansion_characters.py
@@ -32,6 +32,7 @@ def run_character(character, dry_run):
     rig_command = [sys.executable, "-I", str(ROOT / "Scripts/meshy_rig.py"),
                    "--from", name, "--name", name + "_Rig", "--height", str(character["height"]),
                    "--skeleton", "ue5_mannequin", "--action", "0:Idle", "--action", "30:Walk"]
+    rig_command.extend(character.get("rig_args", []))
     if dry_run:
         print(name, len(prompt), "characters", json.dumps(preview_body), flush=True)
         print("Rig:", rig_command, flush=True)
@@ -67,21 +68,34 @@ def run_character(character, dry_run):
     # Keep rig jobs serial, as in the project's generation runbook.
     with RIG_LOCK:
         print(name, "rigging", flush=True)
+        if character.get("reuse_motions_from"):
+            original = json.loads((ROOT / character["reuse_motions_from"]).read_text(encoding="utf-8"))
+            rig_state_path = OUT / (name + "_Rig") / "rig.json"
+            rig_state = json.loads(rig_state_path.read_text()) if rig_state_path.exists() else {}
+            anims = rig_state.setdefault("anims", {})
+            for label, record in original.get("anims", {}).items():
+                if record.get("motion_task"):
+                    anims.setdefault(label, {k: record[k] for k in ("motion_task", "prompt") if k in record})
+            rig_state_path.parent.mkdir(parents=True, exist_ok=True)
+            rig_state_path.write_text(json.dumps(rig_state, indent=2), encoding="utf-8")
         with (STATE / (name + "_rig.log")).open("a", encoding="utf-8") as log:
             subprocess.run(rig_command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
         state["rigged"] = True
         save()
-        print(name, "rig and idle/walk delivered", flush=True)
+        print(name, "rig and requested animations delivered", flush=True)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dry-run", action="store_true")
-    parser.add_argument("--only", choices=["SK_Mage", "SK_Archer", "SK_Barbarian"])
+    parser.add_argument("--config", type=Path, default=CONFIG)
+    parser.add_argument("--only")
     args = parser.parse_args()
-    characters = json.loads(CONFIG.read_text(encoding="utf-8"))["characters"]
+    characters = json.loads(args.config.read_text(encoding="utf-8"))["characters"]
     if args.only:
         characters = [character for character in characters if character["name"] == args.only]
+        if not characters:
+            parser.error("--only does not match a character in the config")
     failures = []
     def run(character):
         try:

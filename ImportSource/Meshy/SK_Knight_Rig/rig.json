@@ -1,0 +1,32 @@
+{
+  "anims": {
+    "SwordRaise": {
+      "motion_task": "01a1ce2d-3561-762f-ac92-200d846033c0",
+      "prompt": "A heavy armoured knight raises his right hand from a ready grip to straight overhead in the first 0.3 seconds, as if lifting a greatsword attached later, then holds that pose for the rest of the clip, chest out, feet planted, no swing or jump.",
+      "anim_task": "01a1d415-8d6c-738c-acb6-deb5c317d531"
+    },
+    "Scrub": {
+      "motion_task": "01a1ce2d-355c-7592-8c59-574898027931",
+      "prompt": "A standing knight holds his right hand in a tool grip at chest height in front of him and scrubs it rapidly side to side, like brushing teeth, feet planted. The toothbrush is attached later; do not create a prop or another character.",
+      "anim_task": "01a1d415-8d76-7681-8add-4f965f5d7cc2"
+    },
+    "Sigh": {
+      "motion_task": "01a1ce2d-68d7-72e7-92b9-93d6bbd2ceec",
+      "prompt": "A standing knight lets his shoulders drop in a long heavy disappointed sigh, head tilting down and shaking slowly side to side, then straightens up.",
+      "anim_task": "01a1d415-af12-7650-87c3-746c8587c995"
+    },
+    "Idle": {
+      "anim_task": "01a1d415-8b1a-7137-ad24-738b6e92f6b1"
+    },
+    "Walk": {
+      "anim_task": "01a1d415-8b18-7145-b178-7094b30c05af"
+    },
+    "ProudStrut": {
+      "anim_task": "01a1d415-8b18-7147-b87b-2ca74095f967"
+    },
+    "OneHandUp": {
+      "anim_task": "01a1d415-8b21-779b-88e4-7765c1b360bf"
+    }
+  },
+  "rig_task": "01a1d415-16ba-7624-93b6-4f96d75f830a"
+}

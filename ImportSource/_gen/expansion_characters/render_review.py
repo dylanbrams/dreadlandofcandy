@@ -6,15 +6,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = Path(__file__).resolve().parent
-for name in ("SK_Mage", "SK_Archer", "SK_Barbarian"):
+names = ("SK_Mage", "SK_Archer", "SK_Barbarian")
+if '--names' in sys.argv:
+    names = sys.argv[sys.argv.index('--names') + 1].split(',')
+clip = sys.argv[sys.argv.index('--clip') + 1] if '--clip' in sys.argv else 'Idle'
+frame = int(sys.argv[sys.argv.index('--frame') + 1]) if '--frame' in sys.argv else 15
+for name in names:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     rigged = '--rigged' in sys.argv
     if rigged:
-        source = ROOT / "ImportSource/Meshy" / (name + "_Rig") / ('A_' + name + '_Rig_Idle.fbx')
+        source = ROOT / "ImportSource/Meshy" / (name + "_Rig") / ('A_' + name + '_Rig_' + clip + '.fbx')
         if not source.exists():
             continue
         bpy.ops.import_scene.fbx(filepath=str(source), use_image_search=False)
-        bpy.context.scene.frame_set(15)
+        bpy.context.scene.frame_set(frame)
     else:
         bpy.ops.import_scene.gltf(filepath=str(ROOT / "ImportSource/Meshy" / (name + ".glb")))
     meshes = [o for o in bpy.context.scene.objects if o.type == "MESH"]
@@ -44,5 +49,6 @@ for name in ("SK_Mage", "SK_Archer", "SK_Barbarian"):
     scene.render.resolution_x = 640
     scene.render.resolution_y = 800
     scene.render.resolution_percentage = 100
-    scene.render.filepath = str(OUT / (name + ('_idle_geometry.png' if rigged else '_geometry.png')))
+    suffix = '_' + clip.lower() + '_geometry.png' if rigged else '_geometry.png'
+    scene.render.filepath = str(OUT / (name + suffix))
     bpy.ops.render.render(write_still=True)

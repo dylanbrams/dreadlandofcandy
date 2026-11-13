@@ -1,0 +1,4 @@
+Input: SK_Knight; height 2.1 m; UE5 mannequin skeleton.
+Idle, Walk, ProudStrut, OneHandUp, SwordRaise, Scrub, Sigh, supplied BasicWalk.
+Reuse original SK_Hero_Rig motion tasks for SwordRaise, Scrub and Sigh; retarget onto new rig.
+Original knight and runtime assets remain available.
