@@ -1,0 +1,12 @@
+{
+  "asset": "/Game/Art/Cast/Mage/Anims/A_SK_Mage_Rig_SwordRaise",
+  "fps": 30.0,
+  "keys": 90,
+  "changed_tracks": [
+    "hand_r"
+  ],
+  "before_hold_max_tilt_degrees": 68.38823704904706,
+  "applied": true,
+  "unchanged_track_max_error": 0.0,
+  "after_hold_max_tilt_degrees": 3.692015778667724e-05
+}

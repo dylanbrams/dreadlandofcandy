@@ -217,7 +217,7 @@ RECIPES = [
     ("NS_FX_SoapTorrent", MINT, 1.2, 48, [FOAM, BUBBLES]),
     ("NS_FX_ShieldDome", GOLD, 3.5, 1, [DOME, RING]),
     ("NS_FX_FlossTether", (1, 1, 1, 1), 2.5, 4, [STRANDS]),
-    ("NS_K01_PoliteShield", GOLD, 0.35, 10, [dict(RING, mesh="SM_FX_Arc"), IMPACT]),
+    ("NS_K01_PoliteShield", GOLD, 0.8, 10, [dict(RING, mesh="SM_FX_Arc"), IMPACT]),
     ("NS_K02_SternInstruction", GOLD, 0.65, 16, [CONE, CARDS]),
     ("NS_K03_GoodManners", GOLD, 3.5, 1, [DOME, RING]),
     ("NS_B01_FuriousKneading", CREAM, 0.45, 12, [IMPACT]),

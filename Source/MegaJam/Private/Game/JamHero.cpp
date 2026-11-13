@@ -4,6 +4,7 @@
 #include "Game/JamGameMode.h"
 #include "Game/JamHUD.h"
 #include "Game/JamSkillFx.h"
+#include "Game/JamAttackParticles.h"
 #include "Game/JamArt.h"
 #include "Game/JamSettings.h"
 #include "Film/JamCast.h"
@@ -206,7 +207,7 @@ void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
 	RigAnims.Reset();
 	RigPlaying = NAME_None;
 	RigOneShotUntil = -1.f;
-	for (const TCHAR* Name : { TEXT("Idle"), TEXT("Walk"), TEXT("SwordRaise"), TEXT("Scrub"), TEXT("Sigh"), TEXT("ProudStrut") })
+	for (const TCHAR* Name : { TEXT("Idle"), TEXT("Walk"), TEXT("SwordRaise"), TEXT("Scrub"), TEXT("Sigh"), TEXT("ProudStrut"), TEXT("FormALine"), TEXT("LastJudgment") })
 	{
 		UAnimSequence* Anim = bCast ? JamArt::LoadCastAnim(Def.Rig, Name) : JamArt::LoadHeroAnim(Name);
 		if (Anim) { RigAnims.Add(FName(Name), Anim); }
@@ -219,6 +220,30 @@ void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
 	// The grip (0, 0, -90) in the hand bone's frame: point up when the hand is raised; checked close up (-closecam).
 	ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
 	ArtSword->SetWorldScale3D(SwordWorldScale);
+
+    static const TCHAR* Weapons[] = { TEXT(""), TEXT("SM_MageStaff"), TEXT("SM_ArcherBow"), TEXT("SM_BarbarianRollingPin") };
+    if (CastIndex == 0)
+    {
+        if (UStaticMesh* Weapon = JamArt::Load(TEXT("SM_Sword")))
+        {
+            ArtSword->EmptyOverrideMaterials();
+            ArtSword->SetStaticMesh(Weapon);
+            ArtSword->SetWorldScale3D(FVector(150.f / FMath::Max(1.f, Weapon->GetBoundingBox().GetSize().Z)));
+        }
+    }
+    else
+    {
+        const FString WeaponName = Weapons[CastIndex];
+        const FString WeaponPath = FString::Printf(TEXT("/Game/Art/Cast/Weapons/%s.%s"), *WeaponName, *WeaponName);
+        if (UStaticMesh* Weapon = LoadObject<UStaticMesh>(nullptr, *WeaponPath))
+        {
+            ArtSword->EmptyOverrideMaterials();
+            ArtSword->SetStaticMesh(Weapon);
+            const float Height = CastIndex == 1 ? 180.f : (CastIndex == 2 ? 140.f : 105.f);
+            ArtSword->SetWorldScale3D(FVector(Height / FMath::Max(1.f, Weapon->GetBoundingBox().GetSize().Z)));
+        }
+    }
+
 	ArtSword->SetRelativeLocation(FVector::ZeroVector);
 	ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
 	TickRig();
@@ -282,6 +307,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 	const FVector At = GetActorLocation();
 	const FVector Fwd = GetActorForwardVector();
 	const FVector Floor = At - FVector(0.f, 0.f, GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
+	AJamAttackParticles::Spawn(const_cast<AJamHero*>(this), Skill, N, Floor);
 	AJamSkillFx* Fx = nullptr;
 	switch (Skill)
 	{
@@ -292,6 +318,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 			JamHeroTuning::LectureHalfAngleDeg, FLinearColor(1.f, 0.32f, 0.05f), 0.45f);
 		break;
 	case EJamSkill::FormALine:
+		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("FormALine"));
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Strip, Floor, Fwd, N.Length, N.Width * 0.5f, FLinearColor(0.3f, 0.85f, 1.f), 0.5f);
 		break;
 	case EJamSkill::DisappointedSigh:
@@ -299,6 +326,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(0.65f, 0.5f, 1.f), 0.8f);
 		break;
 	default:
+		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("LastJudgment"));
 		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(1.f, 0.15f, 0.1f), 1.0f);
 		break;
 	}

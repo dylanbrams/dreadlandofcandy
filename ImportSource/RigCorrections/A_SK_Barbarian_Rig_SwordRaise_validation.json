@@ -1,0 +1,12 @@
+{
+  "asset": "/Game/Art/Cast/Barbarian/Anims/A_SK_Barbarian_Rig_SwordRaise",
+  "fps": 30.0,
+  "keys": 90,
+  "changed_tracks": [
+    "hand_r"
+  ],
+  "before_hold_max_tilt_degrees": 68.38818324519575,
+  "applied": true,
+  "unchanged_track_max_error": 0.0,
+  "after_hold_max_tilt_degrees": 3.7682284262472464e-05
+}

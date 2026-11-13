@@ -250,3 +250,15 @@ Meshy rigs declared above) to `/Game/Art/Cast/<Who>/` with the new
 lines, voices and request ids in `vocals/output/attacks/manifest.json`) to
 `/Game/Audio/VO/Cast/VO_Cry_*`. The knight's SwordRaise wrist correction above
 is reapplied on import. Nothing copied from another project.
+
+## 2026-11-13: cast skill animations and weapons
+
+Meshy text-to-motion generated FormALine and LastJudgment; those and the
+existing SwordRaise, Sigh and Scrub motion tasks were animated onto the four
+existing rigs. Prompts/task IDs: `Scripts/complete_cast_animations.py` and
+`ImportSource/Meshy/SK_*_Rig/rig.json`. Meshy generated the staff and bow
+(and one unused rejected rolling pin): source prompts, task IDs and provenance
+are in `Scripts/generate_cast_weapons.py`, `ImportSource/_gen/cast_weapons/`
+and the Meshy manifest. The final rolling pin is original procedural Blender
+geometry, built by `Scripts/prepare_cast_weapons.py`; no third-party models.
+Existing original Niagara meshes/materials were reused for particles.

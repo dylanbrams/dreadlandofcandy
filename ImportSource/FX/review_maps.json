@@ -1,19 +1,5 @@
 [
   {
-    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
-    "system": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
-    "desired_age": 0.2,
-    "layers": [
-      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
-    ],
-    "duration_cap": 0.35,
-    "camera": {
-      "distance_cm": 1640,
-      "pitch": 50,
-      "fov": 55
-    }
-  },
-  {
     "map": "/Game/FX/Attacks/Review/L_FX_K02_SternInstruction",
     "system": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
     "desired_age": 0.35,
@@ -153,6 +139,20 @@
     "desired_age": 0.35,
     "layers": [],
     "duration_cap": 2.5,
+    "camera": {
+      "distance_cm": 1640,
+      "pitch": 50,
+      "fov": 55
+    }
+  },
+  {
+    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
+    "system": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
+    "desired_age": 0.2,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
+    ],
+    "duration_cap": 0.8,
     "camera": {
       "distance_cm": 1640,
       "pitch": 50,

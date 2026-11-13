@@ -1,0 +1,12 @@
+{
+  "asset": "/Game/Art/Cast/Archer/Anims/A_SK_Archer_Rig_SwordRaise",
+  "fps": 30.0,
+  "keys": 90,
+  "changed_tracks": [
+    "hand_r"
+  ],
+  "before_hold_max_tilt_degrees": 68.38819854996201,
+  "applied": true,
+  "unchanged_track_max_error": 0.0,
+  "after_hold_max_tilt_degrees": 2.6008585494473243e-05
+}

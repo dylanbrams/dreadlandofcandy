@@ -1,0 +1,190 @@
+[
+  {
+    "character": "Knight",
+    "clip": "SwordRaise",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Knight/SK_Knight_Rig_Skeleton.SK_Knight_Rig_Skeleton",
+    "wrist": {
+      "asset": "/Game/Art/Cast/Knight/Anims/A_SK_Knight_Rig_SwordRaise",
+      "fps": 30.0,
+      "keys": 90,
+      "changed_tracks": [
+        "hand_r"
+      ],
+      "before_hold_max_tilt_degrees": 68.38824403340233,
+      "applied": true,
+      "unchanged_track_max_error": 0.0,
+      "after_hold_max_tilt_degrees": 3.014921243540363e-05
+    }
+  },
+  {
+    "character": "Knight",
+    "clip": "FormALine",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Knight/SK_Knight_Rig_Skeleton.SK_Knight_Rig_Skeleton"
+  },
+  {
+    "character": "Knight",
+    "clip": "Sigh",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Knight/SK_Knight_Rig_Skeleton.SK_Knight_Rig_Skeleton"
+  },
+  {
+    "character": "Knight",
+    "clip": "LastJudgment",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Knight/SK_Knight_Rig_Skeleton.SK_Knight_Rig_Skeleton"
+  },
+  {
+    "character": "Knight",
+    "clip": "Scrub",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Knight/SK_Knight_Rig_Skeleton.SK_Knight_Rig_Skeleton"
+  },
+  {
+    "character": "Mage",
+    "clip": "SwordRaise",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Mage/SK_Mage_Rig_Skeleton.SK_Mage_Rig_Skeleton",
+    "wrist": {
+      "asset": "/Game/Art/Cast/Mage/Anims/A_SK_Mage_Rig_SwordRaise",
+      "fps": 30.0,
+      "keys": 90,
+      "changed_tracks": [
+        "hand_r"
+      ],
+      "before_hold_max_tilt_degrees": 68.38823704904706,
+      "applied": true,
+      "unchanged_track_max_error": 0.0,
+      "after_hold_max_tilt_degrees": 3.692015778667724e-05
+    }
+  },
+  {
+    "character": "Mage",
+    "clip": "FormALine",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Mage/SK_Mage_Rig_Skeleton.SK_Mage_Rig_Skeleton"
+  },
+  {
+    "character": "Mage",
+    "clip": "Sigh",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Mage/SK_Mage_Rig_Skeleton.SK_Mage_Rig_Skeleton"
+  },
+  {
+    "character": "Mage",
+    "clip": "LastJudgment",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Mage/SK_Mage_Rig_Skeleton.SK_Mage_Rig_Skeleton"
+  },
+  {
+    "character": "Mage",
+    "clip": "Scrub",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Mage/SK_Mage_Rig_Skeleton.SK_Mage_Rig_Skeleton"
+  },
+  {
+    "character": "Archer",
+    "clip": "SwordRaise",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Archer/SK_Archer_Rig_Skeleton.SK_Archer_Rig_Skeleton",
+    "wrist": {
+      "asset": "/Game/Art/Cast/Archer/Anims/A_SK_Archer_Rig_SwordRaise",
+      "fps": 30.0,
+      "keys": 90,
+      "changed_tracks": [
+        "hand_r"
+      ],
+      "before_hold_max_tilt_degrees": 68.38819854996201,
+      "applied": true,
+      "unchanged_track_max_error": 0.0,
+      "after_hold_max_tilt_degrees": 2.6008585494473243e-05
+    }
+  },
+  {
+    "character": "Archer",
+    "clip": "FormALine",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Archer/SK_Archer_Rig_Skeleton.SK_Archer_Rig_Skeleton"
+  },
+  {
+    "character": "Archer",
+    "clip": "Sigh",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Archer/SK_Archer_Rig_Skeleton.SK_Archer_Rig_Skeleton"
+  },
+  {
+    "character": "Archer",
+    "clip": "LastJudgment",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Archer/SK_Archer_Rig_Skeleton.SK_Archer_Rig_Skeleton"
+  },
+  {
+    "character": "Archer",
+    "clip": "Scrub",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Archer/SK_Archer_Rig_Skeleton.SK_Archer_Rig_Skeleton"
+  },
+  {
+    "character": "Barbarian",
+    "clip": "SwordRaise",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Barbarian/SK_Barbarian_Rig_Skeleton.SK_Barbarian_Rig_Skeleton",
+    "wrist": {
+      "asset": "/Game/Art/Cast/Barbarian/Anims/A_SK_Barbarian_Rig_SwordRaise",
+      "fps": 30.0,
+      "keys": 90,
+      "changed_tracks": [
+        "hand_r"
+      ],
+      "before_hold_max_tilt_degrees": 68.38818324519575,
+      "applied": true,
+      "unchanged_track_max_error": 0.0,
+      "after_hold_max_tilt_degrees": 3.7682284262472464e-05
+    }
+  },
+  {
+    "character": "Barbarian",
+    "clip": "FormALine",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Barbarian/SK_Barbarian_Rig_Skeleton.SK_Barbarian_Rig_Skeleton"
+  },
+  {
+    "character": "Barbarian",
+    "clip": "Sigh",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Barbarian/SK_Barbarian_Rig_Skeleton.SK_Barbarian_Rig_Skeleton"
+  },
+  {
+    "character": "Barbarian",
+    "clip": "LastJudgment",
+    "seconds": 1.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Barbarian/SK_Barbarian_Rig_Skeleton.SK_Barbarian_Rig_Skeleton"
+  },
+  {
+    "character": "Barbarian",
+    "clip": "Scrub",
+    "seconds": 2.9666666984558105,
+    "tracks": 28,
+    "skeleton": "/Game/Art/Cast/Barbarian/SK_Barbarian_Rig_Skeleton.SK_Barbarian_Rig_Skeleton"
+  }
+]

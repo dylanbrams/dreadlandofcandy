@@ -26,6 +26,16 @@
     },
     "OneHandUp": {
       "anim_task": "01a1d415-8b21-779b-88e4-7765c1b360bf"
+    },
+    "FormALine": {
+      "motion_task": "01a1d635-a02c-72c8-8f67-9d179b0adf75",
+      "prompt": "A standing armoured adult gives a firm commanding gesture: left arm extends forward at chest height and sweeps inward to order a queue, then returns to ready. Right hand holds an imaginary sword still, feet planted, no walking, no props, no attack swing. Complete the gesture in the first second.",
+      "anim_task": "01a1d635-fe92-7308-a8e7-b050e4e6a87c"
+    },
+    "LastJudgment": {
+      "motion_task": "01a1d635-a02c-7451-a733-ef6d1a9c4bd0",
+      "prompt": "A standing armoured adult delivers a grand final verdict: left arm rises dramatically overhead, palm open, then sweeps down authoritatively to chest height in the first second. Right hand holds an imaginary sword still at the side. Feet planted, no jump, no props, no weapon swing, then return to ready.",
+      "anim_task": "01a1d636-1486-70fb-a6a9-03163725882c"
     }
   },
   "rig_task": "01a1d415-16ba-7624-93b6-4f96d75f830a"

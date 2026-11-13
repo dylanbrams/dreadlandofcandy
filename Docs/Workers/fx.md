@@ -83,3 +83,44 @@ cleanup for every layer, then runs the slice's build, Jam.*, autoplay and packag
 The checkout contains other workers' edits; never stage those with this work.
 No push is authorized. The review workflow exits its editor when it finishes;
 coordinate engine ownership with the terrain worker before another engine run.
+
+## Cast animations, weapons and Niagara (Nov 13 follow-up)
+
+Dylan requested all four existing skills animated on every cast member, the
+Niagara library connected and tested, and missing class weapons supplied.
+All four now have SwordRaise, FormALine, Sigh and LastJudgment, plus Scrub for
+held interactions. The new gestures use two shared Meshy text-to-motion tasks;
+each clip is separately bound to its character's existing rig. No models were
+regenerated. Wrist-only corrections were validated on all four raises.
+
+The mage carries a textured staff, the archer a textured bow, and the barbarian
+a clean wooden rolling pin with iron collars; the knight keeps the sword.
+The generated rolling pin had extra handles and was rejected in favour of an
+original Blender-built prop. Source FBXs, Blender scene and bound-material
+sources are in `ImportSource/CastWeapons/`; generators and importers are in
+`Scripts/`. Staff and bow base-colour textures are explicitly assigned rather
+than relying on automatic FBX material import.
+
+`AJamAttackParticles` connects twelve class presets (including every secondary
+layer) to the four existing skills. These are cosmetic skins: gameplay hit areas,
+damage, unlocks and cooldowns stay in the existing abilities, and the floor
+shapes still show their real areas. Sigh uses the shared impact layer.
+Cast-owned effects stop when shooting stops, a take fails or the cast changes;
+Budget Out updates existing and new layers. Components are explicitly shut
+down and destroyed, with a 3.6-second lifetime cap and fixed bounds. `/Game/FX`
+is included in cooking. The other shared systems remain reusable library assets.
+
+Validation: 20 clips on their matching skeletons; four wrist corrections;
+33 live particle systems with BudgetOut, Stop visibility and owner cleanup;
+132 nonempty compiled VM programs; fresh twelve-preset captures; editor and
+game builds; Jam automation; full Backlot autoplay for every cast member with
+all four skill effects logged; packaged Backlot and Open smoke. Evidence is in
+`Saved/CastDelivery/`, `ImportSource/RigCorrections/cast_skills_validation.json`,
+`ImportSource/FX/live_parameter_validation.json`, and `ImportSource/FX/review.html`.
+The effects retain the existing prototype art (plain comic cards, simple foam);
+visual captures and runtime validation do not constitute Dylan's art approval.
+The shield arc was invisible in its original .35-second capture; its lifetime
+is now .8 seconds, it uses a separate stronger material, and a fresh capture
+visibly confirms both the arc and impact particles.
+The package is refreshed; the earlier release zip is unchanged and must be
+rebuilt before an upload. No upload or push was performed.

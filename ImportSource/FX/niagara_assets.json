@@ -619,53 +619,6 @@
     "visual_review": "pending"
   },
   {
-    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
-    "emitters": 1,
-    "layers": [],
-    "duration_cap": 0.35,
-    "authoring_diagnostics_complete": true,
-    "authoring_error": "",
-    "authoring_diagnostics": {
-      "aggregateStatus": "UpToDate",
-      "bIsCompiling": false,
-      "bIsStale": false,
-      "bHasErrors": false,
-      "bHasWarnings": false,
-      "scripts": [
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_impact",
-          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_impact",
-          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        }
-      ]
-    },
-    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
-    "visual_review": "pending"
-  },
-  {
     "asset": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
     "emitters": 1,
     "layers": [
@@ -1531,7 +1484,7 @@
     "layers": [
       "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
     ],
-    "duration_cap": 0.35,
+    "duration_cap": 0.8,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1564,6 +1517,53 @@
         },
         {
           "emitterName": "FX_0_ring",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 0.8,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",

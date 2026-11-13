@@ -183,3 +183,56 @@
 - All four use the knight's skills. Only the knight has the sword raise, sigh and scrub; the others stand and walk with the sword in hand. Each shouts one of his English battle cries when he casts ("EXCUSE ME!", "A SPOONFUL OF SUGAR!", "DID YOU FLOSS?!", "EAT YOUR VEGETABLES!"), no more than one every few seconds.
 - One import script brings in the four rigs and eleven cries and reapplies the knight's wrist fix. 66 tests pass; the mage finishes the Backlot film and the barbarian finishes the walk through the candy world. Dylan has not seen them in motion yet.
 - R5: packaged (5 min 45 s), smoke PASS in Backlot (`time=117.9`) and Open on `L_Sugarborough` with the archer (`main=3`, `time=154.8`), no missing clips. `smoke-packaged.ps1` got `-Map` (a map has to be the first argument). Zip 689 MB. Gate waits on Dylan's play.
+
+## Cast animations, weapons and Niagara (Nov 13 follow-up)
+
+Dylan requested all four existing skills animated on every cast member, the
+Niagara library connected and tested, and missing class weapons supplied.
+All four now have SwordRaise, FormALine, Sigh and LastJudgment, plus Scrub for
+held interactions. The new gestures use two shared Meshy text-to-motion tasks;
+each clip is separately bound to its character's existing rig. No models were
+regenerated. Wrist-only corrections were validated on all four raises.
+
+The mage carries a textured staff, the archer a textured bow, and the barbarian
+a clean wooden rolling pin with iron collars; the knight keeps the sword.
+The generated rolling pin had extra handles and was rejected in favour of an
+original Blender-built prop. Source FBXs, Blender scene and bound-material
+sources are in `ImportSource/CastWeapons/`; generators and importers are in
+`Scripts/`. Staff and bow base-colour textures are explicitly assigned rather
+than relying on automatic FBX material import.
+
+`AJamAttackParticles` connects twelve class presets (including every secondary
+layer) to the four existing skills. These are cosmetic skins: gameplay hit areas,
+damage, unlocks and cooldowns stay in the existing abilities, and the floor
+shapes still show their real areas. Sigh uses the shared impact layer.
+Cast-owned effects stop when shooting stops, a take fails or the cast changes;
+Budget Out updates existing and new layers. Components are explicitly shut
+down and destroyed, with a 3.6-second lifetime cap and fixed bounds. `/Game/FX`
+is included in cooking. The other shared systems remain reusable library assets.
+
+Validation: 20 clips on their matching skeletons; four wrist corrections;
+33 live particle systems with BudgetOut, Stop visibility and owner cleanup;
+132 nonempty compiled VM programs; fresh twelve-preset captures; editor and
+game builds; Jam automation; full Backlot autoplay for every cast member with
+all four skill effects logged; packaged Backlot and Open smoke. Evidence is in
+`Saved/CastDelivery/`, `ImportSource/RigCorrections/cast_skills_validation.json`,
+`ImportSource/FX/live_parameter_validation.json`, and `ImportSource/FX/review.html`.
+The effects retain the existing prototype art (plain comic cards, simple foam);
+visual captures and runtime validation do not constitute Dylan's art approval.
+The shield arc was invisible in its original .35-second capture; its lifetime
+is now .8 seconds, it uses a separate stronger material, and a fresh capture
+visibly confirms both the arc and impact particles.
+The package is refreshed; the earlier release zip is unchanged and must be
+rebuilt before an upload. No upload or push was performed.
+
+### Dylan's review: character motion pass still required
+
+Dylan reviewed the result and found the shared knight gestures inappropriate,
+especially the barbarian carrying a rolling pin while performing knight moves.
+The validations above establish functionality, not an acceptable final cast.
+Keep the four existing skill mechanics, but replace Mage/Archer/Barbarian skill
+gestures with class-appropriate casting, archery and bellow/stomp motions and
+verify the corresponding weapon grips. This is an unfinished follow-up owned
+by the cast session; terrain/R7 fixes have the next engine slot.
+
+Weapons must be stowed on the back while travelling outside combat, with per-weapon offsets/clearance; draw for attacks and return to the back afterward. Dylan reported the current hand-carried weapons sticking into the ground. This is part of the unfinished cast follow-up.

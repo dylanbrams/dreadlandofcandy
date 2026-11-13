@@ -123,7 +123,10 @@ def main():
         mesh = import_file(p, "Meshes")
         mesh_editor.remove_collisions(mesh)
         key = "candy" if "Peppermint" in p.stem else "rim" if any(s in p.stem for s in ("Ring", "Arc", "Dome", "Strand")) else "mesh"
-        mesh.set_material(0, mats[key])
+        surface = mats[key]
+        if p.stem == "SM_FX_Arc" and ASSETS.does_asset_exist(f"{DEST}/Materials/MI_FX_ArcReadable"):
+            surface = unreal.load_asset(f"{DEST}/Materials/MI_FX_ArcReadable")
+        mesh.set_material(0, surface)
         ASSETS.set_metadata_tag(mesh, "FX.Source", "Original procedural geometry; Scripts/build_fx_sources.py")
         ASSETS.save_loaded_asset(mesh)
         records.append({"source": p.name, "asset": mesh.get_path_name(), "material": mats[key].get_path_name()})

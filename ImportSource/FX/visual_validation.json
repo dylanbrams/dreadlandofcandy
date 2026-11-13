@@ -1,73 +1,5 @@
 [
   {
-    "attack": "K01",
-    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k01.png",
-    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
-    "particles": {
-      "NS_K01_PoliteShield:FX_0_ring": 1,
-      "NS_K01_PoliteShield_Layer1:FX_0_impact": 10
-    },
-    "attributes": {
-      "NS_K01_PoliteShield": {
-        "position_samples": [
-          [
-            0.0,
-            0.0,
-            5.0
-          ]
-        ],
-        "color_samples": [
-          [
-            0.3499999940395355,
-            0.550000011920929,
-            1.0,
-            0.476190447807312
-          ]
-        ],
-        "sprite_size_samples": []
-      },
-      "NS_K01_PoliteShield_Layer1": {
-        "position_samples": [
-          [
-            7.025291919708252,
-            43.43552780151367,
-            39.616668701171875
-          ],
-          [
-            -34.5205078125,
-            -27.28249740600586,
-            39.616668701171875
-          ]
-        ],
-        "color_samples": [
-          [
-            0.3499999940395355,
-            0.550000011920929,
-            1.0,
-            0.476190447807312
-          ],
-          [
-            0.3499999940395355,
-            0.550000011920929,
-            1.0,
-            0.476190447807312
-          ]
-        ],
-        "sprite_size_samples": [
-          [
-            35.833335876464844,
-            35.833335876464844
-          ],
-          [
-            35.833335876464844,
-            35.833335876464844
-          ]
-        ]
-      }
-    },
-    "owner_destruction_cleanup": "pass"
-  },
-  {
     "attack": "K02",
     "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k02.png",
     "map": "/Game/FX/Attacks/Review/L_FX_K02_SternInstruction",
@@ -712,6 +644,74 @@
           ]
         ],
         "sprite_size_samples": []
+      }
+    },
+    "owner_destruction_cleanup": "pass"
+  },
+  {
+    "attack": "K01",
+    "screenshot": "D:\\Source\\Unreal\\MegaJam2026\\Saved\\Screenshots\\WindowsEditor\\fx-k01.png",
+    "map": "/Game/FX/Attacks/Review/L_FX_K01_PoliteShield",
+    "particles": {
+      "NS_K01_PoliteShield:FX_0_ring": 1,
+      "NS_K01_PoliteShield_Layer1:FX_0_impact": 10
+    },
+    "attributes": {
+      "NS_K01_PoliteShield": {
+        "position_samples": [
+          [
+            0.0,
+            0.0,
+            5.0
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.7708333134651184
+          ]
+        ],
+        "sprite_size_samples": []
+      },
+      "NS_K01_PoliteShield_Layer1": {
+        "position_samples": [
+          [
+            7.025291919708252,
+            43.43552780151367,
+            39.616668701171875
+          ],
+          [
+            -34.5205078125,
+            -27.28249740600586,
+            39.616668701171875
+          ]
+        ],
+        "color_samples": [
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.7708333134651184
+          ],
+          [
+            0.3499999940395355,
+            0.550000011920929,
+            1.0,
+            0.7708333134651184
+          ]
+        ],
+        "sprite_size_samples": [
+          [
+            25.52083396911621,
+            25.52083396911621
+          ],
+          [
+            25.52083396911621,
+            25.52083396911621
+          ]
+        ]
       }
     },
     "owner_destruction_cleanup": "pass"

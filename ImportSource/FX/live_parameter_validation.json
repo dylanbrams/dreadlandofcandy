@@ -1,0 +1,233 @@
+[
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_Impact.NS_FX_Impact",
+    "particles": 16,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_LectureCone.NS_FX_LectureCone",
+    "particles": 16,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ComicCards.NS_FX_ComicCards",
+    "particles": 4,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ProjectileVolley.NS_FX_ProjectileVolley",
+    "particles": 6,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ProjectileRain.NS_FX_ProjectileRain",
+    "particles": 10,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ProjectileRain_Layer1.NS_FX_ProjectileRain_Layer1",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_OrbitProps.NS_FX_OrbitProps",
+    "particles": 8,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_OrbitProps_Layer1.NS_FX_OrbitProps_Layer1",
+    "particles": 32,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_SoapTorrent.NS_FX_SoapTorrent",
+    "particles": 48,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_SoapTorrent_Layer1.NS_FX_SoapTorrent_Layer1",
+    "particles": 32,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ShieldDome.NS_FX_ShieldDome",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_ShieldDome_Layer1.NS_FX_ShieldDome_Layer1",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_FX_FlossTether.NS_FX_FlossTether",
+    "particles": 4,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
+    "particles": 16,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction_Layer1.NS_K02_SternInstruction_Layer1",
+    "particles": 6,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K03_GoodManners.NS_K03_GoodManners",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading",
+    "particles": 12,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone.NS_B02_RollingPinCyclone",
+    "particles": 8,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1",
+    "particles": 32,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement.NS_B03_AggressiveEncouragement",
+    "particles": 20,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1",
+    "particles": 6,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar",
+    "particles": 6,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall.NS_M02_PeppermintPopfall",
+    "particles": 6,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization.NS_M03_ArcaneSanitization",
+    "particles": 48,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M03_ArcaneSanitization_Layer1.NS_M03_ArcaneSanitization_Layer1",
+    "particles": 32,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley.NS_A02_CeleryVolley",
+    "particles": 10,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley_Layer1.NS_A02_CeleryVolley_Layer1",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_A03_FlossSnare.NS_A03_FlossSnare",
+    "particles": 4,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
+    "particles": 1,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
+    "particles": 10,
+    "budget_out": "pass",
+    "stop_visibility": "pass",
+    "owner_cleanup": "pass"
+  }
+]
