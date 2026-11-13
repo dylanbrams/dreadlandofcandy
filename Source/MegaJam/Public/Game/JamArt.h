@@ -33,6 +33,10 @@ namespace JamArt
 	MEGAJAM_API USkeletalMesh* LoadHeroRig();
 	/** One of the hero's animations by short name (Idle, Walk, SwordRaise, Scrub, Sigh, ProudStrut, OneHandUp), or null. */
 	MEGAJAM_API UAnimSequence* LoadHeroAnim(const FString& Name);
+	/** R6: a cast member's rig, /Game/Art/Cast/<Rig>/SK_<Rig>_Rig, or null. */
+	MEGAJAM_API USkeletalMesh* LoadCastRig(const FString& Rig);
+	/** One of a cast member's clips by short name, or null (only the knight has more than Idle and Walk). */
+	MEGAJAM_API UAnimSequence* LoadCastAnim(const FString& Rig, const FString& Name);
 
 	/** How tall the model stands in the game (uu). */
 	MEGAJAM_API float Height(const FString& Name);

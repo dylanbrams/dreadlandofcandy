@@ -353,7 +353,7 @@ AJamGameMode* AJamHUD::AuthGameMode() const
 FJamMenuSettings AJamHUD::MenuSettings() const
 {
 	FJamMenuSettings S;
-	if (const UJamSettings* J = Settings()) { S.MusicVolume = J->MusicVolume; S.VoiceVolume = J->VoiceVolume; S.EffectsVolume = J->EffectsVolume; S.bCommentary = J->bCommentary; }
+	if (const UJamSettings* J = Settings()) { S.MusicVolume = J->MusicVolume; S.VoiceVolume = J->VoiceVolume; S.EffectsVolume = J->EffectsVolume; S.bCommentary = J->bCommentary; S.CastIndex = J->CastIndex(); }
 	S.bGamepad = bMenuGamepad;
 	return S;
 }
@@ -436,6 +436,11 @@ void AJamHUD::Adjust(const FJamMenuOption& Option, int32 Delta)
 	else if (Option.Action == EJamMenuAction::VoiceVolume) { J->SetVoiceVolume(J->VoiceVolume + 0.1f * Delta); }
 	else if (Option.Action == EJamMenuAction::EffectsVolume) { J->SetEffectsVolume(J->EffectsVolume + 0.1f * Delta); }
 	else if (Option.Action == EJamMenuAction::Commentary) { J->SetCommentary(!J->bCommentary); }
+	else if (Option.Action == EJamMenuAction::Casting)
+	{
+		J->SetCastIndex(JamCast::Step(J->CastIndex(), Delta));
+		if (AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr) { Hero->ApplyCast(J->CastIndex(), true); }
+	}
 	else { return; }
 	JamSfx::Play(this, TEXT("UI_Click"));   // after the change, so the Effects slider previews its new level
 }
@@ -458,6 +463,7 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::VoiceVolume:
 	case EJamMenuAction::EffectsVolume: Adjust(Option, 1); break;
 	case EJamMenuAction::Commentary:  Adjust(Option, 1); break;
+	case EJamMenuAction::Casting:     Adjust(Option, 1); break;
 	case EJamMenuAction::WalkAnyway:
 		if (bTitle) { UKismetSystemLibrary::QuitGame(this, PlayerOwner, EQuitPreference::Quit, false); }
 		else { SetPaused(false); if (GM) { GM->RequestBackToTitle(); } }

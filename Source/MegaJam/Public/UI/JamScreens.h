@@ -37,6 +37,7 @@ enum class EJamMenuAction : uint8
 	Back,
 	Locked,           // "Budget: Low (locked)", never selectable
 	CharacterSheet,
+	Casting,          // R6: left / right picks who plays the hero
 };
 
 struct MEGAJAM_API FJamMenuOption
@@ -87,6 +88,7 @@ struct MEGAJAM_API FJamMenuSettings
 	float EffectsVolume = 0.8f;
 	bool bCommentary = false;
 	bool bGamepad = false;
+	int32 CastIndex = 0;   // JamCast::All()
 };
 
 namespace JamScreens

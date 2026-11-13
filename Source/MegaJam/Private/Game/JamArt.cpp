@@ -88,3 +88,16 @@ UAnimSequence* JamArt::LoadHeroAnim(const FString& Name)
 	const FString Asset = TEXT("A_SK_Hero_Rig_") + Name;
 	return LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("/Game/Art/Hero/Anims/%s.%s"), *Asset, *Asset), nullptr, LOAD_NoWarn | LOAD_Quiet);
 }
+
+USkeletalMesh* JamArt::LoadCastRig(const FString& Rig)
+{
+	if (!Enabled() || Rig.IsEmpty()) { return nullptr; }
+	return LoadObject<USkeletalMesh>(nullptr, *FString::Printf(TEXT("/Game/Art/Cast/%s/SK_%s_Rig.SK_%s_Rig"), *Rig, *Rig, *Rig), nullptr, LOAD_NoWarn | LOAD_Quiet);
+}
+
+UAnimSequence* JamArt::LoadCastAnim(const FString& Rig, const FString& Name)
+{
+	if (!Enabled() || Rig.IsEmpty()) { return nullptr; }
+	const FString Asset = FString::Printf(TEXT("A_SK_%s_Rig_%s"), *Rig, *Name);
+	return LoadObject<UAnimSequence>(nullptr, *FString::Printf(TEXT("/Game/Art/Cast/%s/Anims/%s.%s"), *Rig, *Asset, *Asset), nullptr, LOAD_NoWarn | LOAD_Quiet);
+}

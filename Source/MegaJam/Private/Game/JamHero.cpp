@@ -5,6 +5,10 @@
 #include "Game/JamHUD.h"
 #include "Game/JamSkillFx.h"
 #include "Game/JamArt.h"
+#include "Game/JamSettings.h"
+#include "Film/JamCast.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundBase.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Components/SkeletalMeshComponent.h"
@@ -173,36 +177,72 @@ void AJamHero::PossessedBy(AController* NewController)
 		SwordBlade->SetHiddenInGame(true);
 		SwordGuard->SetHiddenInGame(true);
 	}
-	// The rigged knight, if imported: fitted to the capsule like the static one, facing +X (the mannequin faces +Y).
-	if (USkeletalMesh* Rig = JamArt::LoadHeroRig())
-	{
-		ArtRig->SetSkeletalMesh(Rig);
-		const FBox Box = Rig->GetImportedBounds().GetBox();
-		const float Scale = JamArt::Height(TEXT("SM_Hero")) / FMath::Max(Box.GetSize().Z, 1.f);
-		ArtRig->SetRelativeScale3D(FVector(Scale));
-		ArtRig->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
-		ArtRig->SetRelativeLocation(FVector(0.f, 0.f, Floor - Box.Min.Z * Scale));
-		ArtRig->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-		for (const TCHAR* Name : { TEXT("Idle"), TEXT("Walk"), TEXT("SwordRaise"), TEXT("Scrub"), TEXT("Sigh"), TEXT("ProudStrut") })
-		{
-			if (UAnimSequence* Anim = JamArt::LoadHeroAnim(Name)) { RigAnims.Add(FName(Name), Anim); }
-		}
-		ArtBody->SetHiddenInGame(true);
-		Body->SetHiddenInGame(true);
-		Visor->SetHiddenInGame(true);
-		// The sword goes into his right hand and follows the animation (the Lecture's raise is in the SwordRaise clip).
-		// Keep the fitted size in world terms: the FBX bones carry their own scale, so a relative scale would be wrong.
-		// The grip (0, 0, -90) in the hand bone's frame: point up when the hand is raised; checked close up (-closecam).
-		const FVector SwordWorldScale = ArtSword->GetComponentScale();
-		ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
-		ArtSword->SetWorldScale3D(SwordWorldScale);
-		ArtSword->SetRelativeLocation(FVector::ZeroVector);
-		ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
-		UE_LOG(LogJam, Log, TEXT("JamHero: rigged hero, %d animations, bounds %s, scale %.3f, sword scale %s"), RigAnims.Num(),
-			*Box.GetSize().ToString(), Scale, *ArtSword->GetRelativeScale3D().ToString());
-	}
+	// The rigged cast member (R6), if imported: replaces the static knight.
+	const UJamSettings* Settings = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
+	ApplyCast(Settings ? Settings->CastIndex() : 0);
 	if (UMaterialInstanceDynamic* M = SwordBlade->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.88f, 0.95f)); }
 	if (UMaterialInstanceDynamic* M = SwordGuard->CreateAndSetMaterialInstanceDynamic(0)) { M->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.85f, 0.6f, 0.15f)); }
+}
+
+void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
+{
+	CastIndex = FMath::Clamp(Index, 0, JamCast::All().Num() - 1);
+	const FJamClassDef& Def = JamCast::Get(CastIndex);
+	USkeletalMesh* Rig = JamArt::LoadCastRig(Def.Rig);
+	const bool bCast = Rig != nullptr;
+	if (!Rig) { Rig = JamArt::LoadHeroRig(); }   // not imported: the old knight
+	if (!Rig) { return; }
+	// The sword's fitted size in world terms, taken before the rig's scale changes (the FBX bones carry their own scale).
+	const FVector SwordWorldScale = ArtSword->GetComponentScale();
+	const float Floor = -GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	ArtRig->SetSkeletalMesh(Rig);
+	const FBox Box = Rig->GetImportedBounds().GetBox();
+	// Fitted to the capsule like the static one, facing +X (the mannequin faces +Y).
+	const float Scale = JamArt::Height(TEXT("SM_Hero")) / FMath::Max(Box.GetSize().Z, 1.f);
+	ArtRig->SetRelativeScale3D(FVector(Scale));
+	ArtRig->SetRelativeRotation(FRotator(0.f, -90.f, 0.f));
+	ArtRig->SetRelativeLocation(FVector(0.f, 0.f, Floor - Box.Min.Z * Scale));
+	ArtRig->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+	RigAnims.Reset();
+	RigPlaying = NAME_None;
+	RigOneShotUntil = -1.f;
+	for (const TCHAR* Name : { TEXT("Idle"), TEXT("Walk"), TEXT("SwordRaise"), TEXT("Scrub"), TEXT("Sigh"), TEXT("ProudStrut") })
+	{
+		UAnimSequence* Anim = bCast ? JamArt::LoadCastAnim(Def.Rig, Name) : JamArt::LoadHeroAnim(Name);
+		if (Anim) { RigAnims.Add(FName(Name), Anim); }
+	}
+	ArtRig->SetHiddenInGame(false);
+	ArtBody->SetHiddenInGame(true);
+	Body->SetHiddenInGame(true);
+	Visor->SetHiddenInGame(true);
+	// The sword goes into the right hand and follows the animation (the Lecture's raise is in the knight's SwordRaise clip).
+	// The grip (0, 0, -90) in the hand bone's frame: point up when the hand is raised; checked close up (-closecam).
+	ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepRelativeTransform, TEXT("hand_r"));
+	ArtSword->SetWorldScale3D(SwordWorldScale);
+	ArtSword->SetRelativeLocation(FVector::ZeroVector);
+	ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
+	TickRig();
+	UE_LOG(LogJam, Log, TEXT("JamHero: cast %s (%s), %d animations, bounds %s, scale %.3f"), *Def.Id, bCast ? TEXT("cast rig") : TEXT("old hero rig"),
+		RigAnims.Num(), *Box.GetSize().ToString(), Scale);
+	if (bAnnounce) { LastCryAt = -100.0; PlayCry(); }
+}
+
+void AJamHero::PlayCry()
+{
+	const double Now = FPlatformTime::Seconds();
+	if (Now - LastCryAt < JamCast::CryMinInterval) { return; }
+	const FString Id = JamCast::CryFor(JamCast::Get(CastIndex), CryCount);
+	if (Id.IsEmpty()) { return; }
+	const FString Name = TEXT("VO_Cry_") + Id;
+	USoundBase* Clip = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/Cast/%s.%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!Clip) { UE_LOG(LogJam, Warning, TEXT("JamHero: missing cry %s"), *Name); return; }
+	const UJamSettings* Settings = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
+	const float Volume = Settings ? Settings->VoiceVolume : 0.8f;
+	LastCryAt = Now;
+	++CryCount;
+	if (Volume <= 0.f) { return; }
+	UGameplayStatics::PlaySound2D(this, Clip, Volume);
+	UE_LOG(LogJam, Log, TEXT("JamHero: cry %s"), *Name);
 }
 
 bool AJamHero::RequestLecture()
@@ -229,6 +269,7 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	{
 		DrawSkillShape(Skill, PS->GetProgression().GetSkillNumbers(Skill));
 		UE_LOG(LogJam, Log, TEXT("JamHero: %s cast"), JamProgression::SkillName(Skill));
+		PlayCry();
 		if (GM) { GM->NotifySkillCast(this, Skill); }
 	}
 	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: %s refused"), JamProgression::SkillName(Skill)); }

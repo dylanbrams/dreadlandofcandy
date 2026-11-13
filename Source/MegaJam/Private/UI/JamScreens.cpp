@@ -1,5 +1,6 @@
 #include "UI/JamScreens.h"
 #include "Film/JamLines.h"
+#include "Film/JamCast.h"
 #include "Dom/JsonObject.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
@@ -51,9 +52,12 @@ FJamScreenView JamScreens::Title(const FJamMenuSettings& S)
 	V.Title = TEXT("THE DREAD LAND OF CANDY");
 	V.Stamp = JamScreens::EditionStamp(true);
 	V.Subtitle = TEXT("A weekend project made by a director who should know better\nand machines that can't say no.");
-	V.Options = { Opt(EJamMenuAction::RollCamera, TEXT("Roll Camera")), Opt(EJamMenuAction::OpenOptions, TEXT("Notes")),
-		Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
-	V.Footer = MenuFooter(S);
+	const FJamClassDef& Cast = JamCast::Get(S.CastIndex);
+	V.Options = { Opt(EJamMenuAction::RollCamera, TEXT("Roll Camera")),
+		Opt(EJamMenuAction::Casting, TEXT("Casting"), FString::Printf(TEXT("◀  %s  ▶"), *Cast.Name)),
+		Opt(EJamMenuAction::OpenOptions, TEXT("Notes")), Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
+	V.Caption = FString::Printf(TEXT("%s. %s"), *Cast.Name, *Cast.Blurb);
+	V.Footer = FString::Printf(TEXT("%s     %s / %s recast"), *MenuFooter(S), S.bGamepad ? TEXT("D-pad left") : TEXT("A"), S.bGamepad ? TEXT("right") : TEXT("D"));
 	return V;
 }
 

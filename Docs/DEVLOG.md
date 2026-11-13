@@ -176,3 +176,9 @@
 - Itch deployment moves to ChatGPT (Dylan), to save Claude's quota for Nov 14; GAME stops at a zip on disk.
 - Typed notes are live against the deployed backend: the bot typed "make it rain and sad" and got two model-written scenes and a generated premiere back. The first try silently fell back to keywords, because Unreal's ini cut the URL at `//`.
 - The end screens now say THE DREAD LAND OF CANDY with a DIRECTOR'S CUT (or THEATRICAL RELEASE) stamp slapped on at 45 degrees, matching the title screen.
+
+## R6: the cast (Nov 13)
+
+- Four can play the hero now: the new knight (the default, replacing the old look), a mage, an archer and a barbarian. A `Casting` line on the title screen swaps them on the spot, left or right, and the new one shouts as he steps in; `-class=mage` does it from the command line.
+- All four use the knight's skills. Only the knight has the sword raise, sigh and scrub; the others stand and walk with the sword in hand. Each shouts one of his English battle cries when he casts ("EXCUSE ME!", "A SPOONFUL OF SUGAR!", "DID YOU FLOSS?!", "EAT YOUR VEGETABLES!"), no more than one every few seconds.
+- One import script brings in the four rigs and eleven cries and reapplies the knight's wrist fix. 66 tests pass; the mage finishes the Backlot film and the barbarian finishes the walk through the candy world. Dylan has not seen them in motion yet.

@@ -312,6 +312,12 @@ The rock itself, when it rings: "Incoming rock." / "You have one new rock."
 
 **Title screen:** THE DREAD LAND OF CANDY, with DIRECTOR'S CUT rubber-stamped over it at an angle. Subtitle: *A weekend project made by a director who should know better and machines that can't say no.* (Dylan, Nov 13) Buttons: `Roll Camera` (play), `Notes` (options), `Walk Off Set` (quit).
 
+**Casting (title screen, R6):** a `Casting` line under `Roll Camera`, left / right picks who plays the hero; the caption names them. All four use the knight's skills and shout their battle cry on a cast.
+- The Knight. Brought his own sword. Has notes about it.
+- The Mage. Was promised a spell budget. Read the contract.
+- The Archer. No bow. Props said it was in the van.
+- The Barbarian. Has been spoken to about his volume.
+
 **Rating card (two seconds before the title):** "This film is rated S for Sugar. Contains mild peril, firm guidance, and one napkin."
 
 **Quit confirm:** "Walk off set? Your contract has thoughts about that." Buttons: `Walk anyway` / `Fine`.

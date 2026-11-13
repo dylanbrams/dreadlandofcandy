@@ -239,3 +239,14 @@ kept in `Docs/BigRockCandyMountainAdjustedLyrics.txt`. The song plays only over
 the end credits (`/Game/Audio/Music/M_theme_song_take1`) and in the trailer.
 **Dylan: add which tool made the recording.** Also imported the same day:
 `village_take1/2` from `music/` (same source as the other score cues).
+
+## 2026-11-13 — the cast in game (R6)
+
+GAME imported `SK_Knight`, `SK_Mage`, `SK_Archer` and `SK_Barbarian` (the
+Meshy rigs declared above) to `/Game/Art/Cast/<Who>/` with the new
+`Scripts/import_cast.py`, and the eleven English battle cries
+(`vocals/output/attacks/en/VO_{K,M,A,B}0*_en_epic.wav`, ElevenLabs
+`eleven_multilingual_v2` text-to-speech, generated during the jam on Nov 13;
+lines, voices and request ids in `vocals/output/attacks/manifest.json`) to
+`/Game/Audio/VO/Cast/VO_Cry_*`. The knight's SwordRaise wrist correction above
+is reapplied on import. Nothing copied from another project.

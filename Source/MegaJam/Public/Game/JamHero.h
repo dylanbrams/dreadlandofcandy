@@ -65,6 +65,10 @@ public:
 	 * turns it, so the bot films what it does. Backlot keeps the fixed camera.
 	 */
 	void EnableFollowCamera(float Yaw);
+
+	/** R6: puts cast member Index (JamCast::All) in the costume; the old SK_Hero_Rig if that rig is missing. bAnnounce: a cry. */
+	void ApplyCast(int32 Index, bool bAnnounce = false);
+	int32 GetCastIndex() const { return CastIndex; }
 	bool IsFollowCamera() const { return bFollowCamera; }
 	/** Open mode: wide and higher while a scene shoots (the set reads), close and low while walking. */
 	void SetFollowFraming(bool bScene, float SceneYaw = 0.f);
@@ -153,6 +157,11 @@ private:
 	TMap<FName, TObjectPtr<UAnimSequence>> RigAnims;
 	FName RigPlaying;
 	float RigOneShotUntil = -1.f;
+	int32 CastIndex = 0;
+	int32 CryCount = 0;
+	double LastCryAt = -100.0;
+	/** The cast member's battle cry (R6), at the Fenella volume; at most one per JamCast::CryMinInterval. */
+	void PlayCry();
 	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
 	void PlayRigOneShot(FName Anim);
 	void TickRig();
