@@ -1,0 +1,5 @@
+Input: SK_Barbarian textured Meshy model.
+Height: 2.15 m.
+Skeleton: ue5_mannequin.
+Exports: rigged FBX and GLB; Idle (0), Walk (30), plus basic walk supplied by rigging.
+Inspect deformation and retarget compatibility in Unreal before approval.

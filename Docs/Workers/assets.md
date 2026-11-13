@@ -135,3 +135,52 @@ The rig route works through file delivery. SwordRaise's 0.3-second raise/hold, t
 - Static GLBs at `ImportSource/*/*.glb` are ignored by existing `.gitignore`; mesh files remain on this checkout for GAME. FBXs, nested rigged GLB, previews, UI PNGs, manifests, state and review artifacts are included in the scoped commit. Logs/drop scratch remain ignored.
 
 **Stop here for Dylan's approval.** GAME can prepare camera comparisons. Remaining issues: hero cape-like cloth, facade geometry, particle cleanup, mesh reduction and animation/camera validation. Successful generation is not asset approval.
+
+## 2026-11-13 — Mage, Archer and Barbarian delivered
+
+Dylan requested prompts, Meshy generation and rigging of the other three playable
+classes (BUILD_SPEC 3d). All three are complete as source assets, using the
+knight's locked dark-fantasy character style. No Unreal editor, game source,
+class rows or runtime assets were changed.
+
+| Character | Static and rigged triangles | Height | Visual review |
+| --- | --- | --- | --- |
+| `SK_Mage` | 40,987 | 1.90 m | Grey-bearded stern mage, dark split coat and armour, complete legs/boots. Coat needs in-game walk review for clipping. |
+| `SK_Archer` | 41,213 | 1.85 m | Athletic female ranger in dark leather/armour, complete body. Meshy added quivers/arrows despite their exclusion; retained as a recognizable class detail for Dylan's review. |
+| `SK_Barbarian` | 41,113 | 2.15 m | Muscular bearded warrior, bare upper arms, dark harness, complete legs and boots in the replacement. First generation was missing lower legs and was rejected. |
+
+Each delivery is under `ImportSource/Meshy/SK_<Class>_Rig/`:
+`SK_<Class>_Rig.fbx`, `SK_<Class>_Rig.glb`,
+`A_SK_<Class>_Rig_Idle.fbx`, `A_SK_<Class>_Rig_Walk.fbx`,
+`A_SK_<Class>_Rig_BasicWalk.fbx`, plus resumable `rig.json`.
+Static textured GLBs and preview PNGs are at `ImportSource/Meshy/SK_<Class>.*`.
+The existing ignore rule excludes static GLBs from Git; rigged GLBs are tracked.
+
+Validation: all GLBs pass binary/header/external-reference checks. Every rig has
+28 joints, skin weights, pelvis, both hands and both feet, targeting
+`ue5_mannequin`. Every rig has one material and three embedded texture images.
+All 12 final FBXs pass binary format and nonempty-file checks. Imported each
+Idle FBX in Blender 3.3, posed at frame 15 and inspected a solid render: no obvious
+limb or body deformation failure. This is not an in-game walk/retarget test;
+finger animation, cloth, weapon grip, collisions and gameplay hookups are unverified.
+
+Review: `ImportSource/_gen/expansion_characters/review.html`; technical results:
+`ImportSource/_gen/expansion_characters/validation.json`. Full prompts and rig
+briefs: `Assets/Prompts/3D/SK_{Mage,Archer,Barbarian}*.txt`. Configuration,
+resumable generation runner and inspection script are in `Assets/Generation/`;
+see `EXPANSION_CHARACTERS.md`. Original task IDs and failed Barbarian artifacts
+are retained locally under `ImportSource/_gen/expansion_characters/rejected_barbarian_v1/`.
+The prompt in `expansion_characters.json` is the corrected Barbarian version;
+both actual submitted prompts remain in the Meshy manifest.
+
+Meshy balance: **804 before, 640 after: 164 credits used**. Four generations
+(30 each), four rigs with Idle/Walk (11 each), including the rejected first
+Barbarian. No fal or other provider calls. Declarations appended to
+`Docs/Declared.md`. GAME can import the final rig folders and wire the classes
+behind `-class=`; visual approval remains Dylan's.
+
+Style comparison with `SK_Hero.png`: compatible charcoal metal, dark leather,
+desaturated palette and realistic body proportions. The new characters have
+smoother surfaces and more stylized exposed faces; the knight has sharper,
+more ornate and menacing armour. They are compatible first passes, not an exact
+style match. A shared material pass and an in-game lineup are still needed.

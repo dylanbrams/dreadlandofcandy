@@ -194,3 +194,18 @@ and Unreal Python perform the build. Seven of the previously declared Rodin
 foliage models are reused; the willow is held out. No new paid model generation
 or copied third-party code/assets were used. The existing engine daylight
 ambient cubemap is referenced for lighting.
+
+## 2026-11-13 — expansion character generation
+
+At Dylan's request, Codex authored prompts and used the Meshy text-to-3D API
+to generate and PBR-texture `SK_Mage`, `SK_Archer` and `SK_Barbarian`.
+Meshy auto-rigging targets the UE5 mannequin skeleton, with library Idle (0),
+Walk (30) and the supplied basic walk exported as FBX alongside rigged FBX/GLB.
+Prompts and the resumable runner are in `Assets/Generation/expansion_characters.*`;
+deliveries and provenance are under `ImportSource/Meshy/`. A first Barbarian
+attempt was missing lower legs despite its full-body prompt; that model and
+its rig were preserved under
+`ImportSource/_gen/expansion_characters/rejected_barbarian_v1/` and replaced
+with a newly generated complete body. Blender 3.3 was used for solid geometry
+and posed FBX review renders. These are new jam-generated assets, not imported
+pre-jam work. Unreal import and gameplay integration are not part of this batch.

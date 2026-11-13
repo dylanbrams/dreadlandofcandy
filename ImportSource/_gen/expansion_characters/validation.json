@@ -1,0 +1,212 @@
+[
+  {
+    "character": "SK_Mage",
+    "static": {
+      "file": "ImportSource\\Meshy\\SK_Mage.glb",
+      "bytes": 9215080,
+      "triangles": 40987,
+      "materials": 1,
+      "images": 3,
+      "skins": 0,
+      "joints": [],
+      "skinned_primitives": 0
+    },
+    "rig": {
+      "file": "ImportSource\\Meshy\\SK_Mage_Rig\\SK_Mage_Rig.glb",
+      "bytes": 10498568,
+      "triangles": 40987,
+      "materials": 1,
+      "images": 3,
+      "skins": 1,
+      "joints": [
+        "pelvis",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "neck_01",
+        "head",
+        "head_end",
+        "headfront",
+        "clavicle_l",
+        "upperarm_l",
+        "lowerarm_l",
+        "hand_l",
+        "LeftHand_End",
+        "clavicle_r",
+        "upperarm_r",
+        "lowerarm_r",
+        "hand_r",
+        "RightHand_End",
+        "thigh_l",
+        "calf_l",
+        "foot_l",
+        "ball_l",
+        "LeftToe_end",
+        "thigh_r",
+        "calf_r",
+        "foot_r",
+        "ball_r",
+        "RightToe_end"
+      ],
+      "skinned_primitives": 1
+    },
+    "fbx": [
+      {
+        "file": "ImportSource\\Meshy\\SK_Mage_Rig\\SK_Mage_Rig.fbx",
+        "bytes": 10968556
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Mage_Rig\\A_SK_Mage_Rig_Idle.fbx",
+        "bytes": 11111868
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Mage_Rig\\A_SK_Mage_Rig_Walk.fbx",
+        "bytes": 11115868
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Mage_Rig\\A_SK_Mage_Rig_BasicWalk.fbx",
+        "bytes": 11017100
+      }
+    ]
+  },
+  {
+    "character": "SK_Archer",
+    "static": {
+      "file": "ImportSource\\Meshy\\SK_Archer.glb",
+      "bytes": 10079680,
+      "triangles": 41213,
+      "materials": 1,
+      "images": 3,
+      "skins": 0,
+      "joints": [],
+      "skinned_primitives": 0
+    },
+    "rig": {
+      "file": "ImportSource\\Meshy\\SK_Archer_Rig\\SK_Archer_Rig.glb",
+      "bytes": 11887536,
+      "triangles": 41213,
+      "materials": 1,
+      "images": 3,
+      "skins": 1,
+      "joints": [
+        "pelvis",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "neck_01",
+        "head",
+        "head_end",
+        "headfront",
+        "clavicle_l",
+        "upperarm_l",
+        "lowerarm_l",
+        "hand_l",
+        "LeftHand_End",
+        "clavicle_r",
+        "upperarm_r",
+        "lowerarm_r",
+        "hand_r",
+        "RightHand_End",
+        "thigh_l",
+        "calf_l",
+        "foot_l",
+        "ball_l",
+        "LeftToe_end",
+        "thigh_r",
+        "calf_r",
+        "foot_r",
+        "ball_r",
+        "RightToe_end"
+      ],
+      "skinned_primitives": 1
+    },
+    "fbx": [
+      {
+        "file": "ImportSource\\Meshy\\SK_Archer_Rig\\SK_Archer_Rig.fbx",
+        "bytes": 11752316
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Archer_Rig\\A_SK_Archer_Rig_Idle.fbx",
+        "bytes": 11895196
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Archer_Rig\\A_SK_Archer_Rig_Walk.fbx",
+        "bytes": 11899484
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Archer_Rig\\A_SK_Archer_Rig_BasicWalk.fbx",
+        "bytes": 11800876
+      }
+    ]
+  },
+  {
+    "character": "SK_Barbarian",
+    "static": {
+      "file": "ImportSource\\Meshy\\SK_Barbarian.glb",
+      "bytes": 9370224,
+      "triangles": 41113,
+      "materials": 1,
+      "images": 3,
+      "skins": 0,
+      "joints": [],
+      "skinned_primitives": 0
+    },
+    "rig": {
+      "file": "ImportSource\\Meshy\\SK_Barbarian_Rig\\SK_Barbarian_Rig.glb",
+      "bytes": 10749900,
+      "triangles": 41113,
+      "materials": 1,
+      "images": 3,
+      "skins": 1,
+      "joints": [
+        "pelvis",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "neck_01",
+        "head",
+        "head_end",
+        "headfront",
+        "clavicle_l",
+        "upperarm_l",
+        "lowerarm_l",
+        "hand_l",
+        "LeftHand_End",
+        "clavicle_r",
+        "upperarm_r",
+        "lowerarm_r",
+        "hand_r",
+        "RightHand_End",
+        "thigh_l",
+        "calf_l",
+        "foot_l",
+        "ball_l",
+        "LeftToe_end",
+        "thigh_r",
+        "calf_r",
+        "foot_r",
+        "ball_r",
+        "RightToe_end"
+      ],
+      "skinned_primitives": 1
+    },
+    "fbx": [
+      {
+        "file": "ImportSource\\Meshy\\SK_Barbarian_Rig\\SK_Barbarian_Rig.fbx",
+        "bytes": 11246908
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Barbarian_Rig\\A_SK_Barbarian_Rig_Idle.fbx",
+        "bytes": 11390108
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Barbarian_Rig\\A_SK_Barbarian_Rig_Walk.fbx",
+        "bytes": 11394300
+      },
+      {
+        "file": "ImportSource\\Meshy\\SK_Barbarian_Rig\\A_SK_Barbarian_Rig_BasicWalk.fbx",
+        "bytes": 11295468
+      }
+    ]
+  }
+]

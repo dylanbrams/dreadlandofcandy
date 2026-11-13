@@ -1,0 +1,20 @@
+{
+  "skeleton": "ue5_mannequin",
+  "characters": [
+    {
+      "name": "SK_Mage",
+      "height": 1.9,
+      "subject": "one stern adult male battle mage, lean build, angular weathered face, short grey beard, fitted charcoal split coat over blackened steel chest armour, high collar, dull bronze clasps, fitted sleeves and leather bracers, separate trouser legs visible below knee-length coat panels, heavy boots, no hat, no cape, no staff, no spell effects, empty open hands with separated fingers, arms clear of torso, feet apart, no base, no candy decoration"
+    },
+    {
+      "name": "SK_Archer",
+      "height": 1.85,
+      "subject": "one stern adult female ranger archer, athletic lean build, sharp weathered face, dark hair tied close behind head, fitted weathered charcoal leather jerkin over dark chainmail, compact blackened steel shoulder guards, forearm bracers, belted fitted trousers and knee-high boots, uncovered head, no hood, no cape, no bow, no arrows or quiver, empty open hands with separated fingers, arms clear of torso, feet apart, no base, no candy decoration"
+    },
+    {
+      "name": "SK_Barbarian",
+      "height": 2.15,
+      "subject": "one COMPLETE standing male barbarian from top of head to soles of BOTH BOOTS, full length legs with visible thighs knees shins ankles and feet, tall muscular realistic adult human proportions, short brown hair and beard, stern face, bare upper arms, dark steel chest harness and shoulder guards, leather belt and trousers, knee-high iron boots, empty open hands, arms apart and straight legs apart, entire feet visible, no cropped body, no bust, no cut-off legs, no cape, no weapons, no base"
+    }
+  ]
+}
