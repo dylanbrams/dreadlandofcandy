@@ -244,7 +244,17 @@ void AJamNuisance::Steer(const FVector2D& DesiredVelocity, float DeltaSeconds)
 	Next.X = FMath::Clamp(Next.X, SetBounds.Min.X + Margin, SetBounds.Max.X - Margin);
 	Next.Y = FMath::Clamp(Next.Y, SetBounds.Min.Y + Margin, SetBounds.Max.Y - Margin);
 	const FVector2D Moved = Next - FVector2D(Here);
-	SetActorLocation(FVector(Next, Here.Z));
+	float Z = Here.Z;
+	if (GroundOffset >= 0.f)
+	{
+		FHitResult Hit;
+		FCollisionQueryParams Params(TEXT("JamNuisanceGround"), false, this);
+		if (GetWorld()->LineTraceSingleByObjectType(Hit, FVector(Next, Here.Z + 400.f), FVector(Next, Here.Z - 800.f), FCollisionObjectQueryParams(ECC_WorldStatic), Params))
+		{
+			Z = Hit.ImpactPoint.Z + GroundOffset;
+		}
+	}
+	SetActorLocation(FVector(Next, Z));
 	if (Moved.SizeSquared() > 1.f)
 	{
 		SetActorRotation(FRotator(0.f, FMath::RadiansToDegrees(FMath::Atan2(Moved.Y, Moved.X)), 0.f));

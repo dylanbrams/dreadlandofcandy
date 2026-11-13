@@ -13,6 +13,7 @@ struct MEGAJAM_API FJamMusicContext
 	bool bNotePrompt = false; // CUT!
 	bool bBudgetOut = false;  // the finale ran out of money: no music at all
 	uint8 Mood = 0;           // a typed note's mood (T12b): 0 the scene's own, 1 epic, 2 sad
+	FName WalkCue;            // Open mode (R4): the biome's cue while walking between sets; None = the street's
 };
 
 /**

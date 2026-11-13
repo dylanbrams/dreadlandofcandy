@@ -46,6 +46,12 @@ public:
 	int32 SceneNumber = 1;
 	/** One line under the objective between scenes ("Walk to Set 2"). Empty = none. */
 	FString Hint;
+	/** Open mode (R4): the compass points at the next film set while the hero walks there. */
+	bool bCompass = false;
+	FVector CompassTarget = FVector::ZeroVector;
+	FString CompassLabel;
+	/** Open mode: the music cue of the biome the hero walks through (NAME_None = the street's). */
+	FName WalkMusicCue;
 	/** Film running time: counts while a take rolls, across the whole film (the HUD timecode). */
 	float FilmSeconds = 0.f;
 	/** Notes answered over the whole run (the HUD counter; the ending is picked from these). */

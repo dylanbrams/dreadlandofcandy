@@ -1,6 +1,8 @@
 #include "Game/JamFaerie.h"
 #include "Game/JamArt.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/SpotLightComponent.h"
+#include "Game/JamHero.h"
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "UObject/ConstructorHelpers.h"
@@ -9,6 +11,10 @@ namespace JamFaerieTuning
 {
 	// From the hero: behind (-X is down the screen), to the right, up at head height and over.
 	const FVector ShoulderOffset(-90.f, 130.f, 170.f);
+	// Open mode (R4): further out, relative to the follow camera's yaw (forward, right, up), so she frames the shot.
+	const FVector OpenOffset(-60.f, 320.f, 230.f);
+	constexpr float SpotLumens = 250.f;   // Dylan, Nov 13: still too bright at 500
+	constexpr float SpotRadius = 2500.f;
 	constexpr float FollowSpeed = 4.f;
 	constexpr float TurnSpeed = 6.f;
 	constexpr float BobHeight = 14.f;
@@ -45,6 +51,18 @@ AJamFaerie::AJamFaerie()
 	Art = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Art"));
 	Art->SetupAttachment(Root);
 	Art->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	Spot = CreateDefaultSubobject<USpotLightComponent>(TEXT("Spot"));
+	Spot->SetupAttachment(Root);
+	Spot->SetUsingAbsoluteRotation(true);
+	Spot->SetMobility(EComponentMobility::Movable);
+	Spot->IntensityUnits = ELightUnits::Lumens;
+	Spot->Intensity = JamFaerieTuning::SpotLumens;
+	Spot->AttenuationRadius = JamFaerieTuning::SpotRadius;
+	Spot->InnerConeAngle = 6.f;
+	Spot->OuterConeAngle = 16.f;
+	Spot->SetLightColor(FLinearColor(1.f, 0.93f, 0.82f));
+	Spot->CastShadows = false;   // a fill on the hero, not a second shadow
 }
 
 UStaticMeshComponent* AJamFaerie::MakePart(const TCHAR* Name, UStaticMesh* Mesh, const FVector& Location, const FVector& Scale)
@@ -101,11 +119,16 @@ void AJamFaerie::Tick(float DeltaSeconds)
 
 	if (const AActor* F = Follow.Get())
 	{
-		const FVector Goal = F->GetActorLocation() + ShoulderOffset;
+		const AJamHero* Hero = Cast<AJamHero>(F);
+		const FVector Goal = F->GetActorLocation() + (Hero && Hero->IsFollowCamera()
+			? FRotator(0.f, Hero->GetCameraYaw(), 0.f).RotateVector(OpenOffset) : ShoulderOffset);
 		const FVector Here = GetActorLocation();
 		// Snap if far (a teleport, a new scene); otherwise drift after the hero.
 		SetActorLocation(FVector::Dist(Here, Goal) > 2000.f ? Goal : FMath::VInterpTo(Here, Goal, DeltaSeconds, FollowSpeed));
 
+		// The spotlight stays on the hero's chest whatever she is watching.
+		const FVector Chest = F->GetActorLocation() + FVector(0.f, 0.f, 30.f);
+		if (!(Chest - Spot->GetComponentLocation()).IsNearlyZero()) { Spot->SetWorldRotation((Chest - Spot->GetComponentLocation()).Rotation()); }
 		const AActor* Watch = Subject.IsValid() ? Subject.Get() : F;
 		FVector ToSubject = Watch->GetActorLocation() - GetActorLocation();
 		ToSubject.Z = 0.f;

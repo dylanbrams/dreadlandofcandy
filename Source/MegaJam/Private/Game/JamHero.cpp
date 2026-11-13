@@ -49,6 +49,17 @@ namespace JamHeroTuning
 	constexpr float InteractRange = 150.f;
 	constexpr float InteractHoldSeconds = 0.6f;
 	constexpr float StickAimDeadZone = 0.35f;
+	// Open mode's follow camera (BUILD_SPEC 3e: about 500 uu, 15 degrees down; a little further so Fenella fits).
+	constexpr float FollowArmLength = 900.f;          // Dylan, Nov 13: farther back, slightly lower
+	constexpr float FollowSceneArmLength = 1500.f;
+	constexpr float FollowScenePitch = -32.f;
+	constexpr float FollowWalkPitch = -14.f;
+	constexpr float FollowPitchMin = -55.f;
+	constexpr float FollowPitchMax = 5.f;
+	const FVector FollowTargetOffset(0.f, 0.f, 110.f);
+	constexpr float MouseYawSpeed = 0.6f;        // degrees per mouse count
+	constexpr float StickYawSpeed = 160.f;       // degrees per second at full stick
+	constexpr float BotTurnSpeed = 4.f;          // how fast the camera swings behind the bot's aim
 }
 
 AJamHero::AJamHero()
@@ -210,6 +221,8 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 		if (Skill == EJamSkill::LastJudgment) { RequestWriteNote(); }   // Y / R write your own
 		return false;
 	}
+	// Open mode: skills go where the player looks (the bot's aim override already faces its target).
+	if (bFollowCamera && AimOverride.IsNearlyZero()) { SetActorRotation(FRotator(0.f, CameraYaw, 0.f)); }
 	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetSkillHandle(Skill));
 	if (bActivated)
 	{
@@ -318,6 +331,9 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(MoveAction, EKeys::Gamepad_Left2D);
 
 	InputContext->MapKey(AimAction, EKeys::Gamepad_Right2D);
+	LookAction = NewObject<UInputAction>(this, TEXT("IA_Look"));
+	LookAction->ValueType = EInputActionValueType::Axis2D;
+	InputContext->MapKey(LookAction, EKeys::Mouse2D);
 
 	// BUILD_SPEC 3: skill 1 on LMB / RT, interact on E / A. Space also lectures (handy on a laptop).
 	InputContext->MapKey(LectureAction, EKeys::LeftMouseButton);
@@ -350,6 +366,7 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(LectureAction, ETriggerEvent::Started, this, &AJamHero::OnLecture);
 		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
 		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
+		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &AJamHero::OnLook);
 		Input->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AJamHero::OnInteract);
 		Input->BindAction(InteractAction, ETriggerEvent::Started, this, &AJamHero::OnInteractPressed);
 		Input->BindAction(InteractAction, ETriggerEvent::Canceled, this, &AJamHero::OnInteractReleased);
@@ -373,7 +390,7 @@ void AJamHero::PawnClientRestart()
 	CreateInput();
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		PC->bShowMouseCursor = true;   // the hero faces the cursor
+		PC->bShowMouseCursor = !bFollowCamera;   // Backlot: the hero faces the cursor; Open: the mouse turns the camera
 		if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
 			Sub->AddMappingContext(InputContext, 0);
@@ -384,9 +401,66 @@ void AJamHero::PawnClientRestart()
 void AJamHero::OnMove(const FInputActionValue& Value)
 {
 	const FVector2D Axis = Value.Get<FVector2D>();
+	if (bFollowCamera)
+	{
+		const FRotator Yaw(0.f, CameraYaw, 0.f);
+		AddMovementInput(Yaw.RotateVector(FVector::ForwardVector), Axis.Y);
+		AddMovementInput(Yaw.RotateVector(FVector::RightVector), Axis.X);
+		return;
+	}
 	// The camera never turns, so world +X is screen up and +Y is screen right.
 	AddMovementInput(FVector::ForwardVector, Axis.Y);
 	AddMovementInput(FVector::RightVector, Axis.X);
+}
+
+void AJamHero::OnLook(const FInputActionValue& Value)
+{
+	if (!bFollowCamera || bCameraPinned) { return; }
+	const FVector2D Axis = Value.Get<FVector2D>();   // mouse counts this frame
+	bUsingGamepad = false;
+	CameraYaw = FRotator::NormalizeAxis(CameraYaw + Axis.X * JamHeroTuning::MouseYawSpeed);
+	CameraPitchFollow = FMath::Clamp(CameraPitchFollow + Axis.Y * JamHeroTuning::MouseYawSpeed * 0.6f,
+		JamHeroTuning::FollowPitchMin, JamHeroTuning::FollowPitchMax);
+}
+
+void AJamHero::EnableFollowCamera(float Yaw)
+{
+	bFollowCamera = true;
+	CameraYaw = Yaw;
+	CameraArm->TargetArmLength = JamHeroTuning::FollowArmLength;
+	CameraArm->TargetOffset = JamHeroTuning::FollowTargetOffset;
+	CameraArm->bDoCollisionTest = true;
+	CameraArm->ProbeChannel = ECC_Camera;
+	CameraArm->bEnableCameraLag = true;
+	CameraArm->CameraLagSpeed = 10.f;
+	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
+	if (APlayerController* PC = Cast<APlayerController>(GetController())) { PC->bShowMouseCursor = false; }
+}
+
+void AJamHero::SetFollowFraming(bool bScene, float SceneYaw)
+{
+	if (!bFollowCamera) { return; }
+	bSceneFraming = bScene;
+	if (bScene && !bCameraPinned) { CameraYaw = SceneYaw; }
+	CameraArm->TargetArmLength = bScene ? JamHeroTuning::FollowSceneArmLength : JamHeroTuning::FollowArmLength;
+	if (!bCameraPinned) { CameraPitchFollow = bScene ? JamHeroTuning::FollowScenePitch : JamHeroTuning::FollowWalkPitch; }
+}
+
+void AJamHero::TickFollowCamera(float DeltaSeconds)
+{
+	if (!bFollowCamera) { return; }
+	if (!bCameraPinned && StickLook.Size() >= JamHeroTuning::StickAimDeadZone)
+	{
+		CameraYaw = FRotator::NormalizeAxis(CameraYaw + StickLook.X * JamHeroTuning::StickYawSpeed * DeltaSeconds);
+		CameraPitchFollow = FMath::Clamp(CameraPitchFollow + StickLook.Y * JamHeroTuning::StickYawSpeed * 0.5f * DeltaSeconds,
+			JamHeroTuning::FollowPitchMin, JamHeroTuning::FollowPitchMax);
+	}
+	// The bot's aim swings the camera round behind it, so a screenshot shows what it is doing.
+	if (!AimOverride.IsNearlyZero() && !bCameraPinned && !bSceneFraming)
+	{
+		CameraYaw = FMath::FixedTurn(CameraYaw, AimOverride.Rotation().Yaw, JamHeroTuning::BotTurnSpeed * 45.f * DeltaSeconds);
+	}
+	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
 }
 
 void AJamHero::OnLecture(const FInputActionValue& /*Value*/)
@@ -400,6 +474,7 @@ void AJamHero::OnAim(const FInputActionValue& Value)
 	bUsingGamepad = true;
 	// Right stick up = screen up = world +X.
 	StickAim = FVector(Axis.Y, Axis.X, 0.f);
+	if (bFollowCamera) { StickLook = Axis; StickAim = FVector::ZeroVector; AimSource = EAimSource::Movement; return; }   // the stick looks instead
 	if (StickAim.Size() >= JamHeroTuning::StickAimDeadZone) { AimSource = EAimSource::Stick; }
 	else if (AimSource == EAimSource::Stick) { AimSource = EAimSource::Movement; }
 }
@@ -477,6 +552,7 @@ void AJamHero::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	UpdateFacing();
+	TickFollowCamera(DeltaSeconds);
 	TickSword();
 	TickRig();
 }
@@ -546,9 +622,9 @@ void AJamHero::UpdateFacing()
 	FVector Facing = FVector::ZeroVector;
 	APlayerController* PC = Cast<APlayerController>(GetController());
 
-	// The mouse takes over as soon as it moves.
+	// The mouse takes over as soon as it moves (Backlot only; in Open it turns the camera).
 	FVector2D Mouse;
-	if (PC && PC->GetMousePosition(Mouse.X, Mouse.Y))
+	if (!bFollowCamera && PC && PC->GetMousePosition(Mouse.X, Mouse.Y))
 	{
 		if (LastMousePosition.X >= 0.f && FVector2D::Distance(Mouse, LastMousePosition) > 2.f)
 		{

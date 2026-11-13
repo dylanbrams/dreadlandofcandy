@@ -4,7 +4,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**R4** (the world, slim), then R4b, R6, R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R4b** (enemies hit back), then R6, R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
 
 | Task | State |
 | --- | --- |
@@ -12,8 +12,8 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 | R1 sound effects and Fenella's voice | done: 47 SFX, 88 VO clips, `JamSfx` table, Effects slider |
 | R2 theme song | done in editor: credits play `M_theme_song_take1` (falls back to `credits`); `M_village_take1/2` imported for R4. Packaged check is in R5 |
 | R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
-| R4 the world, slim | next. Wire `Quest_Accept` (SFX row exists) on entering a film set, `village` music (assets exist, add the cue to `JamMusic`) |
-| R4b enemies hit back (Dignity meter) | not started |
+| R4 the world, slim | done: follow camera, scenes at the film sets, compass, biome music, bot PASS on `L_Sugarborough`. Ambient camps dropped (the plan's first fallback) |
+| R4b enemies hit back (Dignity meter) | next |
 | R5 Candidate B and the gate | not started |
 | R6 cast | not started |
 | R7 playtest fixes | not started |
@@ -32,10 +32,10 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 ## What exists
 
 - **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and four GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` (88 English clips imported). Sound effects (R1): `Game/JamSfx` holds one row per event (clip, volume, pitch jitter, repeat guard), played 2D at the Effects volume from the game mode (slate, ACTION!, CUT!, retake, stage clear, ledger and coins at the wrap, budget-out, each skill, pacify, bubbles), the nuisances (flustered, treated) and the HUD (menu clicks, level up, the backlot ambience while shooting). Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_audio.py`. `Quest_Accept` has a row but no caller until R4's film sets.
-- **Open mode (`-open`): O1 only.** World table (`World/JamWorldTable.cpp`), `Jam.World.*` tests, flat fallback on the template map; on any other map only gameplay actors spawn. Fixed camera, no bot, no quests.
+- **Open mode (`-open`, R4):** the title, then the hero starts in the village and walks to each film set in turn (`JamWorld::FilmSet(i)`); stepping onto a set starts its scene, which plays exactly as in Backlot on that floor (`AJamGameMode::SceneFloor/SceneMark/SceneSign` pick backlot or world). A compass strip at the top (`AJamHUD::DrawCompass`) shows the next set's name, distance and the hint. Follow camera (`AJamHero::EnableFollowCamera`): the mouse or right stick turns it, WASD moves relative to it, the cursor hides in play, skills turn the hero to the camera's yaw. Walking: 900 uu at 14 degrees down; a take: 1500 uu at 32 degrees, looking along the path into the set (the candy trees have no camera collision, so the camera must stay over the path). Fenella flies 3.2 m out to the camera's right with a warm spotlight on the hero (250 lumens, Dylan: still too bright at 500, not yet compiled at that value). Nuisances follow the ground. Biome music while walking (the village has its own `village` cue). `JamLook::Apply(World, true)`: Open is brighter (sky x2.6, exposure +0.8, softer contrast, more saturation, bloom 1.4 above threshold 1). No ambient camps. Flags: `-camyaw= -campitch= -camdist=` pin the camera. Play it: `UnrealEditor.exe MegaJam.uproject /Game/World/L_Sugarborough -game -open`.
 - **Terrain:** `/Game/World/L_Sugarborough` and its review maps; `/Game/World` is always cooked through `PAL_Sugarborough`. Notes: `Docs/Workers/terrain.md`.
 - **On disk, not in the game:** cast voices and battle cries under `vocals/output/`, four rigged characters under `ImportSource/Meshy/SK_*_Rig/`, more music in `music/`, Niagara attack systems under `/Game/FX/Attacks` (cut).
-- **State last verified (Nov 13, R1):** build passes, 59 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 takes=4 ... ending=directors_cut time=122.8`, no missing-clip warnings, all 14 lines spoken in the run have a clip. Not yet heard by a human. Not repackaged since the terrain polish.
+- **State last verified (Nov 13, R4):** editor and game targets build, 59 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 ... time=125.1`, Open autoplay on `L_Sugarborough` `PASS mode=open main=3 side=0 ... time=145.9`, no missing-clip warnings. Not yet heard or played by a human. Not repackaged since the terrain polish. Visual tuning (light, grade, spotlight) is Dylan's with ChatGPT on Nov 14; GAME only makes it playable.
 
 ## Flags
 

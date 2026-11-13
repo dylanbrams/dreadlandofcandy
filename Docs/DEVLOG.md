@@ -159,3 +159,10 @@
 - R1: 47 sound effects and Fenella's 88 English lines imported by one script. One table maps each event to a clip, volume and pitch jitter; the lecture is three sounds (raise, inhale, impact), the wrap ledger ticks once per deduction and then coins trickle in. New Effects slider next to Music and Fenella.
 - 59 tests pass; Backlot autoplay PASS; every line Fenella spoke in the run had a clip. Dylan has not heard it yet: the mix is a guess at "ridiculously over the top".
 - R2: Dylan's theme song (Big Rock Candy Mountain, adjusted) now plays over the end credits and nowhere else; if the asset is ever missing, the old credits cue plays instead. Village music imported for R4. `Declared.md` has a line for the song; Dylan to add the tool that made it.
+
+## R4: the film in the candy world (Nov 13)
+
+- Open mode now plays the film: title, out of the village, a compass to the first set, the scene where the terrain worker left a flat floor for it, and on to the next. The bot walked all three sets on the first try (`PASS mode=open main=3`).
+- A follow camera, mouse or right stick to turn it. The first scene framing put the camera inside a candy tree (they have no camera collision), so during a take it now looks along the path into the set, the one side that is always open.
+- Dylan watched the screenshots: Fenella further out with a spotlight on the knight, the camera further back and lower, the whole world brighter and "kiddie", with bloom for things that will glow. The spotlight came in at 9000 lumens and blew the knight white; it is 250 now. The rest of the look is his to tune tomorrow.
+- Ambient camps dropped, as the plan's first fallback allows.

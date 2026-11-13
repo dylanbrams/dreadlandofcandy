@@ -134,6 +134,21 @@ private:
 	/** BUILD_SPEC 3e: Open mode (-open) plays the open world; Backlot (default, -backlot) is the slice, unchanged. */
 	bool bOpenMode = false;
 	void StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd);
+	/** Where scene i is shot: the backlot set, or in Open mode the world table's film set (R4). */
+	int32 NumSets() const;
+	FBox2D SceneFloor(int32 Index) const;
+	FVector2D SceneMark(int32 Index) const;
+	FString SceneSign(int32 Index) const;
+	/** Open mode: the ground height under a point (traced down); GroundZ when nothing is hit. */
+	float TraceGround(const FVector2D& At) const;
+	/** Open mode: walk to the next film set (hint, compass, biome music). */
+	void BeginWalkToSet(int32 Next);
+	void TickOpenWalk();
+	// The bot's way round things on the terrain: if it stops making progress it side-steps for a moment.
+	FVector2D BotLastPos = FVector2D::ZeroVector;
+	float BotStuckFor = 0.f;
+	float BotSideStepFor = 0.f;
+	float BotSideSign = 1.f;
 
 	/** Scene (and backlot set) index being shot; FieldBounds is that set's floor. */
 	int32 SceneIndex = 0;

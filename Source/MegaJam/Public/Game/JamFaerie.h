@@ -44,6 +44,8 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Camcorder;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Tally;   // the red recording light
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> Art;     // the generated Fenella (T20)
+	/** Her key light on the hero (Dylan, Nov 13: the black knight vanished against the grass). */
+	UPROPERTY(VisibleAnywhere) TObjectPtr<class USpotLightComponent> Spot;
 	bool bArt = false;
 	float ArtBaseZ = 0.f;
 

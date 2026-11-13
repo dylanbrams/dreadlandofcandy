@@ -6,6 +6,9 @@
 #include "UI/JamScreenWidget.h"
 #include "UI/JamNoteEditor.h"
 #include "Engine/Canvas.h"
+#include "Engine/Engine.h"
+#include "Engine/Font.h"
+#include "Camera/PlayerCameraManager.h"
 #include "Game/JamPlayerState.h"
 #include "Gas/JamGameplayTags.h"
 #include "AbilitySystemComponent.h"
@@ -125,6 +128,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 void AJamHUD::DrawHUD()
 {
 	Super::DrawHUD();
+	DrawCompass();
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	uint8 Weather = GS && GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut ? GS->Weather : 0;
 	if (WeatherSample > 0) { Weather = WeatherSample; }
@@ -399,7 +403,9 @@ void AJamHUD::UpdateInputMode(int32 Want)
 	{
 		PlayerOwner->SetInputMode(FInputModeGameOnly());
 	}
-	PlayerOwner->bShowMouseCursor = true;   // the hero faces the cursor; menus are clickable
+	// Backlot: the hero faces the cursor. Open: the mouse turns the camera, so the cursor hides in play. Menus are clickable.
+	const AJamHero* HeroPawn = Cast<AJamHero>(PlayerOwner->GetPawn());
+	PlayerOwner->bShowMouseCursor = Focus != nullptr || !(HeroPawn && HeroPawn->IsFollowCamera());
 }
 
 void AJamHUD::SetPaused(bool bPause)
@@ -511,6 +517,7 @@ void AJamHUD::TickMusic()
 	C.bNotePrompt = GS->IsNotePrompt();
 	C.bBudgetOut = GS->bBudgetOut && GS->Phase == EJamFilmPhase::Shooting;
 	C.Mood = GS->Mood;
+	C.WalkCue = GS->WalkMusicCue;
 	const FName Cue = bNoMusic ? NAME_None : JamMusic::CueFor(C);
 	const UJamSettings* J = Settings();
 	const float Volume = 0.7f * (J ? J->MusicVolume : 0.8f);
@@ -544,6 +551,63 @@ void AJamHUD::TickMusic()
 		Music->bIsUISound = true;   // keeps playing under the pause menu
 		Music->FadeIn(1.5f, 1.f);
 		UE_LOG(LogJam, Log, TEXT("JamMusic: %s take %d"), *Cue.ToString(), Take);
+	}
+}
+
+// ---- Compass (R4) ------------------------------------------------------------------------------------------------
+
+void AJamHUD::DrawCompass()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	const APawn* Pawn = PlayerOwner ? PlayerOwner->GetPawn() : nullptr;
+	if (!Canvas || !GS || !GS->bCompass || !Pawn || !PlayerOwner->PlayerCameraManager || GS->Phase != EJamFilmPhase::Shooting) { return; }
+	if (Screen && Screen->GetVisibility() == ESlateVisibility::Visible) { return; }
+	const float W = Canvas->ClipX;
+	const float Px = Canvas->ClipY / 1080.f;
+	const float CamYaw = PlayerOwner->PlayerCameraManager->GetCameraRotation().Yaw;
+	const FVector To = GS->CompassTarget - Pawn->GetActorLocation();
+	const float Rel = FRotator::NormalizeAxis(To.Rotation().Yaw - CamYaw);   // -180..180, 0 = straight ahead
+
+	// The strip: 120 degrees of view across 900 px; beyond that the marker waits at the edge, pointing on.
+	const float StripW = 900.f * Px, StripY = 46.f * Px, Cx = W * 0.5f;
+	DrawRect(FLinearColor(0.f, 0.f, 0.f, 0.35f), Cx - StripW * 0.5f, StripY - 3.f * Px, StripW, 6.f * Px);
+	for (int32 Tick = -60; Tick <= 60; Tick += 15)
+	{
+		const float X = Cx + Tick / 60.f * StripW * 0.5f;
+		DrawRect(FLinearColor(1.f, 1.f, 1.f, Tick == 0 ? 0.8f : 0.35f), X - 1.f * Px, StripY - (Tick == 0 ? 10.f : 6.f) * Px, 2.f * Px, (Tick == 0 ? 20.f : 12.f) * Px);
+	}
+	const float Clamped = FMath::Clamp(Rel, -60.f, 60.f);
+	const float Mx = Cx + Clamped / 60.f * StripW * 0.5f;
+	const FLinearColor Gold(1.f, 0.83f, 0.3f, 1.f);
+	const float S = 14.f * Px;
+	// A downward triangle on the strip; at the edge it turns to point the way.
+	if (FMath::Abs(Rel) <= 60.f)
+	{
+		DrawLine(Mx - S, StripY - S * 1.6f, Mx + S, StripY - S * 1.6f, Gold, 3.f * Px);
+		DrawLine(Mx - S, StripY - S * 1.6f, Mx, StripY, Gold, 3.f * Px);
+		DrawLine(Mx + S, StripY - S * 1.6f, Mx, StripY, Gold, 3.f * Px);
+	}
+	else
+	{
+		const float Dir = Rel > 0.f ? 1.f : -1.f;
+		DrawLine(Mx, StripY - S, Mx + Dir * S * 1.4f, StripY, Gold, 3.f * Px);
+		DrawLine(Mx, StripY + S, Mx + Dir * S * 1.4f, StripY, Gold, 3.f * Px);
+	}
+	UFont* Font = GEngine ? GEngine->GetMediumFont() : nullptr;
+	if (!Font) { return; }
+	const FString Label = FString::Printf(TEXT("%s  %d m"), *GS->CompassLabel, FMath::RoundToInt(To.Size2D() / 100.f));
+	float Tw = 0.f, Th = 0.f;
+	const float Scale = 1.3f * Px;
+	GetTextSize(Label, Tw, Th, Font, Scale);
+	const float Lx = FMath::Clamp(Mx - Tw * 0.5f, 8.f, W - Tw - 8.f);
+	DrawText(Label, FLinearColor::Black, Lx + 2.f * Px, StripY + 14.f * Px + 2.f * Px, Font, Scale);
+	DrawText(Label, Gold, Lx, StripY + 14.f * Px, Font, Scale);
+	if (!GS->Hint.IsEmpty())
+	{
+		float Hw = 0.f, Hh = 0.f;
+		GetTextSize(GS->Hint, Hw, Hh, Font, Px);
+		DrawText(GS->Hint, FLinearColor::Black, Cx - Hw * 0.5f + 2.f * Px, StripY + 14.f * Px + Th + 6.f * Px, Font, Px);
+		DrawText(GS->Hint, FLinearColor::White, Cx - Hw * 0.5f, StripY + 12.f * Px + Th + 6.f * Px, Font, Px);
 	}
 }
 

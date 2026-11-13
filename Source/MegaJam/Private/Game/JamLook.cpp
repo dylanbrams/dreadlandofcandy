@@ -22,7 +22,7 @@ namespace
 	}
 }
 
-void JamLook::Apply(UWorld* World)
+void JamLook::Apply(UWorld* World, bool bOpen)
 {
 	if (!World || FParse::Param(FCommandLine::Get(), TEXT("nograde"))) { return; }
 
@@ -35,7 +35,7 @@ void JamLook::Apply(UWorld* World)
 			Sun->SetMobility(EComponentMobility::Movable);
 			It->SetActorRotation(FRotator(-48.f, 35.f, 0.f));
 			Sun->SetLightColor(FLinearColor(1.f, 0.9f, 0.78f));
-			Sun->SetIntensity(Sun->Intensity * 0.9f);
+			Sun->SetIntensity(Sun->Intensity * (bOpen ? 1.1f : 0.9f));
 		}
 	}
 	for (TActorIterator<ASkyLight> It(World); It; ++It)
@@ -43,7 +43,7 @@ void JamLook::Apply(UWorld* World)
 		if (USkyLightComponent* Sky = It->GetLightComponent())
 		{
 			Sky->SetMobility(EComponentMobility::Movable);
-			Sky->SetIntensity(Sky->Intensity * 1.4f);
+			Sky->SetIntensity(Sky->Intensity * (bOpen ? 2.6f : 1.4f));   // Open: bright and kiddie (Dylan, Nov 13)
 			Sky->SetLightColor(FLinearColor(1.f, 0.9f, 1.f));   // a hint of pink in the fill
 			Sky->RecaptureSky();
 		}
@@ -66,7 +66,22 @@ void JamLook::Apply(UWorld* World)
 	S.bOverride_BloomIntensity = true;       S.BloomIntensity = 0.9f;
 	S.bOverride_VignetteIntensity = true;    S.VignetteIntensity = 0.5f;
 	S.bOverride_FilmGrainIntensity = true;   S.FilmGrainIntensity = 0.12f;   // it is a film
-	UE_LOG(LogJam, Log, TEXT("JamLook: grade and lights applied"));
+	if (bOpen)
+	{
+		// The candy world: brighter, softer contrast, more colour, and enough bloom that emissive things glow.
+		S.WhiteTemp = 6600.f;
+		S.ColorSaturation = FVector4(1.15f, 1.15f, 1.15f, 1.f);
+		S.ColorContrast = FVector4(1.0f, 1.0f, 1.0f, 1.f);
+		S.ColorOffsetShadows = FVector4(0.03f, 0.015f, 0.04f, 0.f);   // lifted, lilac shadows
+		S.ColorGammaShadows = FVector4(1.15f, 1.15f, 1.15f, 1.f);
+		S.bOverride_ColorGammaShadows = true;
+		S.AutoExposureBias = 0.8f;
+		S.BloomIntensity = 1.4f;
+		S.bOverride_BloomThreshold = true;   S.BloomThreshold = 1.0f;
+		S.VignetteIntensity = 0.2f;
+		S.FilmGrainIntensity = 0.04f;
+	}
+	UE_LOG(LogJam, Log, TEXT("JamLook: grade and lights applied%s"), bOpen ? TEXT(" (open)") : TEXT(""));
 }
 
 void JamLook::BudgetOut(UWorld* World)

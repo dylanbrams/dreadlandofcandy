@@ -59,6 +59,19 @@ public:
 	/** Pulls the fixed camera back (the -artreview lineup). */
 	void SetCameraDistance(float Distance);
 
+	/**
+	 * Open mode (R4, BUILD_SPEC 3e): a third-person follow camera. Mouse / right stick turn it, movement is relative
+	 * to its yaw, the hero faces where he walks and turns to the camera's yaw when he casts. SetAimOverride also
+	 * turns it, so the bot films what it does. Backlot keeps the fixed camera.
+	 */
+	void EnableFollowCamera(float Yaw);
+	bool IsFollowCamera() const { return bFollowCamera; }
+	/** Open mode: wide and higher while a scene shoots (the set reads), close and low while walking. */
+	void SetFollowFraming(bool bScene, float SceneYaw = 0.f);
+	float GetCameraYaw() const { return CameraYaw; }
+	/** -camyaw / -campitch pin the follow camera for repeatable screenshots. */
+	void PinFollowCamera(float Yaw, float Pitch) { CameraYaw = Yaw; CameraPitchFollow = Pitch; bCameraPinned = true; }
+
 	/** Takes the progression's stats: move speed now; the Lecture reads radius and power itself. */
 	void ApplyStats(const struct FJamStatBlock& Stats);
 
@@ -77,6 +90,16 @@ private:
 	void OnMove(const FInputActionValue& Value);
 	void OnLecture(const FInputActionValue& Value);
 	void OnAim(const FInputActionValue& Value);
+	void OnLook(const FInputActionValue& Value);
+	void TickFollowCamera(float DeltaSeconds);
+	bool bFollowCamera = false;
+	bool bCameraPinned = false;
+	bool bSceneFraming = false;   // a take: the camera looks along the path into the set and the bot does not swing it
+	float CameraYaw = 0.f;
+	float CameraPitchFollow = -14.f;
+	FVector2D StickLook = FVector2D::ZeroVector;
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> LookAction;
 	void OnInteract(const FInputActionValue& Value);
 	void OnRefuse(const FInputActionValue& Value);
 	void OnInteractPressed(const FInputActionValue& Value);

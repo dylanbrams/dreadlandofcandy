@@ -48,6 +48,8 @@ public:
 
 	/** The set it lives in (world XY). Set by the game mode at spawn. */
 	FBox2D SetBounds = FBox2D(FVector2D(-1000.f), FVector2D(1000.f));
+	/** Open mode (R4): keep this height above the ground under it (traced each step); negative = keep Z. */
+	float GroundOffset = -1.f;
 
 	/** BUILD_SPEC section 10 (rat): speed 300, flees inside 500 uu. */
 	float Speed = 300.f;

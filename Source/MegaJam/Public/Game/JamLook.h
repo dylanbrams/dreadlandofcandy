@@ -11,7 +11,7 @@ class UWorld;
  */
 namespace JamLook
 {
-	MEGAJAM_API void Apply(UWorld* World);
+	MEGAJAM_API void Apply(UWorld* World, bool bOpen = false);
 	/** T21: the money runs out, and so does the colour grading. */
 	MEGAJAM_API void BudgetOut(UWorld* World);
 }

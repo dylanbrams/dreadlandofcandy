@@ -10,7 +10,7 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 	default: break;
 	}
 	if (C.bBudgetOut) { return NAME_None; }   // she hums it instead (T21)
-	if (C.bWalking) { return TEXT("open_world_exploration"); }
+	if (C.bWalking) { return C.WalkCue.IsNone() ? FName(TEXT("open_world_exploration")) : C.WalkCue; }
 	if (C.bNotePrompt) { return TEXT("mystery"); }                     // she is thinking. Uh oh.
 	if (C.Mood == 2) { return TEXT("emotional_revelation"); }          // "same scene, but sadder"
 	if (C.Mood == 1) { return C.Scene >= 3 ? TEXT("final_boss") : TEXT("boss_battle"); }
@@ -25,7 +25,7 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 const TArray<FName>& JamMusic::AllCues()
 {
 	static const TArray<FName> Cues = { TEXT("quest_accepted"), TEXT("feeding_candy"), TEXT("hard_combat"), TEXT("boss_battle"),
-		TEXT("final_boss"), TEXT("open_world_exploration"), TEXT("mystery"), TEXT("emotional_revelation"), TEXT("credits"), TEXT("theme_song") };
+		TEXT("final_boss"), TEXT("open_world_exploration"), TEXT("mystery"), TEXT("emotional_revelation"), TEXT("credits"), TEXT("theme_song"), TEXT("village") };
 	return Cues;
 }
 

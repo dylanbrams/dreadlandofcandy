@@ -69,7 +69,7 @@ namespace JamWorldTableRows   // named, not anonymous: the game target is a unit
 			return D;
 		};
 		W.Biomes = {
-			Biome(EJamBiome::Village, TEXT("Sugarborough"),        {},                       FLinearColor(0.62f, 0.50f, 0.40f), TEXT("open_world_exploration"), EJamWeather::None, {}, 0.f),
+			Biome(EJamBiome::Village, TEXT("Sugarborough"),        {},                       FLinearColor(0.62f, 0.50f, 0.40f), TEXT("village"), EJamWeather::None, {}, 0.f),
 			Biome(EJamBiome::Meadow,  TEXT("The Gumdrop Meadow"),  { K::Rat, K::Almond },    FLinearColor(0.22f, 0.48f, 0.18f), TEXT("feeding_candy"), EJamWeather::None, { 300.f, 0.05f, 0.f, FLinearColor::Black }, MeadowYaw),
 			Biome(EJamBiome::Molars,  TEXT("The Molar Hills"),     { K::Goblin },            FLinearColor(0.58f, 0.44f, 0.48f), TEXT("hard_combat"), EJamWeather::Fog, { -400.f, -0.08f, 0.05f, FLinearColor(0.02f, 0.f, 0.03f) }, MolarsYaw),
 			Biome(EJamBiome::Orchard, TEXT("The Lollipop Orchard"), { K::Bug, K::Almond },   FLinearColor(0.16f, 0.34f, 0.14f), TEXT("boss_battle"), EJamWeather::None, { 0.f, 0.1f, 0.03f, FLinearColor(0.f, 0.01f, 0.02f) }, OrchardYaw),

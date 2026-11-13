@@ -43,6 +43,8 @@ private:
 	void TickVoice();
 	/** Sound effects the HUD can see (R1): a level gained, and the backlot's ambience bed while the film shoots. */
 	void TickEffects();
+	/** Open mode (R4): a compass strip at the top, the next film set's marker, name and distance. */
+	void DrawCompass();
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Ambience;
 	int32 SeenLevel = 0;
