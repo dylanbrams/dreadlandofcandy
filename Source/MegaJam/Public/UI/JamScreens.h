@@ -32,6 +32,7 @@ enum class EJamMenuAction : uint8
 	Resume,
 	MusicVolume,      // left / right adjusts
 	VoiceVolume,      // "Fenella": left / right adjusts
+	EffectsVolume,    // sound effects: left / right adjusts
 	Commentary,       // toggles
 	Back,
 	Locked,           // "Budget: Low (locked)", never selectable
@@ -83,6 +84,7 @@ struct MEGAJAM_API FJamMenuSettings
 {
 	float MusicVolume = 0.8f;
 	float VoiceVolume = 0.8f;
+	float EffectsVolume = 0.8f;
 	bool bCommentary = false;
 	bool bGamepad = false;
 };

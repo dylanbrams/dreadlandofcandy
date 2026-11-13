@@ -26,6 +26,10 @@ namespace JamMusic
 	MEGAJAM_API FName CueFor(const FJamMusicContext& Context);
 	/** Every cue the game uses (the import list). */
 	MEGAJAM_API const TArray<FName>& AllCues();
+	/** How many takes a cue has: 2 for the score, 1 for the theme song. */
+	MEGAJAM_API int32 Takes(FName Cue);
+	/** What plays when a cue's asset is missing (the theme song falls back to the old credits cue); NAME_None = silence. */
+	MEGAJAM_API FName Fallback(FName Cue);
 	/** "/Game/Audio/Music/M_hard_combat_take2.M_hard_combat_take2". */
 	MEGAJAM_API FString AssetPath(FName Cue, int32 Take);
 }

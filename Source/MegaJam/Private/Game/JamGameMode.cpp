@@ -29,6 +29,7 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/WorldSettings.h"
 #include "Misc/CommandLine.h"
+#include "Game/JamSfx.h"
 
 namespace JamShootPacing
 {
@@ -361,6 +362,7 @@ void AJamGameMode::SpawnPickups(int32 Count)
 void AJamGameMode::HandlePacified(AActor* Pacified)
 {
 	AJamGameState* GS = GetJamGameState();
+	JamSfx::Play(this, TEXT("Pacify"));
 	const FJamStageDef* Stage = GS ? GS->Shoot.GetStage() : nullptr;
 	if (Stage && Stage->Verb == EJamStageVerb::Pacify)
 	{
@@ -440,6 +442,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 		StateEnteredAt = Now;
 		if (SeenState == EJamShootState::Slate)
 		{
+			JamSfx::Play(this, TEXT("Clapper"));
 			const FJamStageDef* Stage = Shoot.GetStage();
 			ShowCard(EJamCardKind::Slate, FString::Printf(TEXT("SCENE %d - TAKE %d"), SceneIndex + 1, Shoot.GetTake()),
 				FString::Printf(TEXT("%s\nDirector: F. Flicker. Camera: F. Flicker. %s"), *Shoot.GetScene().Title,
@@ -461,6 +464,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 			const FJamLine* Pitch = JamLines::Find(Shoot.GetScene().Note.PitchLineId);
 			const FString PitchText = Pitch ? Pitch->Text : FString(TEXT("I have a note."));
 			ShowCard(EJamCardKind::Cut, TEXT("CUT!"), PitchText, -1.f);
+			JamSfx::Play(this, TEXT("Cut_Horn"));
 			GS->SuggestedNotes = JamNoteSuggestions::For(Shoot.GetScene().Id);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
 			if (SceneIndex == 2)
@@ -590,6 +594,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 			}
 		}
 		ShowCard(EJamCardKind::Action, TEXT("ACTION!"), FString(), 1.2f);   // Fenella's caption carries the line
+		JamSfx::Play(this, TEXT("Clapper"));
 		break;
 
 	case EJamShootEventType::Progress:
@@ -598,6 +603,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 
 	case EJamShootEventType::StageCleared:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: stage %d cleared on take %d"), Event.Stage, Event.Take);
+		JamSfx::Play(this, TEXT("Stage_Complete"));
 		break;
 
 	case EJamShootEventType::NoteAnswered:
@@ -612,6 +618,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), FString(), JamShootPacing::FailedSeconds); }
 		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), FailReason(bFailForcedByFlag), JamShootPacing::FailedSeconds); }
 		bFailForcedByFlag = false;
+		JamSfx::Play(this, TEXT("Retake_Rewind"));
 		GS->TakeFailedAt = GetWorld()->GetTimeSeconds();
 		Say(Event.Value ? EJamLineTrigger::ForcedRetake : EJamLineTrigger::FailedTake);
 		break;
@@ -785,6 +792,19 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 {
 	if (!InHero || InHero != Hero.Get()) { return; }
+	// The sound of each skill (R1): the lecture winds up (raise, inhale) and lands; the others land.
+	switch (Skill)
+	{
+	case EJamSkill::Lecture:
+		JamSfx::Play(this, TEXT("Sword_Raise"));
+		JamSfx::Play(this, TEXT("Hero_Inhale"), 0.2f);
+		JamSfx::Play(this, TEXT("Lecture_Impact"), 0.5f);
+		break;
+	case EJamSkill::FormALine:        JamSfx::Play(this, TEXT("FormLine_Contact"), 0.15f); break;
+	case EJamSkill::DisappointedSigh: JamSfx::Play(this, TEXT("DisappointedSigh")); break;
+	case EJamSkill::LastJudgment:     JamSfx::Play(this, TEXT("LastJudgment_Contact"), 0.2f); break;
+	default: break;
+	}
 	if (Skill == EJamSkill::Lecture)
 	{
 		Say(EJamLineTrigger::LectureCast);
@@ -994,6 +1014,10 @@ void AJamGameMode::RollWrap(bool bLastScene)
 	DirectorTotal += Out.Ledger.DeductionsTotal;
 	bLastWrapped = bLastScene;
 	GS->WrapUntil = bLastScene ? -1.f : GetWorld()->GetTimeSeconds() + JamWrapTuning::PanelSeconds;
+	// The ledger reads out: one deduction per line, then what is left trickles in.
+	const int32 Deductions = GS->Wrap.Lines.Num();
+	for (int32 i = 0; i < Deductions; ++i) { JamSfx::Play(this, TEXT("Ledger_Deduction"), 0.5f + 0.3f * i); }
+	JamSfx::Play(this, TEXT("Coin_Trickle"), 0.7f + 0.3f * Deductions);
 
 	const FJamLootDef& Equipped = JamProgression::LootTable()[Out.LootIndices[Out.EquippedSlot]];
 	UE_LOG(LogJam, Log, TEXT("JamWrap: scene %d gross %d cut %d (sprinkles %d), equipped %s (%s), level %d, radius %.0f -> %.0f"),
@@ -1116,6 +1140,7 @@ void AJamGameMode::Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& O
 	B.Until = Now + Seconds;
 	B.bJagged = bJagged;
 	GS->Bubbles.Add(B);
+	JamSfx::Play(this, TEXT("Bubble_Pop"));
 }
 
 // ---- The budget runs out (T21) --------------------------------------------------------------------------------
@@ -1150,6 +1175,8 @@ void AJamGameMode::BudgetOut()
 	if (!GS || GS->bBudgetOut) { return; }
 	GS->bBudgetOut = true;
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: the budget runs out"));
+	JamSfx::Play(this, TEXT("Budget_Warning"));
+	JamSfx::Play(this, TEXT("Budget_Empty"), 1.4f);
 	Say(EJamLineTrigger::BudgetOut);
 	NextHumAt = GetWorld()->GetTimeSeconds() + 6.f;
 	JamLook::BudgetOut(GetWorld());

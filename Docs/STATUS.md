@@ -4,15 +4,15 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**R0** (checkpoint commits), then **R1** (sound). Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R4** (the world, slim), then R6, then R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
 
 | Task | State |
 | --- | --- |
-| R0 checkpoint | not started |
-| R1 sound effects and Fenella's voice | not started |
-| R2 theme song | waits on Dylan's file at `music/theme-song.mp3` |
+| R0 checkpoint | done: scoped commits, tag `pre-release` |
+| R1 sound effects and Fenella's voice | done: 47 SFX, 88 VO clips, `JamSfx` table, Effects slider |
+| R2 theme song | done in editor: credits play `M_theme_song_take1` (falls back to `credits`); `M_village_take1/2` imported for R4. Packaged check is in R5 |
 | R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
-| R4 the world, slim | not started |
+| R4 the world, slim | next. Wire `Quest_Accept` (SFX row exists) on entering a film set, `village` music (assets exist, add the cue to `JamMusic`) |
 | R5 Candidate B and the gate | not started |
 | R6 cast | not started |
 | R7 playtest fixes | not started |
@@ -20,7 +20,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Dylan's list (details in the release plan)
 
-1. Theme song file into `music/`. Stop any Codex session holding the engine.
+1. (done) Theme song file. Stop any Codex session holding the engine.
 2. Deploy the backend (`backend/DEPLOY.md`), then give GAME the URL for `BaseUrl` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini`. Pass BACKEND the two corrections below first.
 3. (dropped: the first build out is the world build)
 4. Play Open after R5, decide the gate.
@@ -30,11 +30,11 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## What exists
 
-- **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and four GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` when the clip exists (none imported yet). No sound effects.
+- **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and four GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` (88 English clips imported). Sound effects (R1): `Game/JamSfx` holds one row per event (clip, volume, pitch jitter, repeat guard), played 2D at the Effects volume from the game mode (slate, ACTION!, CUT!, retake, stage clear, ledger and coins at the wrap, budget-out, each skill, pacify, bubbles), the nuisances (flustered, treated) and the HUD (menu clicks, level up, the backlot ambience while shooting). Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_audio.py`. `Quest_Accept` has a row but no caller until R4's film sets.
 - **Open mode (`-open`): O1 only.** World table (`World/JamWorldTable.cpp`), `Jam.World.*` tests, flat fallback on the template map; on any other map only gameplay actors spawn. Fixed camera, no bot, no quests.
 - **Terrain:** `/Game/World/L_Sugarborough` and its review maps; `/Game/World` is always cooked through `PAL_Sugarborough`. Notes: `Docs/Workers/terrain.md`.
-- **On disk, not in the game:** voice and SFX under `vocals/output/`, four rigged characters under `ImportSource/Meshy/SK_*_Rig/`, more music in `music/`, Niagara attack systems under `/Game/FX/Attacks` (cut).
-- **State last verified (Nov 13, wrist fix):** build passes, 57 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 ... ending=directors_cut`. The terrain polish after the last package has not been repackaged.
+- **On disk, not in the game:** cast voices and battle cries under `vocals/output/`, four rigged characters under `ImportSource/Meshy/SK_*_Rig/`, more music in `music/`, Niagara attack systems under `/Game/FX/Attacks` (cut).
+- **State last verified (Nov 13, R1):** build passes, 59 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 takes=4 ... ending=directors_cut time=122.8`, no missing-clip warnings, all 14 lines spoken in the run have a clip. Not yet heard by a human. Not repackaged since the terrain polish.
 
 ## Flags
 

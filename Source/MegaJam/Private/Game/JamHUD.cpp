@@ -16,6 +16,7 @@
 #include "Components/AudioComponent.h"
 #include "Sound/SoundWave.h"
 #include "UI/JamMusic.h"
+#include "Game/JamSfx.h"
 #include "MegaJam.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/World.h"
@@ -98,6 +99,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
 	TickMusic();
 	TickVoice();
+	TickEffects();
 
 	if (Screen)
 	{
@@ -343,7 +345,7 @@ AJamGameMode* AJamHUD::AuthGameMode() const
 FJamMenuSettings AJamHUD::MenuSettings() const
 {
 	FJamMenuSettings S;
-	if (const UJamSettings* J = Settings()) { S.MusicVolume = J->MusicVolume; S.VoiceVolume = J->VoiceVolume; S.bCommentary = J->bCommentary; }
+	if (const UJamSettings* J = Settings()) { S.MusicVolume = J->MusicVolume; S.VoiceVolume = J->VoiceVolume; S.EffectsVolume = J->EffectsVolume; S.bCommentary = J->bCommentary; }
 	S.bGamepad = bMenuGamepad;
 	return S;
 }
@@ -422,7 +424,10 @@ void AJamHUD::Adjust(const FJamMenuOption& Option, int32 Delta)
 	if (!J) { return; }
 	if (Option.Action == EJamMenuAction::MusicVolume) { J->SetMusicVolume(J->MusicVolume + 0.1f * Delta); }
 	else if (Option.Action == EJamMenuAction::VoiceVolume) { J->SetVoiceVolume(J->VoiceVolume + 0.1f * Delta); }
+	else if (Option.Action == EJamMenuAction::EffectsVolume) { J->SetEffectsVolume(J->EffectsVolume + 0.1f * Delta); }
 	else if (Option.Action == EJamMenuAction::Commentary) { J->SetCommentary(!J->bCommentary); }
+	else { return; }
+	JamSfx::Play(this, TEXT("UI_Click"));   // after the change, so the Effects slider previews its new level
 }
 
 void AJamHUD::Activate(const FJamMenuOption& Option)
@@ -440,7 +445,8 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::Back:           Selected = ParentSelected; SubScreen = EJamScreen::None; break;
 	case EJamMenuAction::Resume:      SetPaused(false); break;
 	case EJamMenuAction::MusicVolume:
-	case EJamMenuAction::VoiceVolume: Adjust(Option, 1); break;
+	case EJamMenuAction::VoiceVolume:
+	case EJamMenuAction::EffectsVolume: Adjust(Option, 1); break;
 	case EJamMenuAction::Commentary:  Adjust(Option, 1); break;
 	case EJamMenuAction::WalkAnyway:
 		if (bTitle) { UKismetSystemLibrary::QuitGame(this, PlayerOwner, EQuitPreference::Quit, false); }
@@ -460,6 +466,7 @@ void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
 	{
 		if (Input == EJamMenuInput::Confirm || Input == EJamMenuInput::Click)
 		{
+			JamSfx::Play(this, TEXT("UI_Click"));
 			if (Shown == EJamScreen::Premiere && GM) { GM->RequestCredits(); }
 			else if (GM) { GM->RequestBackToTitle(); }
 		}
@@ -469,16 +476,21 @@ void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
 	if (Options.Num() == 0) { return; }
 	switch (Input)
 	{
-	case EJamMenuInput::Up:    Selected = JamScreens::Step(Options, ScreenView.Selected, -1); break;
-	case EJamMenuInput::Down:  Selected = JamScreens::Step(Options, ScreenView.Selected, 1); break;
+	case EJamMenuInput::Up:    Selected = JamScreens::Step(Options, ScreenView.Selected, -1); JamSfx::Play(this, TEXT("UI_Click")); break;
+	case EJamMenuInput::Down:  Selected = JamScreens::Step(Options, ScreenView.Selected, 1); JamSfx::Play(this, TEXT("UI_Click")); break;
 	case EJamMenuInput::Left:  Adjust(Options[ScreenView.Selected], -1); break;
 	case EJamMenuInput::Right: Adjust(Options[ScreenView.Selected], 1); break;
 	case EJamMenuInput::Hover: if (Options.IsValidIndex(Index) && Options[Index].bEnabled) { Selected = Index; } break;
 	case EJamMenuInput::Click:
-		if (Options.IsValidIndex(Index) && Options[Index].bEnabled) { Selected = Index; Activate(Options[Index]); }
+		if (Options.IsValidIndex(Index) && Options[Index].bEnabled) { Selected = Index; JamSfx::Play(this, TEXT("UI_Click")); Activate(Options[Index]); }
+		else { JamSfx::Play(this, TEXT("UI_Unavailable")); }
 		break;
-	case EJamMenuInput::Confirm: Activate(Options[ScreenView.Selected]); break;
+	case EJamMenuInput::Confirm:
+		JamSfx::Play(this, Options[ScreenView.Selected].bEnabled ? TEXT("UI_Click") : TEXT("UI_Unavailable"));
+		Activate(Options[ScreenView.Selected]);
+		break;
 	case EJamMenuInput::Back:
+		JamSfx::Play(this, TEXT("UI_Back"));
 		if (SubScreen != EJamScreen::None) { Activate(FJamMenuOption{ EJamMenuAction::Back }); }
 		else if (bPaused) { SetPaused(false); }
 		break;
@@ -513,8 +525,13 @@ void AJamHUD::TickMusic()
 	if (Music) { if (C.bBudgetOut) { Music->Stop(); } else { Music->FadeOut(1.5f, 0.f); } Music = nullptr; }
 	if (Cue.IsNone()) { return; }
 
-	const int32 Take = FMath::RandRange(1, 2);   // Dylan: both takes are fine, play either
-	USoundWave* Wave = LoadObject<USoundWave>(nullptr, *JamMusic::AssetPath(Cue, Take));
+	int32 Take = FMath::RandRange(1, JamMusic::Takes(Cue));   // Dylan: both takes are fine, play either
+	USoundWave* Wave = LoadObject<USoundWave>(nullptr, *JamMusic::AssetPath(Cue, Take), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	if (!Wave && !JamMusic::Fallback(Cue).IsNone())
+	{
+		Take = FMath::RandRange(1, JamMusic::Takes(JamMusic::Fallback(Cue)));
+		Wave = LoadObject<USoundWave>(nullptr, *JamMusic::AssetPath(JamMusic::Fallback(Cue), Take), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	}
 	if (!Wave)
 	{
 		if (!MissingCues.Contains(Cue)) { MissingCues.Add(Cue); UE_LOG(LogJam, Log, TEXT("JamMusic: no asset for %s"), *JamMusic::AssetPath(Cue, Take)); }
@@ -527,6 +544,28 @@ void AJamHUD::TickMusic()
 		Music->bIsUISound = true;   // keeps playing under the pause menu
 		Music->FadeIn(1.5f, 1.f);
 		UE_LOG(LogJam, Log, TEXT("JamMusic: %s take %d"), *Cue.ToString(), Take);
+	}
+}
+
+// ---- Sound effects the HUD sees (R1) ------------------------------------------------------------------------------
+
+void AJamHUD::TickEffects()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || !PlayerOwner || !PlayerOwner->IsLocalController() || !SampleName.IsEmpty()) { return; }
+	if (const AJamPlayerState* PS = PlayerOwner->GetPlayerState<AJamPlayerState>())
+	{
+		const int32 Level = PS->GetProgression().GetLevel();
+		if (SeenLevel > 0 && Level > SeenLevel) { JamSfx::Play(this, TEXT("LevelUp"), 0.3f); }
+		SeenLevel = Level;
+	}
+	const bool bWant = GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut;   // the money going takes the extras with it
+	if (bWant && !Ambience) { Ambience = JamSfx::StartLoop(this, TEXT("Backlot_Ambience_Loop")); }
+	else if (!bWant && Ambience) { Ambience->FadeOut(1.f, 0.f); Ambience = nullptr; }
+	if (Ambience)
+	{
+		const FJamSfxCue* C = JamSfx::Find(TEXT("Backlot_Ambience_Loop"));
+		Ambience->SetVolumeMultiplier(FMath::Max((C ? C->Volume : 0.3f) * JamSfx::EffectsVolume(this), 0.001f));
 	}
 }
 

@@ -107,6 +107,11 @@ bool FJamUiMusicCues::RunTest(const FString&)
 	TestEqual(TEXT("the finale changes after its CUT!"), JamMusic::CueFor(C), FName(TEXT("final_boss")));
 	C.bWalking = true;
 	TestEqual(TEXT("the street"), JamMusic::CueFor(C), FName(TEXT("open_world_exploration")));
+	FJamMusicContext Credits;
+	Credits.Phase = EJamFilmPhase::Credits;
+	TestEqual(TEXT("the theme song plays in the credits"), JamMusic::CueFor(Credits), FName(TEXT("theme_song")));
+	TestEqual(TEXT("one take of the song"), JamMusic::AssetPath(TEXT("theme_song"), 2), FString(TEXT("/Game/Audio/Music/M_theme_song_take1.M_theme_song_take1")));
+	TestEqual(TEXT("falls back to the credits cue"), JamMusic::Fallback(TEXT("theme_song")), FName(TEXT("credits")));
 	for (const FName Cue : JamMusic::AllCues())
 	{
 		TestTrue(FString::Printf(TEXT("%s path"), *Cue.ToString()), JamMusic::AssetPath(Cue, 2).StartsWith(TEXT("/Game/Audio/Music/M_")));

@@ -66,6 +66,7 @@ FJamScreenView JamScreens::Options(const FJamMenuSettings& S)
 	V.Options = {
 		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
 		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
+		Opt(EJamMenuAction::EffectsVolume, TEXT("Effects"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.EffectsVolume))),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::Back, TEXT("Back")) };
@@ -96,6 +97,7 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 		Opt(EJamMenuAction::Resume, TEXT("Back to work")),
 		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
 		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
+		Opt(EJamMenuAction::EffectsVolume, TEXT("Effects"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.EffectsVolume))),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::CharacterSheet, TEXT("Character Sheet")),

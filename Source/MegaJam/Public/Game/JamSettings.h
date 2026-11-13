@@ -22,11 +22,16 @@ public:
 	UPROPERTY(config)
 	float VoiceVolume = 0.8f;
 
+	/** Sound effects (R1, JamSfx). */
+	UPROPERTY(config)
+	float EffectsVolume = 0.8f;
+
 	UPROPERTY(config)
 	bool bCommentary = false;
 
 	static float Step(float V) { return FMath::Clamp(FMath::RoundToFloat(V * 10.f) / 10.f, 0.f, 1.f); }
 	void SetMusicVolume(float V) { MusicVolume = Step(V); SaveConfig(); }
 	void SetVoiceVolume(float V) { VoiceVolume = Step(V); SaveConfig(); }
+	void SetEffectsVolume(float V) { EffectsVolume = Step(V); SaveConfig(); }
 	void SetCommentary(bool bOn) { bCommentary = bOn; SaveConfig(); }
 };

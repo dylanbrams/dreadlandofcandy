@@ -152,3 +152,10 @@
 - Build succeeds; 57 Jam tests pass; Backlot autoplay passes all three scenes
   (`time=123.8`, `ending=directors_cut`) and title-to-title. Native 90-key check
   reports unchanged-track error 0.0 and overhead blade tilt below 0.0001 degree.
+
+## R0 and R1: checkpoint, then sound (Nov 13)
+
+- R0: everything on disk committed in scopes (terrain, asset cleanup, characters, vocals scripts, docs), tag `pre-release`. `.blend` now goes through LFS; `.blend1` and `.fbm/` folders are ignored. Source audio stays untracked.
+- R1: 47 sound effects and Fenella's 88 English lines imported by one script. One table maps each event to a clip, volume and pitch jitter; the lecture is three sounds (raise, inhale, impact), the wrap ledger ticks once per deduction and then coins trickle in. New Effects slider next to Music and Fenella.
+- 59 tests pass; Backlot autoplay PASS; every line Fenella spoke in the run had a clip. Dylan has not heard it yet: the mix is a guess at "ridiculously over the top".
+- R2: Dylan's theme song (Big Rock Candy Mountain, adjusted) now plays over the end credits and nowhere else; if the asset is ever missing, the old credits cue plays instead. Village music imported for R4. `Declared.md` has a line for the song; Dylan to add the tool that made it.

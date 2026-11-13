@@ -230,3 +230,12 @@ attachment, preserves other tracks and timing, and is reapplied after source
 FBX import. The existing runtime animation was updated in place; original native
 package/source keys and in-game comparison captures are retained in
 `ImportSource/RigCorrections/`. No new model or motion generation was performed.
+
+## 2026-11-13 — theme song (R2)
+
+Dylan supplied `music/theme-song.mp3` (2:18) during the jam. Its lyrics are an
+adjusted version of "Big Rock Candy Mountain" (Harry McClintock, recorded 1928),
+kept in `Docs/BigRockCandyMountainAdjustedLyrics.txt`. The song plays only over
+the end credits (`/Game/Audio/Music/M_theme_song_take1`) and in the trailer.
+**Dylan: add which tool made the recording.** Also imported the same day:
+`village_take1/2` from `music/` (same source as the other score cues).

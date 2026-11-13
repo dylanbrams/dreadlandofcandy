@@ -6,7 +6,7 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 	{
 	case EJamFilmPhase::Title:    return TEXT("quest_accepted");        // a solemn undertaking, for a film about rats
 	case EJamFilmPhase::Premiere: return TEXT("emotional_revelation");
-	case EJamFilmPhase::Credits:  return TEXT("credits");
+	case EJamFilmPhase::Credits:  return TEXT("theme_song");            // R2: the song plays here only, not in play
 	default: break;
 	}
 	if (C.bBudgetOut) { return NAME_None; }   // she hums it instead (T21)
@@ -25,12 +25,22 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 const TArray<FName>& JamMusic::AllCues()
 {
 	static const TArray<FName> Cues = { TEXT("quest_accepted"), TEXT("feeding_candy"), TEXT("hard_combat"), TEXT("boss_battle"),
-		TEXT("final_boss"), TEXT("open_world_exploration"), TEXT("mystery"), TEXT("emotional_revelation"), TEXT("credits") };
+		TEXT("final_boss"), TEXT("open_world_exploration"), TEXT("mystery"), TEXT("emotional_revelation"), TEXT("credits"), TEXT("theme_song") };
 	return Cues;
+}
+
+int32 JamMusic::Takes(FName Cue)
+{
+	return Cue == FName(TEXT("theme_song")) ? 1 : 2;
+}
+
+FName JamMusic::Fallback(FName Cue)
+{
+	return Cue == FName(TEXT("theme_song")) ? FName(TEXT("credits")) : NAME_None;
 }
 
 FString JamMusic::AssetPath(FName Cue, int32 Take)
 {
-	const FString Name = FString::Printf(TEXT("M_%s_take%d"), *Cue.ToString(), FMath::Clamp(Take, 1, 2));
+	const FString Name = FString::Printf(TEXT("M_%s_take%d"), *Cue.ToString(), FMath::Clamp(Take, 1, Takes(Cue)));
 	return FString::Printf(TEXT("/Game/Audio/Music/%s.%s"), *Name, *Name);
 }

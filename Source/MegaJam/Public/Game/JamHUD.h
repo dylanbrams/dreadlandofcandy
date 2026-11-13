@@ -41,6 +41,11 @@ private:
 	void TickMusic();
 	/** Fenella's voice (T23): when her caption changes, play /Game/Audio/VO/VO_<LineId> if it exists. */
 	void TickVoice();
+	/** Sound effects the HUD can see (R1): a level gained, and the backlot's ambience bed while the film shoots. */
+	void TickEffects();
+	UPROPERTY(Transient)
+	TObjectPtr<class UAudioComponent> Ambience;
+	int32 SeenLevel = 0;
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Voice;
 	FName VoiceLine;

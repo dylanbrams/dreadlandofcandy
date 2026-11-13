@@ -18,6 +18,7 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "Materials/MaterialInterface.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Game/JamSfx.h"
 
 namespace
 {
@@ -165,7 +166,7 @@ void AJamNuisance::HandleResolveChanged(const FOnAttributeChangeData& Data)
 void AJamNuisance::Fluster(float Seconds)
 {
 	if (IsPacified() || IsTreated()) { return; }
-	if (State != EJamNuisanceState::Flustered) { SetState(EJamNuisanceState::Flustered); FlusterHold = Seconds; }
+	if (State != EJamNuisanceState::Flustered) { SetState(EJamNuisanceState::Flustered); FlusterHold = Seconds; JamSfx::Play(this, TEXT("Flustered")); }
 	else { FlusterHold = FMath::Max(FlusterHold, StateTime + Seconds); }
 }
 
@@ -212,6 +213,7 @@ bool AJamNuisance::Treat()
 {
 	if (!IsPacified()) { return false; }
 	SetState(EJamNuisanceState::Treated);
+	JamSfx::Play(this, TEXT("Interact_Complete"));
 	return true;
 }
 
