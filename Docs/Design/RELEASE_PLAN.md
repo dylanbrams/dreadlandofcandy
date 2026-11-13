@@ -4,7 +4,7 @@ Written 2026-11-13 by GAME, at Dylan's request. **This file governs the rest of 
 
 Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
-**What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. So: push the first build that passes its packaged smoke test rather than waiting for polish, put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time.
+**What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. **The first build testers see is the full terrain world, with sound, voice and the cast** (first impressions count; no arena build is pushed). So: put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time.
 
 ## Where things stand (checked on disk, Nov 13)
 
@@ -41,14 +41,14 @@ Each task is one commit and ends with: build, `Jam.*` tests, Backlot autoplay PA
 | R0 | 0:15 | Checkpoint what is on disk: scoped commits of the terrain, vocals scripts and docs. Tag `pre-release`. Never the `DefaultEngine.ini` token block | `git status` shows only ignored and source-audio files | Commit docs only |
 | R1 | 1:00 | **Sound.** Import the 47 SFX to `/Game/Audio/SFX` and the English Fenella clips to `/Game/Audio/VO`. One table (`JamSfx`: event to cue, volume) played from the cosmetic events that already exist (list below). An Effects volume in `UJamSettings` | Autoplay log has no missing-clip warnings for imported lines; Dylan hears a lecture, a CUT!, a wrap | Ship the 12 loudest events only |
 | R2 | 0:15 | **Theme song in the credits only** (and Dylan's trailer); it is a different style from the score and stays off the title and out of play. Import `village` for the Open village. `Docs/Declared.md` line for the song | Credits play it in a packaged run | Credits keep the `credits` cue |
-| R3 | 0:30 | **Candidate A:** package, smoke Backlot, zip. This is submittable | `smoke-packaged.ps1 -Extra "-autoplay","-timescale=4"` green; zip under 1 GB | None: fix until green |
+| R3 | 0:00 | Dropped as a separate step (Dylan: no arena build goes out). Backlot is packaged and smoked inside R5, which keeps it as the local fallback | | |
 | R4 | 2:00 | **The world, slim.** Follow camera (BUILD_SPEC 3e "Camera and controls"). In Open mode the three scenes run at the table's `FilmSet` locations in order; a HUD compass marker and distance point to the next set; the hero starts in the village; ground found by tracing down; a few ambient nuisances at camps near the hero (XP only). Music by biome. The bot walks to each set and plays it | `JamAutoplay: PASS mode=open main=3` on `L_Sugarborough` in editor `-game`; a screenshot behind the hero with Fenella in frame | Drop ambient camps, then biome music. If the bot cannot pass by 2:00, Open stays behind `-open` and R5 is skipped |
 | R5 | 0:45 | **Candidate B and the gate:** package, smoke both modes, zip. Dylan plays ten minutes of each | Both PASS lines in the packaged log | See the gate below |
 | R6 | 1:00 | **Cast.** Import `SK_Knight` (run `correct_sword_raise.py` on its raise) as the hero. `FJamClassDef` rows for the four; `-class=` and a "Casting" line on the title screen. All four use the knight's skills; the other three play Idle and Walk and their English battle cry on a cast | `-class=mage` passes Backlot autoplay; lineup screenshot | New knight only; the other three stay out |
 | R7 | 0:30 | The three worst things from Dylan's play, nothing else | Dylan agrees | Skip |
 | R8 | 0:15 | Final package, smoke, `zip-submission.ps1 -TeamName ImaginaryComponent -GameName TheDreadLandOfCandy`, credits and tools list, `Declared.md` reconciled | Zip on disk, under 1 GB | None |
 
-Total 6:30 with R7; 6:00 without. R6 and R7 are the first to go.
+Total 6:00. Order for the first push: R0, R1, R2, R4, R6, then R5 (package, smoke, Dylan plays, push). R7 and R8 come after tester feedback. If time runs short, R6 shrinks to the new knight alone before anything else is cut.
 
 **The gate (after R5):** the world is the default. `GameDefaultMap` becomes `/Game/World/L_Sugarborough`, no flag means Open, and Backlot stays behind `-backlot`. It is reversed only if packaged Open fails its smoke test or does not hold a playable frame rate on Dylan's machine while walking and fighting; then Candidate A's flow ships and Open stays behind `-open`.
 
@@ -60,7 +60,6 @@ Total 6:30 with R7; 6:00 without. R6 and R7 are the first to go.
 | --- | --- | --- |
 | Now | 5 | Put the theme song at `music/theme-song.mp3` (or `.wav`). Stop any Codex session that still has the engine; terrain is frozen |
 | Before R3 ends | 45 | **Deploy the backend** (`backend/DEPLOY.md`, off stream), give GAME the URL. This is the Ambition score. Not done by the end of Nov 14: the text box ships hidden and the three suggestion buttons stay |
-| After R3 | 20 | Play Candidate A, keyboard then gamepad. Write the three worst things in `STATUS.md` |
 | After R5 | 25 | Play the world build. Say whether it runs well enough to ship. Approve the look |
 | After R6 | 10 | Approve the knight and the cast |
 | Nov 15 morning | 40 | Record the 30 to 60 second video (sword fakeout, CUT!, ledger, budget-out, a walk through the world), upload it |

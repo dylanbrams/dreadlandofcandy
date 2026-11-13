@@ -11,7 +11,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 | R0 checkpoint | not started |
 | R1 sound effects and Fenella's voice | not started |
 | R2 theme song | waits on Dylan's file at `music/theme-song.mp3` |
-| R3 Candidate A packaged | not started |
+| R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
 | R4 the world, slim | not started |
 | R5 Candidate B and the gate | not started |
 | R6 cast | not started |
@@ -22,7 +22,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 1. Theme song file into `music/`. Stop any Codex session holding the engine.
 2. Deploy the backend (`backend/DEPLOY.md`), then give GAME the URL for `BaseUrl` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini`. Pass BACKEND the two corrections below first.
-3. Play Candidate A after R3 and write the three worst things here.
+3. (dropped: the first build out is the world build)
 4. Play Open after R5, decide the gate.
 5. Video, itch page, the go-ahead for the upload.
 
