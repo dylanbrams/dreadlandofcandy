@@ -4,7 +4,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**R4** (the world, slim), then R6, then R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R4** (the world, slim), then R4b, R6, R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
 
 | Task | State |
 | --- | --- |
@@ -13,6 +13,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 | R2 theme song | done in editor: credits play `M_theme_song_take1` (falls back to `credits`); `M_village_take1/2` imported for R4. Packaged check is in R5 |
 | R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
 | R4 the world, slim | next. Wire `Quest_Accept` (SFX row exists) on entering a film set, `village` music (assets exist, add the cue to `JamMusic`) |
+| R4b enemies hit back (Dignity meter) | not started |
 | R5 Candidate B and the gate | not started |
 | R6 cast | not started |
 | R7 playtest fixes | not started |
