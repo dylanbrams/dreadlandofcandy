@@ -29,6 +29,12 @@ namespace JamProgression
 		return StartLevel + 1 + (int32)Milestone;
 	}
 
+	const TArray<EJamSkill>& ActiveSkills()
+	{
+		static const TArray<EJamSkill> Skills = { EJamSkill::Lecture, EJamSkill::FormALine, EJamSkill::LastJudgment };
+		return Skills;
+	}
+
 	int32 MaxRank(EJamSkill Skill)
 	{
 		switch (Skill)
@@ -158,9 +164,9 @@ int32 FJamProgression::GetSpent() const
 	for (int32 S = 0; S < (int32)EJamSkill::Count; ++S)
 	{
 		const EJamSkill Skill = (EJamSkill)S;
-		if (Skill == EJamSkill::LastJudgment) { continue; } // free
-		// Lecture rank 1 is owned at the start; every rank above it, and every other skill rank, cost a point.
-		Spent += Ranks[S] - (Skill == EJamSkill::Lecture ? 1 : 0);
+		if (Skill == EJamSkill::LastJudgment || Skill == EJamSkill::DisappointedSigh) { continue; }
+		// Starting ranks are a grant; only upgrades use points earned during the film.
+		Spent += Ranks[S] - 2;
 	}
 	return Spent;
 }
@@ -202,7 +208,7 @@ float FJamProgression::GetLevelProgress() const
 
 bool FJamProgression::CanSpendPoint(EJamSkill Skill) const
 {
-	if (Points <= 0 || Skill == EJamSkill::LastJudgment || Skill >= EJamSkill::Count) { return false; }
+	if (Points <= 0 || Skill == EJamSkill::LastJudgment || Skill == EJamSkill::DisappointedSigh || Skill >= EJamSkill::Count) { return false; }
 	return Ranks[(int32)Skill] < JamProgression::MaxRank(Skill);
 }
 

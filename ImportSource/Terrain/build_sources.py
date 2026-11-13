@@ -12,6 +12,10 @@ import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+import importlib.util
+_hill_spec = importlib.util.spec_from_file_location("hill_profile", ROOT / "hill_profile.py")
+HILL = importlib.util.module_from_spec(_hill_spec)
+_hill_spec.loader.exec_module(HILL)
 PALETTE = {
     "Village": [0.57, 0.34, 0.19], "Meadow": [0.30, 0.63, 0.29],
     "Molars": [0.49, 0.30, 0.40], "Orchard": [0.19, 0.43, 0.29],
@@ -93,7 +97,7 @@ def height(x, y):
     # Outside the playable square, a continuous steep candy mountain wall.
     edge = max(abs(x), abs(y))
     h += smooth(11300, 14750, edge) * (2600 + 600 * math.sin(x / 1800) * math.cos(y / 1600))
-    return h
+    return h + HILL.elevation(x, y, LOCATIONS)
 
 
 def clear(x, y, footprint=0):

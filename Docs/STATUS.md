@@ -6,7 +6,7 @@ Engine availability: see [ENGINE_HANDOFF.md](ENGINE_HANDOFF.md) before launching
 
 ## Next task
 
-**R7** with Dylan's four fixes ("Three worst things" below); research each before changing it. The gate is still Dylan's call (release plan, "The gate"). If the gate passes: `GameDefaultMap=/Game/World/L_Sugarborough`, no flag means Open, Backlot behind `-backlot`; repackage, smoke, zip. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R7 in progress.** Hill and initial playtest fixes are validated below. Continue unresolved mouse activation and the remaining wishlist; the cast session owns class icon art, motions and back-carry. The world-default gate remains Dylan's call; no default-map or gate change in this checkpoint.
 
 ## Hand-off to ChatGPT (itch push, with Dylan's go-ahead)
 
@@ -25,7 +25,7 @@ Engine availability: see [ENGINE_HANDOFF.md](ENGINE_HANDOFF.md) before launching
 | R4b enemies hit back (Dignity meter) | done: goblins, bugs and the boss charge, knockback and stagger, Dignity bar under the slate, "No dignity left" fails the take; both PASS lines hold |
 | R5 Candidate B and the gate | packaged, both modes smoked PASS, zipped (689 MB). Gate waits on Dylan's play |
 | R6 cast | done: four rigs, `-class=`, a Casting line on the title, battle cries; mage Backlot PASS, barbarian Open PASS |
-| R7 playtest fixes | not started |
+| R7 playtest fixes | partial: hill, movement, three-slot HUD/progression, objective intro, compass pulse; see checkpoint |
 | R8 final zip | not started |
 
 ## Dylan's list (details in the release plan)
@@ -38,16 +38,66 @@ Engine availability: see [ENGINE_HANDOFF.md](ENGINE_HANDOFF.md) before launching
 
 **Three worst things (Dylan fills in):**
 
-Dylan's R5 play (Nov 13), the R7 list. Research so far is noted; nothing is fixed yet.
+Dylan's R5 play (Nov 13), the R7 list. Original findings are retained below; implemented changes and remaining work are recorded in the R7 checkpoint.
 
-1. **The hero should move faster.** Found: `JamHeroTuning::WalkSpeed = 450` (`Game/JamHero.cpp:50`), scaled by the `MoveSpeed` stat (`JamHero.cpp:747`). Not yet decided: by how much, and whether nuisance chase speeds and the bot's timings need to follow.
+1. **The hero should move faster.** Found: `JamHeroTuning::WalkSpeed = 450` (`Game/JamHero.cpp:50`), scaled by the `MoveSpeed` stat (`JamHero.cpp:747`). Not yet decided: by how much, and whether nuisance chase speeds and the bot's timings need to follow. Let's start by trying 600. The 'walk' animation's move speed is already going too slow; increase the execution speed of that animation by around 50% even with the 1/3 increased walk speed. A stretch goal is adding run speed / animations.
 2. **The "LMB" hint is wrong, and clicking did not work.** Dylan's mouse buttons are swapped in Windows; he ended up using Space. Found: the engine respects the Windows swap (`WindowsApplication.cpp`, raw input reads `SM_SWAPBUTTON`), so the primary button already reaches the game as `LeftMouseButton`. The labels (`JamHUD.cpp:262` and `:292`, `JamHudView.cpp:35`) should say "Mouse 1" / "Mouse 2" (or "Click" / "Right-click"), not LMB and RMB. **Not yet researched:** why clicking did not lecture (which mode, first click eaten by viewport capture, the input mode the HUD sets in `JamHUD.cpp:401-412`). Reproduce before fixing.
 3. **The skills need images.** None exist: `FJamHudSkill` has a name and a key, no icon. Needs four icons (Lecture, Form A Line, Sigh, Last Judgment) from ASSETS or generated, plus an image slot in the HUD skill bar. Not researched yet.
 4. **Before each round in the arena, the direction should go big in the centre of the screen for a second, then shrink to where it sits now.** Not researched yet: find the objective or direction line in `JamHudWidget` and where a stage starts.
+5. The navigation compass and its 
+6. The character starts at level 7 so they have all their skills at level 1 or 2. Let's say the fourth skill is their ult so it's level 1 the entire game. The others can be leveled and all start at level 2. 
+7. The level up screen needs to go to a character sheet where the player can pick which skill to level up.
+8. After the three quests are given, the player can continue to wander around and level up; the open world should have an NPC that will give new quests by sending you to one of the spots further out on the map I'm going to add.
+9. The directional compass directing the player to their current quest should flash.
+10. While walking, the character's weapon should be on their back.
+11. The second leg of the first quest should ALWAYS allow the player to choose to enter 'directions'
+12. The player should always be able to use their mouse to click on things to activate them - skills, quests, whatever.  
+13. The golden rain causes all the textures on the screen to go grey. Totally broken.
+
+## R7 checkpoint: hill and initial playtest fixes (Nov 13)
+
+- Molar Hills now climbs 9 m from the village to a level fort. Nine terrain tiles
+  changed; 32,105 vegetation instances and 24 scenery actors were lifted on the
+  initial pass. Total remains 85,091 instances. Source reservations pass (maximum
+  triangle slope 9.31 degrees); saved-map approach collision peaks at 29.92
+  degrees. Reapplying the importer moves nothing.
+- Walk speed is 600; the walk clip runs at 1.5x, with other clips reset to 1x.
+- Dylan's later cast-session decision supersedes the four-slot request: THREE
+  active slots per class, twelve named skills overall. Basic/signature start at
+  rank 2, ultimate starts and stays at rank 1. Q/LB is ultimate; T/Y opens the
+  note editor. The retired Sigh enum remains internally for compatibility, with
+  no active slot, binding, bot cast or point spending.
+- HUD has icon slots, a clockwise grayscale-to-color cooldown reveal, and
+  per-slot IconPath/ClassColor/DamageColor. The existing knight art is temporary;
+  the cast session owns importing the twelve new class images and populating
+  FJamClassDef.SkillIcons/PrimaryColor/SkillDamageColors (enum-indexed 0,1,3).
+- Stage directions hold large in the centre for one real second and shrink to
+  the objective panel over 0.5 s. Identity is scene/take/stage, so changing the
+  progress counter does not restart it. Quest compass marker/label pulse.
+- Mouse labels say Mouse 1 / Mouse 2. Mouse activation itself is still unresolved:
+  source confirms FInputModeGameOnly consumes the capture click by default, but
+  the reported swapped-button failure has not been reproduced and input capture
+  was not changed. Keep this and general clickable HUD controls on the backlog.
+
+Validation: both targets build; all 66 Jam tests pass, including updated starting
+rank/upgrade accounting tests. Inspected Saved/Screenshots/WindowsEditor/r7-hill.png,
+r7-hud.png and r7-direction.png. Windows Development package refreshed; both
+packaged modes pass:
+
+```
+Backlot: PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=14 lines=10 skills=12 hits=1 dignityfails=0 time=84.3
+Open: PASS mode=open main=3 side=0; PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=6 lines=10 skills=12 hits=1 dignityfails=0 time=105.5
+```
+
+Detailed logs: Saved/R7Fixes/. The release ZIP is unchanged and is not this
+checkpoint. No push or upload. Other open wishlist items, including character
+sheet spending, repeatable quests/free roaming, guaranteed first-quest direction
+entry, and the newer gold-rain/grey-texture report, remain. Cast session owns
+the new icon art, class motions, grips and travel/back-carry follow-up.
 
 ## What exists
 
-- **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and four GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` (88 English clips imported). Sound effects (R1): `Game/JamSfx` holds one row per event (clip, volume, pitch jitter, repeat guard), played 2D at the Effects volume from the game mode (slate, ACTION!, CUT!, retake, stage clear, ledger and coins at the wrap, budget-out, each skill, pacify, bubbles), the nuisances (flustered, treated) and the HUD (menu clicks, level up, the backlot ambience while shooting). Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_audio.py`. `Quest_Accept` has a row but no caller until R4's film sets.
+- **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and three active GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` (88 English clips imported). Sound effects (R1): `Game/JamSfx` holds one row per event (clip, volume, pitch jitter, repeat guard), played 2D at the Effects volume from the game mode (slate, ACTION!, CUT!, retake, stage clear, ledger and coins at the wrap, budget-out, each skill, pacify, bubbles), the nuisances (flustered, treated) and the HUD (menu clicks, level up, the backlot ambience while shooting). Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_audio.py`. `Quest_Accept` has a row but no caller until R4's film sets.
 - **They hit back (R4b):** the rule is `Film/JamDignity` (plain C++, `Jam.Film.Dignity.*`): `JamAttack::For(kind, boss)` gives charge range, speed, damage, cooldown, knockback, stagger; rats and almonds never attack. A loose goblin or bug inside its charge range asks `AJamGameMode::RequestCharge` (shoot rolling, at most 2 charging, hero not in his hit grace), winds up 0.35 s (quivers, red), then runs at him; a skill hit flusters it out of the charge, except the boss (`bUnstoppable`). On contact `HandleNuisanceHit`: `FJamDignity::Hit` (goblin 20, bug 10, boss 30 of 100; 1.4 s grace), `AJamHero::TakeHit` (launch away, stagger blocks movement and skills, the rig tips back), `Hero_Hit` SFX (clip `Shield_Bash`). Zero fails the take ("No dignity left. Back to one!"); every stage start and retake refills it. HUD: DIGNITY bar in the slate panel while an attacker is loose (`-uiscreen=dignity`). PASS lines now add `hits= dignityfails=`. Tuning seen: the bot takes 2 to 4 boss hits in Scene 2 and none from bugs (they out-run it); `-scene=2` at level 7 (Lecture only) fails a take on Dignity.
 - **The cast (R6):** `Film/JamCast` (plain C++, `Jam.Film.Cast.*`): four `FJamClassDef` rows (knight, mage, archer, barbarian: name, rig, blurb, cries). The title's `Casting` line (left / right, or A / D) recasts the hero on the spot and he shouts; the choice is saved as `UJamSettings::CastId`, and `-class=<id>` wins until the title line is used. `AJamHero::ApplyCast` loads `/Game/Art/Cast/<Rig>/SK_<Rig>_Rig` (falls back to the old `SK_Hero_Rig`), fits it to the capsule, puts the sword in `hand_r`. All four now have SwordRaise, FormALine, Sigh, LastJudgment and Scrub; each carries its own weapon (see the cast follow-up below). Every skill cast plays the cast member's next English battle cry (`/Game/Audio/VO/Cast/VO_Cry_<K01..>`) at the Fenella volume, at most one per 3.5 s. Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_cast.py` (reapplies the knight's wrist fix). The new knight is the default and replaces the old look. Lineup: `Saved/Screenshots/WindowsEditor/r6_lineup.png`. Blurbs are in `Jokes.md`, "Cards and menus".
 - **Open mode (`-open`, R4):** the title, then the hero starts in the village and walks to each film set in turn (`JamWorld::FilmSet(i)`); stepping onto a set starts its scene, which plays exactly as in Backlot on that floor (`AJamGameMode::SceneFloor/SceneMark/SceneSign` pick backlot or world). A compass strip at the top (`AJamHUD::DrawCompass`) shows the next set's name, distance and the hint. Follow camera (`AJamHero::EnableFollowCamera`): the mouse or right stick turns it, WASD moves relative to it, the cursor hides in play, skills turn the hero to the camera's yaw. Walking: 900 uu at 14 degrees down; a take: 1500 uu at 32 degrees, looking along the path into the set (the candy trees have no camera collision, so the camera must stay over the path). Fenella flies 3.2 m out to the camera's right with a warm spotlight on the hero (250 lumens, Dylan: still too bright at 500, not yet compiled at that value). Nuisances follow the ground. Biome music while walking (the village has its own `village` cue). `JamLook::Apply(World, true)`: Open is brighter (sky x2.6, exposure +0.8, softer contrast, more saturation, bloom 1.4 above threshold 1). No ambient camps. Flags: `-camyaw= -campitch= -camdist=` pin the camera. Play it: `UnrealEditor.exe MegaJam.uproject /Game/World/L_Sugarborough -game -open`.

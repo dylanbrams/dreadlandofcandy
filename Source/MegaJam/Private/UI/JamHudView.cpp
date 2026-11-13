@@ -32,10 +32,11 @@ namespace
 		V.Xp = 0.45f;
 		V.Points = 1;
 		V.Skills = {
-			{ TEXT("Lecture"), TEXT("LMB"), 2, 4, true, 0.f, true },
-			{ TEXT("Form A Line"), TEXT("RMB"), 1, 3, true, 0.6f, true },
-			{ TEXT("Sigh"), TEXT("Q"), 0, 3, false, 0.f, true },
-			{ TEXT("Judgment"), TEXT("R"), 0, 1, false, 0.f, false } };
+			{ TEXT("Lecture"), TEXT("Mouse 1"), 2, 4, true, 0.f, true },
+			{ TEXT("Form A Line"), TEXT("Mouse 2"), 1, 3, true, 0.6f, true },
+			{ TEXT("Good Manners"), TEXT("Q"), 1, 1, true, 0.f, false } };
+		const TCHAR* Icons[] = { TEXT("T_Skill_Lecture"), TEXT("T_Skill_FormALine"), TEXT("T_Skill_LastJudgment") };
+		for (int32 i = 0; i < V.Skills.Num(); ++i) { V.Skills[i].IconPath = FString(TEXT("/Game/Art/UI/Icons/")) + Icons[i]; }
 	}
 
 	void Rolling(FJamHudView& V)
@@ -83,6 +84,8 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 	else if (N == TEXT("action"))
 	{
 		Rolling(V);
+		V.ObjectiveId = TEXT("sample-action");
+		V.Direction = TEXT("Pacify the rats");
 		V.CardKind = EJamCardKind::Action;
 		V.CardTitle = TEXT("ACTION!");
 		V.CardSubtitle = TEXT("Places, everyone! And by everyone I mean you.");

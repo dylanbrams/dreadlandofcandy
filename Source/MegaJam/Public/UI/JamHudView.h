@@ -31,6 +31,9 @@ struct MEGAJAM_API FJamHudSkill
 	bool bUnlocked = false;
 	float Cooldown = 0.f;      // 1 = just cast, 0 = ready
 	bool bSpendable = false;   // a point can go here now (the wrap panel is up)
+	FString IconPath;
+	FLinearColor ClassColor = FLinearColor(1.f, 0.82f, 0.3f);
+	FLinearColor DamageColor = FLinearColor(0.75f, 0.75f, 0.75f);
 };
 
 /** One speech bubble on screen: text over a screen position (already projected, 1920x1080 design units). */
@@ -54,6 +57,8 @@ struct MEGAJAM_API FJamHudView
 	bool bRolling = false;        // REC blinks
 	float FilmSeconds = 0.f;      // the timecode
 
+	FString ObjectiveId;          // scene/take/stage identity, independent of progress
+	FString Direction;            // objective without its changing counter
 	FString Objective;            // "Pacify the rats   2/3"
 	bool bMeterVisible = false;
 	float MeterFraction = 0.f;    // 1 = full (time left, or crops still standing)

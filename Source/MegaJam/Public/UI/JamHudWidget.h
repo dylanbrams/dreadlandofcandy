@@ -10,6 +10,7 @@ class UCanvasPanel;
 class UProgressBar;
 class UTextBlock;
 class UOverlay;
+class UMaterialInstanceDynamic;
 
 /**
  * The HUD (BUILD_SPEC 5C), in layers: slate label with REC and timecode (top left), objective, meter and hint
@@ -87,7 +88,9 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillKeys;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillNames;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillRanks;
-	UPROPERTY(Transient) TArray<TObjectPtr<UProgressBar>> SkillCooldowns;
+	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInstanceDynamic>> SkillIconMaterials;
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillDamageAccents;
+	TArray<FString> ShownIconPaths;
 
 	// The wrap panel (T14): ledger on the left, loot cards and the character sheet on the right.
 	UPROPERTY(Transient) TObjectPtr<UBorder> WrapPanel;
@@ -118,6 +121,11 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UBorder> CardAccent;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CardTitle;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CardSubtitle;
+
+	UPROPERTY(Transient) TObjectPtr<UBorder> DirectionPanel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> DirectionText;
+	FString ShownObjectiveId;
+	float DirectionShownAt = -100.f;
 
 	FString ShownCardTitle;
 	bool bWrapShown = false;

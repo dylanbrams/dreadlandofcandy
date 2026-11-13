@@ -1,0 +1,19 @@
+{
+  "max_gameplay_slope_degrees": 4.662624759169969,
+  "max_import_triangle_slope_degrees": 9.313570023963152,
+  "scatter_count": 520,
+  "reserved_locations": 19,
+  "terrain_triangles": 32768,
+  "tiles": [
+    "SM_Terrain_0_1",
+    "SM_Terrain_0_2",
+    "SM_Terrain_0_3",
+    "SM_Terrain_1_1",
+    "SM_Terrain_1_2",
+    "SM_Terrain_1_3",
+    "SM_Terrain_2_2",
+    "SM_Terrain_2_3",
+    "SM_Terrain_3_3"
+  ],
+  "hill_height_cm": 900
+}

@@ -1,6 +1,10 @@
 #include "UI/JamHudWidget.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
+#include "Components/Image.h"
+#include "Engine/Texture2D.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Materials/MaterialInterface.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
@@ -178,6 +182,14 @@ void UJamHudWidget::BuildTree()
 		SlatePanel->SetContent(Box);
 	}
 	Place(SlatePanel, FAnchors(0.f, 0.f), FVector2D(0.f, 0.f), FVector2D(36.f, 32.f), 5);
+
+	// A fresh direction holds in the centre for a second, then shrinks into the HUD.
+	DirectionPanel = MakePanel(PanelDark, 8.f, FMargin(24.f, 12.f));
+	DirectionText = MakeText(28, FLinearColor::White, true);
+	DirectionText->SetJustification(ETextJustify::Center);
+	DirectionPanel->SetContent(DirectionText);
+	DirectionPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+	Place(DirectionPanel, FAnchors(0.5f, 0.f), FVector2D(0.5f, 0.f), FVector2D(0.f, 32.f), 8);
 
 	// Top centre: objective, meter, and the hint under them.
 	{
@@ -402,7 +414,25 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 
 	// Objective and meter.
 	const bool bObjective = View.bShootVisible && !View.Objective.IsEmpty();
-	Show(ObjectivePanel, bObjective);
+	if (bObjective && View.bRolling && !View.ObjectiveId.IsEmpty() && View.ObjectiveId != ShownObjectiveId)
+	{
+		ShownObjectiveId = View.ObjectiveId;
+		DirectionShownAt = RealSeconds;
+		SetTextIfChanged(DirectionText, View.Direction);
+	}
+	const float DirectionAge = RealSeconds - DirectionShownAt;
+	const bool bDirection = bObjective && View.bRolling && DirectionAge < 1.5f;
+	Show(DirectionPanel, bDirection);
+	Show(ObjectivePanel, bObjective && !bDirection);
+	if (bDirection)
+	{
+		const float Blend = FMath::SmoothStep(0.f, 1.f, FMath::Clamp((DirectionAge - 1.f) / 0.5f, 0.f, 1.f));
+		DirectionPanel->SetRenderScale(FVector2D(FMath::Lerp(1.8f, 1.f, Blend)));
+		if (UCanvasPanelSlot* DirectionSlot = Cast<UCanvasPanelSlot>(DirectionPanel->Slot))
+		{
+			DirectionSlot->SetPosition(FVector2D(0.f, FMath::Lerp(Root->GetCachedGeometry().GetLocalSize().Y * 0.42f, 32.f, Blend)));
+		}
+	}
 	if (bObjective)
 	{
 		SetTextIfChanged(ObjectiveText, View.Objective);
@@ -482,7 +512,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	else { bWrapShown = false; }
 
 	// The card, with a short pop when a new one appears. The note prompt and the wrap panel take its place.
-	const bool bCard = !View.bNotePrompt && !View.Wrap.bVisible && View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
+	const bool bCard = !(bDirection && View.CardKind == EJamCardKind::Action) && !View.bNotePrompt && !View.Wrap.bVisible && View.CardKind != EJamCardKind::None && !View.CardTitle.IsEmpty();
 	Show(CardPanel, bCard);
 	if (!bCard)
 	{
@@ -791,19 +821,40 @@ void UJamHudWidget::BuildSkillBar()
 	Box->AddChildToVerticalBox(XpRow)->SetPadding(FMargin(0.f, 0.f, 0.f, 8.f));
 
 	UHorizontalBox* Tiles = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
-	for (int32 i = 0; i < (int32)EJamSkill::Count; ++i)
+	for (int32 i = 0; i < JamProgression::ActiveSkills().Num(); ++i)
 	{
 		UOverlay* Stack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
 		UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 6.f, FMargin(6.f, 4.f));
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 		Size->SetWidthOverride(86.f);
-		Size->SetHeightOverride(80.f);
+		Size->SetHeightOverride(132.f);
 		UVerticalBox* V = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 		UTextBlock* Key = MakeText(15, Gold, true);
 		UTextBlock* Name = MakeText(12, FLinearColor::White, true);
 		Name->SetWrapTextAt(80.f);
 		Name->SetJustification(ETextJustify::Center);
 		UTextBlock* Rank = MakeText(13, Gold, false);
+		UImage* Icon = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
+		UMaterialInstanceDynamic* IconMaterial = nullptr;
+		if (UMaterialInterface* Base = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Art/UI/Materials/M_SkillCooldown")))
+		{
+			IconMaterial = UMaterialInstanceDynamic::Create(Base, this);
+			Icon->SetBrushFromMaterial(IconMaterial);
+		}
+		SkillIconMaterials.Add(IconMaterial);
+		ShownIconPaths.Add(FString());
+		USizeBox* IconSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		IconSize->SetWidthOverride(48.f);
+		IconSize->SetHeightOverride(48.f);
+		IconSize->SetContent(Icon);
+		V->AddChildToVerticalBox(IconSize)->SetHorizontalAlignment(HAlign_Center);
+		UBorder* DamageAccent = MakePanel(Gold, 1.f, FMargin(0.f));
+		USizeBox* AccentSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		AccentSize->SetWidthOverride(48.f);
+		AccentSize->SetHeightOverride(3.f);
+		AccentSize->SetContent(DamageAccent);
+		V->AddChildToVerticalBox(AccentSize)->SetHorizontalAlignment(HAlign_Center);
+		SkillDamageAccents.Add(DamageAccent);
 		V->AddChildToVerticalBox(Key)->SetHorizontalAlignment(HAlign_Center);
 		UVerticalBoxSlot* NameSlot = V->AddChildToVerticalBox(Name);
 		NameSlot->SetHorizontalAlignment(HAlign_Center);
@@ -812,22 +863,11 @@ void UJamHudWidget::BuildSkillBar()
 		Size->SetContent(V);
 		Tile->SetContent(Size);
 		Stack->AddChildToOverlay(Tile);
-		// Cooldown sweep: a dark fill that drains from the top as the skill comes back.
-		UProgressBar* Cool = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
-		Cool->SetBarFillType(EProgressBarFillType::TopToBottom);
-		Cool->SetFillColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.65f));
-		FProgressBarStyle CoolStyle = Cool->GetWidgetStyle();
-		CoolStyle.BackgroundImage.TintColor = FSlateColor(FLinearColor::Transparent);
-		Cool->SetWidgetStyle(CoolStyle);
-		UOverlaySlot* CoolSlot = Stack->AddChildToOverlay(Cool);
-		CoolSlot->SetHorizontalAlignment(HAlign_Fill);
-		CoolSlot->SetVerticalAlignment(VAlign_Fill);
 		Tiles->AddChildToHorizontalBox(Stack)->SetPadding(FMargin(i == 0 ? 0.f : 6.f, 0.f, 0.f, 0.f));
 		SkillTiles.Add(Tile);
 		SkillKeys.Add(Key);
 		SkillNames.Add(Name);
 		SkillRanks.Add(Rank);
-		SkillCooldowns.Add(Cool);
 	}
 	Box->AddChildToVerticalBox(Tiles);
 
@@ -860,10 +900,23 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 		FString Pips;
 		for (int32 r = 0; r < K.MaxRank; ++r) { Pips += r < K.Rank ? TEXT("\u25CF") : TEXT("\u25CB"); }
 		SetTextIfChanged(SkillRanks[i], K.bUnlocked ? Pips : FString(TEXT("locked")));
-		const FLinearColor Edge = K.bSpendable ? (bPulse ? Gold : FLinearColor(1.f, 0.95f, 0.7f)) : FLinearColor(1.f, 1.f, 1.f, K.bUnlocked ? 0.25f : 0.1f);
+		const FLinearColor Edge = K.bSpendable ? (bPulse ? Gold : FLinearColor(1.f, 0.95f, 0.7f)) : K.ClassColor.CopyWithNewOpacity(K.bUnlocked ? 0.8f : 0.2f);
 		SkillTiles[i]->SetBrush(Rounded(FLinearColor::White, 6.f, Edge, K.bSpendable ? 3.f : 1.f));
 		SkillTiles[i]->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
 		SkillTiles[i]->GetParent()->SetRenderOpacity(K.bUnlocked || K.bSpendable ? 1.f : 0.45f);
-		SkillCooldowns[i]->SetPercent(FMath::Clamp(K.Cooldown, 0.f, 1.f));
+		SkillDamageAccents[i]->SetBrushColor(K.DamageColor);
+		if (UMaterialInstanceDynamic* IconMaterial = SkillIconMaterials[i])
+		{
+			IconMaterial->SetScalarParameterValue(TEXT("Cooldown"), FMath::Clamp(K.Cooldown, 0.f, 1.f));
+			IconMaterial->SetScalarParameterValue(TEXT("Unlocked"), K.bUnlocked ? 1.f : 0.f);
+			if (ShownIconPaths[i] != K.IconPath)
+			{
+				ShownIconPaths[i] = K.IconPath;
+				if (UTexture2D* Texture = LoadObject<UTexture2D>(nullptr, *K.IconPath))
+				{
+					IconMaterial->SetTextureParameterValue(TEXT("IconTexture"), Texture);
+				}
+			}
+		}
 	}
 }

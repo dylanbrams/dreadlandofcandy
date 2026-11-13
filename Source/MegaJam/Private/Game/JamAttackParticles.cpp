@@ -19,10 +19,10 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     if (!Hero || !Hero->GetWorld()) { return; }
     // Each row presents the four existing skills using that cast member's props.
     static const TCHAR* Presets[4][4] = {
-        { TEXT("NS_K02_SternInstruction"), TEXT("NS_K01_PoliteShield"), TEXT("NS_FX_Impact"), TEXT("NS_K03_GoodManners") },
+        { TEXT("NS_K01_PoliteShield"), TEXT("NS_K02_SternInstruction"), TEXT("NS_FX_Impact"), TEXT("NS_K03_GoodManners") },
         { TEXT("NS_M01_SpoonfulOfSugar"), TEXT("NS_M03_ArcaneSanitization"), TEXT("NS_FX_Impact"), TEXT("NS_M02_PeppermintPopfall") },
         { TEXT("NS_A01_CeleryShot"), TEXT("NS_A03_FlossSnare"), TEXT("NS_FX_Impact"), TEXT("NS_A02_CeleryVolley") },
-        { TEXT("NS_B03_AggressiveEncouragement"), TEXT("NS_B01_FuriousKneading"), TEXT("NS_FX_Impact"), TEXT("NS_B02_RollingPinCyclone") }
+        { TEXT("NS_B01_FuriousKneading"), TEXT("NS_B03_AggressiveEncouragement"), TEXT("NS_FX_Impact"), TEXT("NS_B02_RollingPinCyclone") }
     };
     const int32 Index = FMath::Clamp(Hero->GetCastIndex(), 0, 3);
     if (Skill >= EJamSkill::Count) { return; }

@@ -76,6 +76,8 @@ namespace JamProgression
 	MEGAJAM_API int32 XpValue(EJamXpSource Source);
 	MEGAJAM_API int32 MilestoneLevel(EJamMilestone Milestone);
 
+	/** The jam uses basic, signature and ultimate; the old Sigh enum remains for asset compatibility. */
+	MEGAJAM_API const TArray<EJamSkill>& ActiveSkills();
 	MEGAJAM_API int32 MaxRank(EJamSkill Skill);
 	/** Numbers for a skill at a rank (1-based); rank 0 returns zeros. */
 	MEGAJAM_API FJamSkillRank RankData(EJamSkill Skill, int32 Rank);
@@ -132,6 +134,6 @@ private:
 	int32 Xp = 0;
 	int32 Level = JamProgression::StartLevel;
 	int32 Points = 0;
-	int32 Ranks[(int32)EJamSkill::Count] = { 1, 0, 0, 0 };
+	int32 Ranks[(int32)EJamSkill::Count] = { 2, 2, 0, 1 };
 	TArray<int32> Loot;
 };

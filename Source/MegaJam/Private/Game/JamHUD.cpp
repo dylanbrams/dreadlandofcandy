@@ -1,6 +1,7 @@
 #include "Game/JamHUD.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
+#include "Film/JamCast.h"
 #include "Game/JamNuisance.h"
 #include "UI/JamHudWidget.h"
 #include "UI/JamScreenWidget.h"
@@ -216,6 +217,8 @@ void AJamHUD::BuildView()
 	const FJamStageDef* Stage = Shoot.GetStage();
 	if (Stage && State != EJamShootState::Wrap)
 	{
+		View.ObjectiveId = FString::Printf(TEXT("%d:%d:%d"), GS->SceneNumber, Shoot.GetTake(), Shoot.GetStageIndex());
+		View.Direction = Stage->Objective;
 		View.Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
 		if (Stage->TimeLimit > 0.f)
 		{
@@ -259,17 +262,22 @@ void AJamHUD::BuildView()
 	{
 		const FJamProgression& Prog = PS->GetProgression();
 		const bool bPad = PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad();
-		static const TCHAR* KeysKb[] = { TEXT("LMB"), TEXT("RMB"), TEXT("Q"), TEXT("R") };
-		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT("LB"), TEXT("Y") };
+		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 2"), TEXT(""), TEXT("Q") };
+		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT(""), TEXT("LB") };
 		const FGameplayTag CooldownTags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Sigh, JamGameplayTags::Cooldown_Judgment };
 		const bool bWrap = GS->IsWrapVisible();
 		UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-		for (int32 i = 0; i < (int32)EJamSkill::Count; ++i)
+		const AJamHero* CastHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+		const FJamClassDef& CastDef = JamCast::Get(CastHero ? CastHero->GetCastIndex() : 0);
+		for (EJamSkill Skill : JamProgression::ActiveSkills())
 		{
-			const EJamSkill Skill = (EJamSkill)i;
+			const int32 i = static_cast<int32>(Skill);
 			FJamHudSkill Slot;
 			static const TCHAR* Short[] = { TEXT("Lecture"), TEXT("Form A Line"), TEXT("Sigh"), TEXT("Judgment") };
-			Slot.Name = Short[i];   // the bar is small; the full names are on the character sheet
+			Slot.Name = CastDef.SkillNames.IsValidIndex(i) ? CastDef.SkillNames[i] : Short[i];
+			Slot.IconPath = CastDef.SkillIcons.IsValidIndex(i) ? CastDef.SkillIcons[i] : FString();
+			Slot.ClassColor = CastDef.PrimaryColor;
+			Slot.DamageColor = CastDef.SkillDamageColors.IsValidIndex(i) ? CastDef.SkillDamageColors[i] : FLinearColor(0.75f, 0.75f, 0.75f);
 			Slot.Key = bPad ? KeysPad[i] : KeysKb[i];
 			Slot.Rank = Prog.GetRank(Skill);
 			Slot.MaxRank = JamProgression::MaxRank(Skill);
@@ -289,7 +297,7 @@ void AJamHUD::BuildView()
 		if (bWrap && View.Points > 0)
 		{
 			View.Wrap.LevelLine = FString::Printf(TEXT("LEVEL %d!  %d skill point%s: press a skill's button (%s) to rank it up"),
-				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB / Y") : TEXT("LMB / RMB / Q / R"));
+				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 2 / Q"));
 		}
 	}
 	View.NotesTaken = GS->RunNotesTaken;
@@ -588,7 +596,8 @@ void AJamHUD::DrawCompass()
 	}
 	const float Clamped = FMath::Clamp(Rel, -60.f, 60.f);
 	const float Mx = Cx + Clamped / 60.f * StripW * 0.5f;
-	const FLinearColor Gold(1.f, 0.83f, 0.3f, 1.f);
+	const float Pulse = 0.55f + 0.45f * (0.5f + 0.5f * FMath::Sin(GetWorld()->GetRealTimeSeconds() * 2.f * PI * 1.5f));
+	const FLinearColor Gold(1.f, 0.83f, 0.3f, Pulse);
 	const float S = 14.f * Px;
 	// A downward triangle on the strip; at the edge it turns to point the way.
 	if (FMath::Abs(Rel) <= 60.f)

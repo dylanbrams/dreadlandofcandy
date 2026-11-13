@@ -236,3 +236,23 @@ verify the corresponding weapon grips. This is an unfinished follow-up owned
 by the cast session; terrain/R7 fixes have the next engine slot.
 
 Weapons must be stowed on the back while travelling outside combat, with per-weapon offsets/clearance; draw for attacks and return to the back afterward. Dylan reported the current hand-carried weapons sticking into the ground. This is part of the unfinished cast follow-up.
+
+
+### Nov 13: Molar Hills and the first R7 fixes
+
+The Molar Hills road now climbs nine metres to a level fort. Existing plants and
+scenery follow the raised triangulated surface; total instance count is unchanged.
+The village and reserved gameplay pads retain gentle slopes. Native road collision
+and an idempotent second import pass are recorded in ImportSource/Terrain/hill_validation.json.
+
+Movement is 600 uu/s and the walk clip runs at 1.5x. The quest marker pulses and
+fresh stage directions hold centrally for one second before shrinking into the HUD.
+Mouse labels now follow Mouse 1 / Mouse 2; the reported activation failure remains
+unreproduced. Dylan clarified three skills per class through the coordinated cast
+session: basic/signature start rank two and the ultimate stays rank one. The HUD
+now supports data-driven class icons/colors and clockwise grayscale-to-color
+cooldowns. Initial art is temporary pending the cast session's twelve-icon import.
+
+Both targets and all 66 tests pass; three screenshots were inspected. The Windows
+Development package was refreshed and Backlot/Open packaged autoplay both pass.
+The old ZIP is unchanged. Remaining wishlist items and the cast handoff are in STATUS.

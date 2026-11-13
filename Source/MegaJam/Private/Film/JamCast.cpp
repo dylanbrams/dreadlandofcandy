@@ -11,6 +11,12 @@ namespace
 		D.Blurb = Blurb;
 		for (const TCHAR* C : Cries) { D.Cries.Add(C); }
 		D.bFullClips = bFull;
+		if (D.Id == TEXT("knight")) { D.SkillNames = { TEXT("Polite Shield"), TEXT("Stern Instruction"), TEXT(""), TEXT("Good Manners") }; }
+		else if (D.Id == TEXT("mage")) { D.SkillNames = { TEXT("Spoonful of Sugar"), TEXT("Arcane Sanitization"), TEXT(""), TEXT("Peppermint Popfall") }; }
+		else if (D.Id == TEXT("archer")) { D.SkillNames = { TEXT("Celery Shot"), TEXT("Floss Snare"), TEXT(""), TEXT("Celery Volley") }; }
+		else { D.SkillNames = { TEXT("Furious Kneading"), TEXT("Aggressive Encouragement"), TEXT(""), TEXT("Rolling Pin Cyclone") }; }
+		// Temporary art until the class-specific icon delivery replaces these paths.
+		D.SkillIcons = { TEXT("/Game/Art/UI/Icons/T_Skill_Lecture"), TEXT("/Game/Art/UI/Icons/T_Skill_FormALine"), TEXT(""), TEXT("/Game/Art/UI/Icons/T_Skill_LastJudgment") };
 		return D;
 	}
 }

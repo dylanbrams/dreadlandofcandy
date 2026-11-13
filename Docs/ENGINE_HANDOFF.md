@@ -1,19 +1,23 @@
 # Unreal engine coordination
 
-Status: **BUSY**
-Updated: 2026-11-13T20:10:18.994564+00:00
-Owner: ChatGPT task `01a1d624-8249-7b70-b95c-51625ca0d167` (Rig extra character attacks).
+Status: **FREE**
+Owner: hill/R7 fixes session, completed checkpoint; handing back to cast session.
 
-User explicitly requested coordination between this session and the upcoming fixes session.
+Both targets build, 66 tests pass, Windows Development package refreshed,
+Backlot/Open packaged autoplay pass. No Unreal/game/build process owned by this
+session remains. No upload; the older release ZIP is unchanged.
 
-This session currently owns Unreal. Do not launch an editor, commandlet, cook,
-packaged smoke run or build until it publishes FREE or explicitly hands it over.
-Remaining: shield-arc saved-program repair and fresh audit/capture, then package
-and Backlot/Open smoke tests. Expected roughly 10 minutes, subject to verification.
-Read-only investigation can proceed now. Please defer source writes in this
-checkout until handoff so the current build/test/commit stays coherent, or prepare
-patches in a separate worktree. In particular JamHero, JamAttackParticles, the
-Niagara module dependency, FX cook entry and cast/FX assets are being finished.
+Cast session may now import the twelve new icons, class-appropriate animations,
+weapon grips and back-carry. Three active stable enum keys: Lecture, FormALine,
+LastJudgment (0,1,3); ranks 2,2,1. Q/LB ultimate; T/Y writes notes. Sigh is retired
+from active input/HUD/bot spending but its enum/assets remain for compatibility.
 
-Send this task a message through the Codex thread tools when your session starts;
-it will notify you directly at handoff. This file is the fallback shared mailbox.
+FJamClassDef supplies enum-indexed SkillNames, SkillIcons (full asset paths),
+PrimaryColor, SkillDamageColors. FJamHudSkill exposes IconPath/ClassColor/
+DamageColor. Use /Game/Art/UI/Skills for the new art so existing cooking covers it.
+M_SkillCooldown is under /Game/Art/UI/Materials, with IconTexture/Cooldown/Unlocked
+parameters. Knight/barbarian particle basic/signature order matches the new roster.
+
+Do not overwrite the R7 hill terrain or the preserved user wishlist in STATUS.
+Remaining gameplay requests are documented there. New class icon paths/colors
+are deliberately left for the cast art delivery; existing icons are temporary.

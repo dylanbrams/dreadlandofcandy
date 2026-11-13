@@ -47,7 +47,7 @@ namespace JamHeroTuning
 	const FVector CameraLookAhead(300.f, 0.f, 0.f);
 	constexpr float CameraPitch = -50.f;
 	// Match UJamGA_LectureCone (debug draw only).
-	constexpr float WalkSpeed = 450.f;
+	constexpr float WalkSpeed = 600.f;
 	constexpr float LectureRange = 800.f;
 	constexpr float LectureHalfAngleDeg = 35.f;
 	// BUILD_SPEC section 10: hold E 0.6 s, inside 150 uu.
@@ -284,7 +284,6 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	if (IsStaggered()) { return false; }                             // R4b: knocked off his stride
 	if (GM && GM->IsNotePromptUp())                                  // CUT!: Q refuses the note, it does not sigh
 	{
-		if (Skill == EJamSkill::LastJudgment) { RequestWriteNote(); }   // Y / R write your own
 		return false;
 	}
 	// Open mode: skills go where the player looks (the bot's aim override already faces its target).
@@ -416,13 +415,13 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 	InputContext->MapKey(PauseAction, EKeys::Escape);
 	InputContext->MapKey(WriteAction, EKeys::T);
-	// Skills 2 to 4 (BUILD_SPEC 3 controls): RMB / Q / R, RB / LB / Y.
+	// Three active slots: Mouse 1 / Mouse 2 / Q, RT / RB / LB. R remains an ultimate alias.
 	InputContext->MapKey(SkillActions[0], EKeys::RightMouseButton);
 	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
-	InputContext->MapKey(SkillActions[1], EKeys::Q);
-	InputContext->MapKey(SkillActions[1], EKeys::Gamepad_LeftShoulder);
+	InputContext->MapKey(SkillActions[2], EKeys::Q);
+	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_LeftShoulder);
 	InputContext->MapKey(SkillActions[2], EKeys::R);
-	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_FaceButton_Top);
+	InputContext->MapKey(WriteAction, EKeys::Gamepad_FaceButton_Top);
 	InputContext->MapKey(PauseAction, EKeys::Gamepad_Special_Right);
 }
 
@@ -632,6 +631,7 @@ void AJamHero::PlayRigOneShot(FName Anim)
 	const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(Anim);
 	if (!Found || !ArtRig->GetSkeletalMeshAsset()) { return; }
 	ArtRig->PlayAnimation(*Found, false);
+	ArtRig->SetPlayRate(1.f);
 	RigPlaying = Anim;
 	RigOneShotUntil = GetWorld()->GetTimeSeconds() + FMath::Min((*Found)->GetPlayLength(), 1.6f);
 }
@@ -653,6 +653,7 @@ void AJamHero::TickRig()
 	if (const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(Want))
 	{
 		ArtRig->PlayAnimation(*Found, true);
+		ArtRig->SetPlayRate(Want == FName(TEXT("Walk")) ? 1.5f : 1.f);
 		RigPlaying = Want;
 	}
 }

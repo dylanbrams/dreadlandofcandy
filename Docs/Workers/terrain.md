@@ -262,3 +262,15 @@ No shared configuration, gameplay C++, paid generation, push or upload in this
 pass. These refinements have not been repackaged. Reproduction starts with
 `Polish/README.md`; run `prepare_pines.py` after the base Blender variants.
 
+
+
+### Nov 13: GAME R7 hill upgrade
+
+Dylan requested an actual uphill approach in the Molar Hills. The main map now
+climbs 900 cm to the flat fort pad, with 32,105 vegetation instances and 24
+scenery actors lifted during initial application (85,091 total instances).
+Source reserved-triangle slope peaks at 9.31 degrees; actual road collision
+peaks at 29.92 degrees. Repeat import moves zero instances/actors. Both targets,
+66 tests and both packaged modes pass. See ImportSource/Terrain/README_HILL.md,
+hill_sources.json and hill_validation.json. Fresh MolarHillApproach/Overview
+review maps replace old snow-camera placement for checking this elevation.

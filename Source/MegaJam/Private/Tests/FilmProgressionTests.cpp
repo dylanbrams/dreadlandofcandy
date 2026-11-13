@@ -30,9 +30,14 @@ bool FJamFilmProgStart::RunTest(const FString&)
 	TestEqual(TEXT("no points"), P.GetPoints(), 0);
 	TestEqual(TEXT("six points already spent"), JamProgression::PassivePointsSpent(), 6);
 	TestTrue(TEXT("lecture owned"), P.IsUnlocked(EJamSkill::Lecture));
-	TestFalse(TEXT("line not owned"), P.IsUnlocked(EJamSkill::FormALine));
+	TestTrue(TEXT("signature owned"), P.IsUnlocked(EJamSkill::FormALine));
+	TestEqual(TEXT("basic starts rank two"), P.GetRank(EJamSkill::Lecture), 2);
+	TestEqual(TEXT("signature starts rank two"), P.GetRank(EJamSkill::FormALine), 2);
+	TestEqual(TEXT("three active slots"), JamProgression::ActiveSkills().Num(), 3);
+	TestFalse(TEXT("sigh removed from active roster"), JamProgression::ActiveSkills().Contains(EJamSkill::DisappointedSigh));
 	TestFalse(TEXT("sigh not owned"), P.IsUnlocked(EJamSkill::DisappointedSigh));
-	TestFalse(TEXT("judgment not owned"), P.IsUnlocked(EJamSkill::LastJudgment));
+	TestTrue(TEXT("ultimate owned at start"), P.IsUnlocked(EJamSkill::LastJudgment));
+	TestEqual(TEXT("ultimate starts rank one"), P.GetRank(EJamSkill::LastJudgment), 1);
 	TestTrue(TEXT("balanced"), Balanced(P));
 	return true;
 }
@@ -57,11 +62,11 @@ bool FJamFilmProgLevels::RunTest(const FString&)
 
 	P.ReachMilestone(EJamMilestone::Scene2Wrap);
 	TestEqual(TEXT("level 9"), P.GetLevel(), 9);
-	TestFalse(TEXT("ultimate not yet"), P.IsUnlocked(EJamSkill::LastJudgment));
+	TestEqual(TEXT("ultimate remains rank one"), P.GetRank(EJamSkill::LastJudgment), 1);
 	P.ReachMilestone(EJamMilestone::Scene3FinalNote);
 	TestEqual(TEXT("level 10"), P.GetLevel(), 10);
 	TestEqual(TEXT("three points across 8 to 10"), P.GetPoints(), 3);
-	TestTrue(TEXT("ultimate unlocks by itself"), P.IsUnlocked(EJamSkill::LastJudgment));
+	TestEqual(TEXT("ultimate stays rank one at level ten"), P.GetRank(EJamSkill::LastJudgment), 1);
 	TestEqual(TEXT("bar full at the top"), P.GetLevelProgress(), 1.f);
 	P.AddXp(EJamXpSource::Pacify);
 	TestEqual(TEXT("level stays 10"), P.GetLevel(), 10);
@@ -82,7 +87,8 @@ bool FJamFilmProgSpend::RunTest(const FString&)
 	P.ReachMilestone(EJamMilestone::Scene1Wrap);
 	TestFalse(TEXT("ultimate is never bought"), P.SpendPoint(EJamSkill::LastJudgment));
 	TestTrue(TEXT("buy the line"), P.SpendPoint(EJamSkill::FormALine));
-	TestEqual(TEXT("rank 1"), P.GetRank(EJamSkill::FormALine), 1);
+	TestEqual(TEXT("signature upgrades to rank three"), P.GetRank(EJamSkill::FormALine), 3);
+	TestFalse(TEXT("retired sigh cannot receive points"), P.SpendPoint(EJamSkill::DisappointedSigh));
 	TestFalse(TEXT("out of points"), P.SpendPoint(EJamSkill::FormALine));
 	TestTrue(TEXT("balanced"), Balanced(P));
 
@@ -108,11 +114,13 @@ bool FJamFilmProgSpend::RunTest(const FString&)
 		TestTrue(TEXT("never more than three skill points"), R.GetSpent() <= 3);
 	}
 
-	// Lecture can be raised to rank 4 with all three points; the Lecture alone is always enough.
+	// The basic takes two upgrades, and the signature takes the third; the ultimate stays fixed.
 	FJamProgression L;
 	L.ReachMilestone(EJamMilestone::Scene3FinalNote);
 	while (L.SpendPoint(EJamSkill::Lecture)) {}
 	TestEqual(TEXT("rank 4"), L.GetRank(EJamSkill::Lecture), 4);
+	TestEqual(TEXT("one point left for signature"), L.GetPoints(), 1);
+	TestTrue(TEXT("signature takes the final point"), L.SpendPoint(EJamSkill::FormALine));
 	TestEqual(TEXT("all points used"), L.GetPoints(), 0);
 	TestEqual(TEXT("lecture rank 4 does 110"), JamProgression::RankData(EJamSkill::Lecture, 4).Damage, 110.f);
 	return true;
@@ -123,8 +131,8 @@ bool FJamFilmProgStats::RunTest(const FString&)
 {
 	FJamProgression P;
 	FJamStatBlock S = P.GetStats();
-	TestEqual(TEXT("base power"), S.LecturePower, 60.f);
-	TestEqual(TEXT("base radius"), S.Radius, 800.f);
+	TestEqual(TEXT("base power"), S.LecturePower, 75.f);
+	TestEqual(TEXT("base radius"), S.Radius, 850.f);
 	TestEqual(TEXT("base recovery"), S.CooldownRecovery, 1.f);
 	TestEqual(TEXT("base speed"), S.MoveSpeed, 600.f);
 
@@ -134,10 +142,10 @@ bool FJamFilmProgStats::RunTest(const FString&)
 	P.AddLoot(LootIndex(TEXT("Greaves")));    // +8% speed
 	P.AddLoot(LootIndex(TEXT("Helm")));       // -10% cooldown
 	S = P.GetStats();
-	TestEqual(TEXT("radius 800 x 1.17"), S.Radius, 800.f * 1.17f, 0.01f);
+	TestEqual(TEXT("radius 850 x 1.17"), S.Radius, 850.f * 1.17f, 0.01f);
 	TestEqual(TEXT("speed 600 x 1.08"), S.MoveSpeed, 648.f, 0.01f);
 	TestEqual(TEXT("recovery is 1 / 0.9"), S.CooldownRecovery, 1.f / 0.9f, 0.0001f);
-	TestEqual(TEXT("power untouched"), S.LecturePower, 60.f);
+	TestEqual(TEXT("power untouched"), S.LecturePower, 75.f);
 
 	// The skill numbers carry the loot: a bigger cone, a shorter cooldown.
 	const FJamSkillRank Cone = P.GetSkillNumbers(EJamSkill::Lecture);
@@ -148,8 +156,8 @@ bool FJamFilmProgStats::RunTest(const FString&)
 	FJamProgression N;
 	N.AddLoot(LootIndex(TEXT("Napkin")));
 	S = N.GetStats();
-	TestEqual(TEXT("napkin power"), S.LecturePower, 60.6f, 0.001f);
-	TestEqual(TEXT("napkin radius"), S.Radius, 808.f, 0.01f);
+	TestEqual(TEXT("napkin power"), S.LecturePower, 75.75f, 0.001f);
+	TestEqual(TEXT("napkin radius"), S.Radius, 858.5f, 0.01f);
 	TestEqual(TEXT("napkin speed"), S.MoveSpeed, 606.f, 0.01f);
 	TestTrue(TEXT("napkin shortens the cooldown"), S.CooldownRecovery > 1.f);
 
@@ -157,8 +165,8 @@ bool FJamFilmProgStats::RunTest(const FString&)
 	FJamProgression R;
 	R.ReachMilestone(EJamMilestone::Scene1Wrap);
 	R.SpendPoint(EJamSkill::Lecture);
-	TestEqual(TEXT("rank 2 power"), R.GetStats().LecturePower, 75.f);
-	TestEqual(TEXT("rank 2 radius"), R.GetStats().Radius, 850.f);
+	TestEqual(TEXT("rank 3 power"), R.GetStats().LecturePower, 90.f);
+	TestEqual(TEXT("rank 3 radius"), R.GetStats().Radius, 900.f);
 
 	TestEqual(TEXT("invalid loot ignored"), (N.AddLoot(999), N.GetLoot().Num()), 1);
 	return true;

@@ -835,7 +835,7 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	{
 		// Bigger skills first when they are unlocked and cool; the cooldowns refuse the spam.
 		bool bCast = false;
-		for (EJamSkill Skill : { EJamSkill::LastJudgment, EJamSkill::DisappointedSigh, EJamSkill::FormALine })
+		for (EJamSkill Skill : { EJamSkill::LastJudgment, EJamSkill::FormALine })
 		{
 			const AJamPlayerState* PS = GetHeroState();
 			if (!bCast && PS && PS->GetProgression().IsUnlocked(Skill)) { bCast = Bot->RequestSkill(Skill); }
@@ -897,7 +897,7 @@ void AJamGameMode::AutoSpendPoints()
 	const AJamGameState* GS = GetJamGameState();
 	AJamPlayerState* PS = GetHeroState();
 	if (!GS || !PS || !Hero.IsValid() || !GS->IsWrapVisible() || PS->GetProgression().GetPoints() <= 0) { return; }
-	for (EJamSkill Skill : { EJamSkill::FormALine, EJamSkill::DisappointedSigh, EJamSkill::Lecture })
+	for (EJamSkill Skill : { EJamSkill::FormALine, EJamSkill::Lecture })
 	{
 		// Through the same validation the button uses, but never falling back to a cast.
 		if ((!PS->GetProgression().IsUnlocked(Skill) || Skill == EJamSkill::Lecture) && HandleSpendPoint(Hero.Get(), Skill)) { return; }
