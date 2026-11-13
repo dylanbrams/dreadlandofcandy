@@ -2,6 +2,7 @@
 Run headless:  UnrealEditor-Cmd.exe <project> -run=pythonscript -script=<this file>
 The mesh comes in once; every animation FBX also carries the mesh, so animations import onto the existing skeleton."""
 import os
+import sys
 import unreal
 
 PROJECT = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
@@ -59,5 +60,11 @@ for anim in ANIMS:
     ui.set_editor_property("mesh_type_to_import", unreal.FBXImportType.FBXIT_ANIMATION)
     paths = run(make_task(src, f"{DEST}/Anims", ui))
     unreal.log(f"JamHeroImport: {anim} -> {paths}")
+
+# The generated raise has a waving wrist. Bake its correction after import so
+# reimporting the source FBX does not restore the hand/sword mismatch.
+sys.path.insert(0, os.path.join(PROJECT, "Scripts"))
+from correct_sword_raise import correct
+correct(f"{DEST}/Anims/A_SK_Hero_Rig_SwordRaise", apply=True, refresh_source=True)
 
 unreal.log("JamHeroImport: done")

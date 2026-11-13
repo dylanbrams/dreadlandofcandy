@@ -4,6 +4,18 @@ Read this, then `Docs/Design/BUILD_SPEC.md` (governs; **section 3e and the "Open
 
 ## Next GAME session starts here
 
+**Nov 13 wrist fix:** the current runtime knight's `SwordRaise` has a native
+`hand_r` rotation correction so the hand and attached blade turn upright together.
+`Scripts/correct_sword_raise.py` changes only that track and is called after FBX
+import by `Scripts/import_hero_rig.py`. Other local tracks, wrist translation/scale
+and timing compare unchanged (0.0 maximum error). Overhead blade tilt is below
+0.0001 degree. Build and all 57 `Jam.*` tests pass; in-game before/after captures
+are in `ImportSource/RigCorrections/review.html`. The new `SK_Knight` source
+delivery remains separate from the original runtime mesh; run the same correction
+after importing its raise clip. Source FBXs are still the raw Meshy exports.
+Backlot autoplay passes all three scenes and returns title-to-title
+(`Saved/Logs/SwordWrist-Autoplay.log`, `time=123.8`, `ending=directors_cut`).
+
 0. **O1 done and verified (Nov 12 night).** `game/open-world` merged into `main` (`369c9f9`); build passes, 57 `Jam.*` tests pass (`Jam.World.Layout`, `.Camps`, `.Scatter` included), Backlot autoplay unchanged (`PASS scenes=3 ... ending=directors_cut`), `-open -camdist=30000 -notitle` shows the flat fallback world (`Saved/Screenshots/WindowsEditor/o1-open.png`: three camps, scatter, biome patches, road). In Open mode the bot only logs that it is off until O4. **Next: O2** (BUILD_SPEC section 7, Open world). The packaged smoke test was not re-run for O1.
 1. **First, tell Dylan which side sessions you need him to start** (he asks for this at the start of every thread). TERRAIN is not one of them: Dylan hands the terrain to ChatGPT himself. GAME's only part is writing the world table's shape into `Docs/Workers/terrain.md` in O1, and using TERRAIN's map in O7 if it has arrived.
 2. **Take O1 to O9 in order** (BUILD_SPEC section 7, "Open world"), ahead of T24 and T25. Stop after O9. O1 starts by tagging the last green commit `slice-day1` (currently `6810924`, spec only; the last code commit is `4a661b9`). Each O task is one commit with the build, `Jam.*` tests, **both** autoplay modes and a screenshot.

@@ -1,0 +1,12 @@
+{
+  "asset": "/Game/Art/Hero/Anims/A_SK_Hero_Rig_SwordRaise",
+  "fps": 30.0,
+  "keys": 90,
+  "changed_tracks": [
+    "hand_r"
+  ],
+  "before_hold_max_tilt_degrees": 68.3881720545995,
+  "applied": true,
+  "unchanged_track_max_error": 0.0,
+  "after_hold_max_tilt_degrees": 3.6483217452352765e-05
+}

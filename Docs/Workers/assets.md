@@ -212,3 +212,26 @@ Report: `ImportSource/_gen/expansion_characters/knight_validation.json`.
 Meshy balance **640 before, 584 after: 56 credits used**.
 No game code or Unreal assets changed; GAME should import the new knight and
 his clips, update the hero references, and check the sword socket and autoplay.
+
+## 2026-11-13 — current runtime knight wrist fix
+
+Dylan reported that the hand did not turn properly with the raised sword in the
+running game. The actor already attaches the sword to `hand_r`; the generated
+raise leaves its fixed blade axis tilted during the overhead hold. Corrected
+only the native runtime animation's right-hand rotation track, smoothly blending
+in from 0.15 to 0.65 s. Hand and sword now rotate together and hold vertically.
+
+Asset: `/Game/Art/Hero/Anims/A_SK_Hero_Rig_SwordRaise`. Script:
+`Scripts/correct_sword_raise.py`; the existing hero importer now calls it after
+FBX import. Reimporting raw Meshy FBXs therefore reapplies the fix. The newer
+`SK_Knight` source FBXs remain untouched; apply the same helper to its imported
+raise asset when GAME switches meshes.
+
+The native data check confirms 90 keys at 30 fps, other local tracks and wrist
+translation/scale unchanged (maximum error 0.0), and hold blade tilt reduced
+from up to 68.388 degrees to below 0.0001 degree. Inspected in-game before/after
+captures in `ImportSource/RigCorrections/review.html`. Build and 57 existing
+automation tests pass. No Meshy calls or new generation credits. Original native
+package and sampled keys are retained under `ImportSource/RigCorrections/`.
+Full Backlot autoplay passes (`scenes=3`, `ending=directors_cut`, `time=123.8`)
+and returns title-to-title. Existing engine Python startup warnings are unchanged.

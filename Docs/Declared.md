@@ -221,3 +221,12 @@ task IDs were reused and retargeted onto the new rig. Source/configuration:
 `ImportSource/Meshy/SK_Knight*`. Blender 3.3 is used for geometry and posed
 FBX review. The original `SK_Hero` assets are retained. No pre-jam assets or
 third-party code were copied; Unreal integration remains a GAME task.
+
+## 2026-11-13 — knight sword-raise wrist correction
+
+Codex authored an Unreal Python correction for the Meshy-generated knight's
+right-hand animation track. It turns the wrist with the existing fixed sword
+attachment, preserves other tracks and timing, and is reapplied after source
+FBX import. The existing runtime animation was updated in place; original native
+package/source keys and in-game comparison captures are retained in
+`ImportSource/RigCorrections/`. No new model or motion generation was performed.

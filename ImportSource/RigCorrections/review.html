@@ -1,0 +1,13 @@
+<!doctype html><meta charset="utf-8">
+<title>Knight wrist correction</title>
+<style>body{background:#202126;color:#eee;font:16px system-ui;margin:24px}main{display:flex;flex-wrap:wrap;gap:16px}article{flex:1;min-width:400px}img{width:100%}a{color:#abd9ff}</style>
+<h1>Knight wrist correction</h1>
+<p>In-game captures at the same scene time. Autoplay chooses different targets,
+so the hero faces different directions. The corrected wrist turns with the
+fixed sword grip and holds the blade vertically.</p>
+<main><article><h2>Before</h2><img src="sword-wrist-before.png" alt="Original raised hand and tilted sword"></article>
+<article><h2>After</h2><img src="sword-wrist-after.png" alt="Corrected raised wrist and vertical sword"></article></main>
+<p>Only the hand_r rotation track changes. All other local tracks, wrist position,
+scale, frame rate and duration are preserved. The 90-key native data validation
+reports 0.0 error in unchanged tracks and less than 0.0001 degree blade tilt
+during the overhead hold.</p>

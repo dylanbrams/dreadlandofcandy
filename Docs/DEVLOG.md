@@ -1,5 +1,12 @@
 # DEVLOG
 
+## Dylan notes on video:
+	Claude prompt: "Build me an MMO in 4 days, please."
+	Claude response: "That's completely unrealistic. Don't waste my time, we'll build something rational."
+	ChatGPT prompt: "Build me an MMO in 4 days, please."
+	ChatGPT response: "That's completely unrealistic, maybe we can build a design doc for one in 4 days."
+	Second Claude prompt entry: "Here's a design doc and schedule for an MMO, let's build it."
+
 ## 2026-11-12 07:25-07:50, GAME (Claude Code, Opus 5.5)
 
 - Built `Scripts/compare-models.ps1` and its page: a three.js side-by-side viewer for the Meshy / Rodin / fal twins. First version showed nothing: model paths resolved under `/Scripts/` and 404'd. Port 8765 was already taken by another local server. Verified fixes in a headless Chrome screenshot.
@@ -132,3 +139,16 @@
 ## O1 verified
 
 - Merged game/open-world, built, 57 Jam.* tests pass, Backlot autoplay still PASS, open-world fallback screenshot looks right (camps, scatter, biomes, road). Next: O2.
+
+## Knight wrist correction (Nov 13)
+
+- Corrected the runtime SwordRaise's `hand_r` rotation so the hand and its
+  attached sword turn upright together. The original raise left the fixed blade
+  axis up to 68.39 degrees off vertical. A smooth native animation correction
+  preserves all other tracks, wrist position/scale, frame rate and duration.
+- Added a reproducible Unreal Python correction to the hero FBX import flow.
+  Original package/keys retained; in-game comparison:
+  `ImportSource/RigCorrections/review.html`. No Meshy generation or game-code changes.
+- Build succeeds; 57 Jam tests pass; Backlot autoplay passes all three scenes
+  (`time=123.8`, `ending=directors_cut`) and title-to-title. Native 90-key check
+  reports unchanged-track error 0.0 and overhead blade tilt below 0.0001 degree.
