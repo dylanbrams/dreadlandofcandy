@@ -98,6 +98,8 @@ namespace JamScreens
 	MEGAJAM_API FJamScreenView Pause(const FJamMenuSettings& S);
 	/** Stats, level, points, and the greyed passives panel (BUILD_SPEC 3c). */
 	MEGAJAM_API FJamScreenView Character(const FJamProgression& Prog, const FJamMenuSettings& S);
+	/** The stamp that goes with the game's title: "DIRECTOR'S CUT" or "THEATRICAL RELEASE". */
+	MEGAJAM_API FString EditionStamp(bool bDirectorsCut);
 	MEGAJAM_API FJamScreenView Premiere(const FJamPremiereTotals& T, const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Credits(bool bDirectorsCut, const FJamMenuSettings& S);
 

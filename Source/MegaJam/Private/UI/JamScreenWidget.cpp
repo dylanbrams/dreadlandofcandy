@@ -123,15 +123,14 @@ void UJamScreenWidget::BuildTree()
 	Stamp->SetBrush(ScreenRounded(StampRed, 6.f, 5.f));
 	Stamp->SetBrushColor(FLinearColor::Transparent);   // outline and ink only; the title reads through it
 	Stamp->SetPadding(FMargin(18.f, 4.f));
-	StampText = MakeText(46, StampRed, true);
+	StampText = MakeText(30, StampRed, true);
 	StampText->SetShadowOffset(FVector2D::ZeroVector);
 	Stamp->SetContent(StampText);
-	Stamp->SetRenderTransformAngle(-9.f);
+	// Dylan: at 45 degrees, a little below and to the right of the title's last word (placed in ApplyView).
+	Stamp->SetRenderTransformAngle(-45.f);
 	UOverlaySlot* StampSlot = TitleStack->AddChildToOverlay(Stamp);
-	// Across the end of the title, like a stamp on a poster.
 	StampSlot->SetHorizontalAlignment(HAlign_Right);
-	StampSlot->SetVerticalAlignment(VAlign_Center);
-	StampSlot->SetPadding(FMargin(0.f, 0.f, -40.f, 0.f));
+	StampSlot->SetVerticalAlignment(VAlign_Bottom);
 	Add(TitleStack);
 
 	Subtitle = MakeText(28, FLinearColor::White, false);
@@ -254,6 +253,13 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	// The stamp lands a beat after the title.
 	const float StampT = FMath::Clamp((RealSeconds - ShownAt - 0.5f) / 0.15f, 0.f, 1.f);
 	Stamp->SetRenderScale(FVector2D(FMath::Lerp(2.2f, 1.f, StampT)));
+	{
+		// Centre it just past the title's right end and below its baseline. Its size is known from the second frame
+		// (it fades in later than that).
+		const FVector2D Size = Stamp->GetDesiredSize();
+		// Unmoved, its centre is half its width left of the title's right edge and half its height above the bottom.
+		Stamp->SetRenderTranslation(FVector2D(Size.X * 0.62f, Size.Y * 0.5f + Size.X * 0.1f));
+	}
 	Stamp->SetRenderOpacity(StampT);
 	SetScreenText(Subtitle, View.Subtitle);
 	ShowScreenPart(Subtitle, !View.Subtitle.IsEmpty());

@@ -50,6 +50,8 @@ Typed notes without the server: `python -I Scripts/note-stub.py` (port 8011), th
 
 ## Decisions (Dylan)
 
+- Nov 13: the title pairing everywhere is "THE DREAD LAND OF CANDY" with an edition stamp (`JamScreens::EditionStamp`: DIRECTOR'S CUT or THEATRICAL RELEASE) at 45 degrees, a little below and right of the title: title screen, Premiere and credits. A generated premiere keeps its own title with the same stamp.
+- Nov 13: itch deployment is ChatGPT's; GAME stops at a zip on disk.
 - Nov 13: release plan; the quest generator, givers and Niagara hookup are cut. Sound effects are "ridiculously over the top". The new knight (`SK_Knight`) replaces the old look.
 - Nov 12: two takes per music cue, pick one at random. Music and Fenella have separate volume sliders. Camera in Backlot: arm 1700 uu, 50 degrees, FOV 55.
 - Team **Imaginary Component**, game **The Dread Land of Candy**; zip `ImaginaryComponent_TheDreadLandOfCandy.zip`.

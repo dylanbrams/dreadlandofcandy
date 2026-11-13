@@ -6,6 +6,7 @@
 	ChatGPT prompt: "Build me an MMO in 4 days, please."
 	ChatGPT response: "That's completely unrealistic, maybe we can build a design doc for one in 4 days."
 	Second Claude prompt entry: "Here's a design doc and schedule for an MMO, let's build it."
+	Claude Response: "Yeah, uh.... How about some of it. Want a closed arena battle?"
 
 ## 2026-11-12 07:25-07:50, GAME (Claude Code, Opus 5.5)
 
@@ -173,3 +174,5 @@
 - A lecture flusters a goblin out of its charge, which is the counter. The boss ignores that and keeps coming; at first nothing ever landed, because the bot's lectures cancelled every charge.
 - 63 tests pass, both bots still finish (the Open run ended Scene 2 with ten Dignity left). Not yet played by a human; the numbers are a first guess.
 - Itch deployment moves to ChatGPT (Dylan), to save Claude's quota for Nov 14; GAME stops at a zip on disk.
+- Typed notes are live against the deployed backend: the bot typed "make it rain and sad" and got two model-written scenes and a generated premiere back. The first try silently fell back to keywords, because Unreal's ini cut the URL at `//`.
+- The end screens now say THE DREAD LAND OF CANDY with a DIRECTOR'S CUT (or THEATRICAL RELEASE) stamp slapped on at 45 degrees, matching the title screen.

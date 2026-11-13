@@ -45,7 +45,10 @@ bool FJamUiScreensEndings::RunTest(const FString&)
 	FJamPremiereTotals T;
 	T.bDirectorsCut = false;
 	const FJamScreenView P = JamScreens::Premiere(T, FJamMenuSettings());
-	TestEqual(TEXT("theatrical title"), P.Title, FString(TEXT("THE THEATRICAL RELEASE")));
+	TestEqual(TEXT("the game's title"), P.Title, FString(TEXT("THE DREAD LAND OF CANDY")));
+	TestEqual(TEXT("theatrical stamp"), P.Stamp, FString(TEXT("THEATRICAL RELEASE")));
+	TestEqual(TEXT("credits pair the same way"), JamScreens::Credits(true, FJamMenuSettings()).Stamp, FString(TEXT("DIRECTOR'S CUT")));
+	TestEqual(TEXT("as does the title screen"), JamScreens::Title(FJamMenuSettings()).Stamp, JamScreens::EditionStamp(true));
 	TestEqual(TEXT("four totals rows, rats last"), P.Rows.Num() > 0 ? P.Rows.Last().Key : FString(), FString(TEXT("RATS")));
 	TestEqual(TEXT("three reviews"), P.Quotes.Num(), 3);
 

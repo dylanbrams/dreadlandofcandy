@@ -49,7 +49,7 @@ FJamScreenView JamScreens::Title(const FJamMenuSettings& S)
 	FJamScreenView V;
 	V.Screen = EJamScreen::Title;
 	V.Title = TEXT("THE DREAD LAND OF CANDY");
-	V.Stamp = TEXT("DIRECTOR'S CUT");
+	V.Stamp = JamScreens::EditionStamp(true);
 	V.Subtitle = TEXT("The Definitive Edition of a Game That Never Existed.");
 	V.Options = { Opt(EJamMenuAction::RollCamera, TEXT("Roll Camera")), Opt(EJamMenuAction::OpenOptions, TEXT("Notes")),
 		Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
@@ -108,12 +108,19 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 	return V;
 }
 
+FString JamScreens::EditionStamp(bool bDirectorsCut)
+{
+	return bDirectorsCut ? TEXT("DIRECTOR'S CUT") : TEXT("THEATRICAL RELEASE");
+}
+
 FJamScreenView JamScreens::Premiere(const FJamPremiereTotals& T, const FJamMenuSettings& S)
 {
 	FJamScreenView V;
 	V.Screen = EJamScreen::Premiere;
 	V.Kicker = TEXT("TONIGHT: THE PREMIERE OF");
-	V.Title = T.bDirectorsCut ? TEXT("THE DIRECTOR'S CUT") : TEXT("THE THEATRICAL RELEASE");
+	// Dylan: the game's title with the edition stamped on it, the same pairing as the title screen.
+	V.Title = TEXT("THE DREAD LAND OF CANDY");
+	V.Stamp = JamScreens::EditionStamp(T.bDirectorsCut);
 	V.Subtitle = T.bDirectorsCut ? TEXT("A bold, uncompromising vision. Hers.")
 		: TEXT("Released against the director's wishes. She has asked that her name be removed.");
 	V.Rows = {
@@ -124,7 +131,6 @@ FJamScreenView JamScreens::Premiere(const FJamPremiereTotals& T, const FJamMenuS
 	if (!T.Title.IsEmpty())
 	{
 		// The film the player's notes made. The totals and the hero's one word stay.
-		V.Kicker = T.bDirectorsCut ? TEXT("TONIGHT: THE DIRECTOR'S CUT OF") : TEXT("TONIGHT: THE THEATRICAL RELEASE OF");
 		V.Title = T.Title.ToUpper();
 		V.Subtitle = T.Tagline;
 	}
@@ -230,7 +236,8 @@ FJamScreenView JamScreens::Credits(bool bDirectorsCut, const FJamMenuSettings& S
 {
 	FJamScreenView V;
 	V.Screen = EJamScreen::Credits;
-	V.Title = bDirectorsCut ? TEXT("THE DIRECTOR'S CUT") : TEXT("THE THEATRICAL RELEASE");
+	V.Title = TEXT("THE DREAD LAND OF CANDY");
+	V.Stamp = JamScreens::EditionStamp(bDirectorsCut);
 	V.Body = CreditLines(bDirectorsCut);
 	// The post-credits pitch shows when the scroll ends.
 	V.Caption = TEXT("Sequel. Same rats. Same field. We call it a return to form.");
