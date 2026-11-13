@@ -22,7 +22,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 ## Dylan's list (details in the release plan)
 
 1. (done) Theme song file. Stop any Codex session holding the engine.
-2. (deployed, Nov 13) Give GAME the API base URL for `BaseUrl` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini`; it is not on disk yet. Confirm BACKEND has the two corrections below.
+2. (done, Nov 13) Backend live at `https://api.imaginarycomponent.com`, set as `BaseUrl` in `Config/DefaultGame.ini` (quoted: unquoted, the ini cuts it at `//`). `live_check.py` 0 problems; in game, `-autonote=typed:make_it_rain_and_sad` got model notes (200, 2.3 to 3.5 s) and a generated premiere. Python on this PC rejects the chain (expired ISRG X2 cross-sign) unless run with `SSL_CERT_FILE=<UE>/Engine/Content/Certificates/ThirdParty/cacert.pem`; Unreal's bundle has Root X2, so the game is fine. Still open: confirm BACKEND has the two corrections below.
 3. (dropped: the first build out is the world build)
 4. Play Open after R5, decide the gate.
 5. Video; the itch page and uploads go through ChatGPT (release plan, "Who runs it"), with Dylan's go-ahead per push.

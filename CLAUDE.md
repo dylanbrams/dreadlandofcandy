@@ -54,4 +54,5 @@ Game flags: `-shotat=<s> -shotname=<n>` (in-engine screenshot), `-quitat=<s>` (`
 - PowerShell 5.1 `Get-Content` reads UTF-8 files without a BOM as ANSI; writing them back garbles non-ASCII text. Edit text files with the Edit tool or Python.
 - GAS: 5.8 ensures on `SetIsReplicated` in a component constructor, use `SetIsReplicatedByDefault`. `FGameplayAbilitySpecHandle` is in `GameplayAbilitySpecHandle.h`. Needs the `GameplayAbilities` plugin in the `.uproject` and `GameplayAbilities`, `GameplayTags`, `GameplayTasks` in `Build.cs`. Attribute sets made as default subobjects register with the ASC automatically.
 - `IMPLEMENT_SIMPLE_AUTOMATION_TEST` flags must be an inline expression or a macro; a `constexpr EAutomationTestFlags::Type` does not compile.
+- An ini value containing `//` (a URL) is cut there: quote it, `BaseUrl="https://..."`.
 - The editor writes an Android file server `SecurityToken` into `Config/DefaultEngine.ini` when it runs. Never commit that diff.
