@@ -1,0 +1,829 @@
+{
+  "Hyper3D/SM_Almond.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "f57417a8c1025b5ae0ad51f03aebbf0d9d76c8502085c486a3b5f6855b60a4e4",
+    "output": "Hyper3D\\SM_Almond.glb",
+    "objects": [
+      {
+        "name": "SM_Almond",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.9485950469970703
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Fenella.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at flight anchor; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "9e8a4b58f0e0f41aa5a6570ca9d6d85d7e2842dd0dc64df9f505dae081b6c9d0",
+    "output": "Hyper3D\\SM_Fenella.glb",
+    "objects": [
+      {
+        "name": "SM_Fenella",
+        "pivot_purpose": "flight anchor",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.036869242787361145
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Goblin.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Separated texture-derived material regions without changing atlas pixels: {\"Skin\": 15990, \"Teeth\": 1890}",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "ffe90904e7af4958368e514a032b8a0baab0510f76726c7d412ead1d8197a612",
+    "output": "Hyper3D\\SM_Goblin.glb",
+    "objects": [
+      {
+        "name": "SM_Goblin",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.94969242811203
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_HouseFront_Rodin.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "730a0830716d796a758cb4369e5a8a909eac689b7ca842e74ae6fd82fc596123",
+    "output": "Hyper3D\\SM_HouseFront_Rodin.glb",
+    "objects": [
+      {
+        "name": "SM_HouseFront_Rodin",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.9503944516181946
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_LollyBug.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Separated texture-derived material regions without changing atlas pixels: {\"Wings\": 4887}",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "d4cd241d411dd6fc0652c6e2453ca6e8e428ae3ac9182835748e90efbe7c499c",
+    "output": "Hyper3D\\SM_LollyBug.glb",
+    "objects": [
+      {
+        "name": "SM_LollyBug",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.951068639755249
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Peppermint_Rodin.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "cca4da904cc7f5b616b28ff6939836f2d5fc3bed63d07e4bb1865da5e6465e56",
+    "output": "Hyper3D\\SM_Peppermint_Rodin.glb",
+    "objects": [
+      {
+        "name": "SM_Peppermint_Rodin",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.7530309557914734
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Rat_Rodin.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "706800a7089050241b9435202ba585d43487d702d4fd0277bc214fae75a98a12",
+    "output": "Hyper3D\\SM_Rat_Rodin.glb",
+    "objects": [
+      {
+        "name": "SM_Rat_Rodin",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.9519344568252563
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Sword.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Lengthened and broadened blade relative to grip, retaining original overall height and atlas UVs; no paid regeneration.",
+      "Set origin at hand grip; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "abc09c6b6854522630f1de9a7741fad1e2ad680db3549412b41bb937b22d515e",
+    "output": "Hyper3D\\SM_Sword.glb",
+    "objects": [
+      {
+        "name": "SM_Sword",
+        "pivot_purpose": "hand grip",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.7349421977996826
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Toothbrush.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at hand grip; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "35c6447319ad4571b47c1a7a959b008ea5f58cc0ec49b98c8ad197c46b9a56b4",
+    "output": "Hyper3D\\SM_Toothbrush.glb",
+    "objects": [
+      {
+        "name": "SM_Toothbrush",
+        "pivot_purpose": "hand grip",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.5883422493934631
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Boulder.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "b3fda5a17631d8156453a5886e66cf0160357e9ce6faa4731e4c3bc1996ec254",
+    "output": "Fal\\SM_Boulder.glb",
+    "objects": [
+      {
+        "name": "SM_Boulder",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.20999851822853088
+        ]
+      }
+    ]
+  },
+  "Hyper3D/SM_Villager.glb": {
+    "triangles_before": 500000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "a09d2f54acd9c991dcfc736870ad7eeab999d85b5534ccac443e3ab11aecf9cb",
+    "output": "Hyper3D\\SM_Villager.glb",
+    "objects": [
+      {
+        "name": "SM_Villager",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.9489624500274658
+        ]
+      }
+    ]
+  },
+  "Fal/SM_CandyCrop.glb": {
+    "triangles_before": 40012,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "d84e12cfd72d6b3104795820fc04bd11bc631beb075e0e6c7a6fd271b90c2839",
+    "output": "Fal\\SM_CandyCrop.glb",
+    "objects": [
+      {
+        "name": "SM_CandyCrop",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.12499196827411652
+        ]
+      }
+    ]
+  },
+  "Fal/SM_CandyFence.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "ec2c06faedd8b75a3639fd614d50c9cffc69096a6f24b1ccddb9f8be635a68ad",
+    "output": "Fal\\SM_CandyFence.glb",
+    "objects": [
+      {
+        "name": "SM_CandyFence",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.07999997586011887
+        ]
+      }
+    ]
+  },
+  "Fal/SM_CandyTree.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "74b63d8d700475df9837f9a6ae5279f66c28855796506a0850d2a7658be852f6",
+    "output": "Fal\\SM_CandyTree.glb",
+    "objects": [
+      {
+        "name": "SM_CandyTree",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.17999914288520813
+        ]
+      }
+    ]
+  },
+  "Fal/SM_CardboardBox.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "21bdae571a88e0f263305d3a1ca1451f34d8f2184fb08703654f8dbdf2e999d5",
+    "output": "Fal\\SM_CardboardBox.glb",
+    "objects": [
+      {
+        "name": "SM_CardboardBox",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -1.270172288059257e-05
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Celery.glb": {
+    "triangles_before": 40008,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "fe2a2cb19754a8c7d80257ec32aeda995f381c49c3dd91786c8f10b237afc257",
+    "output": "Fal\\SM_Celery.glb",
+    "objects": [
+      {
+        "name": "SM_Celery",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          6.887374183861539e-05
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Clapperboard.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Retained textured striped clapper/hinge and rebuilt the blank slate without limbs, stubs or floating glove fragments.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "1db2ce340573764c0953a6ab5b69a792d58caa44bbf1d700acbbc2c5720d4e4d",
+    "output": "Fal\\SM_Clapperboard.glb",
+    "objects": [
+      {
+        "name": "SM_Clapperboard",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.2549999952316284
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Crook.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 7998,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at hand grip; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "873c8be362cf9b797a88c058d2b264370850d721399800ffe32710f4815abd84",
+    "output": "Fal\\SM_Crook.glb",
+    "objects": [
+      {
+        "name": "SM_Crook",
+        "pivot_purpose": "hand grip",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.37861308455467224
+        ]
+      }
+    ]
+  },
+  "Fal/SM_DirectorsChair.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "ce95d4c66d105a84da501eb220f3bb455d525dccf0b252c61b3bc5cca517f233",
+    "output": "Fal\\SM_DirectorsChair.glb",
+    "objects": [
+      {
+        "name": "SM_DirectorsChair",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          4.846684169024229e-05
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Hat_Straw.glb": {
+    "triangles_before": 39998,
+    "triangles_after": 2400,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Rebuilt a complete broad-brim hollow straw hat without the head, using the embedded straw atlas and a Villager-sized crown.",
+      "Set origin at Villager head-top mount; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "0ec6997ab5871a5f8cdc6c00634f52146f793f53b9e0ae9e26bb19b0f6fecd3a",
+    "output": "Fal\\SM_Hat_Straw.glb",
+    "objects": [
+      {
+        "name": "SM_Hat_Straw",
+        "pivot_purpose": "Villager head-top mount",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          1.184000015258789
+        ]
+      }
+    ]
+  },
+  "Fal/SM_HeadMirror.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 1164,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Rebuilt a continuous hollow headband and perforated mirror disc without the head, sized to the actual Villager head.",
+      "Set origin at Villager head-centre mount; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "ae91e6beb38d74efbd21826b36c23af39ee01c04dcf68d35defb3a8b6e5c3fd9",
+    "output": "Fal\\SM_HeadMirror.glb",
+    "objects": [
+      {
+        "name": "SM_HeadMirror",
+        "pivot_purpose": "Villager head-centre mount",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  },
+  "Fal/SM_HouseFront_Fal.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "d995c564421e657fbfb3f23f537c67706cff446a146281aa9d745d3408c36b94",
+    "output": "Fal\\SM_HouseFront_Fal.glb",
+    "objects": [
+      {
+        "name": "SM_HouseFront_Fal",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.10498695820569992
+        ]
+      }
+    ]
+  },
+  "Fal/SM_LeafMegaphone.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 456,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Rebuilt the rolled leaf as a continuous hollow cone with handle and raised veins, without the interior face/ornament.",
+      "Set origin at hand grip; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "07cefc698f1172a0e05cb743d6c56b395231edf3adfcf0d6d5f2bb52082d1b79",
+    "output": "Fal\\SM_LeafMegaphone.glb",
+    "objects": [
+      {
+        "name": "SM_LeafMegaphone",
+        "pivot_purpose": "hand grip",
+        "source_anchor_m": [
+          0.0,
+          0.27000001072883606,
+          0.23000000417232513
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Molar.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Named enamel material for independent plaque/treatment material setup.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "aa44200e493ef69807e422feeb28146548ce4524e191caaaeb823249d8987791",
+    "output": "Fal\\SM_Molar.glb",
+    "objects": [
+      {
+        "name": "SM_Molar",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.17999929189682007
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Peppermint_Fal.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "941cefae0e4cd10b2ee69cfe77ebce5e701cfaf533efd7edf732ad93843aa277",
+    "output": "Fal\\SM_Peppermint_Fal.glb",
+    "objects": [
+      {
+        "name": "SM_Peppermint_Fal",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.09999041259288788
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Rat_Fal.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 25000,
+    "target": 25000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "8eeac17149f5afbc55b689d9fb88eb455c28c22b6336afdab7241229c8872539",
+    "output": "Fal\\SM_Rat_Fal.glb",
+    "objects": [
+      {
+        "name": "SM_Rat_Fal",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -1.8583575567276966e-08
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Signpost.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed generated ground/pedestal geometry and capped exposed contact surfaces.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "5247f7029fb332191f6298572b1df31e188e9c84d5f4fac47ab9f86bc8d1c07d",
+    "output": "Fal\\SM_Signpost.glb",
+    "objects": [
+      {
+        "name": "SM_Signpost",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.22655393183231354
+        ]
+      }
+    ]
+  },
+  "Fal/SM_Table.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed all four separate chair components; retained only the table and its four legs.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "d0923b42ca320da1e4ba0204e986545a827da98523618c54783f7dc93dd04c73",
+    "output": "Fal\\SM_Table.glb",
+    "objects": [
+      {
+        "name": "SM_Table",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.001325972843915224
+        ]
+      }
+    ]
+  },
+  "Fal/SM_FortGate.glb": {
+    "triangles_before": 39992,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed embedded knight and opened a continuous arched passage through the gate.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "a12c23b84c9cbdad62ef0f4cae6bf7e6b2c944014297639a02276cee3fac89a7",
+    "output": "Fal\\SM_FortGate.glb",
+    "objects": [
+      {
+        "name": "SM_FortGate",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          7.031102541077416e-06
+        ]
+      }
+    ]
+  },
+  "Meshy/SM_LollyShard.glb": {
+    "triangles_before": 156,
+    "triangles_after": 148,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Removed the white lollipop stick, keeping the pink low-poly candy fragment.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "09b0f5460bb563d5c1400bdd2f839cf7849703bc9640daa851d9674afdfe9cf4",
+    "output": "Meshy\\SM_LollyShard.glb",
+    "objects": [
+      {
+        "name": "SM_LollyShard",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          -0.1783970147371292
+        ]
+      }
+    ]
+  },
+  "Fal/SM_LightStand.glb": {
+    "triangles_before": 40000,
+    "triangles_after": 8000,
+    "target": 8000,
+    "actions": [
+      "Welded glTF attribute splits before Collapse; retained per-corner UVs.",
+      "Retained textured lamp housing/barn doors, removed wired lower assembly, and rebuilt a clean cable-free tripod and pole.",
+      "Set origin at ground contact; retained source scale for explicit engine fitting."
+    ],
+    "topology": {
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    "source_sha256": "f38a7bc91997659b9d5e81164bd1a8cfa0bce59d195622b879491dd58f8e0484",
+    "output": "Fal\\SM_LightStand.glb",
+    "objects": [
+      {
+        "name": "SM_LightStand",
+        "pivot_purpose": "ground contact",
+        "source_anchor_m": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    ]
+  }
+}

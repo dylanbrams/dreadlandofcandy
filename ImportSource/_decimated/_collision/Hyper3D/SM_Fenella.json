@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Fenella.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No collision: flying director visual.",
+  "boxes": [],
+  "dimensions_m": [
+    1.8244543075561523,
+    0.7675889730453491,
+    1.8968634605407715
+  ],
+  "bounds_min_m": [
+    -0.9130221009254456,
+    -0.38726338744163513,
+    -0.9863689541816711
+  ],
+  "bounds_max_m": [
+    0.911432147026062,
+    0.380325585603714,
+    0.9104944467544556
+  ]
+}

@@ -1,0 +1,148 @@
+[
+  {
+    "file": "Hyper3D\\SM_Fenella.glb",
+    "dimensions_m": [
+      1.8242411613464355,
+      0.7673007845878601,
+      1.8965153694152832
+    ],
+    "bounds_min_m": [
+      -0.9127447009086609,
+      -0.38719984889030457,
+      -0.9491762518882751
+    ],
+    "bounds_max_m": [
+      0.9114964604377747,
+      0.38010093569755554,
+      0.9473391175270081
+    ],
+    "objects": [
+      {
+        "name": "model",
+        "triangles": 500000,
+        "raw_boundary_edges": 142852,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          248465,
+          1146,
+          379
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 0,
+        "materials": [
+          "model"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_diffuse",
+            "size": [
+              2048,
+              2048
+            ]
+          },
+          {
+            "name": "texture_metallic-texture_roughness",
+            "size": [
+              2048,
+              2048
+            ]
+          },
+          {
+            "name": "texture_normal",
+            "size": [
+              2048,
+              2048
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Hyper3D_SM_Fenella_0.png",
+      "Hyper3D_SM_Fenella_1.png",
+      "Hyper3D_SM_Fenella_2.png",
+      "Hyper3D_SM_Fenella_3.png"
+    ]
+  },
+  {
+    "file": "Hyper3D\\SM_Sword.glb",
+    "dimensions_m": [
+      0.4974093735218048,
+      0.14825406670570374,
+      1.899406909942627
+    ],
+    "bounds_min_m": [
+      -0.24911172688007355,
+      -0.07417026162147522,
+      -0.9508656859397888
+    ],
+    "bounds_max_m": [
+      0.24829764664173126,
+      0.07408380508422852,
+      0.9485412240028381
+    ],
+    "objects": [
+      {
+        "name": "model",
+        "triangles": 500000,
+        "raw_boundary_edges": 116572,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 3,
+        "components_vertex_counts": [
+          249993
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 0,
+        "materials": [
+          "model"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_diffuse",
+            "size": [
+              2048,
+              2048
+            ]
+          },
+          {
+            "name": "texture_metallic-texture_roughness",
+            "size": [
+              2048,
+              2048
+            ]
+          },
+          {
+            "name": "texture_normal",
+            "size": [
+              2048,
+              2048
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Hyper3D_SM_Sword_0.png",
+      "Hyper3D_SM_Sword_1.png",
+      "Hyper3D_SM_Sword_2.png",
+      "Hyper3D_SM_Sword_3.png"
+    ]
+  }
+]

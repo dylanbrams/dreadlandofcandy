@@ -1,0 +1,1322 @@
+[
+  {
+    "file": "Fal\\SM_Boulder.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "18c1d75deeeaa1fd81ac2f5cb2814cc0992878103d519e107c6a39c7c5ea471b"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 2691,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "18c1d75deeeaa1fd81ac2f5cb2814cc0992878103d519e107c6a39c7c5ea471b"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_CandyCrop.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40012,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "97e9fbd23536b5afb9fd4f7cae1ff53c388e948c68b5bf76ce996aa7588be5f8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 5077,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "97e9fbd23536b5afb9fd4f7cae1ff53c388e948c68b5bf76ce996aa7588be5f8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_CandyFence.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "8b6af677a9a63b7485373e05d11d9a13251763f2210cf68677cf1bd55bc2f9e5"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 3701,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "8b6af677a9a63b7485373e05d11d9a13251763f2210cf68677cf1bd55bc2f9e5"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_CandyTree.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "6c6723c70e83388ac4f94a8a32412bb54c85a45b44f6800561112662c38f26c8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 7276,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "6c6723c70e83388ac4f94a8a32412bb54c85a45b44f6800561112662c38f26c8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_CardboardBox.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d83b3d6095906a5872c245a31dd9adca961d7f3df240fd0884a6a8b7da95b486"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 4744,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d83b3d6095906a5872c245a31dd9adca961d7f3df240fd0884a6a8b7da95b486"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Celery.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40008,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "a7c45fd35ea5c2da163d2157a6627eb019b9b30c2e8428cf8f909cc1b21586ab"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 7474,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "a7c45fd35ea5c2da163d2157a6627eb019b9b30c2e8428cf8f909cc1b21586ab"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Clapperboard.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d2c9aeca9024617645d459cb5c39bf631e39e47b32dc254492f1b18b1be9e6f8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 6199,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d2c9aeca9024617645d459cb5c39bf631e39e47b32dc254492f1b18b1be9e6f8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Crook.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "11a5861ae30da2187f94693cdf059aaa290cfb103ba4dcfa0d386faadb1e7e0d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 4115,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "11a5861ae30da2187f94693cdf059aaa290cfb103ba4dcfa0d386faadb1e7e0d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_DirectorsChair.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d31f9672b19145ce0c7f52c3af056b98f5501ca8fd42495b6bb8bb27fa19e788"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 5318,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "d31f9672b19145ce0c7f52c3af056b98f5501ca8fd42495b6bb8bb27fa19e788"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_FortGate.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 39992,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "17f04a1e8c33fd6fb8b2bf3de8200024296316dbc7b6cd640ad121f535a82138"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 8102,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "17f04a1e8c33fd6fb8b2bf3de8200024296316dbc7b6cd640ad121f535a82138"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Hat_Straw.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 39998,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "63c9b00207e75c58a56bce659f5dbc09cb6e3ca6e3a1d3270bae9198b7588087"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 9700,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "63c9b00207e75c58a56bce659f5dbc09cb6e3ca6e3a1d3270bae9198b7588087"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_HeadMirror.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "1bb23bba919fccad893a620712418582d52a1984fc444b7b6325eb4f8ae8e6a0"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 6140,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "1bb23bba919fccad893a620712418582d52a1984fc444b7b6325eb4f8ae8e6a0"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_HouseFront_Fal.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "99e21c65c115107a510f6b8ad85c688f9425d190b92970ee68885e7994331036"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 7996,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "99e21c65c115107a510f6b8ad85c688f9425d190b92970ee68885e7994331036"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_LeafMegaphone.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "7e42519cb89d71c0a96c07f3f86e01e3f5bbf235a38d78b78d7c68f22ec7cd53"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 6332,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "7e42519cb89d71c0a96c07f3f86e01e3f5bbf235a38d78b78d7c68f22ec7cd53"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_LightStand.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "54d2666cc7df0a72a875c668ca1a451f1932217ae20aba57e2b1f3d5b72d250d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 7162,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "54d2666cc7df0a72a875c668ca1a451f1932217ae20aba57e2b1f3d5b72d250d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Molar.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "dc10c9535b1e6c84dbf6ca3db06214f8461fbce975feac1139c84d008475f916"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 5792,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "dc10c9535b1e6c84dbf6ca3db06214f8461fbce975feac1139c84d008475f916"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Peppermint_Fal.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "e594e8d5380df35d32da44e212716c2f1c88f0f12f011cb581c27a758e8d0725"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 5276,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "e594e8d5380df35d32da44e212716c2f1c88f0f12f011cb581c27a758e8d0725"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Rat_Fal.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "0bcddc9da2b6c8c914c16705f8defb10cd831a7c6c32d8de6dc1f37b75028011"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 3172,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "0bcddc9da2b6c8c914c16705f8defb10cd831a7c6c32d8de6dc1f37b75028011"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Signpost.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "443d6f8ab6a97c8c944eccc739b08abd5117092bb470a8f969725e519c1cc6c8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 6668,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "443d6f8ab6a97c8c944eccc739b08abd5117092bb470a8f969725e519c1cc6c8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Fal\\SM_Table.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 40000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "30c0b383f382e94b7a7e43b910992f4e0acaee63d0c13121b181887968eabde8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 5123,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            4096,
+            4096
+          ],
+          "pixels_sha256": "30c0b383f382e94b7a7e43b910992f4e0acaee63d0c13121b181887968eabde8"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Almond.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "0c43b99cd9afd6c38e073884ce98426be98b5b655ebda1746983b3aa72c8ad87"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 19288,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "0c43b99cd9afd6c38e073884ce98426be98b5b655ebda1746983b3aa72c8ad87"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Fenella.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "023eb6c8e1283b887458c4d660096d205300ab249995dc782042b156e064ecd2"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 23334,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "023eb6c8e1283b887458c4d660096d205300ab249995dc782042b156e064ecd2"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Goblin.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "f869b3fe2ac4d400df9638c7d29ba40a2d754bc18c0f1aabf996742022b86392"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 19442,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "f869b3fe2ac4d400df9638c7d29ba40a2d754bc18c0f1aabf996742022b86392"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_HouseFront_Rodin.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "c55cdf442d50ead6e0d4b24382e32073651846a363d4f554dbe4edc5ded97df2"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 7224,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "c55cdf442d50ead6e0d4b24382e32073651846a363d4f554dbe4edc5ded97df2"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_LollyBug.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "51d7e5d9077a3775c541f43cc5f5f44957904fe3ffb2d7e477f26dbeb9ef292a"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 21644,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "51d7e5d9077a3775c541f43cc5f5f44957904fe3ffb2d7e477f26dbeb9ef292a"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Peppermint_Rodin.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 7
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "18b4a106fc02b9fe97857d81b8a145edc0ad499339ca34b8b3dcd92e8bffa9ad"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 9322,
+          "exact_weld_nonmanifold_edges": 1
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "18b4a106fc02b9fe97857d81b8a145edc0ad499339ca34b8b3dcd92e8bffa9ad"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Rat_Rodin.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "8808cb82cc869a9d045c587ea3d5f5747ff8db5d8c8c4e2978cd35f7ab7a9090"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 25000,
+          "exact_weld_boundary_edges": 18135,
+          "exact_weld_nonmanifold_edges": 1
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "8808cb82cc869a9d045c587ea3d5f5747ff8db5d8c8c4e2978cd35f7ab7a9090"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Sword.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 17
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "18b37283454136ac177c97912ea6958370c5f2340d0aca899d30f673730688ff"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 7999,
+          "exact_weld_boundary_edges": 9144,
+          "exact_weld_nonmanifold_edges": 5
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "18b37283454136ac177c97912ea6958370c5f2340d0aca899d30f673730688ff"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Toothbrush.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 6
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "fd8e7b7cd4f53edd3da017b981c451c05af8408a1c8dd268370c3658aa69c335"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 8000,
+          "exact_weld_boundary_edges": 11762,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "fd8e7b7cd4f53edd3da017b981c451c05af8408a1c8dd268370c3658aa69c335"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  },
+  {
+    "file": "Hyper3D\\SM_Villager.glb",
+    "source": {
+      "primitives": [
+        {
+          "triangles": 500000,
+          "exact_weld_boundary_edges": 0,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "50fe02b3e0ba8b2f612d22d2de46d5312ec3c121062150c56468d19feae02c9d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "decimated": {
+      "primitives": [
+        {
+          "triangles": 24999,
+          "exact_weld_boundary_edges": 18689,
+          "exact_weld_nonmanifold_edges": 0
+        }
+      ],
+      "base_color_images": [
+        {
+          "size": [
+            2048,
+            2048
+          ],
+          "pixels_sha256": "50fe02b3e0ba8b2f612d22d2de46d5312ec3c121062150c56468d19feae02c9d"
+        }
+      ],
+      "skins": 0,
+      "animations": 0
+    },
+    "base_color_pixels_identical": true
+  }
+]

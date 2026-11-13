@@ -1,0 +1,35 @@
+{
+  "asset": "Fal\\SM_Molar.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Import the supplied UCX shapes; do not generate a single hull that fills functional gaps.",
+  "boxes": [
+    {
+      "center_m": [
+        -0.002286583185195923,
+        0.012879237532615662,
+        0.36760765314102173
+      ],
+      "size_m": [
+        0.6588459610939026,
+        0.6380352973937988,
+        0.7352153062820435
+      ]
+    }
+  ],
+  "dimensions_m": [
+    0.6588459610939026,
+    0.6380352973937988,
+    0.7352153062820435
+  ],
+  "bounds_min_m": [
+    -0.3317095637321472,
+    -0.30613839626312256,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.32713639736175537,
+    0.3318968713283539,
+    0.7352153062820435
+  ],
+  "fbx": "_collision\\Fal\\SM_Molar.fbx"
+}

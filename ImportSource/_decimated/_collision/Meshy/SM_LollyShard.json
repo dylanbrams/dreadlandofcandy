@@ -1,0 +1,21 @@
+{
+  "asset": "Meshy\\SM_LollyShard.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    1.1315981149673462,
+    1.1561100482940674,
+    0.21611402928829193
+  ],
+  "bounds_min_m": [
+    -0.9388880729675293,
+    -0.5775940418243408,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.1927100121974945,
+    0.5785160064697266,
+    0.21611402928829193
+  ]
+}

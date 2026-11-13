@@ -1,0 +1,54 @@
+[
+  {
+    "asset": "SM_Hat_Straw",
+    "villager_local_mount_m": [
+      0,
+      -0.03,
+      1.898
+    ],
+    "hollow_opening_check": true,
+    "preview_front": "SM_Hat_Straw_0.png",
+    "preview_back": "SM_Hat_Straw_1.png"
+  },
+  {
+    "asset": "SM_HeadMirror",
+    "villager_local_mount_m": [
+      0,
+      -0.03,
+      1.65
+    ],
+    "hollow_opening_check": true,
+    "preview_front": "SM_HeadMirror_0.png",
+    "preview_back": "SM_HeadMirror_1.png"
+  },
+  {
+    "asset": "SM_FortGate",
+    "portal_ray_tests": [
+      {
+        "x_m": 0,
+        "z_m": 0.05,
+        "clear": true
+      },
+      {
+        "x_m": 0,
+        "z_m": 0.15,
+        "clear": true
+      },
+      {
+        "x_m": 0,
+        "z_m": 0.25,
+        "clear": true
+      },
+      {
+        "x_m": -0.075,
+        "z_m": 0.1,
+        "clear": true
+      },
+      {
+        "x_m": 0.075,
+        "z_m": 0.1,
+        "clear": true
+      }
+    ]
+  }
+]

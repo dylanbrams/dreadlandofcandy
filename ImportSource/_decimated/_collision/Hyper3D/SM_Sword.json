@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Sword.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.5468205213546753,
+    0.1121310144662857,
+    1.8998970985412598
+  ],
+  "bounds_min_m": [
+    -0.273889422416687,
+    -0.05619127303361893,
+    -0.21615320444107056
+  ],
+  "bounds_max_m": [
+    0.2729310989379883,
+    0.05593973770737648,
+    1.683743953704834
+  ]
+}

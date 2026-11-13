@@ -1,0 +1,414 @@
+[
+  {
+    "file": "Fal\\SM_Clapperboard.glb",
+    "dimensions_m": [
+      0.7700010538101196,
+      0.25188449025154114,
+      0.7490150928497314
+    ],
+    "bounds_min_m": [
+      -0.3850005567073822,
+      -0.13368205726146698,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.38500046730041504,
+      0.11820243299007416,
+      0.7490150928497314
+    ],
+    "objects": [
+      {
+        "name": "SM_Clapperboard",
+        "triangles": 8000,
+        "raw_boundary_edges": 3776,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          3783,
+          173,
+          50
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 40,
+        "uv_outside_01_loops": 1,
+        "materials": [
+          "Material.001",
+          "node_0_CutInterior"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_20250901",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Image",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular Tint",
+            "size": [
+              4096,
+              4096
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Fal_SM_Clapperboard_0.png",
+      "Fal_SM_Clapperboard_1.png",
+      "Fal_SM_Clapperboard_2.png",
+      "Fal_SM_Clapperboard_3.png"
+    ]
+  },
+  {
+    "file": "Fal\\SM_Crook.glb",
+    "dimensions_m": [
+      0.5126098394393921,
+      0.22115525603294373,
+      0.8930658102035522
+    ],
+    "bounds_min_m": [
+      -0.24587422609329224,
+      -0.1103493869304657,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.26673561334609985,
+      0.11080586910247803,
+      0.8930658102035522
+    ],
+    "objects": [
+      {
+        "name": "SM_Crook",
+        "triangles": 7998,
+        "raw_boundary_edges": 2622,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          4001
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 0,
+        "materials": [
+          "Material.001",
+          "node_0_CutInterior"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_20250901",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Image",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular Tint",
+            "size": [
+              4096,
+              4096
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Fal_SM_Crook_0.png",
+      "Fal_SM_Crook_1.png",
+      "Fal_SM_Crook_2.png",
+      "Fal_SM_Crook_3.png"
+    ]
+  },
+  {
+    "file": "Fal\\SM_Hat_Straw.glb",
+    "dimensions_m": [
+      1.0682446956634521,
+      0.9313437938690186,
+      0.4254409670829773
+    ],
+    "bounds_min_m": [
+      -0.5394507050514221,
+      -0.5732071399688721,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.52879399061203,
+      0.35813668370246887,
+      0.4254409670829773
+    ],
+    "objects": [
+      {
+        "name": "SM_Hat_Straw",
+        "triangles": 8000,
+        "raw_boundary_edges": 8586,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          3801,
+          142,
+          13,
+          6
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 2,
+        "materials": [
+          "Material.001",
+          "node_0_CutInterior"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_20250901",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Image",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular Tint",
+            "size": [
+              4096,
+              4096
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Fal_SM_Hat_Straw_0.png",
+      "Fal_SM_Hat_Straw_1.png",
+      "Fal_SM_Hat_Straw_2.png",
+      "Fal_SM_Hat_Straw_3.png"
+    ]
+  },
+  {
+    "file": "Fal\\SM_HeadMirror.glb",
+    "dimensions_m": [
+      1.1037694215774536,
+      0.8148232102394104,
+      0.37733209133148193
+    ],
+    "bounds_min_m": [
+      -0.5550146698951721,
+      -0.3587401211261749,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.5487547516822815,
+      0.4560830891132355,
+      0.37733209133148193
+    ],
+    "objects": [
+      {
+        "name": "SM_HeadMirror",
+        "triangles": 8000,
+        "raw_boundary_edges": 4244,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          1708,
+          1229,
+          278,
+          253,
+          214,
+          167,
+          163
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 0,
+        "materials": [
+          "Material.001",
+          "node_0_CutInterior"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_20250901",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Image",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular Tint",
+            "size": [
+              4096,
+              4096
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Fal_SM_HeadMirror_0.png",
+      "Fal_SM_HeadMirror_1.png",
+      "Fal_SM_HeadMirror_2.png",
+      "Fal_SM_HeadMirror_3.png"
+    ]
+  },
+  {
+    "file": "Fal\\SM_LeafMegaphone.glb",
+    "dimensions_m": [
+      0.5376104116439819,
+      0.9264895915985107,
+      0.7751908898353577
+    ],
+    "bounds_min_m": [
+      -0.26737213134765625,
+      -0.33410122990608215,
+      0.0
+    ],
+    "bounds_max_m": [
+      0.2702382504940033,
+      0.592388391494751,
+      0.7751908898353577
+    ],
+    "objects": [
+      {
+        "name": "SM_LeafMegaphone",
+        "triangles": 8000,
+        "raw_boundary_edges": 5550,
+        "welded_boundary_edges": 0,
+        "welded_nonmanifold_shared_edges": 0,
+        "inconsistent_winding_edges": 0,
+        "zero_area_faces": 0,
+        "components_vertex_counts": [
+          3816,
+          170
+        ],
+        "uv_layers": 1,
+        "uv_degenerate_triangles": 0,
+        "uv_outside_01_loops": 0,
+        "materials": [
+          "Material.001",
+          "node_0_CutInterior"
+        ],
+        "origin_world_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "images": [
+          {
+            "name": "texture_20250901",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Image",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular",
+            "size": [
+              4096,
+              4096
+            ]
+          },
+          {
+            "name": "Specular Tint",
+            "size": [
+              4096,
+              4096
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [
+      "Fal_SM_LeafMegaphone_0.png",
+      "Fal_SM_LeafMegaphone_1.png",
+      "Fal_SM_LeafMegaphone_2.png",
+      "Fal_SM_LeafMegaphone_3.png"
+    ]
+  }
+]

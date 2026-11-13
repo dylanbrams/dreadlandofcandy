@@ -1,0 +1,16 @@
+[
+  {
+    "file": "Fal/SM_Boulder.glb",
+    "triangles": 8000,
+    "uv_layers": 1,
+    "boundary_edges": 0,
+    "nonmanifold_shared_edges": 0
+  },
+  {
+    "file": "Hyper3D/SM_Fenella.glb",
+    "triangles": 25000,
+    "uv_layers": 1,
+    "boundary_edges": 0,
+    "nonmanifold_shared_edges": 0
+  }
+]

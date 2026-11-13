@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_CandyCrop.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.8301929235458374,
+    0.48280465602874756,
+    0.8477686643600464
+  ],
+  "bounds_min_m": [
+    -0.3932829797267914,
+    -0.24742074310779572,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.4369099736213684,
+    0.23538391292095184,
+    0.8477686643600464
+  ]
+}

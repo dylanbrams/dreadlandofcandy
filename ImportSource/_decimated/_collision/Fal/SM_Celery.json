@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_Celery.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.8527891635894775,
+    0.3706560432910919,
+    1.1436246633529663
+  ],
+  "bounds_min_m": [
+    -0.4095067083835602,
+    -0.17456437647342682,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.44328242540359497,
+    0.1960916668176651,
+    1.1436246633529663
+  ]
+}

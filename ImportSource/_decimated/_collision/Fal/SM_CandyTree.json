@@ -1,0 +1,35 @@
+{
+  "asset": "Fal\\SM_CandyTree.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Import the supplied UCX shapes; do not generate a single hull that fills functional gaps.",
+  "boxes": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.188757985830307
+      ],
+      "size_m": [
+        0.16626193523406985,
+        0.15310746431350708,
+        0.377515971660614
+      ]
+    }
+  ],
+  "dimensions_m": [
+    0.8313096761703491,
+    0.7655373215675354,
+    0.755031943321228
+  ],
+  "bounds_min_m": [
+    -0.4193759560585022,
+    -0.3764885365962982,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.4119337201118469,
+    0.3890487849712372,
+    0.755031943321228
+  ],
+  "fbx": "_collision\\Fal\\SM_CandyTree.fbx"
+}

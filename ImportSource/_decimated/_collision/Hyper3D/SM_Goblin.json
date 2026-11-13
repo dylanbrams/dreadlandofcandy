@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Goblin.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Actor capsule; static mesh has no blocking collision. Current GAME nuisance capsule is radius 40 cm, half-height 70 cm; fit mesh scale and ground offset to that actor.",
+  "boxes": [],
+  "dimensions_m": [
+    1.782763957977295,
+    1.039953589439392,
+    1.8992836475372314
+  ],
+  "bounds_min_m": [
+    -0.8923624157905579,
+    -0.519788920879364,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.8904014825820923,
+    0.5201646685600281,
+    1.8992836475372314
+  ]
+}

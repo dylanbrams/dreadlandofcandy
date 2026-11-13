@@ -1,0 +1,35 @@
+{
+  "asset": "Fal\\SM_Boulder.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Import the supplied UCX shapes; do not generate a single hull that fills functional gaps.",
+  "boxes": [
+    {
+      "center_m": [
+        0.004093602299690247,
+        0.009769737720489502,
+        0.30424803495407104
+      ],
+      "size_m": [
+        0.7839475870132446,
+        0.7560337781906128,
+        0.6084960699081421
+      ]
+    }
+  ],
+  "dimensions_m": [
+    0.7839475870132446,
+    0.7560337781906128,
+    0.6084960699081421
+  ],
+  "bounds_min_m": [
+    -0.3878801763057709,
+    -0.3682471513748169,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.39606738090515137,
+    0.3877866268157959,
+    0.6084960699081421
+  ],
+  "fbx": "_collision\\Fal\\SM_Boulder.fbx"
+}

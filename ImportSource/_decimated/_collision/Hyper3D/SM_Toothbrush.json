@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Toothbrush.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.68946373462677,
+    0.4548797607421875,
+    1.899910569190979
+  ],
+  "bounds_min_m": [
+    -0.34480538964271545,
+    -0.2262798696756363,
+    -0.3609830141067505
+  ],
+  "bounds_max_m": [
+    0.34465834498405457,
+    0.22859987616539001,
+    1.5389275550842285
+  ]
+}

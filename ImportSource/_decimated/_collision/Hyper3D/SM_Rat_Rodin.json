@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Rat_Rodin.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Actor capsule; static mesh has no blocking collision. Current GAME nuisance capsule is radius 40 cm, half-height 70 cm; fit mesh scale and ground offset to that actor.",
+  "boxes": [],
+  "dimensions_m": [
+    1.4925222396850586,
+    1.0791677236557007,
+    1.8988312482833862
+  ],
+  "bounds_min_m": [
+    -0.7466719746589661,
+    -0.5435599088668823,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.7458502054214478,
+    0.5356078147888184,
+    1.8988312482833862
+  ]
+}

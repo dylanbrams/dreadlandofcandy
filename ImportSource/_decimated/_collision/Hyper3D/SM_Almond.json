@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Almond.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Actor capsule; static mesh has no blocking collision. Current GAME nuisance capsule is radius 40 cm, half-height 70 cm; fit mesh scale and ground offset to that actor.",
+  "boxes": [],
+  "dimensions_m": [
+    1.407259225845337,
+    0.9644851088523865,
+    1.897454023361206
+  ],
+  "bounds_min_m": [
+    -0.7039012312889099,
+    -0.48257946968078613,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.7033580541610718,
+    0.48190563917160034,
+    1.897454023361206
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_Clapperboard.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.6800002455711365,
+    0.18051064014434814,
+    0.7640141248703003
+  ],
+  "bounds_min_m": [
+    -0.3400000035762787,
+    -0.07419472932815552,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.3400002419948578,
+    0.10631590336561203,
+    0.7640141248703003
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_Peppermint_Fal.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    1.1870005130767822,
+    0.7541273236274719,
+    0.5379235744476318
+  ],
+  "bounds_min_m": [
+    -0.5957743525505066,
+    -0.3608544170856476,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.5912262201309204,
+    0.39327290654182434,
+    0.5379235744476318
+  ]
+}

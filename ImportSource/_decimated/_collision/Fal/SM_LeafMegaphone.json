@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_LeafMegaphone.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.5277022123336792,
+    0.7999999523162842,
+    0.7588510513305664
+  ],
+  "bounds_min_m": [
+    -0.2638511061668396,
+    -0.6200000047683716,
+    -0.2150000035762787
+  ],
+  "bounds_max_m": [
+    0.2638511061668396,
+    0.17999997735023499,
+    0.5438510775566101
+  ]
+}

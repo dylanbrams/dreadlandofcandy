@@ -1,0 +1,21 @@
+{
+  "asset": "Hyper3D\\SM_Peppermint_Rodin.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    1.9044694900512695,
+    0.26702868938446045,
+    1.509266972541809
+  ],
+  "bounds_min_m": [
+    -0.9513252377510071,
+    -0.13376951217651367,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.9531442523002625,
+    0.13325919210910797,
+    1.509266972541809
+  ]
+}

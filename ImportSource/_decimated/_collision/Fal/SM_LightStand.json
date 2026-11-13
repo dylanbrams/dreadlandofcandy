@@ -1,0 +1,47 @@
+{
+  "asset": "Fal\\SM_LightStand.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "Import the supplied UCX shapes; do not generate a single hull that fills functional gaps.",
+  "boxes": [
+    {
+      "center_m": [
+        0,
+        0,
+        0.4
+      ],
+      "size_m": [
+        0.08,
+        0.08,
+        0.4
+      ]
+    },
+    {
+      "center_m": [
+        -0.0016288980841636658,
+        0.007862858474254608,
+        0.67
+      ],
+      "size_m": [
+        0.4793212413787842,
+        0.44427430629730225,
+        0.29
+      ]
+    }
+  ],
+  "dimensions_m": [
+    0.4793212413787842,
+    0.44427430629730225,
+    0.8144779801368713
+  ],
+  "bounds_min_m": [
+    -0.24128952622413635,
+    -0.21427428722381592,
+    0.0
+  ],
+  "bounds_max_m": [
+    0.23803173005580902,
+    0.23000000417232513,
+    0.8144779801368713
+  ],
+  "fbx": "_collision\\Fal\\SM_LightStand.fbx"
+}

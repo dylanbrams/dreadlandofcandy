@@ -1,0 +1,21 @@
+{
+  "asset": "Fal\\SM_Crook.glb",
+  "units": "metres, Blender Z-up",
+  "policy": "No static blocking collision. Use attachment socket/interaction overlap or weapon traces as appropriate.",
+  "boxes": [],
+  "dimensions_m": [
+    0.5126098394393921,
+    0.22115525603294373,
+    0.8930658102035522
+  ],
+  "bounds_min_m": [
+    -0.24587422609329224,
+    -0.1103493869304657,
+    -0.17861317098140717
+  ],
+  "bounds_max_m": [
+    0.26673561334609985,
+    0.11080586910247803,
+    0.7144526243209839
+  ]
+}
