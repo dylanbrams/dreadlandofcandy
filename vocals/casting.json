@@ -16,7 +16,7 @@
       "gender_in_character_brief": "female",
       "voice_name": "Sarah - Mature, Reassuring, Confident",
       "voice_id": "EXAVITQu4vr4xnSDxMaL",
-      "status": "selected_sample_pending",
+      "status": "user_approved_sample_pending",
       "direction": "Steely, controlled confidence; precise battlefield commands. Give INCOMING GREENERY! real urgency and DID YOU FLOSS?! the authority of an ultimatum. Avoid a soothing narrator read.",
       "suggested_sample": "INCOMING GREENERY!"
     },
@@ -24,7 +24,7 @@
       "gender_in_character_brief": "male",
       "voice_name": "Adam - Dominant, Firm",
       "voice_id": "pNInz6obpgDQGcFmaJgB",
-      "status": "selected_sample_pending",
+      "status": "user_approved_sample_pending",
       "direction": "Big, chest-led authority, blunt and forceful. EAT YOUR VEGETABLES! is a war cry. Rare Please. Just eat them. is a quiet exhausted parent, with no epic whisper.",
       "suggested_sample": "EAT YOUR VEGETABLES!"
     },
@@ -32,10 +32,10 @@
       "gender_in_character_brief": "male",
       "voice_name": "George - Warm, Captivating Storyteller",
       "voice_id": "JBFqnCBsd6RMkjVDRZzb",
-      "status": "selected_sample_pending",
+      "status": "user_approved_audio_review_pending",
       "direction": "Mature, measured ritual authority. Domestic hygiene spoken as an ancient catastrophic spell; crisp diction and decisive stress, without cheerful storytelling.",
       "suggested_sample": "WASH YOUR HANDS!"
     }
   },
-  "notes": "Casting choices use provider metadata and character briefs. New voices have not yet been auditioned. Performance descriptions are targets, not verified audio results. Voice settings alone do not guarantee this delivery; audition before bulk generation. German/Japanese and future translations require retrospective fluent review. No new audio generated during casting selection."
+  "notes": "User approved Sarah for Archer, Adam for Barbarian and George for Mage on 2026-11-13. Existing attack batch uses earlier Callum/Charlie casting for Archer/Barbarian; preserve those takes separately from replacements. George Mage recordings exist in output/attacks. Performance descriptions are targets, not verified listening results. Voice settings alone do not guarantee delivery. Translations require retrospective fluent review; no additional user approval gate. No new audio generated during this brief update."
 }
