@@ -262,3 +262,12 @@ are in `Scripts/generate_cast_weapons.py`, `ImportSource/_gen/cast_weapons/`
 and the Meshy manifest. The final rolling pin is original procedural Blender
 geometry, built by `Scripts/prepare_cast_weapons.py`; no third-party models.
 Existing original Niagara meshes/materials were reused for particles.
+
+## 2026-11-13: itch.io promotional cover and page copy
+
+`Marketing/Itch/cover.png` is original AI-generated promotional artwork made
+with the built-in OpenAI image generation tool, using existing game screenshots
+as visual references. Exact prompt: `Marketing/Itch/cover-prompt.txt`.
+It is page artwork, not an in-game asset or gameplay screenshot. The gallery
+uses unaltered in-engine captures from this project. Page copy was drafted
+with Codex from the project design and implementation notes.
