@@ -4,7 +4,14 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**R5** (package, smoke both modes, zip; then Dylan plays and approves the cast). Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**Dylan plays the R5 build and decides the gate** (release plan, "The gate"), then **R7** with his three worst things. If the gate passes: `GameDefaultMap=/Game/World/L_Sugarborough`, no flag means Open, Backlot behind `-backlot`; repackage, smoke, zip. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+
+## Hand-off to ChatGPT (itch push, with Dylan's go-ahead)
+
+- Zip: `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip`, 689.3 MB (debug symbols left out), packaged Nov 13 18:20 from commit after `9695d9d`.
+- Still Backlot by default (the gate is not decided). Open: run `MegaJam.exe /Game/World/L_Sugarborough -open` (the map must be the first argument).
+- New since the last package: terrain polish, sound effects and Fenella's voice (R1), theme song in the credits (R2), the world mode (R4), enemies hit back (R4b), the cast (R6).
+- Packaged PASS lines: Backlot `PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut ... hits=3 dignityfails=0 time=117.9`; Open (`-class=archer`) `PASS mode=open main=3 side=0` and `PASS scenes=3 ... hits=3 dignityfails=0 time=154.8`. No missing assets or warnings in either log.
 
 | Task | State |
 | --- | --- |
@@ -14,7 +21,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 | R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
 | R4 the world, slim | done: follow camera, scenes at the film sets, compass, biome music, bot PASS on `L_Sugarborough`. Ambient camps dropped (the plan's first fallback) |
 | R4b enemies hit back (Dignity meter) | done: goblins, bugs and the boss charge, knockback and stagger, Dignity bar under the slate, "No dignity left" fails the take; both PASS lines hold |
-| R5 Candidate B and the gate | next |
+| R5 Candidate B and the gate | packaged, both modes smoked PASS, zipped (689 MB). Gate waits on Dylan's play |
 | R6 cast | done: four rigs, `-class=`, a Casting line on the title, battle cries; mage Backlot PASS, barbarian Open PASS |
 | R7 playtest fixes | not started |
 | R8 final zip | not started |

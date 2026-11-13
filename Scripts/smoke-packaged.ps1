@@ -14,6 +14,7 @@
 .EXAMPLE
   .\Scripts\smoke-packaged.ps1
   .\Scripts\smoke-packaged.ps1 -Extra "-autoplay" -RunSeconds 60
+  .\Scripts\smoke-packaged.ps1 -Map /Game/World/L_Sugarborough -Extra "-open","-autoplay","-timescale=4"
 #>
 [CmdletBinding()]
 param(
@@ -21,6 +22,7 @@ param(
     [string]$Config = "Development",
     [int]$RunSeconds = 60,   # a full -autoplay -timescale=4 film needs about 30 s
     [string[]]$Extra = @(),
+    [string]$Map,            # e.g. /Game/World/L_Sugarborough; must be the first argument, so it gets its own parameter
     [switch]$Play
 )
 
@@ -46,7 +48,7 @@ function Get-GameProcess {
 }
 
 Write-Host "== Smoke-testing $($Exe.FullName) ==" -ForegroundColor Cyan
-$Launcher = Start-Process -FilePath $Exe.FullName -ArgumentList (@("-log", "-abslog=`"$LogPath`"", "-windowed", "-ResX=1280", "-ResY=800") + $Extra) -PassThru
+$Launcher = Start-Process -FilePath $Exe.FullName -ArgumentList (@($Map | Where-Object { $_ }) + @("-log", "-abslog=`"$LogPath`"", "-windowed", "-ResX=1280", "-ResY=800") + $Extra) -PassThru
 
 $Game = $null; $Waited = 0
 while (-not $Game -and $Waited -lt 30) { Start-Sleep -Seconds 1; $Waited++; $Game = Get-GameProcess | Select-Object -First 1 }
