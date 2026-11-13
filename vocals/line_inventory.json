@@ -1,0 +1,1923 @@
+[
+  {
+    "id": "SceneStart_01",
+    "text": "Places, everyone! And by everyone I mean you.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_01"
+  },
+  {
+    "id": "SceneStart_02",
+    "text": "Quiet on set! It's a field. It was already quiet. Well done, all.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_02"
+  },
+  {
+    "id": "SceneStart_03",
+    "text": "Remember: you're grim, you're haunted, you're holding celery.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_03"
+  },
+  {
+    "id": "SceneStart_04",
+    "text": "Rolling! Is the red light on? There's no red light. Rolling!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_04"
+  },
+  {
+    "id": "SceneStart_05",
+    "text": "Scene one, take one. No pressure. It's only my whole career.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_05"
+  },
+  {
+    "id": "SceneStart_06",
+    "text": "And... ACTION! I love saying that. Ninth time today.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_06"
+  },
+  {
+    "id": "SceneStart_07",
+    "text": "Hit your mark. Your mark is the dirt. All of it.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_07"
+  },
+  {
+    "id": "SceneStart_08",
+    "text": "Give me dread. Give me doom. Give me dental hygiene.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_SceneStart_08"
+  },
+  {
+    "id": "Level7Intro_01",
+    "text": "You start at level seven. Levels one to six tested poorly.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Level7Intro_01"
+  },
+  {
+    "id": "Level7Intro_02",
+    "text": "Don't ask about the first six levels. Continuity.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Level7Intro_02"
+  },
+  {
+    "id": "FailedTake_01",
+    "text": "Cut! Beautiful. Unusable, but beautiful.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_01"
+  },
+  {
+    "id": "FailedTake_02",
+    "text": "That's what take two is for. I've budgeted for four.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_02"
+  },
+  {
+    "id": "FailedTake_03",
+    "text": "The rats were perfect. We'll go again for you.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_03"
+  },
+  {
+    "id": "FailedTake_04",
+    "text": "Back to one! That's film talk for \"you did it wrong.\"",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_04"
+  },
+  {
+    "id": "FailedTake_05",
+    "text": "That was a take. Technically. RETAKE!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_05"
+  },
+  {
+    "id": "FailedTake_06",
+    "text": "Don't apologise. You weren't going to. Again!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_FailedTake_06"
+  },
+  {
+    "id": "Take3_01",
+    "text": "Take three. Still within budget. Barely. Emotionally.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Take3_01"
+  },
+  {
+    "id": "Take4_01",
+    "text": "Take four. This is the last one I budgeted for.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Take4_01"
+  },
+  {
+    "id": "Take5_01",
+    "text": "Take five. We're now spending your cut.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Take5_01"
+  },
+  {
+    "id": "Take6_01",
+    "text": "Take six. I'm telling people this was a choice.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Take6_01"
+  },
+  {
+    "id": "CutPitch_01",
+    "text": "CUT! The rats have no motivation. Options, darling.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_01"
+  },
+  {
+    "id": "CutPitch_02",
+    "text": "CUT! Needs a stronger antagonist. I'm thinking: bigger goblin.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_02"
+  },
+  {
+    "id": "CutPitch_03",
+    "text": "CUT! Where's the ticking clock? I brought a clock.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_03"
+  },
+  {
+    "id": "CutPitch_04",
+    "text": "CUT! Test audiences wanted more rats. I asked two rats.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_04"
+  },
+  {
+    "id": "CutPitch_05",
+    "text": "CUT! Same scene, but sadder. Lecture them gently.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_05"
+  },
+  {
+    "id": "CutPitch_06",
+    "text": "CUT! It's good. Make it more. Just... more.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_CutPitch_06"
+  },
+  {
+    "id": "NoteTaken_01",
+    "text": "YES. This is why I hired you. Found you. Same thing.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteTaken_01"
+  },
+  {
+    "id": "NoteTaken_02",
+    "text": "See? Collaboration. I talk, you agree.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteTaken_02"
+  },
+  {
+    "id": "NoteTaken_03",
+    "text": "Write that down. \"The hero had a great idea.\" Mine.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteTaken_03"
+  },
+  {
+    "id": "NoteRefused_01",
+    "text": "Fine. Do it your way. It'll be worse. I'll say so in the credits.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteRefused_01"
+  },
+  {
+    "id": "NoteRefused_02",
+    "text": "Noted. In my other notebook. The grudge one.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteRefused_02"
+  },
+  {
+    "id": "NoteRefused_03",
+    "text": "No, no. You're the artist. I'm only the director.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NoteRefused_03"
+  },
+  {
+    "id": "ForcedRetake_01",
+    "text": "Perfect! Again.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ForcedRetake_01"
+  },
+  {
+    "id": "ForcedRetake_02",
+    "text": "This time the rats know their lines.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ForcedRetake_02"
+  },
+  {
+    "id": "NarrationCut_01",
+    "text": "CUT. Nobody reads these. Skip to the rats.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NarrationCut_01"
+  },
+  {
+    "id": "Wrap_01",
+    "text": "That's a wrap! Everyone gets paid. \"Everyone\" is a term of art.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Wrap_01"
+  },
+  {
+    "id": "Wrap_02",
+    "text": "You're going to be a star! My cut is the star part.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Wrap_02"
+  },
+  {
+    "id": "Wrap_03",
+    "text": "Great work. I'll send you the bill.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Wrap_03"
+  },
+  {
+    "id": "Wrap_04",
+    "text": "Here's your share. Don't count it. It's not for counting.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Wrap_04"
+  },
+  {
+    "id": "BudgetOut_01",
+    "text": "Small thing. We're out of money. Keep rolling!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BudgetOut_01"
+  },
+  {
+    "id": "BudgetOut_02",
+    "text": "Pretend the box is a rat. I believe in you. I have to.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BudgetOut_02"
+  },
+  {
+    "id": "BudgetOut_03",
+    "text": "This is a stylistic choice now. Say it with me.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BudgetOut_03"
+  },
+  {
+    "id": "Premiere_01",
+    "text": "A triumph. I'd like to thank myself. Thank you.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Premiere_01"
+  },
+  {
+    "id": "Premiere_02",
+    "text": "Four stars! Out of a number I'll confirm later.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Premiere_02"
+  },
+  {
+    "id": "Pause_01",
+    "text": "Why did everyone stop? Who called lunch?",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pause_01"
+  },
+  {
+    "id": "Pause_02",
+    "text": "Walking off set? Your contract has thoughts about that.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pause_02"
+  },
+  {
+    "id": "Pause_03",
+    "text": "Fine. Go. I'll film the rats. They're easier to light.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pause_03"
+  },
+  {
+    "id": "Idle_01",
+    "text": "Take your time. Film is cheap. It isn't. Hurry up.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_01"
+  },
+  {
+    "id": "Idle_02",
+    "text": "Is this a dramatic pause, or are you buffering?",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_02"
+  },
+  {
+    "id": "Idle_03",
+    "text": "I'm paying you by the hour. I'm not. Move anyway.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_03"
+  },
+  {
+    "id": "Idle_04",
+    "text": "Brooding is good. Brooding near the rats is better.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_04"
+  },
+  {
+    "id": "Idle_05",
+    "text": "We'll fix the standing still in post. I can't afford post.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_05"
+  },
+  {
+    "id": "Idle_06",
+    "text": "The audience is bored. I'm the audience.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_06"
+  },
+  {
+    "id": "Idle_07",
+    "text": "Lovely stillness. Very brave. Now do the other thing. Acting.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_07"
+  },
+  {
+    "id": "Idle_08",
+    "text": "I can hear the budget ticking. It's a small sound.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Idle_08"
+  },
+  {
+    "id": "Strayed_01",
+    "text": "This is a closed set! Get back in frame!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_01"
+  },
+  {
+    "id": "Strayed_02",
+    "text": "The set ends there. Past it is nothing. I didn't build it.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_02"
+  },
+  {
+    "id": "Strayed_03",
+    "text": "Where are you going? The plot is over here.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_03"
+  },
+  {
+    "id": "Strayed_04",
+    "text": "That's not in the script. Nothing is, but that especially.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_04"
+  },
+  {
+    "id": "Strayed_05",
+    "text": "Come back! I can't fly that far. Union rules. My union.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_05"
+  },
+  {
+    "id": "Strayed_06",
+    "text": "If you find a better film out there, don't tell me.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Strayed_06"
+  },
+  {
+    "id": "LectureCast_01",
+    "text": "Less violence! More character development!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_LectureCast_01"
+  },
+  {
+    "id": "LectureCast_02",
+    "text": "The sword is a metaphor! Keep it a metaphor!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_LectureCast_02"
+  },
+  {
+    "id": "LectureCast_03",
+    "text": "Don't swing it! Do you know what rat insurance costs?",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_LectureCast_03"
+  },
+  {
+    "id": "LectureCast_04",
+    "text": "Louder! The cheap seats are in another village!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_LectureCast_04"
+  },
+  {
+    "id": "LectureCast_05",
+    "text": "Yes! Disappoint them!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_LectureCast_05"
+  },
+  {
+    "id": "Pacified_01",
+    "text": "He's learning! That's an arc!",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pacified_01"
+  },
+  {
+    "id": "Pacified_02",
+    "text": "Hold on his little face. Hold... gorgeous.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pacified_02"
+  },
+  {
+    "id": "Pacified_03",
+    "text": "That rat just earned a supporting credit.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pacified_03"
+  },
+  {
+    "id": "Pacified_04",
+    "text": "Look at the remorse. You can't direct that. I directed that.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pacified_04"
+  },
+  {
+    "id": "Pacified_05",
+    "text": "One down. Emotionally.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Pacified_05"
+  },
+  {
+    "id": "Interact_01",
+    "text": "Circular motions! I want to feel the plaque leaving.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Interact_01"
+  },
+  {
+    "id": "Interact_02",
+    "text": "Offer the celery like it's a crown.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Interact_02"
+  },
+  {
+    "id": "Interact_03",
+    "text": "He's chewing! Nobody move. Nobody breathe. Got it.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Interact_03"
+  },
+  {
+    "id": "Interact_04",
+    "text": "Gums too. We're not animals. Well. He is.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Interact_04"
+  },
+  {
+    "id": "Interact_05",
+    "text": "That's the shot. A knight, a goblin, a minty silence.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Interact_05"
+  },
+  {
+    "id": "Sulking_01",
+    "text": "I'm not filming this. I'm filming that bush. The bush takes notes.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Sulking_01"
+  },
+  {
+    "id": "Sulking_02",
+    "text": "Oh, was that good? I wasn't looking.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Sulking_02"
+  },
+  {
+    "id": "Sulking_03",
+    "text": "Carry on. Don't mind the director. Nobody does.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Sulking_03"
+  },
+  {
+    "id": "Sulking_04",
+    "text": "The bush is giving me so much right now.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Sulking_04"
+  },
+  {
+    "id": "Commentary_01",
+    "text": "Fun fact: this rat is played by three smaller rats.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_01"
+  },
+  {
+    "id": "Commentary_02",
+    "text": "We shot this scene in one day. We shot everything in one day. Four, legally.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_02"
+  },
+  {
+    "id": "Commentary_03",
+    "text": "The talent did all their own standing.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_03"
+  },
+  {
+    "id": "Commentary_04",
+    "text": "That house isn't real. None of them are. One is a painting of a house. I won't say which.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_04"
+  },
+  {
+    "id": "Commentary_05",
+    "text": "The original cut was nine hours. The studio lost six of them. I know where they are.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_05"
+  },
+  {
+    "id": "Commentary_06",
+    "text": "This field was meant to be a volcano. Then I saw the price of a volcano.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_06"
+  },
+  {
+    "id": "Commentary_07",
+    "text": "People ask what the film is about. It's about ninety minutes. It's eight. It's about eight minutes.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_07"
+  },
+  {
+    "id": "Commentary_08",
+    "text": "Watch the goblin on the left. He's improvising. I docked him for it.",
+    "speaker": "fenella",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_Commentary_08"
+  },
+  {
+    "id": "BubbleDefault_01",
+    "text": "ABSOLUTELY NOT.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_01"
+  },
+  {
+    "id": "BubbleDefault_02",
+    "text": "WE'VE TALKED ABOUT THIS.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_02"
+  },
+  {
+    "id": "BubbleDefault_03",
+    "text": "I'M NOT ANGRY.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_03"
+  },
+  {
+    "id": "BubbleDefault_04",
+    "text": "I'M DISAPPOINTED.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_04"
+  },
+  {
+    "id": "BubbleDefault_05",
+    "text": "FORM A LINE!",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_05"
+  },
+  {
+    "id": "BubbleDefault_06",
+    "text": "MIND YOUR TEETH!",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_06"
+  },
+  {
+    "id": "BubbleDefault_07",
+    "text": "IS THIS WHO YOU WANT TO BE?",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_07"
+  },
+  {
+    "id": "BubbleDefault_08",
+    "text": "ELBOWS.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_08"
+  },
+  {
+    "id": "BubbleDefault_09",
+    "text": "INDOOR VOICE!",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_09"
+  },
+  {
+    "id": "BubbleDefault_10",
+    "text": "EXCUSE ME.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_10"
+  },
+  {
+    "id": "BubbleDefault_11",
+    "text": "PER MY LAST LECTURE",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_11"
+  },
+  {
+    "id": "BubbleDefault_12",
+    "text": "WE DO NOT EAT THE CROPS.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_12"
+  },
+  {
+    "id": "BubbleDefault_13",
+    "text": "LOOK AT ME WHEN I'M LECTURING.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleDefault_13"
+  },
+  {
+    "id": "BubbleSadder_01",
+    "text": "if it's not too much trouble",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleSadder_01"
+  },
+  {
+    "id": "BubbleSadder_02",
+    "text": "i just worry",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleSadder_02"
+  },
+  {
+    "id": "BubbleSadder_03",
+    "text": "no, you go ahead",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleSadder_03"
+  },
+  {
+    "id": "BubbleSadder_04",
+    "text": "i'm sure you had your reasons",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleSadder_04"
+  },
+  {
+    "id": "BubbleBudget_01",
+    "text": "[SHOUTING]",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleBudget_01"
+  },
+  {
+    "id": "BubbleBudget_02",
+    "text": "[LECTURE]",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleBudget_02"
+  },
+  {
+    "id": "BubbleBudget_03",
+    "text": "[BUBBLE GOES HERE]",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_BubbleBudget_03"
+  },
+  {
+    "id": "NuisanceReply_01",
+    "text": "ok",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_01"
+  },
+  {
+    "id": "NuisanceReply_02",
+    "text": "sorry",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_02"
+  },
+  {
+    "id": "NuisanceReply_03",
+    "text": "fine.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_03"
+  },
+  {
+    "id": "NuisanceReply_04",
+    "text": "...mum?",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_04"
+  },
+  {
+    "id": "NuisanceReply_05",
+    "text": "i'll floss",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_05"
+  },
+  {
+    "id": "NuisanceReply_06",
+    "text": "he started it",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_NuisanceReply_06"
+  },
+  {
+    "id": "ProductionNote_01",
+    "text": "This walk was restored for the Director's Cut. It was cut for pacing. You can see why.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ProductionNote_01"
+  },
+  {
+    "id": "ProductionNote_02",
+    "text": "The following scene contains 37% more dental hygiene than the theatrical release.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ProductionNote_02"
+  },
+  {
+    "id": "ProductionNote_03",
+    "text": "Colour corrected by a faerie with strong opinions.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ProductionNote_03"
+  },
+  {
+    "id": "ProductionNote_04",
+    "text": "No rats were lectured more than necessary.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ProductionNote_04"
+  },
+  {
+    "id": "ProductionNote_05",
+    "text": "Scene missing. Pretend it was great.",
+    "speaker": "unassigned",
+    "source": "JamLines.cpp",
+    "asset_name": "VO_ProductionNote_05"
+  },
+  {
+    "id": "VIL_01",
+    "text": "I once took an arrow to the knee. Then one to the neck. That one really cut into my adventuring.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_01",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_02",
+    "text": "I used to be an adventurer like you. Then I read the contract.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_02",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_03",
+    "text": "Welcome to Sugarborough. I say that to everyone. I'm not allowed to stop.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_03",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_04",
+    "text": "I walk from this house to that well. Forever. It's a living.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_04",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_05",
+    "text": "Must have been the wind. It was a seven-foot knight. I'm told to say wind.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_05",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_06",
+    "text": "A hero has entered the village! Somebody put up a bounty flag. Somebody find some gold.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_06",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_07",
+    "text": "I've had this conversation with forty heroes. You're the tallest.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_07",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_08",
+    "text": "I heard you're level seven. My cousin's level seven. He's a door.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_08",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_09",
+    "text": "Stay a while and listen. No? Nobody ever does.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_09",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_10",
+    "text": "It's dangerous to go alone. Take this. It's celery. It's always celery.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_10",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_11",
+    "text": "If you see my twin, that's me. There's one of us. They move me.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_11",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_12",
+    "text": "Do you get to the big city often? What am I saying. The big city is a painting.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_12",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_20",
+    "text": "Yes?",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_20",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_21",
+    "text": "Yes? That's both of my yeses.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_21",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_22",
+    "text": "Stop poking me. I have one line and you've heard it.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_22",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_23",
+    "text": "Job's done. There was no job. I just like saying it.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_23",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_24",
+    "text": "More work? I'm an extra. Standing here is the work.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_24",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_25",
+    "text": "I'm a flat. If you keep pushing, I fall over, and that's a reshoot.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_25",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_26",
+    "text": "Poke me again and I'll tell the faerie. She bills for poking.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_26",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_30",
+    "text": "You've been in my house. You smashed my pots. I'm not angry. The pots were angry.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_30",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_31",
+    "text": "Please stop rolling into my barrels. They're empty. They've always been empty.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_31",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_32",
+    "text": "Don't hit the chickens. We don't have chickens. Don't hit where they'd be.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_32",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_33",
+    "text": "There's a yellow mark over my head, isn't there. It's been there since spring.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_33",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_34",
+    "text": "I'm over-encumbered. It's one turnip. I'm a very small file.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_34",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_35",
+    "text": "You can't fast travel from here. You can walk. It's eight feet.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_35",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_36",
+    "text": "Someone opened my wardrobe, took four coins and left. I was in the room. I said hello.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_36",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_40",
+    "text": "I have a quest for you. Ten rat tails. No. Sorry. We're not doing that one.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_40",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_41",
+    "text": "I'd come with you, but then you'd have to escort me. I walk slower than your run and faster than your walk.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_41",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_42",
+    "text": "The princess is in another village. We don't have one. We have Gary.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_42",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_43",
+    "text": "My brother guards a bridge and says one thing. Mother's very proud.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_43",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_44",
+    "text": "I sell potions. Not to you. To the plot.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_44",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_45",
+    "text": "What are you buying? Nothing. I've no stock. I've no back, either.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_45",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_46",
+    "text": "Have you tried saving? Money, I mean. The faerie says the other kind costs extra.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_46",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_47",
+    "text": "You must gather your party before venturing forth. It's you. Well done. Gathered.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_47",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_50",
+    "text": "We require more celery.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_50",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_51",
+    "text": "You must construct additional plywood.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_51",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_52",
+    "text": "I can't build there. Nobody can build there. Budget.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_52",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_53",
+    "text": "Our town is under attack! By rats. Mildly. They're nibbling.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_53",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_54",
+    "text": "Nobody's had dysentery here in weeks. It's the celery.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_54",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_55",
+    "text": "A real kingdom would pay you a bounty. We have a faerie with a ledger.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_55",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_56",
+    "text": "Wololo. Sorry. Old job. I used to do conversions.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_56",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_57",
+    "text": "The cake is real. I can't stress that enough. Nobody's allowed any. But it's real.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_57",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_58",
+    "text": "All your base. No. I've lost it. It was something about a base.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_58",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_59",
+    "text": "We had a tutorial once. It kept stopping people to explain jumping. We let it go.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_59",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_60",
+    "text": "There's an invisible wall past the bakery. We don't talk about it. We walk into it.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_60",
+    "status": "candidate"
+  },
+  {
+    "id": "VIL_61",
+    "text": "I pressed F to pay respects. Nothing happened. I'm a farmer. I don't have an F.",
+    "speaker": "vil",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_VIL_61",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_01",
+    "text": "I used to farm experience. Then gold. Now candy. Candy's the only one that grows.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_01",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_02",
+    "text": "Everyone's first quest is my rats. Nobody ever asks about my day.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_02",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_03",
+    "text": "I'd pay you in gold, but I've three copper and a yellow exclamation mark.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_03",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_04",
+    "text": "The harvest moon is next week. I shan't be marrying anyone. I'm busy.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_04",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_05",
+    "text": "Not enough minerals. That's what the soil man said. Then he charged me.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_05",
+    "status": "candidate"
+  },
+  {
+    "id": "FARM_06",
+    "text": "My crops are ready. They've been ready four real-time hours. Nobody logged in.",
+    "speaker": "farm",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_FARM_06",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_01",
+    "text": "Stop right there, criminal gum! Sorry. Force of habit.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_01",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_02",
+    "text": "Plaque launch detected.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_02",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_03",
+    "text": "You must defeat the plaque to stand a chance.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_03",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_04",
+    "text": "Praise the mint. It's not a religion. It's a strong recommendation.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_04",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_05",
+    "text": "I've seen things, hero. Molars on fire off the shoulder of a goblin.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_05",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_06",
+    "text": "The fort has fallen. Insert coin to continue. We've no coin. Carry on.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_06",
+    "status": "candidate"
+  },
+  {
+    "id": "MARSH_07",
+    "text": "War never changes. Toothbrushes should. Every three months.",
+    "speaker": "marsh",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_MARSH_07",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_01",
+    "text": "Gotta gather them all. That's not a slogan. That's the job.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_01",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_02",
+    "text": "An almond has joined your party. He'll leave again. He's like that.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_02",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_03",
+    "text": "A wild almond appeared. No, that's one of mine. He does that.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_03",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_04",
+    "text": "Don't escort them. Never escort them. Walk near them and hope.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_04",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_05",
+    "text": "One of my almonds is a mimic. I've decided not to find out which.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_05",
+    "status": "candidate"
+  },
+  {
+    "id": "HERD_06",
+    "text": "The herd's at full health. Emotionally they're on one hit point.",
+    "speaker": "herd",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERD_06",
+    "status": "candidate"
+  },
+  {
+    "id": "HERO_01",
+    "text": "Ready to lecture.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_01",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_02",
+    "text": "Something need disappointing?",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_02",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_03",
+    "text": "My blade is yours. It's decorative.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_03",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_04",
+    "text": "I hunger. For order.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_04",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_05",
+    "text": "For the Dread Land. And, I'm told, the candy.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_05",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_06",
+    "text": "I have walked through fire. This is a field. I'll manage.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_06",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_10",
+    "text": "Speak.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_10",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_11",
+    "text": "You've clicked me four times. I've counted. I count everything.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_11",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_12",
+    "text": "I'm not ignoring you. I'm brooding. It's a passive.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_12",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_13",
+    "text": "Do not make me raise the sword. I'll only lower it again and talk.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_13",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_20",
+    "text": "Lecture ready.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_20",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_21",
+    "text": "Not enough patience.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_21",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_22",
+    "text": "I need healing. Not the potion kind.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_22",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_23",
+    "text": "That ability isn't ready. Neither am I.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_23",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_24",
+    "text": "I can't carry any more. It's all guilt.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_24",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_25",
+    "text": "It's super effective. He's crying.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_25",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_26",
+    "text": "You died. No. You sat down. Good.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_26",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_27",
+    "text": "Finish him. With a balanced breakfast.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_27",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "HERO_28",
+    "text": "I took an oath of silence. It had a clause.",
+    "speaker": "hero",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_HERO_28",
+    "status": "hold_silent_hero"
+  },
+  {
+    "id": "AUD_01",
+    "text": "I auditioned for the knight. They said I had range. It was a bow.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_01",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_02",
+    "text": "I'm a wizard. I had one spell today. I used it on a door.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_02",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_03",
+    "text": "Barbarian. I don't do lectures. I do one long vowel.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_03",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_04",
+    "text": "I'm the rogue. I've stolen this scene. Nobody's noticed. That's how good I am.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_04",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_05",
+    "text": "Healer here. Nobody's been hurt all film. I'm on a zero-hours contract.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_05",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_06",
+    "text": "I'd take the quest, but there's no bounty on it. I don't walk for free. I sulk for free.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_06",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_07",
+    "text": "I was the chosen one. Then they chose a taller one.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_07",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_08",
+    "text": "I rolled a one on my audition. Critical fail. I walked into the camera.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_08",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_09",
+    "text": "Bard. I'd sing of your deeds, but so far it's one verse about celery.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_09",
+    "status": "candidate"
+  },
+  {
+    "id": "AUD_10",
+    "text": "I'm only here for the loot. I'm told the faerie keeps the loot. I'm only here.",
+    "speaker": "aud",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_AUD_10",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_01",
+    "text": "Every hero starts with rats. Nobody asks how the rats feel.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_01",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_02",
+    "text": "Usually it's ten of us in a cellar. This is outdoors. This is prestige.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_02",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_03",
+    "text": "A wild knight appeared. Rat used Flee.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_03",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_04",
+    "text": "I drop nothing. Check if you like. No tail, no pelt, no copper.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_04",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_05",
+    "text": "I was told there'd be cheese.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_05",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_06",
+    "text": "Critical hit. Right in the conscience.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_06",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_07",
+    "text": "It's not very effective. No. It is. I feel awful.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_07",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_08",
+    "text": "Respawn in thirty seconds, lads. Oh. We don't die in this one. Lovely.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_08",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_09",
+    "text": "I'm not a level one rat. I'm a giant rat. There's a pay grade.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_09",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_10",
+    "text": "He's lecturing! Scatter! Not you, Gary. You're in the shot.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_10",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_11",
+    "text": "I've lost aggro. I've lost everything, really.",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_11",
+    "status": "candidate"
+  },
+  {
+    "id": "RAT_12",
+    "text": "Is this the tutorial? Are we the tutorial? Again?",
+    "speaker": "rat",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_RAT_12",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_01",
+    "text": "Work, work. Brush, brush.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_01",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_02",
+    "text": "Me not that kind of goblin. Me have dental plan now.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_02",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_03",
+    "text": "We need more gold. For fillings.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_03",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_04",
+    "text": "You no take candle. Take toothbrush. Fine. Take candle too.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_04",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_05",
+    "text": "Stop right there, hygienic scum.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_05",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_06",
+    "text": "Fort is under attack! By mint!",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_06",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_07",
+    "text": "Goblin not boss. Goblin middle management.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_07",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_08",
+    "text": "Goblin has health bar. Goblin did not know. Goblin upset to learn it.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_08",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_09",
+    "text": "Roll for initiative. Goblin rolled a one. Goblin always rolls a one.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_09",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_10",
+    "text": "Goblin has three hit points and a mortgage.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_10",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_11",
+    "text": "He is in aggro range. Why is he coming closer on purpose.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_11",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_12",
+    "text": "Zug zug. That means yes. Also no. Language has two words.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_12",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_13",
+    "text": "Ready to serve. Not ready to floss.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_13",
+    "status": "candidate"
+  },
+  {
+    "id": "GOB_14",
+    "text": "Goblin guarded this chest nine years. It has a napkin in it. A damp one.",
+    "speaker": "gob",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_GOB_14",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_01",
+    "text": "I'm not a bug. I'm a feature.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_01",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_02",
+    "text": "For the swarm! There's four of us. It's a small swarm.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_02",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_03",
+    "text": "It's a rush! All of us at once! That's the entire strategy!",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_03",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_04",
+    "text": "Lecture launch detected.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_04",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_05",
+    "text": "We spawned too many. Nobody built the thing that lets you have more. Classic.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_05",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_06",
+    "text": "We require more almonds.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_06",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_07",
+    "text": "Good game. Well played. I'm leaving.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_07",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_08",
+    "text": "He's got area damage! Spread out! Why do we always clump!",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_08",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_09",
+    "text": "They said I'd be patched out. Here I am. Shipped.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_09",
+    "status": "candidate"
+  },
+  {
+    "id": "BUG_10",
+    "text": "Report me if you like. I'm working as intended.",
+    "speaker": "bug",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_BUG_10",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_01",
+    "text": "I yield. Where do I queue?",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_01",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_02",
+    "text": "Achievement unlocked: remorse.",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_02",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_03",
+    "text": "I'll just sit here and think about my build.",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_03",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_04",
+    "text": "Game over. Continue? Yes. As a better person.",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_04",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_05",
+    "text": "I've been converted. I'd like the blue shirt, please.",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_05",
+    "status": "candidate"
+  },
+  {
+    "id": "PAC_06",
+    "text": "Tell my spawn point I love it.",
+    "speaker": "pac",
+    "source": "VoiceLines.md",
+    "asset_name": "VO_PAC_06",
+    "status": "candidate"
+  }
+]

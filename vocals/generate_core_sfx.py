@@ -1,4 +1,4 @@
-"""Sequential resumable renderer for the eight core P0 sound effects."""
+"""Sequential resumable renderer for the complete planned SFX set."""
 import argparse,hashlib,json,subprocess,urllib.error,urllib.request
 from datetime import datetime,timezone
 from pathlib import Path
@@ -14,7 +14,46 @@ ROWS=[
 ('SFX_Clapper','A movie clapperboard snaps shut with the authority of a castle drawbridge crashing down: explosive wooden crack, gigantic short room resonance, instant finish.',0.4),
 ('SFX_Cut_Horn',"One outrageously authoritarian film-set air horn, part ocean liner and part royal herald's horn, a sharp blast that stops the universe; abrupt decisive cutoff. Nonmusical warning blast.",0.7),
 ('SFX_Coin_Trickle','A ludicrously grand cash-register mechanism opens for a pathetically small payout: a few tiny coins trickle down an enormous metal chute, diminishing to one lonely coin. No fanfare.',1.3),
-('SFX_UI_Click','A miniature imperial rubber stamp slams down with absurd bureaucratic force: compressed wooden clack, paper punch, tiny metallic latch. One crisp compact event.',0.15)]
+('SFX_UI_Click','A miniature imperial rubber stamp slams down with absurd bureaucratic force: compressed wooden clack, paper punch, tiny metallic latch. One crisp compact event.',0.15),
+('SFX_Sword_Raise','An impossibly heavy ceremonial sword rises: tectonic steel scrape, armor groan and rising air pressure, building toward apocalypse, then cutting dead before any strike. No hit.',0.8),
+('SFX_FormLine_Contact','A gigantic ruler strikes a desk and steel filing drawers snap into military alignment, one rapid straight chain of precise percussive clacks.',0.6),
+('SFX_DisappointedSigh','One wordless exhausted exhalation magnified into an ancient bellows emptying a cathedral; deep air pressure rolls outward and dwindles in crushing disappointment.',1.0),
+('SFX_LastJudgment_Contact','A courthouse-sized book slams shut, colossal air shockwave radiates, metal fittings tremble, one tiny pencil drops at the end. No blade strike.',1.0),
+('SFX_Flustered','A proud spring mechanism loses its place: explosive tiny clockwork stumble, two panicked wooden clacks and a rising rubber wobble. Wordless.',0.35),
+('SFX_Interact_Complete','A monumental bureaucratic stamp certifies a tiny task: paper slap, vault-sized lock engaging, one immaculate crystalline ping.',0.4),
+('SFX_Quest_Accept','A parchment unfurls like a siege banner, enormous wax seal crashes down, mechanical ratchet locks with ludicrous finality.',0.8),
+('SFX_Stage_Complete','A huge theatrical stage mechanism locks into place with three escalating wooden clunks and one brilliant glass chime, pompous and triumphant without music.',0.7),
+('SFX_LevelUp','A massive ascending clockwork elevator rockets upward, opens an enormous celestial latch, then resolves into one tiny immaculate bell. No melody.',1.0),
+('SFX_Ledger_Deduction',"A merciless accountant's heavy stamp punches paper while a cash drawer snaps the wrong way: one sharp mechanical confiscation.",0.25),
+('SFX_Budget_Warning',"A giant studio light's electrical ballast sputters dangerously and a huge spring-loaded meter knocks against its stop twice. No horn.",0.7),
+('SFX_Budget_Empty','The entire movie studio powers down: giant breaker clack, descending mechanical whine, stage-light fizz, one pathetic final relay tick.',1.3),
+('SFX_Retake_Rewind','A gigantic film reel spins backward at impossible speed, sprockets chatter, then brakes with a rubbery squeal and decisive latch.',0.8),
+('SFX_UI_Back','A ridiculously heavy official stamp is sucked backward off paperwork, short vacuum pop followed by one tiny latch snapping shut.',0.2),
+('SFX_UI_Unavailable','A monumental locked filing cabinet refuses to open: one metal thunk, strained spring wobble, offended little mechanical rattle.',0.3),
+('SFX_Step_Stone','One armored boot plants on village cobbles like a miniature siege engine, heavy iron clonk, stone tick and weighty armor rattle, very short.',0.25),
+('SFX_Step_CandySoil','One heavy armored boot compresses sugary dirt: exaggerated biscuit crunch, sticky sugar pull and weighty armor clonk, crisp short finish.',0.25),
+('SFX_Fenella_Fly_Loop','Continuous industrious tiny fairy wings, like a miniature studio helicopter made of silk and clockwork, light flutter with rapid mechanical detail. Steady texture, no passes.',4.0),
+('SFX_Backlot_Ambience_Loop','Quiet continuous outdoor film-backlot air, breeze through flimsy wooden scenery, faint canvas creaks and distant loose rigging rattles with oversized wood resonance. No voices or foreground events.',10.0),
+('SFX_Shield_Bash','A shield gives one politely devastating shove: huge bronze door knocker, compact pressure blast and short armor rattle. Firm impact, no cutting flesh.',0.4),
+('SFX_Manners_Dome_Open','A castle-sized transparent ceremonial dome unfolds from a shield, gigantic resonant bronze panels locking together around an airy crystalline shell. No choir.',0.8),
+('SFX_Manners_Dome_Rebuke','An invisible royal boundary repels one intruder: taut glass boing, massive doorknocker snap, one tiny offended porcelain tick.',0.3),
+('SFX_Manners_Dome_Close','A monumental protective glass dome folds into a tiny mannered shield latch, descending panel clicks ending in a delicate single tick.',0.6),
+('SFX_Knead_Impact','Two gigantic fists knead impossibly heavy dough in one double-fisted strike: thunderous wet dough thwump, sticky compression and explosive flour puff. No gore.',0.35),
+('SFX_RollingPin_Cyclone_Loop','Continuous storm of colossal wooden rolling pins orbiting at hurricane speed, deep rushing air, dense controlled wood clatter and flour hiss. Steady middle only, no intro or finale.',3.0),
+('SFX_RollingPin_Finale','One absurd outward explosion of heavy wooden rolling pins and flour, rapid wooden collisions, ending cleanly. No lingering individual roll.',1.0),
+('SFX_RollingPin_Stray','After catastrophe, one lonely wooden rolling pin falls, bounces twice, rolls a short distance and stops with a pathetic little tap. Otherwise silent.',0.8),
+('SFX_Encouragement_Blast','A catastrophic compressed-air blast launches stiff paper placards: enormous pressure wave, sharp cardboard slaps, short crumpling finish. No voices.',0.7),
+('SFX_Sugar_Volley','A gigantic silver spoon flick launches a tiny spray of sugar cubes: grand polished-metal snap, brilliant crystalline ticks and short air zip. No impact.',0.3),
+('SFX_Sugar_Impact','One sugar cube lands with the force of a crystal monument: sharp tink into massive compressed crunch, sparkling fragments, very short clean finish.',0.3),
+('SFX_Peppermint_Fall','One enormous peppermint meteor descends, spiraling whistle and dense rushing air building to impending candy catastrophe, no impact.',0.7),
+('SFX_Peppermint_Impact','One giant hard peppermint hits like siege artillery: deep compact thud, brittle candy fracture and sparkling sugar debris. No avalanche or long tail.',0.7),
+('SFX_Soap_Torrent_Loop','Continuous apocalyptic pressure washer pumps thick magical soap, roaring viscous spray, ferocious foam churn and tiny bright bubbles. Steady energy, no start or stop.',3.0),
+('SFX_Soap_Finish','A colossal soap cannon shuts off with a pressure-valve gulp and collapsing foam, then one tiny sanitizer-dispenser plip and immaculate glass squeak.',0.7),
+('SFX_Celery_Launch','An epic war bow releases a celery stalk like a ballista bolt: monumental taut-string snap, leafy whip and extremely fast air zip. No impact.',0.3),
+('SFX_Celery_Impact','One celery stalk strikes with siege-weapon force: gigantic wet fibrous crunch, snapping vegetable ribs and tiny leaf flutter. No gore, one compact hit.',0.3),
+('SFX_Floss_Launch','A siege-bow tension snap pulls absurdly taut dental thread from a tiny dispenser, huge string resonance with a sharp plastic click. No impact.',0.3),
+('SFX_Floss_Snare','An explosive dental-floss spool unravels into gigantic elastic strand twangs, binding a target with ludicrous tensile force, ending taut.',0.5),
+('SFX_Floss_Retract','An outrageously fast dental-floss dispenser retracts its thread, violent elastic zip ending in one tiny plastic click.',0.5)]
 def save(m,p):
  t=p.with_suffix('.json.part');t.write_text(json.dumps(m,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');t.replace(p)
 def main():
