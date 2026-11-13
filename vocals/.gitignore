@@ -1,0 +1,5 @@
+# ElevenLabs onboarding credentials stay local.
+.env
+.env.*
+__pycache__/
+*.part

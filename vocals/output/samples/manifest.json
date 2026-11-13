@@ -1,0 +1,127 @@
+{
+  "provider": "ElevenLabs",
+  "credential_source": ".env.local",
+  "subscription_before": 0,
+  "clips": {
+    "VO_K02_en_epic": {
+      "id": "VO_K02_en_epic",
+      "locale": "en",
+      "english_source": "ABSOLUTELY NOT!",
+      "back_translation": "Absolutely not!",
+      "delivery": "Firm theatrical refusal; provisional knight casting",
+      "review": "listening_pending",
+      "endpoint": "/v1/text-to-speech/SOYHLrjzK2X1ezoPC6cr",
+      "payload": {
+        "text": "ABSOLUTELY NOT!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.75,
+          "style": 0.65,
+          "use_speaker_boost": true
+        }
+      },
+      "hash": "97e7ad5095fb401dc668a5e4e3f36418cf46854d797a0da8b8b725d3671a0043",
+      "status": "complete",
+      "date": "2026-11-13T14:26:16.122181+00:00",
+      "request_id": "LVD2nf6rsJxCh3Y7KR3c",
+      "character_cost": "6",
+      "original": "output\\samples\\VO_K02_en_epic.mp3",
+      "wav": "output\\samples\\VO_K02_en_epic.wav",
+      "duration_seconds": 1.3467708333333333,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_dbfs": -2.5983031209901823,
+      "clipped_samples": 0
+    },
+    "VO_K02_de_epic": {
+      "id": "VO_K02_de_epic",
+      "locale": "de",
+      "english_source": "ABSOLUTELY NOT!",
+      "back_translation": "Under no circumstances!",
+      "delivery": "Firm theatrical refusal; provisional knight casting",
+      "review": "fluent_review_pending",
+      "endpoint": "/v1/text-to-speech/SOYHLrjzK2X1ezoPC6cr",
+      "payload": {
+        "text": "Auf gar keinen Fall!",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.75,
+          "style": 0.65,
+          "use_speaker_boost": true
+        }
+      },
+      "hash": "854abd6f92609455c6fd75c1431cf5aefa62d075621a01dfe82ab61618715628",
+      "status": "complete",
+      "date": "2026-11-13T14:26:17.278740+00:00",
+      "request_id": "S9L7fmyLnLyLLmXZB2EC",
+      "character_cost": "8",
+      "original": "output\\samples\\VO_K02_de_epic.mp3",
+      "wav": "output\\samples\\VO_K02_de_epic.wav",
+      "duration_seconds": 1.4396458333333333,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_dbfs": -5.790413505629065,
+      "clipped_samples": 0
+    },
+    "VO_K02_ja_epic": {
+      "id": "VO_K02_ja_epic",
+      "locale": "ja",
+      "english_source": "ABSOLUTELY NOT!",
+      "back_translation": "Absolutely not / absolutely forbidden!",
+      "delivery": "Firm theatrical refusal; provisional knight casting",
+      "review": "fluent_review_pending",
+      "endpoint": "/v1/text-to-speech/SOYHLrjzK2X1ezoPC6cr",
+      "payload": {
+        "text": "絶対にダメだ！",
+        "model_id": "eleven_multilingual_v2",
+        "voice_settings": {
+          "stability": 0.35,
+          "similarity_boost": 0.75,
+          "style": 0.65,
+          "use_speaker_boost": true
+        }
+      },
+      "hash": "49cd2cb51001f9dae7b7f0cb29fb6b7eae823762566479b6084a35e8d7232ff0",
+      "status": "complete",
+      "date": "2026-11-13T14:26:17.767041+00:00",
+      "request_id": "qIibrfk5fJqaozifh2Nb",
+      "character_cost": "3",
+      "original": "output\\samples\\VO_K02_ja_epic.mp3",
+      "wav": "output\\samples\\VO_K02_ja_epic.wav",
+      "duration_seconds": 1.4860833333333334,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_dbfs": -5.534531191286407,
+      "clipped_samples": 0
+    },
+    "SFX_Lecture_Impact_v01": {
+      "id": "SFX_Lecture_Impact_v01",
+      "review": "listening_pending",
+      "endpoint": "/v1/sound-generation",
+      "payload": {
+        "text": "Ridiculously over-the-top theatrical fantasy game sound effect. Treat this tiny domestic action as a world-ending event, with total dramatic sincerity. One thunderous blast of parental disapproval: compressed air cannon, colossal book slammed onto an oak desk, a short metallic shockwave. A physical WHUMP with no spoken voice. Huge perceived scale, crisp transient, clean isolated sound, clean ending, no music, no background, no clipping.",
+        "model_id": "eleven_text_to_sound_v2",
+        "duration_seconds": 0.6,
+        "prompt_influence": 0.5
+      },
+      "hash": "ded8111412c33ad3c7df46fa2f4db38e7e278601d9c8150ad70e2a0bf0479ca6",
+      "status": "complete",
+      "date": "2026-11-13T14:26:18.209655+00:00",
+      "request_id": null,
+      "character_cost": "6",
+      "original": "output\\samples\\SFX_Lecture_Impact_v01.mp3",
+      "wav": "output\\samples\\SFX_Lecture_Impact_v01.wav",
+      "duration_seconds": 0.6,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_dbfs": -3.9891721919960648,
+      "clipped_samples": 0
+    }
+  },
+  "subscription_after": {
+    "character_count": 0,
+    "character_limit": 40000
+  }
+}
