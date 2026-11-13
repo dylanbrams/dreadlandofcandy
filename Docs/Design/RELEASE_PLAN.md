@@ -4,6 +4,8 @@ Written 2026-11-13 by GAME, at Dylan's request. **This file governs the rest of 
 
 Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
+**What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. So: push the first build that passes its packaged smoke test rather than waiting for polish, put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time.
+
 ## Where things stand (checked on disk, Nov 13)
 
 | Piece | State |
