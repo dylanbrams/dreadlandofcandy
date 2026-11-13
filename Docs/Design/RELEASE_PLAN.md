@@ -24,8 +24,8 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 The film, with sound and voice, playable by one of four characters, set in the candy world if the gate passes.
 
-- **Floor (ships whatever happens):** Backlot film + sound effects + Fenella's voice + theme song.
-- **Target:** the same three scenes played at the film sets of `L_Sugarborough`, with a follow camera and a compass to the next set. The world is something to walk through between scenes, not a quest system.
+- **The game we ship is the new world** (Dylan, Nov 13): the three scenes played at the film sets of `L_Sugarborough`, with a follow camera and a compass to the next set. The world is something to walk through between scenes, not a quest system.
+- **Fallback only if R4 fails its time box or the packaged world will not run:** the Backlot arenas with the same sound and voice. Candidate A (R3) exists so there is always something to submit, not because it is the plan.
 - **Stretch:** pick the knight, mage, archer or barbarian on the title screen.
 
 **Cut, do not start:** the quest generator, villager quest givers and dialogue, typed quest requests (O3, O5, O8), the TUNING worker, wiring the Niagara attack effects, non-English voice (stays on disk for after the jam), new terrain or asset generation, T24 street gags.
@@ -38,7 +38,7 @@ Each task is one commit and ends with: build, `Jam.*` tests, Backlot autoplay PA
 | --- | --- | --- | --- | --- |
 | R0 | 0:15 | Checkpoint what is on disk: scoped commits of the terrain, vocals scripts and docs. Tag `pre-release`. Never the `DefaultEngine.ini` token block | `git status` shows only ignored and source-audio files | Commit docs only |
 | R1 | 1:00 | **Sound.** Import the 47 SFX to `/Game/Audio/SFX` and the English Fenella clips to `/Game/Audio/VO`. One table (`JamSfx`: event to cue, volume) played from the cosmetic events that already exist (list below). An Effects volume in `UJamSettings` | Autoplay log has no missing-clip warnings for imported lines; Dylan hears a lecture, a CUT!, a wrap | Ship the 12 loudest events only |
-| R2 | 0:15 | **Theme song** on the title and credits; import `village` for the Open village. `Docs/Declared.md` line for the song | Title screen plays it in a packaged run | Title keeps `quest-accepted` |
+| R2 | 0:15 | **Theme song in the credits only** (and Dylan's trailer); it is a different style from the score and stays off the title and out of play. Import `village` for the Open village. `Docs/Declared.md` line for the song | Credits play it in a packaged run | Credits keep the `credits` cue |
 | R3 | 0:30 | **Candidate A:** package, smoke Backlot, zip. This is submittable | `smoke-packaged.ps1 -Extra "-autoplay","-timescale=4"` green; zip under 1 GB | None: fix until green |
 | R4 | 2:00 | **The world, slim.** Follow camera (BUILD_SPEC 3e "Camera and controls"). In Open mode the three scenes run at the table's `FilmSet` locations in order; a HUD compass marker and distance point to the next set; the hero starts in the village; ground found by tracing down; a few ambient nuisances at camps near the hero (XP only). Music by biome. The bot walks to each set and plays it | `JamAutoplay: PASS mode=open main=3` on `L_Sugarborough` in editor `-game`; a screenshot behind the hero with Fenella in frame | Drop ambient camps, then biome music. If the bot cannot pass by 2:00, Open stays behind `-open` and R5 is skipped |
 | R5 | 0:45 | **Candidate B and the gate:** package, smoke both modes, zip. Dylan plays ten minutes of each | Both PASS lines in the packaged log | See the gate below |
@@ -48,7 +48,7 @@ Each task is one commit and ends with: build, `Jam.*` tests, Backlot autoplay PA
 
 Total 6:30 with R7; 6:00 without. R6 and R7 are the first to go.
 
-**The gate (after R5, Dylan decides):** if packaged Open passes its smoke test, holds a playable frame rate on Dylan's machine while walking and fighting, and he prefers it, then `GameDefaultMap` becomes `/Game/World/L_Sugarborough`, no flag means Open, and Backlot stays behind `-backlot`. Otherwise Candidate A's flow ships and Open stays behind `-open`.
+**The gate (after R5):** the world is the default. `GameDefaultMap` becomes `/Game/World/L_Sugarborough`, no flag means Open, and Backlot stays behind `-backlot`. It is reversed only if packaged Open fails its smoke test or does not hold a playable frame rate on Dylan's machine while walking and fighting; then Candidate A's flow ships and Open stays behind `-open`.
 
 **R1 event list** (cue names are the files in `vocals/output/sfx/`): lecture cast `Sword_Raise` then `Hero_Inhale`, release `Lecture_Impact`; `FormLine_Contact`, `DisappointedSigh`, `LastJudgment_Contact`; `Flustered`, `Pacify`, `Interact_Complete`; `Bubble_Pop` per bubble; slate and ACTION! `Clapper`; `Cut_Horn`; `Retake_Rewind`; `Stage_Complete`; wrap `Ledger_Deduction` per line then `Coin_Trickle`; `LevelUp`; `UI_Click`, `UI_Back`, `UI_Unavailable`; `Budget_Warning` and `Budget_Empty` at the budget-out; `Backlot_Ambience_Loop`; `Quest_Accept` on entering a film set in Open mode. Footsteps and the Fenella fly loop only if time is left in the box.
 
@@ -59,7 +59,7 @@ Total 6:30 with R7; 6:00 without. R6 and R7 are the first to go.
 | Now | 5 | Put the theme song at `music/theme-song.mp3` (or `.wav`). Stop any Codex session that still has the engine; terrain is frozen |
 | Before R3 ends | 45 | **Deploy the backend** (`backend/DEPLOY.md`, off stream), give GAME the URL. This is the Ambition score. Not done by the end of Nov 14: the text box ships hidden and the three suggestion buttons stay |
 | After R3 | 20 | Play Candidate A, keyboard then gamepad. Write the three worst things in `STATUS.md` |
-| After R5 | 25 | Play Open. Decide the gate. Approve the look |
+| After R5 | 25 | Play the world build. Say whether it runs well enough to ship. Approve the look |
 | After R6 | 10 | Approve the knight and the cast |
 | Nov 15 morning | 40 | Record the 30 to 60 second video (sword fakeout, CUT!, ledger, budget-out, a walk through the world), upload it |
 | Nov 15 | 30 | Itch page, tools used, team details; say "go" for `upload-itch.ps1`; download the zip, unzip, run it |
