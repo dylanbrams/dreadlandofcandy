@@ -1,0 +1,71 @@
+# RELEASE PLAN: on itch in 6 hours of AI time and 3 to 4 hours of Dylan's
+
+Written 2026-11-13 by GAME, at Dylan's request. **This file governs the rest of the jam.** It overrules `BUILD_SPEC.md` section 7 (backlog), the O2 to O9 scope in section 3e, and the day tables in `WORKERS.md`. The game design, architecture and session protocol in `BUILD_SPEC.md` still hold.
+
+Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
+
+## Where things stand (checked on disk, Nov 13)
+
+| Piece | State |
+| --- | --- |
+| The film (Backlot: three scenes, notes, wrap, Premiere, credits) | Works, packaged, 57 `Jam.*` tests, autoplay PASS. Has music, **no sound effects, no voice** |
+| Open world framework | **O1 only.** `-open` builds a world from the table; fixed camera, no bot, no quests. O2 to O9 not started |
+| Terrain `/Game/World/L_Sugarborough` | Delivered: 85,091 baked instances, landmarks, 19 locations, cooks and launches packaged with `-open`. Latest polish passes are **uncommitted and not repackaged**. Performance not measured in play |
+| Fenella's voice | 100 English clips in `vocals/output/fenella/`, already named `VO_<LineId>`. Not imported |
+| Sound effects | 47 in `vocals/output/sfx/`. Not imported; the game has no SFX code |
+| Cast voices, battle cries | `vocals/output/cast/` (8 roles), `vocals/output/attacks/<lang>/` (8 languages, 24 English). Not imported |
+| Characters | `SK_Knight` (new look, all 8 clips), `SK_Mage`, `SK_Archer`, `SK_Barbarian` (Idle, Walk only) in `ImportSource/Meshy/SK_*_Rig/`. Not imported; the game still uses `SK_Hero_Rig` |
+| Theme song (Big Rock Candy Mountain) | Lyrics in `Docs/BigRockCandyMountainAdjustedLyrics.txt`. **No audio file found in the repo** |
+| Music | 9 cues in the game; `village`, `title-theme` and 9 more in `music/` not imported |
+| Niagara attack effects (FX) | 33 systems, review maps only, not wired to gameplay |
+| Backend (typed notes) | Built and tested, **not deployed** |
+
+## What ships
+
+The film, with sound and voice, playable by one of four characters, set in the candy world if the gate passes.
+
+- **Floor (ships whatever happens):** Backlot film + sound effects + Fenella's voice + theme song.
+- **Target:** the same three scenes played at the film sets of `L_Sugarborough`, with a follow camera and a compass to the next set. The world is something to walk through between scenes, not a quest system.
+- **Stretch:** pick the knight, mage, archer or barbarian on the title screen.
+
+**Cut, do not start:** the quest generator, villager quest givers and dialogue, typed quest requests (O3, O5, O8), the TUNING worker, wiring the Niagara attack effects, non-English voice (stays on disk for after the jam), new terrain or asset generation, T24 street gags.
+
+## Tasks, in order
+
+Each task is one commit and ends with: build, `Jam.*` tests, Backlot autoplay PASS, a screenshot or log looked at. Stop at the time box and take the fallback; do not borrow time from a later task.
+
+| ID | Time | Task | Done when | If it overruns |
+| --- | --- | --- | --- | --- |
+| R0 | 0:15 | Checkpoint what is on disk: scoped commits of the terrain, vocals scripts and docs. Tag `pre-release`. Never the `DefaultEngine.ini` token block | `git status` shows only ignored and source-audio files | Commit docs only |
+| R1 | 1:00 | **Sound.** Import the 47 SFX to `/Game/Audio/SFX` and the English Fenella clips to `/Game/Audio/VO`. One table (`JamSfx`: event to cue, volume) played from the cosmetic events that already exist (list below). An Effects volume in `UJamSettings` | Autoplay log has no missing-clip warnings for imported lines; Dylan hears a lecture, a CUT!, a wrap | Ship the 12 loudest events only |
+| R2 | 0:15 | **Theme song** on the title and credits; import `village` for the Open village. `Docs/Declared.md` line for the song | Title screen plays it in a packaged run | Title keeps `quest-accepted` |
+| R3 | 0:30 | **Candidate A:** package, smoke Backlot, zip. This is submittable | `smoke-packaged.ps1 -Extra "-autoplay","-timescale=4"` green; zip under 1 GB | None: fix until green |
+| R4 | 2:00 | **The world, slim.** Follow camera (BUILD_SPEC 3e "Camera and controls"). In Open mode the three scenes run at the table's `FilmSet` locations in order; a HUD compass marker and distance point to the next set; the hero starts in the village; ground found by tracing down; a few ambient nuisances at camps near the hero (XP only). Music by biome. The bot walks to each set and plays it | `JamAutoplay: PASS mode=open main=3` on `L_Sugarborough` in editor `-game`; a screenshot behind the hero with Fenella in frame | Drop ambient camps, then biome music. If the bot cannot pass by 2:00, Open stays behind `-open` and R5 is skipped |
+| R5 | 0:45 | **Candidate B and the gate:** package, smoke both modes, zip. Dylan plays ten minutes of each | Both PASS lines in the packaged log | See the gate below |
+| R6 | 1:00 | **Cast.** Import `SK_Knight` (run `correct_sword_raise.py` on its raise) as the hero. `FJamClassDef` rows for the four; `-class=` and a "Casting" line on the title screen. All four use the knight's skills; the other three play Idle and Walk and their English battle cry on a cast | `-class=mage` passes Backlot autoplay; lineup screenshot | New knight only; the other three stay out |
+| R7 | 0:30 | The three worst things from Dylan's play, nothing else | Dylan agrees | Skip |
+| R8 | 0:15 | Final package, smoke, `zip-submission.ps1 -TeamName ImaginaryComponent -GameName TheDreadLandOfCandy`, credits and tools list, `Declared.md` reconciled | Zip on disk, under 1 GB | None |
+
+Total 6:30 with R7; 6:00 without. R6 and R7 are the first to go.
+
+**The gate (after R5, Dylan decides):** if packaged Open passes its smoke test, holds a playable frame rate on Dylan's machine while walking and fighting, and he prefers it, then `GameDefaultMap` becomes `/Game/World/L_Sugarborough`, no flag means Open, and Backlot stays behind `-backlot`. Otherwise Candidate A's flow ships and Open stays behind `-open`.
+
+**R1 event list** (cue names are the files in `vocals/output/sfx/`): lecture cast `Sword_Raise` then `Hero_Inhale`, release `Lecture_Impact`; `FormLine_Contact`, `DisappointedSigh`, `LastJudgment_Contact`; `Flustered`, `Pacify`, `Interact_Complete`; `Bubble_Pop` per bubble; slate and ACTION! `Clapper`; `Cut_Horn`; `Retake_Rewind`; `Stage_Complete`; wrap `Ledger_Deduction` per line then `Coin_Trickle`; `LevelUp`; `UI_Click`, `UI_Back`, `UI_Unavailable`; `Budget_Warning` and `Budget_Empty` at the budget-out; `Backlot_Ambience_Loop`; `Quest_Accept` on entering a film set in Open mode. Footsteps and the Fenella fly loop only if time is left in the box.
+
+## Dylan's time (about 3.5 hours)
+
+| When | Minutes | What |
+| --- | --- | --- |
+| Now | 5 | Put the theme song at `music/theme-song.mp3` (or `.wav`). Stop any Codex session that still has the engine; terrain is frozen |
+| Before R3 ends | 45 | **Deploy the backend** (`backend/DEPLOY.md`, off stream), give GAME the URL. This is the Ambition score. Not done by the end of Nov 14: the text box ships hidden and the three suggestion buttons stay |
+| After R3 | 20 | Play Candidate A, keyboard then gamepad. Write the three worst things in `STATUS.md` |
+| After R5 | 25 | Play Open. Decide the gate. Approve the look |
+| After R6 | 10 | Approve the knight and the cast |
+| Nov 15 morning | 40 | Record the 30 to 60 second video (sword fakeout, CUT!, ledger, budget-out, a walk through the world), upload it |
+| Nov 15 | 30 | Itch page, tools used, team details; say "go" for `upload-itch.ps1`; download the zip, unzip, run it |
+| Nov 15 | 15 | Publish the dev log link (Glass Box) |
+| Spare | 20 | |
+
+## Who runs it
+
+GAME (Claude) takes R0 onward while quota lasts. Every task is written so Codex can pick it up from `STATUS.md` with this prompt: "You are GAME. Read `CLAUDE.md`, `Docs/STATUS.md` and `Docs/Design/RELEASE_PLAN.md`. Take the next R task, finish it to its 'done when' or its fallback inside the time box, commit, update STATUS and DEVLOG." One session in the checkout at a time; whoever holds it holds the engine.

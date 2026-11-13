@@ -2,6 +2,8 @@
 
 How the backlog in `BUILD_SPEC.md` section 7 is split across sessions that can run at the same time. Each worker has its own checkout or its own repo, owns a set of folders, and takes its tasks in the order listed. Task details and "done when" stay in the spec.
 
+**Nov 13: `RELEASE_PLAN.md` governs.** One worker is left: GAME, run by Claude or by Codex with the start prompt at the end of that file, one session at a time in the main checkout. TERRAIN, FX, ASSETS and AUDIO are finished and frozen; TUNING and RULES never restart. GAME now imports their deliveries and may edit any folder to do it. BACKEND has only its deploy left, which is Dylan's. The rest of this file is the record of how the work was split.
+
 ## Why these boundaries
 
 - **Builds queue, they do not collide.** `Scripts\build.ps1` passes `-WaitMutex`, so two checkouts can build; the second waits. The scripts find the project from the `.uproject` beside them, so they work unchanged in a git worktree.

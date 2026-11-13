@@ -2,6 +2,8 @@
 
 Written 2026-11-11 (design review, before the jam). **This file governs.** Where it conflicts with the three briefs in this folder or with older text in `STATUS.md`, this file wins. Dylan can overrule anything here; a session cannot.
 
+**Nov 13: `RELEASE_PLAN.md` in this folder governs the rest of the jam.** It replaces the backlog in section 7 and cuts section 3e down to a follow camera and the three film scenes played in the terrain world (no quest generator, givers or typed quest requests). Sections 3 to 3c, 5, 6 and 9 still hold.
+
 Do not read the briefs by default. The master brief is about 40k tokens, most of it describes an MMO we are not building, and it will pull you toward that scope. Open a brief only when a task below names a section. Jokes and all authored text come from `Jokes.md`.
 
 ## 1. What the review found
@@ -324,6 +326,8 @@ Three layers. Dependencies point downward only.
 - One master volume slider in the pause menu.
 
 ## 7. Task backlog
+
+**Superseded on Nov 13 by `RELEASE_PLAN.md` (tasks R0 to R8).** What follows is the record of what was planned; T24, T25 and O2 to O9 are not to be taken from here.
 
 **Capacity (Dylan, Nov 11): about 9 to 10 hours a day of steering, uneven.** The plan was drawn for 12, so it is already cut to fit: T22 (commentary) and the T24 street gags beyond signs and plywood backs are **stretch**, done only if day 3 is ahead. Gate: if Scenes 1 and 2 are not playable start to finish in a packaged build by the end of day 2, Scene 3 is cut and day 3 goes to making two scenes and the Premiere good. Tasks marked Sonnet are headless and safe to leave running unattended; queue those for when Dylan is away and keep the Opus, engine-facing tasks for when he can look at screenshots.
 
