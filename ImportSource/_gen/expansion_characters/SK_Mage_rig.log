@@ -1,0 +1,16 @@
+rig task 01a1d409-945e-7527-9568-22c05e081b82
+  [rig] IN_PROGRESS 10
+  [rig] IN_PROGRESS 20
+  [rig] IN_PROGRESS 36
+  [rig] IN_PROGRESS 52
+  [rig] SUCCEEDED 100
+saved D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Mage_Rig\SK_Mage_Rig.fbx
+  [Walk] IN_PROGRESS 10
+  [Idle] IN_PROGRESS 10
+  [Walk] IN_PROGRESS 20
+  [Idle] IN_PROGRESS 20
+  [Walk] SUCCEEDED 100
+  [Idle] SUCCEEDED 100
+[Idle] saved A_SK_Mage_Rig_Idle.fbx
+[Walk] saved A_SK_Mage_Rig_Walk.fbx
+done D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Mage_Rig credits 11

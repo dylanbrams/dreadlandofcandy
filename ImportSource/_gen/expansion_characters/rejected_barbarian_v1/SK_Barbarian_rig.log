@@ -1,0 +1,16 @@
+rig task 01a1d40a-f446-72f2-827f-943bf25b9d97
+  [rig] IN_PROGRESS 10
+  [rig] IN_PROGRESS 20
+  [rig] IN_PROGRESS 36
+  [rig] IN_PROGRESS 52
+  [rig] SUCCEEDED 100
+saved D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Barbarian_Rig\SK_Barbarian_Rig.fbx
+  [Idle] IN_PROGRESS 0
+  [Walk] IN_PROGRESS 0
+  [Idle] IN_PROGRESS 20
+  [Walk] IN_PROGRESS 20
+  [Idle] SUCCEEDED 100
+  [Walk] SUCCEEDED 100
+[Idle] saved A_SK_Barbarian_Rig_Idle.fbx
+[Walk] saved A_SK_Barbarian_Rig_Walk.fbx
+done D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Barbarian_Rig credits 11

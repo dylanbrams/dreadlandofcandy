@@ -1,0 +1,38 @@
+rig task 01a1d415-16ba-7624-93b6-4f96d75f830a
+  [rig] IN_PROGRESS 0
+  [rig] IN_PROGRESS 20
+  [rig] IN_PROGRESS 36
+  [rig] IN_PROGRESS 52
+  [rig] SUCCEEDED 100
+saved D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Knight_Rig\SK_Knight_Rig.fbx
+  [Scrub motion] SUCCEEDED 100
+  [SwordRaise motion] SUCCEEDED 100
+  [ProudStrut] IN_PROGRESS 10
+  [Idle] IN_PROGRESS 10
+  [OneHandUp] IN_PROGRESS 0
+  [Walk] IN_PROGRESS 0
+  [Scrub] IN_PROGRESS 1
+  [SwordRaise] IN_PROGRESS 1
+  [ProudStrut] IN_PROGRESS 20
+  [Idle] IN_PROGRESS 95
+  [OneHandUp] SUCCEEDED 100
+  [Walk] IN_PROGRESS 20
+  [Scrub] IN_PROGRESS 20
+  [SwordRaise] IN_PROGRESS 20
+[OneHandUp] saved A_SK_Knight_Rig_OneHandUp.fbx
+  [Sigh motion] SUCCEEDED 100
+  [Sigh] IN_PROGRESS 1
+  [ProudStrut] SUCCEEDED 100
+  [Idle] SUCCEEDED 100
+  [Walk] SUCCEEDED 100
+[Idle] saved A_SK_Knight_Rig_Idle.fbx
+[ProudStrut] saved A_SK_Knight_Rig_ProudStrut.fbx
+  [SwordRaise] SUCCEEDED 100
+  [Scrub] SUCCEEDED 100
+[Walk] saved A_SK_Knight_Rig_Walk.fbx
+[SwordRaise] saved A_SK_Knight_Rig_SwordRaise.fbx
+[Scrub] saved A_SK_Knight_Rig_Scrub.fbx
+  [Sigh] IN_PROGRESS 20
+  [Sigh] SUCCEEDED 100
+[Sigh] saved A_SK_Knight_Rig_Sigh.fbx
+done D:\Source\Unreal\MegaJam2026\ImportSource\Meshy\SK_Knight_Rig credits 56
