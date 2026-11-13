@@ -6,6 +6,13 @@
     "/Game/World/Review/L_TerrainOverview",
     "/Game/World/Review/L_TerrainVillage",
     "/Game/World/Review/L_TerrainMeadow",
-    "/Game/World/Review/L_TerrainFort"
+    "/Game/World/Review/L_TerrainFort",
+    "/Game/World/Review/L_DenseMeadow",
+    "/Game/World/Review/L_DenseSnow",
+    "/Game/World/Review/L_CandyWander",
+    "/Game/World/Review/L_SweetMeadow",
+    "/Game/World/Review/L_CandyGrove",
+    "/Game/World/Review/L_SugarSnow",
+    "/Game/World/Review/L_CandyExplorer"
   ]
 }

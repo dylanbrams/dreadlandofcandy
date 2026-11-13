@@ -1,5 +1,12 @@
 # Sugarborough terrain sources
 
+Current delivery (Nov 13): see [Dense/README.md](Dense/README.md) and
+[Dense/HANDOVER.md](Dense/HANDOVER.md). The dense PCG pass adds 86,003 baked
+instances, seven imported Rodin models, grass wind and sugar snow. Windows
+packaging, 57 tests and packaged visual checks pass; the CRC-verified archive
+is 613,096,338 bytes. O1 is merged; follow camera and quests remain GAME work.
+The sections below document the original sparse pass.
+
 Original geometry and deterministic placement authored during the jam, 2026-11-12.
 No purchased assets, generated bitmap art, or paid model generations used in this pass.
 All source files and output stay inside TERRAIN's ownership surface.
@@ -27,7 +34,7 @@ The source validator measures the height function and generated mesh triangles t
 
 Editor compile and all 54 `Jam.*` tests pass. Normal Windows packaging passes with the AlwaysCook label. The packaged main map launches with `-open`; the village and full-world camera maps render correctly. Packaged Backlot autoplay passes all three scenes and the 70-second smoke checks. `check_package.py` creates a local validation zip, excludes PDBs and runtime Saved directories, verifies CRCs and records the size: **574,901,156 bytes**, below the stricter decimal 1 GB limit. No upload was performed.
 
-Full Open gameplay is **not verified**: GAME's O1 framework remains on its unmerged branch, and O2–O9 are separate GAME work. Launching the map is not evidence that those quests or the follow camera exist in main. `delivery_report.json` records this distinction. Performance still needs a human playthrough at the final follow camera.
+Full Open gameplay is **not verified**: O1 is now merged; O2 follow camera and O4 quests remain pending, and O2–O9 are separate GAME work. Launching the map is not evidence that those quests or the follow camera exist in main. `delivery_report.json` records this distinction. Performance still needs a human playthrough at the final follow camera.
 
 The Y-axis reflection is compensated in the FBX exporter; collision flags and section collision are set before rebuilding each mesh's physics data.
 

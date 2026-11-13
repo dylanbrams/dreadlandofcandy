@@ -210,7 +210,9 @@
     }
   ],
   "terrain_count": 16,
-  "nonblocking_scatter": 520,
+  "nonblocking_scatter": 0,
+  "dense_nonblocking_instances": 86003,
+  "dense_instanced_components": 21,
   "ground_collision_samples": [
     {
       "id": "Village",
@@ -822,9 +824,8 @@
     }
   ],
   "review_maps": [
-    "/Game/World/Review/L_TerrainOverview",
-    "/Game/World/Review/L_TerrainVillage",
-    "/Game/World/Review/L_TerrainMeadow",
-    "/Game/World/Review/L_TerrainFort"
+    "/Game/World/Review/L_DenseMeadow",
+    "/Game/World/Review/L_DenseSnow",
+    "/Game/World/Review/L_CandyWander"
   ]
 }

@@ -182,3 +182,15 @@ folder. These assets have not yet been imported into Unreal or placed in the map
 | `SM_Rodin_SugarFern` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_SugarFern.glb`; `generation_manifest.json` |
 | `SM_Rodin_CandyFlowerClump` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_CandyFlowerClump.glb`; `generation_manifest.json` |
 | `SM_Rodin_GummySucculent` | Hyper3D Rodin Gen-2.5-Low | 2026-11-12 | `ImportSource/Terrain/Foliage/Raw/SM_Rodin_GummySucculent.glb`; `generation_manifest.json` |
+
+### Dense terrain ecology - authored during the jam, Nov 12–13
+
+New original meshes `SM_CandyGrassMint`, `SM_CandyGrassRose`,
+`SM_CandyGrassIce`, `SM_CandyflossThicket` and `SM_SugarSnowflake`, plus
+grass-wind/snowfall materials, a powdered-sugar ground-atlas variant and a
+PCG/HISM ecology graph were authored with Codex in
+`ImportSource/Terrain/Dense/` and `Content/World/Dense/`. Blender 4.5 exports
+and Unreal Python perform the build. Seven of the previously declared Rodin
+foliage models are reused; the willow is held out. No new paid model generation
+or copied third-party code/assets were used. The existing engine daylight
+ambient cubemap is referenced for lighting.

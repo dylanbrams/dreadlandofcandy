@@ -1,43 +1,72 @@
 {
-  "verified_date_utc": "2026-11-12",
+  "verified_date_utc": "2026-11-13",
   "map": "/Game/World/L_Sugarborough",
   "editor_build": "passed",
-  "automation": {"passed": 54, "failed": 0},
+  "automation": {
+    "passed": 57,
+    "failed": 0
+  },
   "editor_physics": {
     "status": "passed",
     "ground_samples": 79,
     "hero_capsule_approaches": 3,
     "boundary_samples": 12,
     "terrain_tiles": 16,
-    "nonblocking_scatter": 520,
-    "details": "engine_validation.json"
+    "details": "engine_validation.json",
+    "nonblocking_instances": 86003,
+    "instanced_components": 21
   },
   "windows_development_package": "passed",
   "cook_label": "/Game/World/PAL_Sugarborough",
   "packaged_main_map_launch_with_open_flag": "passed",
   "inspected_packaged_captures": [
-    "Review/packaged-village.png",
-    "Review/packaged-overview.png"
+    "Dense/Review/packaged-grove.png",
+    "Dense/Review/packaged-snow.png",
+    "Dense/Review/packaged-explorer.png",
+    "Dense/Review/packaged-main.png"
   ],
   "backlot_regression": {
     "status": "passed",
     "smoke_seconds": 70,
     "smoke_checks": 7,
-    "autoplay": "PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=72 lines=15 skills=16 time=126.5"
+    "autoplay": "PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=29 lines=14 skills=14 time=117.9",
+    "log": "Saved/Logs/DenseEcology-Backlot-Smoke.log"
   },
   "validation_archive": {
     "path": "Builds/TerrainValidation.zip",
-    "bytes": 574901156,
+    "bytes": 613096338,
     "limit_bytes": 1000000000,
     "crc_verified": true,
     "uploaded": false
   },
   "open_quest_gameplay_verified": false,
   "remaining": [
-    "GAME's O1 framework is unmerged; O2-O9 remain separate GAME work.",
-    "Open quest autoplay cannot be verified on the current main source.",
-    "Human playthrough and final follow-camera readability need the GAME framework."
+    "O1 is merged. O2 follow camera and remaining O2-O9 framework belong to GAME.",
+    "Open quest autoplay awaits O4 and subsequent GAME work.",
+    "Human traversal, performance and final follow-camera readability remain to be reviewed."
   ],
   "default_map_changed": false,
-  "game_source_changed": false
+  "game_source_changed": false,
+  "dense_ecology": {
+    "status": "passed",
+    "pcg_graph": "/Game/World/Dense/PCG/PCG_CandyEcology",
+    "baked_instances": 86003,
+    "groups": 21,
+    "layers": {
+      "grass": 76148,
+      "tree": 1050,
+      "bush": 2102,
+      "flower": 4113,
+      "snow": 2590
+    },
+    "main_map": "/Game/World/L_Sugarborough",
+    "review_maps": [
+      "/Game/World/Review/L_SweetMeadow",
+      "/Game/World/Review/L_CandyGrove",
+      "/Game/World/Review/L_SugarSnow",
+      "/Game/World/Review/L_CandyExplorer"
+    ],
+    "review_maps_status": "saved and current"
+  },
+  "packaged_explorer_startup": "passed; native DefaultPawn; manual traversal not claimed"
 }

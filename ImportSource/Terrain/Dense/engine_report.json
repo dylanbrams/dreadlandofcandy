@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "pcg_graph": "/Game/World/Dense/PCG/PCG_CandyEcology",
+  "baked_instances": 86003,
+  "groups": 21,
+  "layers": {
+    "grass": 76148,
+    "tree": 1050,
+    "bush": 2102,
+    "flower": 4113,
+    "snow": 2590
+  },
+  "main_map": "/Game/World/L_Sugarborough",
+  "review_maps": [
+    "/Game/World/Review/L_SweetMeadow",
+    "/Game/World/Review/L_CandyGrove",
+    "/Game/World/Review/L_SugarSnow",
+    "/Game/World/Review/L_CandyExplorer"
+  ],
+  "review_maps_status": "saved and current"
+}

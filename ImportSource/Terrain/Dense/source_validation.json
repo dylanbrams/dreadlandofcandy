@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "layer_counts": {
+    "grass": 76148,
+    "tree": 1050,
+    "bush": 2102,
+    "flower": 4113,
+    "snow": 2590
+  },
+  "total_instances": 86003,
+  "source_groups": 21,
+  "finite_transforms": true,
+  "location_and_road_exclusions": true,
+  "excluded_willow": true
+}

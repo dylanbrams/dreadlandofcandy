@@ -1,18 +1,21 @@
 {
   "map": "/Game/World/L_Sugarborough",
   "imported_meshes": 28,
-  "baked_placements": 581,
   "pcg_graphs": [
     "/Game/World/PCG/PCG_Meadow",
     "/Game/World/PCG/PCG_Molars",
-    "/Game/World/PCG/PCG_Orchard"
+    "/Game/World/PCG/PCG_Orchard",
+    "/Game/World/Dense/PCG/PCG_CandyEcology"
   ],
   "source_validation": {
     "max_gameplay_slope_degrees": 4.662624759169969,
     "max_import_triangle_slope_degrees": 9.313570023963152,
-    "scatter_count": 520,
+    "scatter_count": 86003,
     "reserved_locations": 19,
     "terrain_triangles": 32768
   },
-  "packaged_validation": "passed terrain map launch and rendering; Open quest loop awaits GAME framework"
+  "packaged_validation": "passed dense grove/snow/explorer rendering and native Open terrain startup; O1 merged, follow camera/quests await GAME",
+  "base_pass_placements": 581,
+  "dense_baked_instances": 86003,
+  "dense_instanced_components": 21
 }

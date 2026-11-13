@@ -21,6 +21,11 @@ label.set_editor_property("rules", rules)
 label.set_editor_property("label_assets_in_my_directory", True)
 label.set_editor_property("is_runtime_label", True)
 maps = ["/Game/World/L_Sugarborough"] + ["/Game/World/Review/L_Terrain" + s for s in ("Overview", "Village", "Meadow", "Fort")]
+maps += ["/Game/World/Review/L_" + s for s in ("DenseMeadow", "DenseSnow", "CandyWander") if u.EditorAssetLibrary.does_asset_exist("/Game/World/Review/L_" + s)]
+project_root = Path(u.Paths.convert_relative_path_to_full(u.Paths.project_dir()))
+review_index = project_root / "ImportSource/Terrain/Dense/review_maps.json"
+if review_index.exists():
+    maps += list(json.loads(review_index.read_text()).values())
 worlds = [u.load_asset(path) for path in maps]
 if not all(worlds):
     raise RuntimeError("Terrain cook label references a missing map")

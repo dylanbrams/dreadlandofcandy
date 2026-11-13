@@ -125,3 +125,56 @@ Models: peppermint birch, licorice willow, candy-cane fir, bubblegum blossom, je
 Visual review: birch, fir, blossom and succulent are strongest. Willow is noticeably spiky/angular; hold for review before scattering. Fern is chunky rather than fernlike; fern/flowers retain small brown root shapes to bury or trim at placement. Contact sheet: `ImportSource/Terrain/Foliage/Review/contact-sheet.png`. More details in that folder's README.
 
 **Not imported, not scattered, not included in the current 575 MB package.** Current world and prior packaged validation remain unchanged. Engine integration should target `/Game/World/Foliage/`, keep scatter nonblocking and retain all location/road exclusions. Approval and in-game visual checks remain for the next engine window; this task's requested generation and offline preparation are complete. No C++ build/test/package run was needed or attempted for these source-only additions.
+
+### Dense candy ecology pass active - TERRAIN owns engine
+
+Dylan clarified that the target is a densely vegetated, wanderable candy world and explicitly handed TERRAIN the engine window. He requested PCG and snow and encouraged a more ambitious visual pass. TERRAIN is importing the new trees/plants, making original low-poly grass and candy-floss thickets, running a layered PCG graph, and baking its instanced output into the map. Source is `ImportSource/Terrain/Dense/`. Initial target: 76,148 grass tufts, 1,050 trees, 2,102 thickets, 4,113 smaller plants and 2,590 shader-animated sugar snowflakes. Quest/road exclusions remain; every foliage instance is nonblocking. Review is at player height before further polish or packaging.
+
+### Dense pass checkpoint - resumed Nov 13
+
+The approval reviewer ran out of usage before the last snow capture; that action
+was not executed and was not deemed unsafe. Dylan requested continuation after
+03:36 local, then asked to continue and offered a fresh context. Work resumed
+after the reset. Exact handover: `ImportSource/Terrain/Dense/HANDOVER.md`.
+
+The PCG graph actually generated and baked **86,003 instances in 21 HISM
+components**. Seven new Hyper3D assets are now in the world; willow is excluded.
+Grass wind, spatial sugar snowfall, snowy molar ground, finer grass, taller
+flowers and ambient-light refinement are present. No extra API credits spent.
+Original source meshes added: three grass tufts, cotton-candy thicket and
+snowflake. Main map updated; project default and gameplay source unchanged.
+
+Fresh full-editor reload/collision checks passed: 86,003 nonblocking instances,
+79 ground samples, three capsule routes and twelve perimeter samples. Build and
+**57 Jam tests passed**. GAME independently merged O1 (`369c9f9`; latest status
+`47187bf`); do not repeat old statements that O1 is unmerged. O2–O9 still
+belong to GAME; no Open quest autoplay exists yet.
+
+Current preview packages are in `Dense/review_maps.json`: SweetMeadow,
+CandyGrove, SugarSnow and CandyExplorer. Explorer is native free-look WASD/mouse,
+E/Q or Space/Ctrl height. Grove and snow editor captures inspected. Snow capture
+successfully reran after the review usage reset. Packaging is currently running
+to `Builds/Win64-Development`; the old 575 MB zip is not the dense build yet.
+Remaining: packaged grove/snow/explorer and native main-map startup checks,
+Backlot smoke, new archive size/CRC, final scoped commit.
+
+### Dense world delivered - Nov 13, engine released
+
+**Engine available for FX / GAME.** TERRAIN has finished its engine runs.
+Normal Windows Development packaging succeeded. Actual packaged Grove, Snow
+and Explorer captures were inspected in `ImportSource/Terrain/Dense/Review/`.
+Native main-map `-open -notitle` starts successfully and logs terrain map plus
+19 locations. Its fixed camera remains visible in `packaged-main.png`; GAME
+O2 must provide the requested follow camera. No Open quest autoplay is claimed.
+
+The current package passes the 70-second Backlot smoke, all seven checks:
+`PASS scenes=3 first=1 takes=4 notes=2/0 ending=directors_cut flees=29 lines=14 skills=14 time=117.9`.
+Build and 57 Jam tests are green. New dense validation archive:
+`Builds/TerrainValidation.zip`, **613,096,338 bytes**, CRC verified, below 1 GB.
+Nothing pushed or uploaded. This supersedes the sparse-world archive and the
+earlier offline-only foliage status above: seven Rodin models are integrated.
+
+Fresh-context entry: `ImportSource/Terrain/Dense/HANDOVER.md`. Next terrain work
+should use human traversal/visual feedback and GAME's O2 camera to tune density
+and sightlines. Current checks establish saved instances, collision and cooked
+rendering; they do not establish manual traversal or a performance target.

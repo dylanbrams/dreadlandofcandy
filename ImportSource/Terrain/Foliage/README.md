@@ -25,7 +25,10 @@ Every source model was rendered and inspected in Blender, without using Unreal.
 The flower and fern bases can be partly buried during placement; their preview
 shows the complete mesh. The willow has thin/pointed leaf shapes. These are
 review findings, not a claim that every asset has been approved for the game.
-No models have been imported, scattered or added to the current package.
+Integration update, Nov 13: seven models are imported under `/Game/World/Dense/`
+and placed in the packaged dense world. Willow remains excluded. See
+`../Dense/engine_report.json` for runtime integration; `validation.json` checks
+offline source files only.
 Dylan explicitly asked not to run the engine while another task uses it.
 
 ## Files and checks

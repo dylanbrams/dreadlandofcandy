@@ -1,5 +1,6 @@
 {
   "status": "passed",
+  "scope": "offline source files only",
   "assets": [
     {
       "name": "SM_Rodin_PeppermintBirch",
@@ -59,6 +60,5 @@
     }
   ],
   "actual_credits": 4.0,
-  "runtime_imported": false,
-  "in_world": false
+  "runtime_validation": "../Dense/engine_report.json and ../engine_validation.json"
 }

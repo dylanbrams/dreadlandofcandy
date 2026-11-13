@@ -1,8 +1,9 @@
 param(
-    [ValidateSet('Overview', 'Village', 'Meadow', 'Fort')]
+    [ValidateSet('Overview', 'Village', 'Meadow', 'Fort', 'DenseMeadow', 'DenseSnow', 'DenseGrove', 'Explore')]
     [string]$View = 'Village',
     [string]$PackagedExe,
     [switch]$MainMap,
+    [switch]$StartPlaying,
     [int]$At = 15
 )
 $ErrorActionPreference = 'Stop'
@@ -11,6 +12,12 @@ $TerrainProject = [IO.Path]::GetFullPath((Join-Path $TerrainRoot '../..'))
 $TerrainLog = Join-Path $TerrainProject "Saved/Logs/Terrain-$View.log"
 $TerrainShot = "terrain-$($View.ToLower())"
 $TerrainMap = "/Game/World/Review/L_Terrain$View"
+if ($View.StartsWith('Dense')) { $TerrainMap = "/Game/World/Review/L_$View" }
+$TerrainReviewIndex = Join-Path $TerrainRoot 'Dense/review_maps.json'
+if (Test-Path -LiteralPath $TerrainReviewIndex) {
+    $TerrainReviewMaps = Get-Content -LiteralPath $TerrainReviewIndex -Raw | ConvertFrom-Json
+    if ($TerrainReviewMaps.PSObject.Properties.Name -contains $View) { $TerrainMap = $TerrainReviewMaps.$View }
+}
 if ($MainMap) {
     $TerrainMap = '/Game/World/L_Sugarborough'
     $TerrainShot = 'terrain-main'
@@ -18,6 +25,7 @@ if ($MainMap) {
 }
 $TerrainArgs = @($TerrainMap, '-RenderOffscreen', '-windowed', '-ForceRes', '-ResX=1600', '-ResY=1000', '-ExecCmds="r.SetRes 1600x1000w"', '-nosplash', '-unattended', "-shotat=$At", "-shotname=$TerrainShot", "-quitat=$($At + 4)", "-abslog=`"$TerrainLog`"")
 if ($MainMap) { $TerrainArgs += '-open' }
+if ($StartPlaying) { $TerrainArgs += '-notitle' }
 if ($PackagedExe) {
     $TerrainExecutable = [IO.Path]::GetFullPath($PackagedExe)
     $TerrainDirectExe = Join-Path (Split-Path $TerrainExecutable -Parent) 'MegaJam/Binaries/Win64/MegaJam.exe'

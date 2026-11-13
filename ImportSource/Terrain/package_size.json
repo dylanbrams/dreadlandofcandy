@@ -1,14 +1,14 @@
 {
   "archive": "Builds\\TerrainValidation.zip",
   "file_count": 47,
-  "uncompressed_bytes": 861683589,
-  "archive_bytes": 574901156,
+  "uncompressed_bytes": 899980358,
+  "archive_bytes": 613096338,
   "limit_bytes": 1000000000,
   "under_limit": true,
   "excluded": [
     "*.pdb",
     "runtime Saved directories"
   ],
-  "uploaded": false,
-  "crc_verified": true
+  "crc_verified": true,
+  "uploaded": false
 }

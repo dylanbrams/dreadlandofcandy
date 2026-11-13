@@ -1,0 +1,16 @@
+# Original procedural Sugarborough mesh; centimetres, Z up
+mtllib terrain.mtl
+o SM_SugarSnowflake
+v -3.0000 0.0000 -3.0000
+v 3.0000 0.0000 -3.0000
+v 3.0000 0.0000 3.0000
+v -3.0000 0.0000 3.0000
+v 0.0000 -3.0000 -3.0000
+v 0.0000 3.0000 -3.0000
+v 0.0000 3.0000 3.0000
+v 0.0000 -3.0000 3.0000
+usemtl White
+f 1 2 3
+f 1 3 4
+f 5 6 7
+f 5 7 8

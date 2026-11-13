@@ -37,7 +37,17 @@ assert len(terrains) == 16
 for actor in terrains:
     assert actor.static_mesh_component.get_collision_profile_name() == "BlockAll"
 scatter = [a for a in actors if a.get_actor_label().startswith("Scatter_")]
-assert len(scatter) == 520
+dense_actors = [a for a in actors if a.get_actor_label().startswith("Baked_CandyEcology")]
+dense_components = [c for a in dense_actors for c in a.get_components_by_class(u.InstancedStaticMeshComponent)]
+dense_count = sum(c.get_instance_count() for c in dense_components)
+if dense_actors:
+    ecology = json.loads((ROOT / "Dense/ecology.json").read_text())
+    assert dense_count == sum(ecology["counts"].values())
+    assert len(scatter) == 0
+    for comp in dense_components:
+        assert comp.get_collision_enabled() == u.CollisionEnabled.NO_COLLISION
+else:
+    assert len(scatter) == 520
 for actor in scatter:
     assert actor.static_mesh_component.get_collision_enabled() == u.CollisionEnabled.NO_COLLISION
 
@@ -91,12 +101,16 @@ for side in range(4):
 world.get_world_settings().set_editor_property("default_game_mode", u.GameModeBase)
 cameras = [a for a in actors if isinstance(a, u.CameraActor)]
 reviews = []
+if dense_actors:
+    reviews = json.loads((ROOT / "Dense/engine_report.json").read_text())["review_maps"]
 for name, location, yaw, pitch, fov in [
     ("Overview", (-21500, -21500, 25000), 45, -39, 65),
     ("Village", (-3500, -3400, 2100), 44, -25, 65),
     ("Meadow", (1700, -150, 250), 0, -4, 80),
     ("Fort", (-1350, 2250, 850), 120, -5, 75),
 ]:
+    if dense_actors:
+        break
     for cam in cameras:
         cam.set_editor_property("auto_activate_for_player", u.AutoReceiveInput.DISABLED)
     cam = cameras[0]
@@ -109,6 +123,6 @@ for name, location, yaw, pitch, fov in [
         raise RuntimeError("Could not save " + path)
     reviews.append(path)
 
-report = dict(terrain_bounds=checks, terrain_count=len(terrains), nonblocking_scatter=len(scatter), ground_collision_samples=ground_hits, traversable_approaches=road_checks, boundary_collision_samples=boundary_checks, review_maps=reviews)
+report = dict(terrain_bounds=checks, terrain_count=len(terrains), nonblocking_scatter=len(scatter), dense_nonblocking_instances=dense_count, dense_instanced_components=len(dense_components), ground_collision_samples=ground_hits, traversable_approaches=road_checks, boundary_collision_samples=boundary_checks, review_maps=reviews)
 (ROOT / "engine_validation.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 u.log("TERRAIN ENGINE GEOMETRY PASS " + json.dumps(report))

@@ -70,7 +70,8 @@ def main():
     generation = json.loads((HERE / "generation_manifest.json").read_text(encoding="utf-8"))
     credits = sum(j.get("credits", 0) for j in generation["jobs"].values())
     assert len(results) == 8 and credits == 4
-    report = dict(status="passed", assets=results, actual_credits=credits, runtime_imported=False, in_world=False)
+    report = dict(status="passed", scope="offline source files only", assets=results, actual_credits=credits,
+                  runtime_validation="../Dense/engine_report.json and ../engine_validation.json")
     (HERE / "validation.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
