@@ -192,3 +192,47 @@ verify the corresponding weapon grips. This is an unfinished follow-up owned
 by the cast session; terrain/R7 fixes have the next engine slot.
 
 Weapons must be stowed on the back while travelling outside combat, with per-weapon offsets/clearance; draw for attacks and return to the back afterward. Dylan reported the current hand-carried weapons sticking into the ground. This is part of the unfinished cast follow-up.
+
+## Class presentation revision: three slots, equipment and brushing
+
+Dylan chose three active slots per class for the jam. This revision supplies the
+twelve selected class gestures and twelve new transparent hand-painted icons.
+The three shared hit patterns remain the jam's compact combat implementation;
+each class now supplies its own names, clips, effects, artwork and palette.
+The archer draws a bow in the left hand; the mage casts with the free hand;
+the barbarian kneads, bellows and spins instead of performing the knight's raise.
+New clips play through recovery within the existing 1.6-second cosmetic window.
+
+Class primaries: Knight #4778D6, Mage #8D5BDB, Archer #3C9D68, Barbarian #C65736.
+Damage accents: Manners gold, Sweetness pink, Hygiene mint, Nutrition lime,
+Domestic cream. Enum-indexed icon/animation data use slots 0,1,unused,3 and feed
+the R7 three-slot HUD and radial grayscale-to-colour cooldown material.
+Artwork and exact built-in image_gen prompts: `Assets/Incoming/2D/ClassSkills/manifest.json`.
+All twelve imported textures are under `/Game/Art/UI/Skills` (already cooked by `/Game/Art`).
+
+Weapons are on the back during travel, and whenever shooting is not Rolling
+(including slate, retake, CUT, wrap and title). During an attack they move to the
+appropriate hand; each weapon has its own back offset and orientation, with
+world scale preserved across skeletal attachments. The four sampled walk poses
+have at least 37 cm of weapon clearance above the flat review floor.
+
+Goblin brushing visibly uses the existing Rodin toothbrush at an oversized
+130-240 cm length, while the combat weapon stays on the back. Brush and white/mint
+foam follow the visible mesh's mouth bounds, including sitting/squash changes.
+Two reused M03 Niagara layers create compact mouth foam and bubbles, with a
+1.2-second linger and explicit cast-owned cleanup. The held interaction and
+successful mouse/bot interaction path both trigger the presentation.
+
+Validation: editor and game builds; 66 automation tests; all four classes finish
+the film with all three skills and brush/foam events; twelve skeleton/grip checks
+and twelve texture checks; seventeen clear in-game review captures (12 attacks,
+4 back carries, 1 brushing); and the observed retake carry edge was corrected
+and rechecked. Reports/captures: `ImportSource/RigCorrections/ClassSkills/validation.json`
+and `ImportSource/_gen/class_presentation_review/`.
+Development-only `-classreview -notitle -scene=2` captures the poses on a clear
+review floor; ordinary gameplay does not enter that setup.
+
+The previous shared-knight-gesture review is superseded by this revision.
+Dylan's final visual approval remains pending. Mouse/HUD fixes have the next
+engine slot and will do the final combined package/smoke; this revision has not
+replaced the archived package or release zip. No push or upload was performed.

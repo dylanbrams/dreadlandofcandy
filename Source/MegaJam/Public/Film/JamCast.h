@@ -17,6 +17,11 @@ struct MEGAJAM_API FJamClassDef
 	// Enum-indexed presentation data: 0 basic, 1 signature, 2 unused, 3 ultimate.
 	TArray<FString> SkillNames;
 	TArray<FString> SkillIcons;
+    TArray<FString> SkillAnimations;
+    FName WeaponHand = TEXT("hand_r");
+    FVector BackOffset = FVector(-34.f, 22.f, 58.f);
+    FVector BackAxis = FVector(0.f, -0.65f, -0.76f);
+    float BackTwist = 0.f;
 	FLinearColor PrimaryColor = FLinearColor(1.f, 0.82f, 0.3f);
 	TArray<FLinearColor> SkillDamageColors;
 	bool bFullClips = false; // SwordRaise, Sigh, Scrub, ProudStrut exist

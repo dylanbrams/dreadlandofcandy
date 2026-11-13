@@ -315,7 +315,7 @@ The rock itself, when it rings: "Incoming rock." / "You have one new rock."
 **Casting (title screen, R6):** a `Casting` line under `Roll Camera`, left / right picks who plays the hero; the caption names them. All four use the knight's skills and shout their battle cry on a cast.
 - The Knight. Brought his own sword. Has notes about it.
 - The Mage. Was promised a spell budget. Read the contract.
-- The Archer. No bow. Props said it was in the van.
+- The Archer. Brought her bow. Props still has the arrows.
 - The Barbarian. Has been spoken to about his volume.
 
 **Rating card (two seconds before the title):** "This film is rated S for Sugar. Contains mild peril, firm guidance, and one napkin."

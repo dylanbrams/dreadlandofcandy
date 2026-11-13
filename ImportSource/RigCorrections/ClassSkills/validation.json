@@ -1,0 +1,252 @@
+{
+  "clips": [
+    {
+      "id": "K01",
+      "who": "Knight",
+      "clip": "KnightShield",
+      "slot": "Lecture",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Knight/Anims/A_SK_Knight_Rig_KnightShield",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 4.641891232874655e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "K02",
+      "who": "Knight",
+      "clip": "SwordRaise",
+      "slot": "FormALine",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Knight/Anims/A_SK_Knight_Rig_SwordRaise",
+      "seconds": 2.9666666984558105
+    },
+    {
+      "id": "K03",
+      "who": "Knight",
+      "clip": "KnightWard",
+      "slot": "LastJudgment",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Knight/Anims/A_SK_Knight_Rig_KnightWard",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 3.2375925211961875e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "M01",
+      "who": "Mage",
+      "clip": "MageLecture",
+      "slot": "Lecture",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Mage/Anims/A_SK_Mage_Rig_MageLecture",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 4.339992707900877e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "M03",
+      "who": "Mage",
+      "clip": "MageLine",
+      "slot": "FormALine",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Mage/Anims/A_SK_Mage_Rig_MageLine",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 3.1554993483125875e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "M02",
+      "who": "Mage",
+      "clip": "MageJudgment",
+      "slot": "LastJudgment",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Mage/Anims/A_SK_Mage_Rig_MageJudgment",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 3.668247189675654e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "A01",
+      "who": "Archer",
+      "clip": "ArcherShot",
+      "slot": "Lecture",
+      "hand": "hand_l",
+      "asset": "/Game/Art/Cast/Archer/Anims/A_SK_Archer_Rig_ArcherShot",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_l",
+        "keys": 60,
+        "max_axis_error_degrees": 3.328622458812833e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "A03",
+      "who": "Archer",
+      "clip": "ArcherLine",
+      "slot": "FormALine",
+      "hand": "hand_l",
+      "asset": "/Game/Art/Cast/Archer/Anims/A_SK_Archer_Rig_ArcherLine",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_l",
+        "keys": 60,
+        "max_axis_error_degrees": 3.4469624100431306e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "A02",
+      "who": "Archer",
+      "clip": "ArcherJudgment",
+      "slot": "LastJudgment",
+      "hand": "hand_l",
+      "asset": "/Game/Art/Cast/Archer/Anims/A_SK_Archer_Rig_ArcherJudgment",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_l",
+        "keys": 60,
+        "max_axis_error_degrees": 2.7533372779140336e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "B01",
+      "who": "Barbarian",
+      "clip": "BarbarianKnead",
+      "slot": "Lecture",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Barbarian/Anims/A_SK_Barbarian_Rig_BarbarianKnead",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 3.701874316320696e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "B03",
+      "who": "Barbarian",
+      "clip": "BarbarianBellow",
+      "slot": "FormALine",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Barbarian/Anims/A_SK_Barbarian_Rig_BarbarianBellow",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 4.000911206360573e-05,
+        "other_tracks": "untouched"
+      }
+    },
+    {
+      "id": "B02",
+      "who": "Barbarian",
+      "clip": "BarbarianCyclone",
+      "slot": "LastJudgment",
+      "hand": "hand_r",
+      "asset": "/Game/Art/Cast/Barbarian/Anims/A_SK_Barbarian_Rig_BarbarianCyclone",
+      "seconds": 1.9666666984558105,
+      "grip": {
+        "bone": "hand_r",
+        "keys": 60,
+        "max_axis_error_degrees": 5.977025330969154e-05,
+        "other_tracks": "untouched"
+      }
+    }
+  ],
+  "icons": [
+    {
+      "id": "K02",
+      "asset": "/Game/Art/UI/Skills/T_Skill_K02.T_Skill_K02",
+      "primary": "#4778D6",
+      "secondary": "#F0C65D"
+    },
+    {
+      "id": "M01",
+      "asset": "/Game/Art/UI/Skills/T_Skill_M01.T_Skill_M01",
+      "primary": "#8D5BDB",
+      "secondary": "#FF8FAB"
+    },
+    {
+      "id": "K03",
+      "asset": "/Game/Art/UI/Skills/T_Skill_K03.T_Skill_K03",
+      "primary": "#4778D6",
+      "secondary": "#F0C65D"
+    },
+    {
+      "id": "K01",
+      "asset": "/Game/Art/UI/Skills/T_Skill_K01.T_Skill_K01",
+      "primary": "#4778D6",
+      "secondary": "#F0C65D"
+    },
+    {
+      "id": "M03",
+      "asset": "/Game/Art/UI/Skills/T_Skill_M03.T_Skill_M03",
+      "primary": "#8D5BDB",
+      "secondary": "#4AD9D1"
+    },
+    {
+      "id": "M02",
+      "asset": "/Game/Art/UI/Skills/T_Skill_M02.T_Skill_M02",
+      "primary": "#8D5BDB",
+      "secondary": "#FF8FAB"
+    },
+    {
+      "id": "A01",
+      "asset": "/Game/Art/UI/Skills/T_Skill_A01.T_Skill_A01",
+      "primary": "#3C9D68",
+      "secondary": "#B8D94A"
+    },
+    {
+      "id": "A02",
+      "asset": "/Game/Art/UI/Skills/T_Skill_A02.T_Skill_A02",
+      "primary": "#3C9D68",
+      "secondary": "#B8D94A"
+    },
+    {
+      "id": "A03",
+      "asset": "/Game/Art/UI/Skills/T_Skill_A03.T_Skill_A03",
+      "primary": "#3C9D68",
+      "secondary": "#4AD9D1"
+    },
+    {
+      "id": "B01",
+      "asset": "/Game/Art/UI/Skills/T_Skill_B01.T_Skill_B01",
+      "primary": "#C65736",
+      "secondary": "#E8D2A0"
+    },
+    {
+      "id": "B02",
+      "asset": "/Game/Art/UI/Skills/T_Skill_B02.T_Skill_B02",
+      "primary": "#C65736",
+      "secondary": "#E8D2A0"
+    },
+    {
+      "id": "B03",
+      "asset": "/Game/Art/UI/Skills/T_Skill_B03.T_Skill_B03",
+      "primary": "#C65736",
+      "secondary": "#F0C65D"
+    }
+  ]
+}

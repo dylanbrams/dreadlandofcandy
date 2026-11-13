@@ -1,0 +1,205 @@
+[
+  {
+    "id": "K02",
+    "name": "Stern Instruction",
+    "class": "Knight",
+    "primary": "#4778D6",
+    "damage": "Manners",
+    "secondary": "#F0C65D",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-02cea918-3406-4db5-a3b0-d844cb10f05d.png",
+    "prompt": "Create ONE square transparent-background game skill icon for K02 Stern Instruction. The attached image is a STYLE REFERENCE only for hand-painted dark-fantasy metal and bold silhouettes; make a NEW icon. A blackened steel gauntlet raises a broad greatsword diagonally, with three clearly drawn curved speech-wave strokes and a small jagged speech burst near its tip: an intimidating lecture, no sword slash. Dominant primary class colour steel blue #4778D6 in cloth wraps, enamel and a compact magical silhouette behind the sword. Secondary damage accent warm gold #F0C65D on the speech waves and burst. Neutral dark steel remains visible. Painterly dimensional fantasy inventory art, strong clean edge contrast, compact centred silhouette readable at 64 pixels, generous transparent padding, simpler and bolder than the reference. No letters, words, numbers, frame, border, square tile, badge, extra weapons, background scene or ground shadow. One icon only.",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_K02.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "M01",
+    "name": "A Spoonful of Sugar",
+    "class": "Mage",
+    "primary": "#8D5BDB",
+    "damage": "Sweetness",
+    "secondary": "#FF8FAB",
+    "subject": "One ornate dark silver teaspoon flicks three chunky white sugar cubes forward through a bold VIOLET magical crescent. HOT PINK sugar-crystal sparks and pink-lit cube edges show the damage accent. Whimsical payload with serious dark-fantasy metal, strong simple spoon/cube silhouette. No sword, no hands, no character.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill M01 A Spoonful of Sugar. Subject: One ornate dark silver teaspoon flicks three chunky white sugar cubes forward through a bold VIOLET magical crescent. HOT PINK sugar-crystal sparks and pink-lit cube edges show the damage accent. Whimsical payload with serious dark-fantasy metal, strong simple spoon/cube silhouette. No sword, no hands, no character. Dominant PRIMARY class colour #8D5BDB; SECONDARY damage accent #FF8FAB. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-4511559d-84b1-49bc-a432-2a0f79c596ae.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_M01.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "K03",
+    "name": "Good Manners",
+    "class": "Knight",
+    "primary": "#4778D6",
+    "damage": "Manners",
+    "secondary": "#F0C65D",
+    "subject": "A simple closed dark-steel knight helmet enclosed by a bold translucent STEEL BLUE protective dome, with a bright GOLD heraldic rim and two small polite sparkle marks. Clear solid helmet and shield-dome silhouette, compact and centred. No sword, no fist, no character body.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill K03 Good Manners. Subject: A simple closed dark-steel knight helmet enclosed by a bold translucent STEEL BLUE protective dome, with a bright GOLD heraldic rim and two small polite sparkle marks. Clear solid helmet and shield-dome silhouette, compact and centred. No sword, no fist, no character body. Dominant PRIMARY class colour #4778D6; SECONDARY damage accent #F0C65D. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-c8d94551-c29b-42a2-a0be-a22dbfcb2dc5.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_K03.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "K01",
+    "name": "Polite Shield",
+    "class": "Knight",
+    "primary": "#4778D6",
+    "damage": "Manners",
+    "secondary": "#F0C65D",
+    "subject": "One stout blackened steel kite shield tilted forward, steel-blue enamel panels and cloth tab, with one broad GOLD crescent pressure wave curving off its front to suggest a firm polite shield push. Big compact shield silhouette. No sword, no gauntlet, no character.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill K01 Polite Shield. Subject: One stout blackened steel kite shield tilted forward, steel-blue enamel panels and cloth tab, with one broad GOLD crescent pressure wave curving off its front to suggest a firm polite shield push. Big compact shield silhouette. No sword, no gauntlet, no character. Dominant PRIMARY class colour #4778D6; SECONDARY damage accent #F0C65D. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-9b31bb5b-c688-4718-98e1-bfbf03d0e557.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_K01.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "M03",
+    "name": "Arcane Sanitization",
+    "class": "Mage",
+    "primary": "#8D5BDB",
+    "damage": "Hygiene",
+    "secondary": "#4AD9D1",
+    "subject": "One dark silver mage staff tip with a faceted crystal projects a broad MINT TEAL cone of mouthwash foam and three large clean bubbles. A dominant VIOLET magical curl wraps the staff and fans behind the cone, clearly distinct from the TEAL hygiene stream. Big bold staff-tip-and-foam silhouette. No sword, no spoon, no characters or hands.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill M03 Arcane Sanitization. Subject: One dark silver mage staff tip with a faceted crystal projects a broad MINT TEAL cone of mouthwash foam and three large clean bubbles. A dominant VIOLET magical curl wraps the staff and fans behind the cone, clearly distinct from the TEAL hygiene stream. Big bold staff-tip-and-foam silhouette. No sword, no spoon, no characters or hands. Dominant PRIMARY class colour #8D5BDB; SECONDARY damage accent #4AD9D1. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-979d3ba6-1369-43cd-8217-a1cedb56ae08.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_M03.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "M02",
+    "name": "Peppermint Popfall",
+    "class": "Mage",
+    "primary": "#8D5BDB",
+    "damage": "Sweetness",
+    "secondary": "#FF8FAB",
+    "subject": "Three chunky red-and-white striped peppermint discs descend diagonally like magical meteors through a dominant VIOLET summoning crescent, with HOT PINK sugar sparks and a small pink magical impact burst below. Disc candy silhouettes large and unmistakable, a playful payload presented with dark-fantasy seriousness. No spoon, no sword, no hands, no characters.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill M02 Peppermint Popfall. Subject: Three chunky red-and-white striped peppermint discs descend diagonally like magical meteors through a dominant VIOLET summoning crescent, with HOT PINK sugar sparks and a small pink magical impact burst below. Disc candy silhouettes large and unmistakable, a playful payload presented with dark-fantasy seriousness. No spoon, no sword, no hands, no characters. Dominant PRIMARY class colour #8D5BDB; SECONDARY damage accent #FF8FAB. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-91d95a32-60b1-4ade-8102-b530f8c7850b.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_M02.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "A01",
+    "name": "Celery Shot",
+    "class": "Archer",
+    "primary": "#3C9D68",
+    "damage": "Nutrition",
+    "secondary": "#B8D94A",
+    "subject": "One dark wood recurved bow with FOREST GREEN wraps launches ONE celery-stalk arrow diagonally forward. The single celery stalk has a clear leafy end and LIME GREEN cutting tip glow; a bold FOREST GREEN flight crescent shows speed. Big simple bow-and-celery silhouette. No sword, no hands, no character, no extra arrows.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill A01 Celery Shot. Subject: One dark wood recurved bow with FOREST GREEN wraps launches ONE celery-stalk arrow diagonally forward. The single celery stalk has a clear leafy end and LIME GREEN cutting tip glow; a bold FOREST GREEN flight crescent shows speed. Big simple bow-and-celery silhouette. No sword, no hands, no character, no extra arrows. Dominant PRIMARY class colour #3C9D68; SECONDARY damage accent #B8D94A. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-1adc426a-bca2-4cf4-803d-a74654b6747b.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_A01.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "A02",
+    "name": "Celery Volley",
+    "class": "Archer",
+    "primary": "#3C9D68",
+    "damage": "Nutrition",
+    "secondary": "#B8D94A",
+    "subject": "Three chunky celery-stalk arrows rain diagonally down into one small LIME GREEN leafy impact burst. A dominant FOREST GREEN archery flight crescent curves behind the three stalks; their LIME GREEN leaves and tips are bright damage accents. Clear three-arrow rain silhouette, bold and compact. No sword, no bow, no hands, no character.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill A02 Celery Volley. Subject: Three chunky celery-stalk arrows rain diagonally down into one small LIME GREEN leafy impact burst. A dominant FOREST GREEN archery flight crescent curves behind the three stalks; their LIME GREEN leaves and tips are bright damage accents. Clear three-arrow rain silhouette, bold and compact. No sword, no bow, no hands, no character. Dominant PRIMARY class colour #3C9D68; SECONDARY damage accent #B8D94A. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-929aaa3d-ea6f-4d05-a065-6720cf37d26f.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_A02.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "A03",
+    "name": "Floss Snare",
+    "class": "Archer",
+    "primary": "#3C9D68",
+    "damage": "Hygiene",
+    "secondary": "#4AD9D1",
+    "subject": "One dark-wood bow with FOREST GREEN wraps fires a thick bright WHITE dental-floss strand that coils into a clear MINT TEAL snare loop. A dominant FOREST GREEN curve frames the bow while the teal loop and clean sparkles show the hygiene accent. Large legible bow-and-loop silhouette. No sword, no celery, no hands, no character.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill A03 Floss Snare. Subject: One dark-wood bow with FOREST GREEN wraps fires a thick bright WHITE dental-floss strand that coils into a clear MINT TEAL snare loop. A dominant FOREST GREEN curve frames the bow while the teal loop and clean sparkles show the hygiene accent. Large legible bow-and-loop silhouette. No sword, no celery, no hands, no character. Dominant PRIMARY class colour #3C9D68; SECONDARY damage accent #4AD9D1. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-3c9f7f2e-7be0-4abf-bfaa-1b5ce7c4af7b.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_A03.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "B01",
+    "name": "Furious Kneading",
+    "class": "Barbarian",
+    "primary": "#C65736",
+    "damage": "Domestic",
+    "secondary": "#E8D2A0",
+    "subject": "One huge dark warm-brown wooden rolling pin with exactly TWO end handles presses down on a small lump of pale dough. A bold BURNT ORANGE downward impact swoosh surrounds the pin, with WARM CREAM flour puffs and dough fragments as the damage accent. Heavy barbarian force applied to a baking utensil, clean readable rolling-pin silhouette. No sword, no hands, no character.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill B01 Furious Kneading. Subject: One huge dark warm-brown wooden rolling pin with exactly TWO end handles presses down on a small lump of pale dough. A bold BURNT ORANGE downward impact swoosh surrounds the pin, with WARM CREAM flour puffs and dough fragments as the damage accent. Heavy barbarian force applied to a baking utensil, clean readable rolling-pin silhouette. No sword, no hands, no character. Dominant PRIMARY class colour #C65736; SECONDARY damage accent #E8D2A0. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-9b625d17-1bcc-414c-b81b-1d319a81fb44.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_B01.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "B02",
+    "name": "Rolling Pin Cyclone",
+    "class": "Barbarian",
+    "primary": "#C65736",
+    "damage": "Domestic",
+    "secondary": "#E8D2A0",
+    "subject": "Three recognisable dark warm-brown wooden rolling pins, each with exactly TWO end handles, orbit around a forceful BURNT ORANGE whirlwind crescent. WARM CREAM flour spirals and a few dough crumbs form the secondary damage accent. A big clear cyclone silhouette with separated pin shapes, strong sense of rotation. No sword, no fists, no character, no baking surface.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill B02 Rolling Pin Cyclone. Subject: Three recognisable dark warm-brown wooden rolling pins, each with exactly TWO end handles, orbit around a forceful BURNT ORANGE whirlwind crescent. WARM CREAM flour spirals and a few dough crumbs form the secondary damage accent. A big clear cyclone silhouette with separated pin shapes, strong sense of rotation. No sword, no fists, no character, no baking surface. Dominant PRIMARY class colour #C65736; SECONDARY damage accent #E8D2A0. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-ff136875-950a-47d7-b41e-e514fdc3ef72.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_B02.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "B03",
+    "name": "Aggressive Encouragement",
+    "class": "Barbarian",
+    "primary": "#C65736",
+    "damage": "Manners",
+    "secondary": "#F0C65D",
+    "subject": "One huge clenched dark iron barbarian fist with BURNT ORANGE leather wrist wraps thrusts upward beside three broad GOLD speech-wave strokes and a GOLD jagged speech burst. A dominant BURNT ORANGE swoosh carries the force of a mighty nonviolent bellow. Strong compact fist-and-shout silhouette. No letters in the speech burst. No sword, no rolling pin, no character face or body.",
+    "prompt": "Create ONE NEW square transparent-background fantasy game skill icon. The attached icon is a STYLE reference only: retain painterly dimensional metal/wood, bold hand-painted edges and high contrast, but do NOT copy its sword, hand or layout. Skill B03 Aggressive Encouragement. Subject: One huge clenched dark iron barbarian fist with BURNT ORANGE leather wrist wraps thrusts upward beside three broad GOLD speech-wave strokes and a GOLD jagged speech burst. A dominant BURNT ORANGE swoosh carries the force of a mighty nonviolent bellow. Strong compact fist-and-shout silhouette. No letters in the speech burst. No sword, no rolling pin, no character face or body. Dominant PRIMARY class colour #C65736; SECONDARY damage accent #F0C65D. Keep the two colour roles visibly distinct; neutral dark metal/wood and white highlights are permitted. Compact centred composition with generous transparent padding, large simple shapes readable at 64 pixels. One icon only. No letters, words, numbers, frame, border, tile, badge, background scene, floor or ground shadow.",
+    "source": "C:/Users/dylan/.codex/generated_images/01a1d624-8249-7b70-b95c-51625ca0d167/exec-183ad6f7-701f-4591-b80f-fc4f6b713070.png",
+    "pixels": [
+      1254,
+      1254
+    ],
+    "project_source": "Assets/Incoming/2D/ClassSkills/T_Skill_B03.png",
+    "tool": "built-in image_gen"
+  }
+]

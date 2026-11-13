@@ -31,6 +31,26 @@
       "motion_task": "01a1d635-a02c-7451-a733-ef6d1a9c4bd0",
       "prompt": "A standing armoured adult delivers a grand final verdict: left arm rises dramatically overhead, palm open, then sweeps down authoritatively to chest height in the first second. Right hand holds an imaginary sword still at the side. Feet planted, no jump, no props, no weapon swing, then return to ready.",
       "anim_task": "01a1d636-4e26-704b-96b5-82793d5ddb45"
+    },
+    "MageLecture": {
+      "motion_task": "01a1d697-49d0-7600-ad41-7f25684e4a55",
+      "prompt": "A stern battle mage stands with his right hand holding an imaginary vertical staff beside his right hip. His LEFT palm thrusts forward to release a magic burst, fingers spread, chest turning into the spell. Gesture finishes in the first second, then recovers. Right staff hand stays steady and low. Feet planted. No sword raise, no walking, no generated props.",
+      "anim_task": "01a1d697-e97e-73f7-8204-ef61a44bb9df"
+    },
+    "MageLine": {
+      "motion_task": "01a1d697-49c7-76e0-91ee-29c69493a44e",
+      "prompt": "A battle mage holds an imaginary upright staff steady in his RIGHT hand beside his hip. His LEFT arm draws back with an open palm then pushes straight forward decisively, channeling a narrow beam. Strong torso twist and recoil, gesture in first second then recover. Feet planted. Right arm never lifts overhead. No props, no sword movement, no walking.",
+      "anim_task": "01a1d698-0105-717b-8174-1ef2c5f49e98"
+    },
+    "MageSigh": {
+      "motion_task": "01a1d697-49c5-7468-8e31-d306087e05e9",
+      "prompt": "A stern battle mage holds an imaginary upright staff steady in his RIGHT hand beside his hip. He takes a deep exasperated breath, spreads his LEFT hand outward in a circular dismissive gesture, shoulders fall with a forceful sigh, then recovers. Action in first second. Feet planted, no walking, no sword raise, no generated props.",
+      "anim_task": "01a1d697-bd72-746d-8131-f98bac1cb2a7"
+    },
+    "MageJudgment": {
+      "motion_task": "01a1d697-49cc-7386-bcf5-0bee629943d5",
+      "prompt": "A commanding battle mage holds an imaginary upright staff steady in his RIGHT hand beside his hip. His LEFT arm reaches high overhead, palm open toward the sky, then pulls down forcefully to summon a magical rain. Chest lifted, knees brace on release. Finish gesture in first second and recover. Feet stay planted. No right arm sword raise, no props, no walking.",
+      "anim_task": "01a1d697-91b1-76fd-a061-e8ed1b6dee78"
     }
   }
 }

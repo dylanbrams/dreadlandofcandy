@@ -1,0 +1,16 @@
+{
+  "native_pose_captures": 17,
+  "back_clearance_cm": {
+    "knight": 37.32,
+    "mage": 58.44,
+    "archer": 59.6,
+    "barbarian": 77.13
+  },
+  "automation": "66 passed, 0 failed",
+  "editor_build": "pass",
+  "game_build": "pass",
+  "four_class_autoplay": "pass",
+  "noncombat_carry_regression": "pass",
+  "packaged_this_revision": false,
+  "next_engine_owner": "mouse/HUD fixes session; final combined package remains there"
+}

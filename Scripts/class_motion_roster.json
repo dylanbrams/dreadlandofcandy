@@ -1,0 +1,14 @@
+[
+  {"id":"K01","who":"Knight","clip":"KnightShield","slot":"Lecture","hand":"hand_r"},
+  {"id":"K02","who":"Knight","clip":"SwordRaise","slot":"FormALine","hand":"hand_r"},
+  {"id":"K03","who":"Knight","clip":"KnightWard","slot":"LastJudgment","hand":"hand_r"},
+  {"id":"M01","who":"Mage","clip":"MageLecture","slot":"Lecture","hand":"hand_r"},
+  {"id":"M03","who":"Mage","clip":"MageLine","slot":"FormALine","hand":"hand_r"},
+  {"id":"M02","who":"Mage","clip":"MageJudgment","slot":"LastJudgment","hand":"hand_r"},
+  {"id":"A01","who":"Archer","clip":"ArcherShot","slot":"Lecture","hand":"hand_l"},
+  {"id":"A03","who":"Archer","clip":"ArcherLine","slot":"FormALine","hand":"hand_l"},
+  {"id":"A02","who":"Archer","clip":"ArcherJudgment","slot":"LastJudgment","hand":"hand_l"},
+  {"id":"B01","who":"Barbarian","clip":"BarbarianKnead","slot":"Lecture","hand":"hand_r"},
+  {"id":"B03","who":"Barbarian","clip":"BarbarianBellow","slot":"FormALine","hand":"hand_r"},
+  {"id":"B02","who":"Barbarian","clip":"BarbarianCyclone","slot":"LastJudgment","hand":"hand_r"}
+]

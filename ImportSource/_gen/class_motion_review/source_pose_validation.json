@@ -1,0 +1,182 @@
+[
+  {
+    "id": "A01",
+    "who": "Archer",
+    "clip": "ArcherShot",
+    "slot": "Lecture",
+    "hand": "hand_l",
+    "frame": 20,
+    "height": 1.8077509514987469,
+    "hand_position": [
+      0.5632622838020325,
+      -0.2915291488170624,
+      1.3640302419662476
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "B01",
+    "who": "Barbarian",
+    "clip": "BarbarianKnead",
+    "slot": "Lecture",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 1.9234652630984783,
+    "hand_position": [
+      -0.09599588811397552,
+      -0.6147347688674927,
+      1.2299518585205078
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "K01",
+    "who": "Knight",
+    "clip": "KnightShield",
+    "slot": "Lecture",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 1.9168597739189863,
+    "hand_position": [
+      -0.013225553557276726,
+      -0.3769434690475464,
+      1.1636005640029907
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "K02",
+    "who": "Knight",
+    "clip": "SwordRaise",
+    "slot": "FormALine",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 2.253782767802477,
+    "hand_position": [
+      -0.17230412364006042,
+      0.08751174807548523,
+      2.0638647079467773
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "K03",
+    "who": "Knight",
+    "clip": "KnightWard",
+    "slot": "LastJudgment",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 2.0930758211761713,
+    "hand_position": [
+      -0.1243404746055603,
+      -0.1615656167268753,
+      1.1117082834243774
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "M01",
+    "who": "Mage",
+    "clip": "MageLecture",
+    "slot": "Lecture",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 1.654779464006424,
+    "hand_position": [
+      -0.4246179461479187,
+      0.05825341120362282,
+      1.2124227285385132
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "M03",
+    "who": "Mage",
+    "clip": "MageLine",
+    "slot": "FormALine",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 1.699140066280961,
+    "hand_position": [
+      -0.2522135376930237,
+      0.29329466819763184,
+      1.5040948390960693
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "M02",
+    "who": "Mage",
+    "clip": "MageJudgment",
+    "slot": "LastJudgment",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 2.1960486667230725,
+    "hand_position": [
+      -0.4974432587623596,
+      0.14512386918067932,
+      1.0199743509292603
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "A03",
+    "who": "Archer",
+    "clip": "ArcherLine",
+    "slot": "FormALine",
+    "hand": "hand_l",
+    "frame": 20,
+    "height": 1.8413259023800492,
+    "hand_position": [
+      0.6641831994056702,
+      -0.18150098621845245,
+      1.4331785440444946
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "A02",
+    "who": "Archer",
+    "clip": "ArcherJudgment",
+    "slot": "LastJudgment",
+    "hand": "hand_l",
+    "frame": 20,
+    "height": 1.8021525896620005,
+    "hand_position": [
+      0.46690812706947327,
+      -0.06463547796010971,
+      1.3375507593154907
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "B03",
+    "who": "Barbarian",
+    "clip": "BarbarianBellow",
+    "slot": "FormALine",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 1.5579334012581967,
+    "hand_position": [
+      0.10178995877504349,
+      -0.9478798508644104,
+      1.2897591590881348
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  },
+  {
+    "id": "B02",
+    "who": "Barbarian",
+    "clip": "BarbarianCyclone",
+    "slot": "LastJudgment",
+    "hand": "hand_r",
+    "frame": 20,
+    "height": 2.0160342901945114,
+    "hand_position": [
+      0.1804218292236328,
+      -0.5022645592689514,
+      1.6739133596420288
+    ],
+    "review": "Source pose only; final grip/carry verification remains in Unreal"
+  }
+]

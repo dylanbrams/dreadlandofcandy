@@ -165,6 +165,27 @@ private:
 	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
 	void PlayRigOneShot(FName Anim);
 	void TickRig();
+    void UpdateWeaponCarry();
+    void BeginBrushFeedback(AJamNuisance* Target, float Seconds);
+    void UpdateBrushing();
+    FVector BrushingMouth(const AJamNuisance* Target) const;
+    void TickPresentationReview();
+    UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> ArtBrush;
+    TWeakObjectPtr<AJamNuisance> BrushTarget;
+    FVector EquippedWeaponScale = FVector::OneVector;
+    float WeaponDrawUntil = -1.f;
+    float BrushUntil = -1.f;
+    float NextBrushFoamAt = -1.f;
+    bool bWeaponDrawn = false;
+    int32 PresentationReviewMode = -2;
+    int32 PresentationReviewStep = -1;
+    float PresentationReviewAge = 0.65f;
+    float PresentationReviewSince = 0.f;
+    float PresentationReviewStepSince = 0.f;
+    bool bPresentationReviewParsed = false;
+    bool bPresentationReviewAll = false;
+    bool bPresentationReviewStarted = false;
+    bool bPresentationReviewCaptured = false;
 	FVector ArtBodyScale = FVector::OneVector;
 	FVector ArtBodyLocation = FVector::ZeroVector;
 	FRotator ArtBodyRotation = FRotator::ZeroRotator;

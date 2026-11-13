@@ -31,6 +31,36 @@
       "motion_task": "01a1d635-a02c-7451-a733-ef6d1a9c4bd0",
       "prompt": "A standing armoured adult delivers a grand final verdict: left arm rises dramatically overhead, palm open, then sweeps down authoritatively to chest height in the first second. Right hand holds an imaginary sword still at the side. Feet planted, no jump, no props, no weapon swing, then return to ready.",
       "anim_task": "01a1d637-095f-7373-8a94-d5e5597d2552"
+    },
+    "BarbarianBellow": {
+      "motion_task": "01a1d698-fc1b-72bd-95e5-923b9aed1b06",
+      "prompt": "A huge barbarian braces in a wide stance, RIGHT hand holds an imaginary heavy wooden club upright beside his right shoulder. He thrusts his empty LEFT fist forward and bellows with chest out and head forward, then recovers. Powerful shoulders and torso recoil. Gesture in first second. Feet planted. No sword raise, no club swing, no walking, no generated props.",
+      "anim_task": "01a1d699-2e14-7428-be61-3247929a8002"
+    },
+    "BarbarianLine": {
+      "motion_task": "01a1d698-fc26-73ce-8108-93073096e88d",
+      "prompt": "A huge barbarian holds an imaginary heavy club upright in his RIGHT hand beside his shoulder. His empty LEFT arm points sharply forward then sweeps sideways to order everyone into a line; chest twists and knees brace, then returns to ready. Broad commanding body language. Finish in first second. Feet planted. No sword raise, no club swing, no generated props.",
+      "anim_task": "01a1d699-59ef-75d8-9a33-6b9aa3da7709"
+    },
+    "BarbarianSigh": {
+      "motion_task": "01a1d698-fc1c-716b-86ee-e54439829311",
+      "prompt": "A massive barbarian keeps an imaginary heavy club upright in his RIGHT hand beside his shoulder. He throws his head back, clenches his empty LEFT fist against his chest, then exhales a tremendous frustrated bellow with shoulders dropping and torso leaning forward. Recover to ready. Action in first second. No sword raise, no club swing, no walking, no generated props.",
+      "anim_task": "01a1d699-2e07-72c6-9df5-89d4bc7921d6"
+    },
+    "BarbarianJudgment": {
+      "motion_task": "01a1d698-fc2e-70bc-9949-fd5330159875",
+      "prompt": "A massive barbarian braces wide, imaginary heavy club upright in RIGHT hand beside his shoulder. He lifts his LEFT knee and stamps that foot down hard while pumping his empty LEFT fist overhead and bellowing, chest and shoulders shaking on impact, then recovers. Complete stomp in first second. Remain in place, no travel, no sword raise, no club swing, no generated props.",
+      "anim_task": "01a1d699-5c21-771f-9b95-585bf4e29bfa"
+    },
+    "BarbarianKnead": {
+      "motion_task": "01a1d6a4-01a3-7361-9a5c-a311f9858a89",
+      "prompt": "A massive barbarian grips an imaginary heavy rolling pin in his RIGHT hand at waist height, barrel held forward horizontally. He drives the right forearm forward in two short forceful kneading pushes while his empty LEFT palm presses downward as if flattening invisible dough. Broad squat stance, torso works with the pushes, then recover. In place, no sword raise, no generated props.",
+      "anim_task": "01a1d6a4-33a2-7605-87b3-cae8658b5414"
+    },
+    "BarbarianCyclone": {
+      "motion_task": "01a1d6a4-01aa-7011-b37b-0fd67fbcfd69",
+      "prompt": "A massive barbarian holds an imaginary heavy club in his RIGHT hand extended out at waist height. He crouches, coils his torso then makes one powerful full-body spinning turn in place, LEFT arm extended for balance, knees bent, and returns to a wide ready stance. Clear whirlwind silhouette. Complete turn within 1.3 seconds, no travel, no sword raise, no generated props.",
+      "anim_task": "01a1d6a4-5fe0-779d-92c9-31b1fbe9de25"
     }
   }
 }

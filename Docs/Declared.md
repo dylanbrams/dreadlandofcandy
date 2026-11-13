@@ -271,3 +271,17 @@ as visual references. Exact prompt: `Marketing/Itch/cover-prompt.txt`.
 It is page artwork, not an in-game asset or gameplay screenshot. The gallery
 uses unaltered in-engine captures from this project. Page copy was drafted
 with Codex from the project design and implementation notes.
+
+## Class presentation revision sources
+
+Meshy text-to-motion produced class-specific shield/ward, spellcasting, archery,
+kneading, bellow and cyclone clips on the existing rigs. Selected twelve clips:
+`Scripts/class_motion_roster.json`; prompts: `Scripts/generate_class_motions.py`;
+task IDs: the existing four `ImportSource/Meshy/SK_*_Rig/rig.json` files. Wrist
+alignment is original project tooling (`Scripts/import_class_presentations.py`).
+Twelve new skill icons were generated with the built-in image_gen tool using
+the existing generated Lecture icon as style reference. Exact prompts, tool,
+colours and original output paths are retained in the class-icon source manifest.
+The giant brushing prop reuses the previously declared Rodin SM_Toothbrush;
+mouth foam reuses the existing original Niagara systems. No third-party assets
+or external project code were copied.
