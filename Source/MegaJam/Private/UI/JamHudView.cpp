@@ -58,7 +58,7 @@ namespace
 
 TArray<FString> JamHud::SampleNames()
 {
-	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("bubbles"), TEXT("caption") };
+	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("dignity"), TEXT("bubbles"), TEXT("caption") };
 }
 
 bool JamHud::Sample(const FString& Name, FJamHudView& V)
@@ -144,6 +144,15 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 		V.MeterFraction = 0.25f;
 		V.MeterLabel = TEXT("crops eaten 6/8");
 		V.bMeterDanger = true;
+	}
+	else if (N == TEXT("dignity"))
+	{
+		Rolling(V);
+		V.SceneLabel = FString::Printf(TEXT("SCENE 2: %s"), *JamScenes::Scene2().Title.ToUpper());
+		V.Objective = TEXT("Pacify the goblins   1/3");
+		V.bDignityVisible = true;
+		V.DignityFraction = 0.2f;
+		V.DignityHit = 0.6f;
 	}
 	else if (N == TEXT("bubbles"))
 	{

@@ -4,7 +4,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**R4b** (enemies hit back), then R6, R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R6** (cast), then R5. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
 
 | Task | State |
 | --- | --- |
@@ -13,29 +13,30 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 | R2 theme song | done in editor: credits play `M_theme_song_take1` (falls back to `credits`); `M_village_take1/2` imported for R4. Packaged check is in R5 |
 | R3 | dropped: no arena build goes out; Backlot is smoked inside R5 |
 | R4 the world, slim | done: follow camera, scenes at the film sets, compass, biome music, bot PASS on `L_Sugarborough`. Ambient camps dropped (the plan's first fallback) |
-| R4b enemies hit back (Dignity meter) | next |
+| R4b enemies hit back (Dignity meter) | done: goblins, bugs and the boss charge, knockback and stagger, Dignity bar under the slate, "No dignity left" fails the take; both PASS lines hold |
 | R5 Candidate B and the gate | not started |
-| R6 cast | not started |
+| R6 cast | next |
 | R7 playtest fixes | not started |
 | R8 final zip | not started |
 
 ## Dylan's list (details in the release plan)
 
 1. (done) Theme song file. Stop any Codex session holding the engine.
-2. Deploy the backend (`backend/DEPLOY.md`), then give GAME the URL for `BaseUrl` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini`. Pass BACKEND the two corrections below first.
+2. (deployed, Nov 13) Give GAME the API base URL for `BaseUrl` under `[/Script/MegaJam.JamNoteClient]` in `Config/DefaultGame.ini`; it is not on disk yet. Confirm BACKEND has the two corrections below.
 3. (dropped: the first build out is the world build)
 4. Play Open after R5, decide the gate.
-5. Video, itch page, the go-ahead for the upload.
+5. Video; the itch page and uploads go through ChatGPT (release plan, "Who runs it"), with Dylan's go-ahead per push.
 
 **Three worst things (Dylan fills in):**
 
 ## What exists
 
 - **The film, Backlot mode (default):** rating card, title, three scenes with CUT! notes (take, refuse, type your own), retakes, wraps with ledger and loot, levels 7 to 10 and four GAS skills, the budget-out gag, Premiere with two endings (or a generated one from typed notes), credits, back to title. Keyboard, gamepad and mouse. Music: 9 cues, two takes each. Fenella's captions play `/Game/Audio/VO/VO_<LineId>` (88 English clips imported). Sound effects (R1): `Game/JamSfx` holds one row per event (clip, volume, pitch jitter, repeat guard), played 2D at the Effects volume from the game mode (slate, ACTION!, CUT!, retake, stage clear, ledger and coins at the wrap, budget-out, each skill, pacify, bubbles), the nuisances (flustered, treated) and the HUD (menu clicks, level up, the backlot ambience while shooting). Re-import: `UnrealEditor-Cmd <uproject> -run=pythonscript -script=Scripts/import_audio.py`. `Quest_Accept` has a row but no caller until R4's film sets.
+- **They hit back (R4b):** the rule is `Film/JamDignity` (plain C++, `Jam.Film.Dignity.*`): `JamAttack::For(kind, boss)` gives charge range, speed, damage, cooldown, knockback, stagger; rats and almonds never attack. A loose goblin or bug inside its charge range asks `AJamGameMode::RequestCharge` (shoot rolling, at most 2 charging, hero not in his hit grace), winds up 0.35 s (quivers, red), then runs at him; a skill hit flusters it out of the charge, except the boss (`bUnstoppable`). On contact `HandleNuisanceHit`: `FJamDignity::Hit` (goblin 20, bug 10, boss 30 of 100; 1.4 s grace), `AJamHero::TakeHit` (launch away, stagger blocks movement and skills, the rig tips back), `Hero_Hit` SFX (clip `Shield_Bash`). Zero fails the take ("No dignity left. Back to one!"); every stage start and retake refills it. HUD: DIGNITY bar in the slate panel while an attacker is loose (`-uiscreen=dignity`). PASS lines now add `hits= dignityfails=`. Tuning seen: the bot takes 2 to 4 boss hits in Scene 2 and none from bugs (they out-run it); `-scene=2` at level 7 (Lecture only) fails a take on Dignity.
 - **Open mode (`-open`, R4):** the title, then the hero starts in the village and walks to each film set in turn (`JamWorld::FilmSet(i)`); stepping onto a set starts its scene, which plays exactly as in Backlot on that floor (`AJamGameMode::SceneFloor/SceneMark/SceneSign` pick backlot or world). A compass strip at the top (`AJamHUD::DrawCompass`) shows the next set's name, distance and the hint. Follow camera (`AJamHero::EnableFollowCamera`): the mouse or right stick turns it, WASD moves relative to it, the cursor hides in play, skills turn the hero to the camera's yaw. Walking: 900 uu at 14 degrees down; a take: 1500 uu at 32 degrees, looking along the path into the set (the candy trees have no camera collision, so the camera must stay over the path). Fenella flies 3.2 m out to the camera's right with a warm spotlight on the hero (250 lumens, Dylan: still too bright at 500, not yet compiled at that value). Nuisances follow the ground. Biome music while walking (the village has its own `village` cue). `JamLook::Apply(World, true)`: Open is brighter (sky x2.6, exposure +0.8, softer contrast, more saturation, bloom 1.4 above threshold 1). No ambient camps. Flags: `-camyaw= -campitch= -camdist=` pin the camera. Play it: `UnrealEditor.exe MegaJam.uproject /Game/World/L_Sugarborough -game -open`.
 - **Terrain:** `/Game/World/L_Sugarborough` and its review maps; `/Game/World` is always cooked through `PAL_Sugarborough`. Notes: `Docs/Workers/terrain.md`.
 - **On disk, not in the game:** cast voices and battle cries under `vocals/output/`, four rigged characters under `ImportSource/Meshy/SK_*_Rig/`, more music in `music/`, Niagara attack systems under `/Game/FX/Attacks` (cut).
-- **State last verified (Nov 13, R4):** editor and game targets build, 59 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 ... time=125.1`, Open autoplay on `L_Sugarborough` `PASS mode=open main=3 side=0 ... time=145.9`, no missing-clip warnings. Not yet heard or played by a human. Not repackaged since the terrain polish. Visual tuning (light, grade, spotlight) is Dylan's with ChatGPT on Nov 14; GAME only makes it playable.
+- **State last verified (Nov 13, R4b):** editor and game targets build, 63 `Jam.*` tests pass, Backlot autoplay `PASS scenes=3 ... hits=2 dignityfails=0 time=118.6`, Open autoplay on `L_Sugarborough` `PASS mode=open main=3 side=0` (`hits=4`, Dignity down to 10, time=160.4). Not yet heard or played by a human. Not repackaged since the terrain polish. Visual tuning (light, grade, spotlight) is Dylan's with ChatGPT on Nov 14; GAME only makes it playable.
 
 ## Flags
 

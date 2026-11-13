@@ -154,6 +154,27 @@ void UJamHudWidget::BuildTree()
 		Box->AddChildToVerticalBox(Row)->SetPadding(FMargin(0.f, 2.f, 0.f, 0.f));
 		NotesText = MakeText(16, Dim, false);
 		Box->AddChildToVerticalBox(NotesText)->SetPadding(FMargin(0.f, 4.f, 0.f, 0.f));
+		// R4b: Dignity, a label and a bar under the take.
+		UHorizontalBox* DRow = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+		DignityLabel = MakeText(16, Dim, true);
+		DignityLabel->SetText(FText::FromString(TEXT("DIGNITY")));
+		DRow->AddChildToHorizontalBox(DignityLabel)->SetVerticalAlignment(VAlign_Center);
+		USizeBox* DSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+		DSize->SetWidthOverride(220.f);
+		DSize->SetHeightOverride(12.f);
+		DignityBar = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
+		{
+			// A dark track, so an empty bar reads as empty.
+			FProgressBarStyle Style = DignityBar->GetWidgetStyle();
+			Style.BackgroundImage.TintColor = FSlateColor(FLinearColor(0.08f, 0.08f, 0.09f, 0.9f));
+			DignityBar->SetWidgetStyle(Style);
+		}
+		DSize->SetContent(DignityBar);
+		UHorizontalBoxSlot* DBarSlot = DRow->AddChildToHorizontalBox(DSize);
+		DBarSlot->SetVerticalAlignment(VAlign_Center);
+		DBarSlot->SetPadding(FMargin(12.f, 0.f, 0.f, 0.f));
+		DignityRow = DRow;
+		Box->AddChildToVerticalBox(DRow)->SetPadding(FMargin(0.f, 8.f, 0.f, 0.f));
 		SlatePanel->SetContent(Box);
 	}
 	Place(SlatePanel, FAnchors(0.f, 0.f), FVector2D(0.f, 0.f), FVector2D(36.f, 32.f), 5);
@@ -368,6 +389,15 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		const bool bNotes = View.NotesTaken + View.NotesRefused > 0;
 		Show(NotesText, bNotes);
 		if (bNotes) { SetTextIfChanged(NotesText, FString::Printf(TEXT("Notes taken %d   refused %d"), View.NotesTaken, View.NotesRefused)); }
+		Show(DignityRow, View.bDignityVisible);
+		if (View.bDignityVisible)
+		{
+			DignityBar->SetPercent(FMath::Clamp(View.DignityFraction, 0.f, 1.f));
+			const bool bLow = View.DignityFraction <= 0.4f;
+			const bool bFlash = View.DignityHit > 0.f && FMath::Fmod(RealSeconds, 0.16f) < 0.08f;
+			DignityBar->SetFillColorAndOpacity(bFlash ? FLinearColor::White : (bLow ? RecRed : Gold));
+			DignityLabel->SetColorAndOpacity(FSlateColor(bLow ? FLinearColor(1.f, 0.55f, 0.45f) : Dim));
+		}
 	}
 
 	// Objective and meter.

@@ -60,6 +60,11 @@ struct MEGAJAM_API FJamHudView
 	FString MeterLabel;           // "41s" or "crops eaten 3/8"
 	bool bMeterDanger = false;
 
+	/** R4b: the hero's Dignity, under the slate. Hit = 1 just after a hit, fading to 0 (the bar flashes). */
+	bool bDignityVisible = false;
+	float DignityFraction = 1.f;
+	float DignityHit = 0.f;
+
 	FString Hint;
 
 	EJamCardKind CardKind = EJamCardKind::None;

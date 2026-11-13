@@ -166,3 +166,10 @@
 - A follow camera, mouse or right stick to turn it. The first scene framing put the camera inside a candy tree (they have no camera collision), so during a take it now looks along the path into the set, the one side that is always open.
 - Dylan watched the screenshots: Fenella further out with a spotlight on the knight, the camera further back and lower, the whole world brighter and "kiddie", with bloom for things that will glow. The spotlight came in at 9000 lumens and blew the knight white; it is 250 now. The rest of the look is his to tune tomorrow.
 - Ambient camps dropped, as the plan's first fallback allows.
+
+## R4b: they hit back (Nov 13)
+
+- Goblins, bugs and the very large goblin now charge the knight: a red wind-up, a run, and a hit that knocks him back and staggers him. Rats still never fight. A DIGNITY bar sits under the take number; when it empties the take fails with "No dignity left. Back to one!", and every retake gives it back.
+- A lecture flusters a goblin out of its charge, which is the counter. The boss ignores that and keeps coming; at first nothing ever landed, because the bot's lectures cancelled every charge.
+- 63 tests pass, both bots still finish (the Open run ended Scene 2 with ten Dignity left). Not yet played by a human; the numbers are a first guess.
+- Itch deployment moves to ChatGPT (Dylan), to save Claude's quota for Nov 14; GAME stops at a zip on disk.

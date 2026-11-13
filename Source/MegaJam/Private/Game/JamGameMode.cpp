@@ -312,6 +312,7 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 		N->BaseColour = Tuning.Colour;
 		N->bErratic = Tuning.bErratic;
 		N->bStartPacified = bPacified;
+		N->Attack = JamAttack::For(Stage.Target, Stage.ResolveMultiplier >= 3.f);
 		if (bTypedNoteActive && Stage.Id == FName(TEXT("TypedNote")) && NoteCosmetics.Tint != EJamTint::None)
 		{
 			N->BaseColour = JamNoteSuggestions::TintColour(NoteCosmetics.Tint);
@@ -454,7 +455,17 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 	if (!GS) { return; }
 	FJamShoot& Shoot = GS->Shoot;
 	Shoot.Tick(DeltaSeconds);
+	GS->Dignity.Tick(DeltaSeconds);
 	if (Shoot.GetState() == EJamShootState::Rolling) { GS->FilmSeconds += DeltaSeconds; }
+	{
+		// R4b: the Dignity meter shows while something on the set can still hit back.
+		bool bThreat = false;
+		for (const AJamNuisance* N : Nuisances) { bThreat |= N && N->Attack.bAttacks && !N->IsPacified() && !N->IsTreated(); }
+		const FJamStageDef* Stage = Shoot.GetStage();
+		bThreat |= Stage && Stage->Verb == EJamStageVerb::Pacify && JamAttack::For(Stage->Target, false).bAttacks;
+		const EJamShootState St = Shoot.GetState();
+		GS->bDignityVisible = bThreat && (St == EJamShootState::Rolling || St == EJamShootState::FailedTake);
+	}
 	TickStage(DeltaSeconds);
 
 	const float Now = GetWorld()->GetTimeSeconds();
@@ -586,6 +597,8 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 	case EJamShootEventType::StageStarted:
 		UE_LOG(LogJam, Log, TEXT("JamShoot: scene %d stage %d (%s) take %d rolling"), SceneIndex + 1, Event.Stage, Stage ? *Stage->Id.ToString() : TEXT("?"), Event.Take);
 		CropsEaten = 0.f;
+		GS->Dignity.Reset();   // every stage and every retake starts with his Dignity whole
+		bDignityBroke = false;
 		if (Stage)
 		{
 			switch (Stage->Verb)
@@ -640,6 +653,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		if (Event.Value) { ShowCard(EJamCardKind::Retake, TEXT("Perfect! Again."), FString(), JamShootPacing::FailedSeconds); }
 		else { ShowCard(EJamCardKind::Retake, TEXT("RETAKE!"), FailReason(bFailForcedByFlag), JamShootPacing::FailedSeconds); }
 		bFailForcedByFlag = false;
+		bDignityBroke = false;
 		JamSfx::Play(this, TEXT("Retake_Rewind"));
 		GS->TakeFailedAt = GetWorld()->GetTimeSeconds();
 		Say(Event.Value ? EJamLineTrigger::ForcedRetake : EJamLineTrigger::FailedTake);
@@ -688,8 +702,8 @@ void AJamGameMode::FinishRun(bool bPass, const FString& Why)
 		// BUILD_SPEC 2: mostly taken = the Director's Cut, mostly refused = the Theatrical Release.
 		const TCHAR* Ending = NotesTaken >= NotesRefused ? TEXT("directors_cut") : TEXT("theatrical");
 		if (bOpenMode) { UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS mode=open main=%d side=0"), ScenesWrapped); }
-		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d lines=%d skills=%d time=%.1f"),
-			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, LinesSpoken, SkillCasts, AutoplayTime);
+		UE_LOG(LogJam, Log, TEXT("JamAutoplay: PASS scenes=%d first=%d takes=%d notes=%d/%d ending=%s flees=%d lines=%d skills=%d hits=%d dignityfails=%d time=%.1f"),
+			ScenesWrapped, FirstSceneIndex + 1, TakesTotal, NotesTaken, NotesRefused, Ending, FleeCountTotal, LinesSpoken, SkillCasts, HitsTaken, DignityFails, AutoplayTime);
 	}
 	else
 	{
@@ -981,6 +995,39 @@ void AJamGameMode::TickFenella(float DeltaSeconds)
 	}
 }
 
+// ---- They hit back (R4b) ----------------------------------------------------------------------------------------
+
+bool AJamGameMode::RequestCharge(AJamNuisance* Nuisance, float HeroDistance)
+{
+	const AJamGameState* GS = GetJamGameState();
+	if (!Nuisance || !GS || !Hero.IsValid() || bRunOver) { return false; }
+	if (GS->GetShoot().GetState() != EJamShootState::Rolling || !GS->GetDignity().CanBeHit()) { return false; }
+	int32 Charging = 0;
+	for (const AJamNuisance* N : Nuisances) { Charging += (N && N->IsCharging()) ? 1 : 0; }
+	return JamAttack::MayCharge(Nuisance->Attack, !Nuisance->IsPacified() && !Nuisance->IsTreated(), 0.f, HeroDistance, Charging);
+}
+
+bool AJamGameMode::HandleNuisanceHit(AJamNuisance* Nuisance)
+{
+	AJamGameState* GS = GetJamGameState();
+	AJamHero* H = Hero.Get();
+	if (!Nuisance || !GS || !H || GS->Shoot.GetState() != EJamShootState::Rolling || !GS->Dignity.CanBeHit()) { return false; }
+	const FJamAttackTuning& A = Nuisance->Attack;
+	const bool bBroke = GS->Dignity.Hit(A.Damage, A.StaggerSeconds);
+	H->TakeHit(Nuisance->GetActorLocation(), A.Knockback, A.StaggerSeconds);
+	++HitsTaken;
+	JamSfx::Play(this, TEXT("Hero_Hit"));
+	UE_LOG(LogJam, Log, TEXT("JamGameMode: %s hit the hero, dignity %.0f"), *Nuisance->GetName(), GS->Dignity.GetValue());
+	if (bBroke)
+	{
+		++DignityFails;
+		bDignityBroke = true;
+		UE_LOG(LogJam, Log, TEXT("JamGameMode: no dignity left, take %d fails"), GS->Shoot.GetTake());
+		GS->Shoot.ReportFail();
+	}
+	return true;
+}
+
 // ---- Failure (T13) -------------------------------------------------------------------------------------------
 
 FString AJamGameMode::FailReason(bool bForcedByFlag) const
@@ -988,6 +1035,7 @@ FString AJamGameMode::FailReason(bool bForcedByFlag) const
 	const AJamGameState* GS = GetJamGameState();
 	const FJamStageDef* Stage = GS ? GS->GetShoot().GetStage() : nullptr;
 	if (bForcedByFlag || !Stage) { return TEXT("Director's call. Back to one!"); }
+	if (bDignityBroke) { return TEXT("No dignity left. Back to one!"); }
 	if (Stage->FailMeter > 0 && GS->GetShoot().GetMeter() >= Stage->FailMeter) { return TEXT("The crops are gone. Back to one!"); }
 	if (Stage->TimeLimit > 0.f && GS->GetShoot().GetTimeLeft() <= 0.f) { return TEXT("Out of time. Back to one!"); }
 	return TEXT("From the top. Back to one!");

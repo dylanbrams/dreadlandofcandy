@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
 #include "Film/JamShoot.h"
+#include "Film/JamDignity.h"
 #include "UI/JamHudView.h"
 #include "UI/JamWrapView.h"
 #include "UI/JamScreens.h"
@@ -19,6 +20,10 @@ class MEGAJAM_API AJamGameState : public AGameStateBase
 
 public:
 	const FJamShoot& GetShoot() const { return Shoot; }
+	/** R4b: the hero's Dignity this take (the HUD's meter). */
+	const FJamDignity& GetDignity() const { return Dignity; }
+	/** Show the Dignity meter: a stage with attackers is rolling. */
+	bool bDignityVisible = false;
 
 	/** True while an Interact stage is rolling: the only time treating counts. */
 	bool CanInteract() const
@@ -101,4 +106,5 @@ public:
 private:
 	friend class AJamGameMode;   // the only writer
 	FJamShoot Shoot;
+	FJamDignity Dignity;
 };

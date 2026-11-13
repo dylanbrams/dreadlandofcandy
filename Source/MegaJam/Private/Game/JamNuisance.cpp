@@ -4,6 +4,7 @@
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
 #include "Game/JamHero.h"
+#include "Game/JamGameMode.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamResolveAttributeSet.h"
 #include "Gas/JamGameplayTags.h"
@@ -29,6 +30,7 @@ namespace
 		case EJamNuisanceState::Flustered: return FLinearColor(1.0f, 0.8f, 0.2f);   // yellow
 		case EJamNuisanceState::Pacified:  return FLinearColor(0.75f, 0.75f, 0.78f); // calmed grey
 		case EJamNuisanceState::Treated:   return FLinearColor(0.35f, 0.9f, 0.6f);   // mint
+		case EJamNuisanceState::Charge:    return FLinearColor(1.0f, 0.12f, 0.08f);  // furious red
 		default:                           return Base;                              // the kind's own colour
 		}
 	}
@@ -42,6 +44,7 @@ namespace
 		case EJamNuisanceState::Flustered: return TEXT("Flustered");
 		case EJamNuisanceState::Pacified:  return TEXT("Pacified");
 		case EJamNuisanceState::Treated:   return TEXT("Treated");
+		case EJamNuisanceState::Charge:    return TEXT("Charge");
 		}
 		return TEXT("?");
 	}
@@ -166,6 +169,9 @@ void AJamNuisance::HandleResolveChanged(const FOnAttributeChangeData& Data)
 void AJamNuisance::Fluster(float Seconds)
 {
 	if (IsPacified() || IsTreated()) { return; }
+	if (State == EJamNuisanceState::Charge && Attack.bUnstoppable) { return; }   // the boss keeps coming
+	// A skill hit stops a charge, and it does not come straight back.
+	if (State == EJamNuisanceState::Charge) { AttackCooldownLeft = FMath::Max(AttackCooldownLeft, Attack.Cooldown * 0.5f); }
 	if (State != EJamNuisanceState::Flustered) { SetState(EJamNuisanceState::Flustered); FlusterHold = Seconds; JamSfx::Play(this, TEXT("Flustered")); }
 	else { FlusterHold = FMath::Max(FlusterHold, StateTime + Seconds); }
 }
@@ -283,6 +289,7 @@ void AJamNuisance::Tick(float DeltaSeconds)
 
 	float HeroDistance = 0.f;
 	const AActor* Hero = FindNearestHero(HeroDistance);
+	AttackCooldownLeft = FMath::Max(0.f, AttackCooldownLeft - DeltaSeconds);
 
 	switch (State)
 	{
@@ -290,9 +297,25 @@ void AJamNuisance::Tick(float DeltaSeconds)
 		if (StateTime >= FMath::Max(FlusterHold, FlusteredSeconds)) { FlusterHold = 0.f; SetState(EJamNuisanceState::Wander); }
 		break;
 
+	case EJamNuisanceState::Charge:
+		TickCharge(Hero, HeroDistance, DeltaSeconds);
+		break;
+
 	case EJamNuisanceState::Wander:
 	case EJamNuisanceState::Flee:
 	{
+		// R4b: near enough and ready, it turns and charges (the game mode says whether a charge may start now).
+		if (Hero && Attack.bAttacks && AttackCooldownLeft <= 0.f && HeroDistance <= Attack.ChargeRange)
+		{
+			AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
+			if (GM && GM->RequestCharge(this, HeroDistance))
+			{
+				SetState(EJamNuisanceState::Charge);
+				AttackCooldownLeft = Attack.Cooldown;
+				UE_LOG(LogJam, Log, TEXT("JamNuisance: %s charges from %.0f uu"), *GetName(), HeroDistance);
+				break;
+			}
+		}
 		const bool bThreatened = Hero && HeroDistance < FleeRadius;
 		if (bThreatened != (State == EJamNuisanceState::Flee))
 		{
@@ -328,4 +351,42 @@ void AJamNuisance::Tick(float DeltaSeconds)
 	// Only with -debuglabels: the jam ships a Development build, where debug draws are visible.
 	static const bool bLabels = FParse::Param(FCommandLine::Get(), TEXT("debuglabels"));
 	if (bLabels) { DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State, BaseColour).ToFColor(true), 0.f, true, 1.1f); }
+}
+
+namespace JamChargeTuning
+{
+	constexpr float WindUpSeconds = 0.35f;   // stops and quivers first, so the player can see it coming
+}
+
+void AJamNuisance::TickCharge(const AActor* Hero, float HeroDistance, float DeltaSeconds)
+{
+	using namespace JamChargeTuning;
+	if (!Hero) { EndCharge(); return; }
+	const FVector2D ToHero = FVector2D(Hero->GetActorLocation()) - FVector2D(GetActorLocation());
+	if (StateTime < WindUpSeconds)
+	{
+		// Wind-up: face him and quiver.
+		SetActorRotation(FRotator(0.f, FMath::RadiansToDegrees(FMath::Atan2(ToHero.Y, ToHero.X)), 0.f));
+		const float Quiver = FMath::Sin(StateTime * 70.f) * 0.08f;
+		Body->SetRelativeScale3D(BodyBaseScale * FVector(1.f + Quiver, 1.f - Quiver, 1.f + Quiver));
+		return;
+	}
+	Body->SetRelativeScale3D(BodyBaseScale);
+	Steer(ToHero.GetSafeNormal() * Speed * Attack.ChargeSpeedScale, DeltaSeconds);
+	if (HeroDistance <= Attack.HitRange + ExtraReach())
+	{
+		AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
+		if (GM && GM->HandleNuisanceHit(this)) { ++HitCount; }
+		EndCharge();
+		return;
+	}
+	if (StateTime >= WindUpSeconds + Attack.ChargeSeconds) { EndCharge(); }
+}
+
+void AJamNuisance::EndCharge()
+{
+	Body->SetRelativeScale3D(BodyBaseScale);
+	AttackCooldownLeft = FMath::Max(AttackCooldownLeft, Attack.Cooldown);
+	PickWanderTarget();
+	SetState(EJamNuisanceState::Wander);
 }

@@ -4,7 +4,7 @@ Written 2026-11-13 by GAME, at Dylan's request. **This file governs the rest of 
 
 Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
-**What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. **The first build testers see is the full terrain world, with sound, voice and the cast** (first impressions count; no arena build is pushed). So: put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time.
+**What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. **The first build testers see is the full terrain world, with sound, voice and the cast** (first impressions count; no arena build is pushed). So: put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time. **ChatGPT, not GAME, does every itch deployment** (see "Who runs it").
 
 ## Where things stand (checked on disk, Nov 13)
 
@@ -64,10 +64,12 @@ Total 7:00 (R4b added by Dylan, Nov 13). Order for the first push: R0, R1, R2, R
 | After R5 | 25 | Play the world build. Say whether it runs well enough to ship. Approve the look |
 | After R6 | 10 | Approve the knight and the cast |
 | Nov 15 morning | 40 | Record the 30 to 60 second video (sword fakeout, CUT!, ledger, budget-out, a walk through the world), upload it |
-| Nov 15 | 30 | Itch page, tools used, team details; say "go" for `upload-itch.ps1`; download the zip, unzip, run it |
+| Nov 15 | 30 | With ChatGPT: itch page, tools used, team details; say "go" for its `upload-itch.ps1` run; download the zip, unzip, run it |
 | Nov 15 | 15 | Publish the dev log link (Glass Box) |
 | Spare | 20 | |
 
 ## Who runs it
 
 GAME (Claude) takes R0 onward while quota lasts. Every task is written so Codex can pick it up from `STATUS.md` with this prompt: "You are GAME. Read `CLAUDE.md`, `Docs/STATUS.md` and `Docs/Design/RELEASE_PLAN.md`. Take the next R task, finish it to its 'done when' or its fallback inside the time box, commit, update STATUS and DEVLOG." One session in the checkout at a time; whoever holds it holds the engine.
+
+**Itch deployment is ChatGPT's (Dylan, Nov 13), to save Claude's quota for Nov 14.** That covers the itch page text, the "what to tell me" line, and every `upload-itch.ps1` (butler) push, tester builds and the jam submission alike, each with Dylan's go-ahead. GAME's part stops at a zip on disk: R5 and R8 end with `zip-submission.ps1` and a hand-off line in `STATUS.md` (zip path, size, what changed since the last push, the PASS lines). GAME does not run `upload-itch.ps1`.

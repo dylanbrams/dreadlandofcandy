@@ -216,6 +216,7 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
 	if (!PS) { return false; }
 	if (GM && GM->HandleSpendPoint(this, Skill)) { return true; }   // the wrap panel: this button ranks the skill up
+	if (IsStaggered()) { return false; }                             // R4b: knocked off his stride
 	if (GM && GM->IsNotePromptUp())                                  // CUT!: Q refuses the note, it does not sigh
 	{
 		if (Skill == EJamSkill::LastJudgment) { RequestWriteNote(); }   // Y / R write your own
@@ -568,6 +569,13 @@ void AJamHero::PlayRigOneShot(FName Anim)
 
 void AJamHero::TickRig()
 {
+	if (ArtRig->GetSkeletalMeshAsset())
+	{
+		// R4b: a hit tips him back for a moment, then he stands straight again, unmoved.
+		const float SinceHit = GetWorld()->GetTimeSeconds() - HitAt;
+		const float Tip = SinceHit < 0.45f ? FMath::Sin(PI * SinceHit / 0.45f) * 18.f : 0.f;
+		ArtRig->SetRelativeRotation(FQuat(FRotator(Tip, 0.f, 0.f)) * FQuat(FRotator(0.f, -90.f, 0.f)));
+	}
 	if (!ArtRig->GetSkeletalMeshAsset() || GetWorld()->GetTimeSeconds() < RigOneShotUntil) { return; }
 	// Holding interact: he scrubs (teeth) or feeds (celery); otherwise walk or stand.
 	FName Want = GetVelocity().Size2D() > 60.f ? FName(TEXT("Walk")) : FName(TEXT("Idle"));
@@ -694,4 +702,30 @@ void AJamHero::SetCameraDistance(float Distance)
 {
 	CameraArm->TargetArmLength = Distance;
 	CameraArm->TargetOffset = FVector(Distance * 0.35f, 0.f, 0.f);
+}
+
+// ---- R4b: hit back ----------------------------------------------------------------------------------------------
+
+void AJamHero::TakeHit(const FVector& From, float Knockback, float StaggerSeconds)
+{
+	const float Now = GetWorld()->GetTimeSeconds();
+	StaggerUntil = FMath::Max(StaggerUntil, Now + StaggerSeconds);
+	HitAt = Now;
+	FVector Away = GetActorLocation() - From;
+	Away.Z = 0.f;
+	Away = Away.GetSafeNormal();
+	if (Away.IsNearlyZero()) { Away = -GetActorForwardVector(); }
+	GetCharacterMovement()->StopMovementImmediately();
+	LaunchCharacter(Away * Knockback + FVector(0.f, 0.f, 260.f), true, true);
+}
+
+bool AJamHero::IsStaggered() const
+{
+	return GetWorld() && GetWorld()->GetTimeSeconds() < StaggerUntil;
+}
+
+void AJamHero::AddMovementInput(FVector WorldDirection, float ScaleValue, bool bForce)
+{
+	if (IsStaggered()) { return; }
+	Super::AddMovementInput(WorldDirection, ScaleValue, bForce);
 }

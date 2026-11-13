@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "AbilitySystemInterface.h"
+#include "Film/JamDignity.h"
 #include "JamNuisance.generated.h"
 
 class UCapsuleComponent;
@@ -20,6 +21,7 @@ enum class EJamNuisanceState : uint8
 	Flustered,  // brief stop after a hit that did not pacify
 	Pacified,   // sits, waits for treatment
 	Treated,    // done
+	Charge,     // R4b: winds up, then runs at the hero; a hit or a timeout ends it
 };
 
 /**
@@ -73,6 +75,12 @@ public:
 	/** The generated model for this kind and its height (T20); empty keeps the placeholder. */
 	FString ArtMesh;
 	float ArtHeight = 80.f;
+
+	/** R4b: how it hits back (bAttacks false for rats and almonds). Set by the game mode before FinishSpawning. */
+	FJamAttackTuning Attack;
+	bool IsCharging() const { return State == EJamNuisanceState::Charge; }
+	/** Times it connected (autoplay reports it). */
+	int32 GetHitCount() const { return HitCount; }
 
 	/** Spawns already sitting (retakes of a treat stage). */
 	bool bStartPacified = false;
@@ -136,6 +144,10 @@ private:
 
 	EJamNuisanceState State = EJamNuisanceState::Wander;
 	int32 FleeCount = 0;
+	int32 HitCount = 0;
+	float AttackCooldownLeft = 1.5f;   // a moment's grace after spawning
+	void TickCharge(const AActor* Hero, float HeroDistance, float DeltaSeconds);
+	void EndCharge();
 	float FlusterHold = 0.f;     // this Flustered lasts this long (a hit: FlusteredSeconds; the line: longer)
 	float SlowFactor = 1.f;
 	FVector2D RecoilVelocity = FVector2D::ZeroVector;

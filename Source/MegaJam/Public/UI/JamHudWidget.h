@@ -62,6 +62,9 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> PromptText;
 
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> NotesText;
+	UPROPERTY(Transient) TObjectPtr<UWidget> DignityRow;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> DignityLabel;
+	UPROPERTY(Transient) TObjectPtr<UProgressBar> DignityBar;
 	UPROPERTY(Transient) TObjectPtr<UProgressBar> PromptFill;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionSpeaker;
 

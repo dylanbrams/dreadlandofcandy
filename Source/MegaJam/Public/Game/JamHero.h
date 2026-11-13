@@ -72,6 +72,15 @@ public:
 	/** -camyaw / -campitch pin the follow camera for repeatable screenshots. */
 	void PinFollowCamera(float Yaw, float Pitch) { CameraYaw = Yaw; CameraPitchFollow = Pitch; bCameraPinned = true; }
 
+	/**
+	 * R4b: something hit him (the game mode validated it). Knocked back away from From, staggered: no movement and
+	 * no skills until it wears off. He does not react otherwise; the knight is above this.
+	 */
+	void TakeHit(const FVector& From, float Knockback, float StaggerSeconds);
+	bool IsStaggered() const;
+	/** Drops movement input while staggered (players and the bot both come through here). */
+	virtual void AddMovementInput(FVector WorldDirection, float ScaleValue = 1.0f, bool bForce = false) override;
+
 	/** Takes the progression's stats: move speed now; the Lecture reads radius and power itself. */
 	void ApplyStats(const struct FJamStatBlock& Stats);
 
@@ -152,6 +161,8 @@ private:
 	FRotator ArtBodyRotation = FRotator::ZeroRotator;
 	float WalkPhase = 0.f;
 	float SwordUpAt = -100.f;   // world time of the last Lecture
+	float StaggerUntil = -1.f;   // world time (R4b)
+	float HitAt = -100.f;       // world time of the last hit: the body tips back for a moment
 	void TickSword();
 
 	UPROPERTY(Transient)

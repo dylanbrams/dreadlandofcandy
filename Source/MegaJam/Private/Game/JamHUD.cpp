@@ -209,6 +209,10 @@ void AJamHUD::BuildView()
 	View.FilmSeconds = GS->FilmSeconds;
 	View.Hint = GS->Hint;
 
+	View.bDignityVisible = GS->bDignityVisible;
+	View.DignityFraction = GS->GetDignity().GetFraction();
+	View.DignityHit = GS->GetDignity().IsStaggered() ? 1.f : 0.f;
+
 	const FJamStageDef* Stage = Shoot.GetStage();
 	if (Stage && State != EJamShootState::Wrap)
 	{

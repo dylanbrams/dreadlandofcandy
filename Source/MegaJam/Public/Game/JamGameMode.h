@@ -53,6 +53,11 @@ public:
 	/** Interact while the wrap panel is up closes it (the last one opens the Premiere). True if it did. */
 	bool HandleDismissWrap(AJamHero* Hero);
 
+	/** R4b: a nuisance asks to start a charge (shoot rolling, Dignity left, room among the chargers). */
+	bool RequestCharge(AJamNuisance* Nuisance, float HeroDistance);
+	/** R4b: a charging nuisance reached the hero. Knockback, stagger, Dignity; at zero the take fails. True if it landed. */
+	bool HandleNuisanceHit(AJamNuisance* Nuisance);
+
 	/** The hero cast a skill (cosmetic: Fenella may remark on the Lecture; autoplay counts casts). */
 	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
 
@@ -173,6 +178,10 @@ private:
 	int32 NotesTaken = 0;
 	int32 NotesRefused = 0;
 	int32 FleeCountTotal = 0;
+	int32 HitsTaken = 0;
+	int32 DignityFails = 0;
+	/** The take failed because Dignity ran out (the RETAKE! card says so). */
+	bool bDignityBroke = false;
 
 	bool bAutoplay = false;
 	bool bAutoNoteTake = true;

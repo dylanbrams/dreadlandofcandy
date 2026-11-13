@@ -21,6 +21,14 @@ namespace
 		return C;
 	}
 
+	/** An event that plays a clip with another name. */
+	FJamSfxCue CueAs(const TCHAR* Name, const TCHAR* Clip, float Volume, float Jitter = 0.f, float MinInterval = 0.f)
+	{
+		FJamSfxCue C = Cue(Name, Volume, Jitter, MinInterval);
+		C.Clip = Clip;
+		return C;
+	}
+
 	TSet<FName>& MissingClips() { static TSet<FName> Missing; return Missing; }
 	TMap<FName, double>& LastPlayed() { static TMap<FName, double> Last; return Last; }
 
@@ -82,6 +90,7 @@ const TArray<FJamSfxCue>& JamSfx::Table()
 		Cue(TEXT("Budget_Empty"), 1.0f),
 		Cue(TEXT("Backlot_Ambience_Loop"), 0.3f),
 		Cue(TEXT("Quest_Accept"), 1.0f),
+		CueAs(TEXT("Hero_Hit"), TEXT("Shield_Bash"), 1.0f, 0.08f, 0.2f),   // R4b: something hit him back
 	};
 	return Cues;
 }
