@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "snow_pine_varieties": 5,
+  "tree_varieties": 11,
+  "meshes_with_three_lods": 20,
+  "foliage_instances": 85091,
+  "instanced_components": 33,
+  "floating_slices": {
+    "status": "passed",
+    "slices": 4,
+    "inside_basin": true,
+    "all_straddle_surface": true,
+    "water_z": 26,
+    "rind_z_bounds": [
+      [
+        8.955135345458984,
+        43.044864654541016
+      ],
+      [
+        14.356595039367676,
+        37.64340591430664
+      ],
+      [
+        8.449790954589844,
+        43.550209045410156
+      ],
+      [
+        12.252899169921875,
+        39.747100830078125
+      ]
+    ]
+  },
+  "crystal_material": {
+    "status": "saved",
+    "opacity_head_on": 0.48,
+    "opacity_grazing": 0.8,
+    "refraction": 1.04,
+    "lit_translucency": true
+  },
+  "lemonade_material": "Lit single-surface translucency with ripple normals and an opaque basin floor",
+  "performance_comparison": {
+    "DenseSnow": {
+      "current": {
+        "median_ms": 6.448,
+        "p95_ms": 8.291
+      },
+      "previous": {
+        "median_ms": 5.17,
+        "p95_ms": 5.658
+      }
+    },
+    "CrystalFountain": {
+      "current": {
+        "median_ms": 6.848,
+        "p95_ms": 8.425
+      },
+      "previous": {
+        "median_ms": 6.411,
+        "p95_ms": 6.96
+      }
+    },
+    "CrystalFountainSide": {
+      "current": {
+        "median_ms": 6.655,
+        "p95_ms": 9.546
+      },
+      "previous": null
+    },
+    "LemonadeSpring": {
+      "current": {
+        "median_ms": 7.144,
+        "p95_ms": 50.35
+      },
+      "previous": {
+        "median_ms": 6.003,
+        "p95_ms": 6.928
+      }
+    }
+  },
+  "performance_limit": "One static camera per view, one local machine. Excludes startup samples; not a packaged benchmark, movement test or crowded combat measurement.",
+  "performance_status": "Static medians have headroom; intermittent spring frame-time spikes remain in the extended capture. Gameplay performance is not signed off.",
+  "previews": {
+    "PineVarieties": "/Game/World/Review/L_PineVarieties",
+    "DenseSnow": "/Game/World/Review/L_SugarSnow1",
+    "CrystalFountain": "/Game/World/Review/L_CrystalFountain",
+    "CrystalFountainSide": "/Game/World/Review/L_CrystalFountainSide",
+    "LemonadeSpring": "/Game/World/Review/L_LemonadeSpring"
+  },
+  "packaging": "not rerun",
+  "paid_generation": false
+}

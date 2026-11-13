@@ -1,0 +1,188 @@
+{
+  "assets": [
+    {
+      "name": "SM_CrystalFountain",
+      "category": "fountain",
+      "location": [
+        650,
+        750
+      ],
+      "radius": 205,
+      "label": "CRYSTAL FOUNTAIN",
+      "triangles": 5644,
+      "materials": [
+        "Sugar",
+        "Crystal"
+      ]
+    },
+    {
+      "name": "SM_LemonadeSpring",
+      "category": "spring",
+      "location": [
+        4500,
+        4500
+      ],
+      "radius": 550,
+      "label": "LEMONADE SPRING",
+      "triangles": 9724,
+      "materials": [
+        "Sugar",
+        "SpringBed",
+        "Lemonade",
+        "Crystal",
+        "LemonRind",
+        "LemonFlesh"
+      ]
+    },
+    {
+      "name": "SM_StewPond",
+      "category": "pond",
+      "location": [
+        6500,
+        7000
+      ],
+      "radius": 750,
+      "label": "LAKE OF STEW",
+      "triangles": 9324,
+      "materials": [
+        "Sugar",
+        "Broth",
+        "Carrot",
+        "Pea",
+        "Potato",
+        "Noodle",
+        "Metal"
+      ]
+    },
+    {
+      "name": "SM_WhiskeyRun",
+      "category": "stream",
+      "location": [
+        -6500,
+        -500
+      ],
+      "radius": 600,
+      "label": "WHISKEY RUN",
+      "triangles": 6808,
+      "materials": [
+        "Sugar",
+        "Whiskey"
+      ]
+    },
+    {
+      "name": "SM_Bluebird",
+      "category": "bird",
+      "location": [
+        4500,
+        4500
+      ],
+      "radius": 0,
+      "label": "Bluebird",
+      "triangles": 2638,
+      "materials": [
+        "Bluebird",
+        "BirdCream",
+        "BirdDark",
+        "LemonRind"
+      ]
+    }
+  ],
+  "palette": {
+    "Sugar": [
+      0.92,
+      0.82,
+      0.73,
+      1
+    ],
+    "Crystal": [
+      0.39,
+      0.82,
+      0.94,
+      1
+    ],
+    "Lemonade": [
+      0.91,
+      0.63,
+      0.035,
+      1
+    ],
+    "LemonRind": [
+      0.98,
+      0.77,
+      0.025,
+      1
+    ],
+    "LemonFlesh": [
+      1,
+      0.88,
+      0.29,
+      1
+    ],
+    "Broth": [
+      0.28,
+      0.075,
+      0.018,
+      1
+    ],
+    "Carrot": [
+      0.93,
+      0.22,
+      0.012,
+      1
+    ],
+    "Pea": [
+      0.16,
+      0.48,
+      0.055,
+      1
+    ],
+    "Potato": [
+      0.86,
+      0.64,
+      0.29,
+      1
+    ],
+    "Noodle": [
+      0.96,
+      0.82,
+      0.45,
+      1
+    ],
+    "Whiskey": [
+      0.48,
+      0.14,
+      0.018,
+      1
+    ],
+    "Metal": [
+      0.55,
+      0.65,
+      0.72,
+      1
+    ],
+    "Bluebird": [
+      0.025,
+      0.31,
+      0.91,
+      1
+    ],
+    "BirdCream": [
+      0.91,
+      0.82,
+      0.55,
+      1
+    ],
+    "BirdDark": [
+      0.014,
+      0.027,
+      0.045,
+      1
+    ],
+    "SpringBed": [
+      0.48,
+      0.39,
+      0.16,
+      1
+    ]
+  }
+}

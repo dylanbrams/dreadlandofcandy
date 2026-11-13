@@ -41,7 +41,9 @@ dense_actors = [a for a in actors if a.get_actor_label().startswith("Baked_Candy
 dense_components = [c for a in dense_actors for c in a.get_components_by_class(u.InstancedStaticMeshComponent)]
 dense_count = sum(c.get_instance_count() for c in dense_components)
 if dense_actors:
-    ecology = json.loads((ROOT / "Dense/ecology.json").read_text())
+    polished = any(c.static_mesh and c.static_mesh.get_path_name().startswith('/Game/World/Polish/') for c in dense_components)
+    ecology_path = ROOT / ('Polish/ecology.json' if polished and (ROOT/'Polish/ecology.json').exists() else 'Dense/ecology.json')
+    ecology = json.loads(ecology_path.read_text())
     assert dense_count == sum(ecology["counts"].values())
     assert len(scatter) == 0
     for comp in dense_components:

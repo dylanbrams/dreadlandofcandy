@@ -211,8 +211,8 @@
   ],
   "terrain_count": 16,
   "nonblocking_scatter": 0,
-  "dense_nonblocking_instances": 86003,
-  "dense_instanced_components": 21,
+  "dense_nonblocking_instances": 85091,
+  "dense_instanced_components": 33,
   "ground_collision_samples": [
     {
       "id": "Village",
@@ -824,8 +824,15 @@
     }
   ],
   "review_maps": [
-    "/Game/World/Review/L_DenseMeadow",
-    "/Game/World/Review/L_DenseSnow",
-    "/Game/World/Review/L_CandyWander"
+    "/Game/World/Review/L_SweetMeadow4",
+    "/Game/World/Review/L_CandyGrove4",
+    "/Game/World/Review/L_SugarSnow4",
+    "/Game/World/Review/L_CandyExplorer4",
+    "/Game/World/Review/L_PolishVillage3",
+    "/Game/World/Review/L_PolishGrass3",
+    "/Game/World/Review/L_CrystalFountain1",
+    "/Game/World/Review/L_LemonadeSpring1",
+    "/Game/World/Review/L_StewPond1",
+    "/Game/World/Review/L_WhiskeyRun1"
   ]
 }

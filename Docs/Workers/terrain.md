@@ -178,3 +178,87 @@ Fresh-context entry: `ImportSource/Terrain/Dense/HANDOVER.md`. Next terrain work
 should use human traversal/visual feedback and GAME's O2 camera to tune density
 and sightlines. Current checks establish saved instances, collision and cooked
 rendering; they do not establish manual traversal or a performance target.
+
+### Candy material and silhouette polish active - Nov 13
+Dylan requested striped grass, warped trees, fibrous cotton candy and dense house variants. No Unreal/Blender processes were running at inspection. TERRAIN is preparing assets under ImportSource/Terrain/Polish and taking the engine window for scoped content import and visual checks. Gameplay, shared config and existing user edits remain outside this pass. No paid generation, push or upload.
+
+### Candy polish and song landmarks complete - Nov 13
+
+Main map `/Game/World/L_Sugarborough` is saved with striped grass, nine
+smooth warped tree variants, threaded cotton-candy materials, and three
+18k-triangle candy-house variants across the six houses. Added a village
+crystal fountain, lemonade spring, stew pond, whiskey run and five bluebirds
+after Dylan's song suggestion. These are scenery; no new gameplay systems.
+All 18 new meshes have three LODs. Raw generated originals remain unchanged;
+no paid generation, upload or push. Details: `ImportSource/Terrain/Polish/README.md`.
+
+Current baked graph is `/Game/World/Polish/PCG/PCG_CandyEcology`, **85,091
+instances / 31 HISM components**. Exactly 912 former instances were cleared
+around landmarks; every retained transform is identical to the prior layout.
+Source provenance, finite transforms, road/location/landmark exclusions pass.
+Saved-map validation passes all 18 LOD checks, 79 ground samples, three capsule
+routes, twelve perimeter samples and nine nonblocking landmark/bird meshes.
+
+Final grove, snow, village and all four landmark screenshots were inspected.
+`Polish/review_maps.json` records the ten current preview maps; use these
+instead of older names. Removed floating art-review labels and 22 temporary
+camera-map copies; original tracked maps are protected. Static 1600x1000
+GTX 1660 Ti measurements: grove median 5.336 ms versus 4.798 ms before;
+other final scenic medians 5.17–7.438 ms, p95 up to 8.24 ms. These are
+editor-game stationary captures, not packaged traversal/combat benchmarks.
+
+The interrupted cleanup submission did not run and left no Unreal process;
+it was resumed, completed, and verified. All terrain-owned Unreal/Blender
+processes are now finished. **Engine available for GAME / FX.** No gameplay
+C++, shared config or other workers' edits changed. No new C++ build or game
+test claim; this content pass has not been repackaged. The old ZIP remains
+the previous dense art pass. Reproduction and current source/engine/performance
+reports are under `Polish/`; parent `Dense/HANDOVER.md` points there.
+
+
+### Snow pine and translucency refinement active - Nov 13
+Dylan requested two additional snow candy-pine shapes, translucent fountain crystals and floating lemon slices in a translucent lemonade surface. TERRAIN is taking the available engine window for this scoped art pass. No Unreal/Blender process was running at inspection. Sources and current previews remain in ImportSource/Terrain/Polish. No paid generation or gameplay changes.
+
+
+### Exclusive terrain preview window reconfirmed
+Dylan selected 'Finish the terrain previews first' after concurrent sessions were inspected. TERRAIN owns the next Unreal window. Terrain preview hit a synchronous shader-compiler assertion; removed the preview-only bAllowAsynchronousShaderCompiling override. Character animation errors were observed separately. Terrain is finishing crystal-tint application and sequential render checks; shared project config is unchanged.
+
+### Pine / glass / floating-slice previews delivered - engine released
+
+**The terrain preview window is complete; Unreal is available for character
+work.** All terrain-owned Unreal and Blender processes have exited.
+
+Saved main world now has eleven tree variants, including five snow pines.
+The new spiral taffy and marshmallow umbrella pines have original geometry,
+9,556 / 7,792 triangles, three LODs and conservative footprints. They reuse
+existing fir transforms: 85,091 instances in 33 HISM components remain.
+Crystal material is lit translucent with stronger blue tint, Fresnel opacity
+and mild refraction. The lemonade uses one translucent ripple surface over
+an opaque basin floor; four horizontal lemon wheels are partly submerged.
+The removed upright wheel's bluebird now perches on the tallest crystal.
+
+Saved-map checks pass for all twenty meshes' LODs, 79 ground samples, three
+capsule approaches, twelve perimeter samples and nine nonblocking landmark /
+bird actors. Source checks confirm unchanged retained transforms, original
+hashes and quest/road/landmark exclusions. Blender inspection confirms four
+separate rinds, entirely inside the basin and intersecting the water plane.
+
+Current map index: `Polish/review_maps.json` (12 maps, including a separate
+two-tree `PineVarieties` lineup and `CrystalFountainSide`). Final images were
+inspected, including the fountain from two angles. Older snow/fountain/spring
+images are preserved in `Review/PriorRefinement`. Ten superseded map copies
+were removed with current/tracked packages protected.
+
+Final static medians: snow 6.448 ms; fountain 6.848 / 6.655 ms; spring
+7.144 ms. Snow's extended-capture p95 is 8.291 ms. Spring still has unexplained
+tail spikes (50.35 ms p95 in its extended capture), so performance is not
+signed off for gameplay. Raw samples and the comparison are retained in
+`performance.json`, `Review/timings-*.csv`, and `refinement_report.json`.
+
+The synchronous shader override was removed after its assertion; final normal
+compilation captures succeed. This does not establish the cause of the app's
+conversation interruptions or the character session's animation-data failure.
+No shared configuration, gameplay C++, paid generation, push or upload in this
+pass. These refinements have not been repackaged. Reproduction starts with
+`Polish/README.md`; run `prepare_pines.py` after the base Blender variants.
+

@@ -1,0 +1,8 @@
+{
+  "terrain_preview_failure": "ShaderCompiler.cpp assertion Results->NumPendingJobs.GetValue() == 0 in synchronous compile path",
+  "preview_override_removed": true,
+  "saved_map_validation": "passed",
+  "remaining": "none for this art refinement",
+  "source_crystal_tint_applied_to_runtime": true,
+  "final_render_status": "passed"
+}

@@ -1,0 +1,401 @@
+{
+  "assets": [
+    {
+      "name": "SM_PeppermintBirch_Warp1",
+      "triangles": 8628,
+      "bounds_cm": [
+        [
+          -211.8645782470703,
+          225.45108032226562
+        ],
+        [
+          -173.79627990722656,
+          157.2954559326172
+        ],
+        [
+          0.874112606048584,
+          488.0362548828125
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_PeppermintBirch.glb",
+      "source_sha256": "17c6f0fa95a9b168eb069759e8f158e46b6f6e695a4eddc9e04a732f1ce7b393",
+      "category": "tree",
+      "species": "PeppermintBirch",
+      "variant": 0
+    },
+    {
+      "name": "SM_PeppermintBirch_Warp2",
+      "triangles": 8628,
+      "bounds_cm": [
+        [
+          -282.7254333496094,
+          260.440185546875
+        ],
+        [
+          -144.39532470703125,
+          119.93962860107422
+        ],
+        [
+          1.1507304906845093,
+          642.4780883789062
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_PeppermintBirch.glb",
+      "source_sha256": "17c6f0fa95a9b168eb069759e8f158e46b6f6e695a4eddc9e04a732f1ce7b393",
+      "category": "tree",
+      "species": "PeppermintBirch",
+      "variant": 1
+    },
+    {
+      "name": "SM_PeppermintBirch_Warp3",
+      "triangles": 8628,
+      "bounds_cm": [
+        [
+          -225.09048461914062,
+          259.3961486816406
+        ],
+        [
+          -167.809326171875,
+          147.3651580810547
+        ],
+        [
+          1.3720248937606812,
+          766.0315551757812
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_PeppermintBirch.glb",
+      "source_sha256": "17c6f0fa95a9b168eb069759e8f158e46b6f6e695a4eddc9e04a732f1ce7b393",
+      "category": "tree",
+      "species": "PeppermintBirch",
+      "variant": 2
+    },
+    {
+      "name": "SM_BubblegumBlossom_Warp1",
+      "triangles": 8748,
+      "bounds_cm": [
+        [
+          -217.4914093017578,
+          238.96969604492188
+        ],
+        [
+          -196.53138732910156,
+          202.19239807128906
+        ],
+        [
+          0.3101842701435089,
+          454.2946472167969
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_BubblegumBlossom.glb",
+      "source_sha256": "c32690425f95babe1ca3147215a891dc7219824c03a491e4f95548b8a87e5dd3",
+      "category": "tree",
+      "species": "BubblegumBlossom",
+      "variant": 0
+    },
+    {
+      "name": "SM_BubblegumBlossom_Warp2",
+      "triangles": 8748,
+      "bounds_cm": [
+        [
+          -295.874755859375,
+          268.6969299316406
+        ],
+        [
+          -167.41653442382812,
+          155.113037109375
+        ],
+        [
+          0.4083438515663147,
+          598.0587768554688
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_BubblegumBlossom.glb",
+      "source_sha256": "c32690425f95babe1ca3147215a891dc7219824c03a491e4f95548b8a87e5dd3",
+      "category": "tree",
+      "species": "BubblegumBlossom",
+      "variant": 1
+    },
+    {
+      "name": "SM_BubblegumBlossom_Warp3",
+      "triangles": 8748,
+      "bounds_cm": [
+        [
+          -228.35694885253906,
+          270.24566650390625
+        ],
+        [
+          -193.6396484375,
+          186.2813262939453
+        ],
+        [
+          0.48687151074409485,
+          713.070068359375
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_BubblegumBlossom.glb",
+      "source_sha256": "c32690425f95babe1ca3147215a891dc7219824c03a491e4f95548b8a87e5dd3",
+      "category": "tree",
+      "species": "BubblegumBlossom",
+      "variant": 2
+    },
+    {
+      "name": "SM_CandyCaneFir_Warp1",
+      "triangles": 8784,
+      "bounds_cm": [
+        [
+          -189.7792510986328,
+          192.5268096923828
+        ],
+        [
+          -250.23477172851562,
+          257.5936584472656
+        ],
+        [
+          0.1523568034172058,
+          567.1134643554688
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_CandyCaneFir.glb",
+      "source_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "category": "tree",
+      "species": "CandyCaneFir",
+      "variant": 0
+    },
+    {
+      "name": "SM_CandyCaneFir_Warp2",
+      "triangles": 8784,
+      "bounds_cm": [
+        [
+          -238.40411376953125,
+          234.85079956054688
+        ],
+        [
+          -199.36251831054688,
+          206.87025451660156
+        ],
+        [
+          0.2005709856748581,
+          746.5797729492188
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_CandyCaneFir.glb",
+      "source_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "category": "tree",
+      "species": "CandyCaneFir",
+      "variant": 1
+    },
+    {
+      "name": "SM_CandyCaneFir_Warp3",
+      "triangles": 8784,
+      "bounds_cm": [
+        [
+          -207.00753784179688,
+          212.4414520263672
+        ],
+        [
+          -232.34933471679688,
+          232.33370971679688
+        ],
+        [
+          0.23914232850074768,
+          890.15283203125
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_CandyCaneFir.glb",
+      "source_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "category": "tree",
+      "species": "CandyCaneFir",
+      "variant": 2
+    },
+    {
+      "name": "SM_SpunSugarThicket",
+      "triangles": 11520,
+      "bounds_cm": [
+        [
+          -134.96322631835938,
+          139.05615234375
+        ],
+        [
+          -113.6867904663086,
+          97.47755432128906
+        ],
+        [
+          0.25999999046325684,
+          176.1000213623047
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Dense\\Sources\\SM_CandyflossThicket.obj",
+      "source_sha256": "66611854ebbacf0c08f7b745374c646421cb7bfcf866550ed93efe4a15826ecd",
+      "category": "bush",
+      "materials": [
+        "Cream",
+        "Pink"
+      ]
+    },
+    {
+      "name": "SM_CandyHouse_1",
+      "triangles": 18000,
+      "bounds_cm": [
+        [
+          -295.77410888671875,
+          295.8272399902344
+        ],
+        [
+          -258.8984680175781,
+          258.8985595703125
+        ],
+        [
+          0.02146071009337902,
+          469.0776062011719
+        ]
+      ],
+      "source": "ImportSource\\Fal\\SM_HouseFront_Fal.glb",
+      "source_sha256": "d995c564421e657fbfb3f23f537c67706cff446a146281aa9d745d3408c36b94",
+      "category": "house",
+      "variant": 0,
+      "textures": [
+        "T_CandyHouse_0"
+      ]
+    },
+    {
+      "name": "SM_CandyHouse_2",
+      "triangles": 18000,
+      "bounds_cm": [
+        [
+          -254.36573791503906,
+          254.4114227294922
+        ],
+        [
+          -250.54689025878906,
+          250.5469970703125
+        ],
+        [
+          0.027059156447649002,
+          591.4456787109375
+        ]
+      ],
+      "source": "ImportSource\\Fal\\SM_HouseFront_Fal.glb",
+      "source_sha256": "d995c564421e657fbfb3f23f537c67706cff446a146281aa9d745d3408c36b94",
+      "category": "house",
+      "variant": 1,
+      "textures": [
+        "T_CandyHouse_0"
+      ]
+    },
+    {
+      "name": "SM_CandyHouse_3",
+      "triangles": 18000,
+      "bounds_cm": [
+        [
+          -278.02764892578125,
+          278.0776062011719
+        ],
+        [
+          -278.38543701171875,
+          278.38555908203125
+        ],
+        [
+          0.02379339560866356,
+          520.0643310546875
+        ]
+      ],
+      "source": "ImportSource\\Fal\\SM_HouseFront_Fal.glb",
+      "source_sha256": "d995c564421e657fbfb3f23f537c67706cff446a146281aa9d745d3408c36b94",
+      "category": "house",
+      "variant": 2,
+      "textures": [
+        "T_CandyHouse_0"
+      ]
+    },
+    {
+      "name": "SM_CandyCaneFir_Warp4",
+      "category": "tree",
+      "species": "CandyCaneFir",
+      "variant": 3,
+      "display_name": "Spiral taffy pine",
+      "triangles": 9556,
+      "bounds_cm": [
+        [
+          -233.73922729492188,
+          233.73922729492188
+        ],
+        [
+          -248.642333984375,
+          201.5798797607422
+        ],
+        [
+          0.0,
+          820.0
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_CandyCaneFir.glb",
+      "source_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "construction": "Original rounded tier geometry and frosting ribbons",
+      "procedural_materials": {
+        "PineTrunk": [
+          0.72,
+          0.035,
+          0.08
+        ],
+        "PineMint": [
+          0.06,
+          0.39,
+          0.36
+        ],
+        "PineFrost": [
+          0.91,
+          0.94,
+          0.88
+        ],
+        "PineCandy": [
+          0.8,
+          0.11,
+          0.29
+        ]
+      }
+    },
+    {
+      "name": "SM_CandyCaneFir_Warp5",
+      "category": "tree",
+      "species": "CandyCaneFir",
+      "variant": 4,
+      "display_name": "Marshmallow umbrella pine",
+      "triangles": 7792,
+      "bounds_cm": [
+        [
+          -270.8810729980469,
+          270.8810729980469
+        ],
+        [
+          -244.96864318847656,
+          280.36669921875
+        ],
+        [
+          0.0,
+          510.0
+        ]
+      ],
+      "source": "ImportSource\\Terrain\\Foliage\\Clean\\SM_Rodin_CandyCaneFir.glb",
+      "source_sha256": "7379ea87a1aee0559be36d1002791f3e70ec44531c6244124320280d858161fd",
+      "construction": "Original rounded tier geometry and frosting ribbons",
+      "procedural_materials": {
+        "PineTrunk": [
+          0.72,
+          0.035,
+          0.08
+        ],
+        "PineIce": [
+          0.1,
+          0.48,
+          0.53
+        ],
+        "PineFrost": [
+          0.91,
+          0.94,
+          0.88
+        ]
+      }
+    }
+  ],
+  "paid_generation": false
+}

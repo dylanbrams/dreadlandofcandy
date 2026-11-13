@@ -1,5 +1,30 @@
 # Dense candy-world handover
 
+## Superseding art pass - Nov 13
+
+Current terrain work is in `../Polish/README.md`. It adds striped grass,
+eleven smoother tree variants (five snow pines), fibrous cotton-candy materials, three
+detailed candy-house variants and four song-inspired landmarks with five
+bluebirds. Main map remains `/Game/World/L_Sugarborough`. The current baked
+graph is `/Game/World/Polish/PCG/PCG_CandyEcology`, with **85,091 instances**;
+912 older instances were cleared for the new landmark footprints.
+
+Use `../Polish/review_maps.json` for current camera maps and
+`../Polish/Review/` for current editor-game captures. Editable Blender files
+are in `../Polish/Blend/`. All 20 new meshes have three LODs. Source hashes,
+retained transforms, quest/road/landmark exclusions and saved-map collision
+checks pass. `../Polish/performance.json` records limited stationary
+measurements; it is not a gameplay or packaged benchmark.
+
+The latest refinement adds two original pine silhouettes, lit translucent
+fountain crystals, and four partly submerged lemon slices in a translucent
+spring surface. `../Polish/refinement_report.json` records the targeted checks.
+
+The package and ZIP described below predate this art pass. No new packaging,
+push, upload or paid generation is claimed. The remainder of this document
+is the previous dense pass's history. Rebuilding that original Dense pipeline
+replaces the newer foliage, so apply the Polish pipeline afterward.
+
 ## User direction and authority
 
 Dylan wants a compact, lush low-poly candy world: dense grass and foliage,

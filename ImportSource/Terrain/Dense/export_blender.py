@@ -39,6 +39,13 @@ for record in data["meshes"]:
         weight = max(0, vertices[loop.vertex_index][2] / max(top, 1))
         value = .6 + .4 * weight
         colors.data[loop.index].color = (value, value, value, weight)
+    if "Grass" in record["name"]:
+        uv = mesh.uv_layers.new(name="CandyBladeUV")
+        for loop in mesh.loops:
+            # Each six-vertex blade gets its own ribbon coordinates. This keeps
+            # diagonal candy stripes attached to the blade during wind/yaw.
+            vertex = loop.vertex_index
+            uv.data[loop.index].uv = (vertex % 2, vertices[vertex][2] / 55)
     mesh.transform(Matrix.Diagonal((1, -1, 1, 1)))
     mesh.flip_normals()
     obj = bpy.data.objects.new(record["name"], mesh)

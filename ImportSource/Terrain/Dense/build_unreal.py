@@ -14,8 +14,6 @@ BASE = "/Game/World/Dense"
 EAL = u.EditorAssetLibrary
 TOOLS = u.AssetToolsHelpers.get_asset_tools()
 ACTORS = u.get_default_object(u.EditorActorSubsystem)
-(HERE / "engine_report.json").write_text(json.dumps({"status": "building"}), encoding="utf-8")
-u.EditorPythonScripting.set_keep_python_script_alive(True)
 
 
 def asset(name, folder, cls, factory):
@@ -213,7 +211,7 @@ def finish():
         raise RuntimeError("Dense world save failed")
     # Camera copies are made by capture_maps.py, which chooses fresh package
     # names instead of trying to overwrite another loaded World object.
-    report = dict(status="passed", pcg_graph="/Game/World/Dense/PCG/PCG_CandyEcology", baked_instances=count, groups=len(components), layers=DATA["counts"], main_map="/Game/World/L_Sugarborough", review_maps=[], review_maps_status="run capture_maps.py after this bake")
+    report = dict(status="passed", pcg_graph=BASE + "/PCG/PCG_CandyEcology", baked_instances=count, groups=len(components), layers=DATA["counts"], main_map="/Game/World/L_Sugarborough", review_maps=[], review_maps_status="run capture_maps.py after this bake")
     (HERE / "engine_report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     (HERE / "failure.txt").unlink(missing_ok=True)
     u.log("DENSE PCG BAKE PASS " + json.dumps(report))
@@ -235,32 +233,40 @@ def tick(delta):
         u.SystemLibrary.quit_editor()
 
 
-try:
-    meshes, terrain_material = import_assets()
-    ecology_graph = graph(meshes)
-    world = u.EditorLoadingAndSavingUtils.load_map("/Game/World/L_Sugarborough")
-    for actor in list(ACTORS.get_all_level_actors()):
-        if actor.get_actor_label().startswith(("Scatter_", "Baked_CandyEcology", "PCG_CandyEcology")):
-            ACTORS.destroy_actor(actor)
-        elif isinstance(actor, u.StaticMeshActor) and actor.static_mesh_component.static_mesh and actor.static_mesh_component.static_mesh.get_name().startswith("SM_Terrain"):
-            actor.static_mesh_component.set_material(0, terrain_material)
-        elif isinstance(actor, u.DirectionalLight):
-            actor.light_component.set_editor_property("intensity", 3.5)
-        elif isinstance(actor, u.SkyLight):
-            actor.light_component.set_editor_property("real_time_capture", False)
-            actor.light_component.set_editor_property("source_type", u.SkyLightSourceType.SLS_SPECIFIED_CUBEMAP)
-            actor.light_component.set_editor_property("cubemap", u.load_asset("/Engine/MapTemplates/Sky/DaylightAmbientCubemap"))
-            actor.light_component.set_editor_property("intensity", .9)
-    volume = ACTORS.spawn_actor_from_class(u.PCGVolume, u.Vector(0, 0, 0))
-    volume.set_actor_label("PCG_CandyEcology_Source")
-    component = volume.get_component_by_class(u.PCGComponent)
-    component.set_editor_property("generation_trigger", u.PCGComponentGenerationTrigger.GENERATE_ON_DEMAND)
-    component.set_editor_property("regenerate_in_editor", False)
-    component.set_graph(ecology_graph)
-    started = time.monotonic()
-    callback = u.register_slate_post_tick_callback(tick)
-    component.generate(True)
-except Exception:
-    (HERE / "failure.txt").write_text(traceback.format_exc(), encoding="utf-8")
-    u.log_error(traceback.format_exc())
-    u.SystemLibrary.quit_editor()
+def main():
+    global meshes, terrain_material, ecology_graph, world, volume, component, started, callback
+    (HERE / "engine_report.json").write_text(json.dumps({"status": "building"}), encoding="utf-8")
+    u.EditorPythonScripting.set_keep_python_script_alive(True)
+    try:
+        meshes, terrain_material = import_assets()
+        ecology_graph = graph(meshes)
+        world = u.EditorLoadingAndSavingUtils.load_map("/Game/World/L_Sugarborough")
+        for actor in list(ACTORS.get_all_level_actors()):
+            if actor.get_actor_label().startswith(("Scatter_", "Baked_CandyEcology", "PCG_CandyEcology")):
+                ACTORS.destroy_actor(actor)
+            elif isinstance(actor, u.StaticMeshActor) and actor.static_mesh_component.static_mesh and actor.static_mesh_component.static_mesh.get_name().startswith("SM_Terrain"):
+                actor.static_mesh_component.set_material(0, terrain_material)
+            elif isinstance(actor, u.DirectionalLight):
+                actor.light_component.set_editor_property("intensity", 3.5)
+            elif isinstance(actor, u.SkyLight):
+                actor.light_component.set_editor_property("real_time_capture", False)
+                actor.light_component.set_editor_property("source_type", u.SkyLightSourceType.SLS_SPECIFIED_CUBEMAP)
+                actor.light_component.set_editor_property("cubemap", u.load_asset("/Engine/MapTemplates/Sky/DaylightAmbientCubemap"))
+                actor.light_component.set_editor_property("intensity", .9)
+        volume = ACTORS.spawn_actor_from_class(u.PCGVolume, u.Vector(0, 0, 0))
+        volume.set_actor_label("PCG_CandyEcology_Source")
+        component = volume.get_component_by_class(u.PCGComponent)
+        component.set_editor_property("generation_trigger", u.PCGComponentGenerationTrigger.GENERATE_ON_DEMAND)
+        component.set_editor_property("regenerate_in_editor", False)
+        component.set_graph(ecology_graph)
+        started = time.monotonic()
+        callback = u.register_slate_post_tick_callback(tick)
+        component.generate(True)
+    except Exception:
+        (HERE / "failure.txt").write_text(traceback.format_exc(), encoding="utf-8")
+        u.log_error(traceback.format_exc())
+        u.SystemLibrary.quit_editor()
+
+
+if __name__ == "__main__":
+    main()

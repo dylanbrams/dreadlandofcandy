@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "instances": 85091,
+  "removed_for_landmarks": 912,
+  "counts": {
+    "grass": 75332,
+    "tree": 1026,
+    "bush": 2071,
+    "flower": 4072,
+    "snow": 2590
+  },
+  "all_retained_transforms_identical": true,
+  "source_hashes_unchanged": true,
+  "quest_road_and_landmark_exclusions": true,
+  "editable_blender_assets": 20
+}

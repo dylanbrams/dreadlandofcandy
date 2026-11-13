@@ -10,9 +10,17 @@
     "/Game/World/Review/L_DenseMeadow",
     "/Game/World/Review/L_DenseSnow",
     "/Game/World/Review/L_CandyWander",
-    "/Game/World/Review/L_SweetMeadow",
-    "/Game/World/Review/L_CandyGrove",
-    "/Game/World/Review/L_SugarSnow",
-    "/Game/World/Review/L_CandyExplorer"
+    "/Game/World/Review/L_SweetMeadow1",
+    "/Game/World/Review/L_CandyGrove1",
+    "/Game/World/Review/L_SugarSnow1",
+    "/Game/World/Review/L_CandyExplorer1",
+    "/Game/World/Review/L_PolishVillage",
+    "/Game/World/Review/L_PolishGrass",
+    "/Game/World/Review/L_CrystalFountain",
+    "/Game/World/Review/L_CrystalFountainSide",
+    "/Game/World/Review/L_LemonadeSpring",
+    "/Game/World/Review/L_StewPond",
+    "/Game/World/Review/L_WhiskeyRun",
+    "/Game/World/Review/L_PineVarieties"
   ]
 }

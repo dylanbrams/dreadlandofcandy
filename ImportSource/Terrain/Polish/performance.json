@@ -1,0 +1,273 @@
+{
+  "hardware": "NVIDIA GeForce GTX 1660 Ti",
+  "resolution": [
+    1600,
+    1000
+  ],
+  "rhi": "DX12 SM5",
+  "method": "Stationary offscreen Unreal Editor -game, uncapped, no VSync. Last 390 frames before the final 10 of each capture. Normal captures contain 600 frames; extended snow/spring captures contain 1800 frames to exclude startup hitches.",
+  "limitation": "One static camera per view, one local machine. Excludes startup samples; not a packaged benchmark, movement test or crowded combat measurement.",
+  "views": {
+    "before-DenseGrove": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 4.798,
+          "p95_ms": 5.433
+        },
+        "GPUTime": {
+          "median_ms": 4.408,
+          "p95_ms": 5.092
+        },
+        "GameThreadTime": {
+          "median_ms": 1.465,
+          "p95_ms": 1.873
+        },
+        "RenderThreadTime": {
+          "median_ms": 4.796,
+          "p95_ms": 5.406
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.193,
+          "p95_ms": 1.413
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "DenseGrove": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 5.336,
+          "p95_ms": 5.713
+        },
+        "GPUTime": {
+          "median_ms": 4.99,
+          "p95_ms": 5.14
+        },
+        "GameThreadTime": {
+          "median_ms": 1.353,
+          "p95_ms": 1.58
+        },
+        "RenderThreadTime": {
+          "median_ms": 5.334,
+          "p95_ms": 5.708
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.074,
+          "p95_ms": 1.28
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "DenseSnow": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 1800,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 6.448,
+          "p95_ms": 8.291
+        },
+        "GPUTime": {
+          "median_ms": 5.883,
+          "p95_ms": 6.466
+        },
+        "GameThreadTime": {
+          "median_ms": 2.681,
+          "p95_ms": 3.905
+        },
+        "RenderThreadTime": {
+          "median_ms": 6.464,
+          "p95_ms": 8.121
+        },
+        "RHIThreadTime": {
+          "median_ms": 2.146,
+          "p95_ms": 2.772
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "PolishVillage": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 5.219,
+          "p95_ms": 5.546
+        },
+        "GPUTime": {
+          "median_ms": 4.86,
+          "p95_ms": 4.938
+        },
+        "GameThreadTime": {
+          "median_ms": 1.461,
+          "p95_ms": 2.102
+        },
+        "RenderThreadTime": {
+          "median_ms": 5.224,
+          "p95_ms": 5.535
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.228,
+          "p95_ms": 1.667
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "CrystalFountain": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 6.848,
+          "p95_ms": 8.425
+        },
+        "GPUTime": {
+          "median_ms": 6.301,
+          "p95_ms": 7.095
+        },
+        "GameThreadTime": {
+          "median_ms": 2.099,
+          "p95_ms": 2.87
+        },
+        "RenderThreadTime": {
+          "median_ms": 6.844,
+          "p95_ms": 8.419
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.785,
+          "p95_ms": 2.435
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "CrystalFountainSide": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 6.655,
+          "p95_ms": 9.546
+        },
+        "GPUTime": {
+          "median_ms": 6.01,
+          "p95_ms": 7.183
+        },
+        "GameThreadTime": {
+          "median_ms": 2.518,
+          "p95_ms": 3.704
+        },
+        "RenderThreadTime": {
+          "median_ms": 6.678,
+          "p95_ms": 9.559
+        },
+        "RHIThreadTime": {
+          "median_ms": 2.05,
+          "p95_ms": 2.683
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "LemonadeSpring": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 1800,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 7.144,
+          "p95_ms": 50.35
+        },
+        "GPUTime": {
+          "median_ms": 6.495,
+          "p95_ms": 48.87
+        },
+        "GameThreadTime": {
+          "median_ms": 2.451,
+          "p95_ms": 4.293
+        },
+        "RenderThreadTime": {
+          "median_ms": 7.151,
+          "p95_ms": 50.386
+        },
+        "RHIThreadTime": {
+          "median_ms": 2.137,
+          "p95_ms": 3.18
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "StewPond": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 5.234,
+          "p95_ms": 5.675
+        },
+        "GPUTime": {
+          "median_ms": 4.828,
+          "p95_ms": 5.151
+        },
+        "GameThreadTime": {
+          "median_ms": 1.673,
+          "p95_ms": 2.034
+        },
+        "RenderThreadTime": {
+          "median_ms": 5.235,
+          "p95_ms": 5.663
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.442,
+          "p95_ms": 1.919
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    },
+    "WhiskeyRun": {
+      "status": "measured",
+      "samples": 390,
+      "capture_frames": 600,
+      "timings": {
+        "FrameTime": {
+          "median_ms": 7.438,
+          "p95_ms": 8.24
+        },
+        "GPUTime": {
+          "median_ms": 6.953,
+          "p95_ms": 7.749
+        },
+        "GameThreadTime": {
+          "median_ms": 1.847,
+          "p95_ms": 2.789
+        },
+        "RenderThreadTime": {
+          "median_ms": 7.442,
+          "p95_ms": 8.229
+        },
+        "RHIThreadTime": {
+          "median_ms": 1.585,
+          "p95_ms": 2.154
+        }
+      },
+      "screenshot_present": true,
+      "material_compile_errors": false
+    }
+  }
+}

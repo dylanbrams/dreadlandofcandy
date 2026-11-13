@@ -1,0 +1,27 @@
+{
+  "status": "placed",
+  "locations": {
+    "SM_CrystalFountain": [
+      650,
+      750,
+      12.0
+    ],
+    "SM_LemonadeSpring": [
+      4500,
+      4500,
+      48.57929229518331
+    ],
+    "SM_StewPond": [
+      6500,
+      7000,
+      90.65241601339542
+    ],
+    "SM_WhiskeyRun": [
+      -6500,
+      -500,
+      82.57130347687189
+    ]
+  },
+  "bluebirds": 5,
+  "scenic_only": true
+}

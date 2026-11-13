@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "pcg_graph": "/Game/World/Polish/PCG/PCG_CandyEcology",
+  "baked_instances": 85091,
+  "groups": 33,
+  "layers": {
+    "grass": 75332,
+    "tree": 1026,
+    "bush": 2071,
+    "flower": 4072,
+    "snow": 2590
+  },
+  "main_map": "/Game/World/L_Sugarborough",
+  "review_maps": [
+    "/Game/World/Review/L_SweetMeadow1",
+    "/Game/World/Review/L_CandyGrove1",
+    "/Game/World/Review/L_SugarSnow1",
+    "/Game/World/Review/L_CandyExplorer1",
+    "/Game/World/Review/L_PolishVillage",
+    "/Game/World/Review/L_PolishGrass",
+    "/Game/World/Review/L_CrystalFountain",
+    "/Game/World/Review/L_CrystalFountainSide",
+    "/Game/World/Review/L_LemonadeSpring",
+    "/Game/World/Review/L_StewPond",
+    "/Game/World/Review/L_WhiskeyRun",
+    "/Game/World/Review/L_PineVarieties"
+  ],
+  "review_maps_status": "saved and current",
+  "source_pass": "Polish"
+}

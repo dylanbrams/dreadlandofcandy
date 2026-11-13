@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "paid_generation": false,
+  "houses": 6,
+  "assets": 15,
+  "instances": 85091,
+  "tree_variants": 11,
+  "materials": "blade UV stripes, opaque subsurface fiber, tinted candy house atlas, translucent crystals and lemonade",
+  "performance": "42-triangle grass; foliage cleared around four new landmarks. Mesh LODs and HISM culling retained. See performance.json for stationary measurements."
+}
