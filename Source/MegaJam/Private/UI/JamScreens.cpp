@@ -50,7 +50,7 @@ FJamScreenView JamScreens::Title(const FJamMenuSettings& S)
 	V.Screen = EJamScreen::Title;
 	V.Title = TEXT("THE DREAD LAND OF CANDY");
 	V.Stamp = JamScreens::EditionStamp(true);
-	V.Subtitle = TEXT("The Definitive Edition of a Game That Never Existed.");
+	V.Subtitle = TEXT("A weekend project made by a director who should know better\nand machines that can't say no.");
 	V.Options = { Opt(EJamMenuAction::RollCamera, TEXT("Roll Camera")), Opt(EJamMenuAction::OpenOptions, TEXT("Notes")),
 		Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
 	V.Footer = MenuFooter(S);

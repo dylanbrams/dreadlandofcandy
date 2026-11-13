@@ -22,7 +22,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 ## Dylan's list (details in the release plan)
 
 1. (done) Theme song file. Stop any Codex session holding the engine.
-2. (done, Nov 13) Backend live at `https://api.imaginarycomponent.com`, set as `BaseUrl` in `Config/DefaultGame.ini` (quoted: unquoted, the ini cuts it at `//`). `live_check.py` 0 problems; in game, `-autonote=typed:make_it_rain_and_sad` got model notes (200, 2.3 to 3.5 s) and a generated premiere. Python on this PC rejects the chain (expired ISRG X2 cross-sign) unless run with `SSL_CERT_FILE=<UE>/Engine/Content/Certificates/ThirdParty/cacert.pem`; Unreal's bundle has Root X2, so the game is fine. Still open: confirm BACKEND has the two corrections below.
+2. (done, Nov 13) Backend live at `https://api.imaginarycomponent.com`, set as `BaseUrl` in `Config/DefaultGame.ini` (quoted: unquoted, the ini cuts it at `//`). `live_check.py` 0 problems; in game, `-autonote=typed:make_it_rain_and_sad` got model notes (200, 2.3 to 3.5 s) and a generated premiere. Python on this PC rejects the chain (expired ISRG X2 cross-sign) unless run with `SSL_CERT_FILE=<UE>/Engine/Content/Certificates/ThirdParty/cacert.pem`; Unreal's bundle has Root X2, so the game is fine. Redeploy pending: the backend repo (`backend/`, its own git) has commits `e1ce3ae` and `8ae1aad` (suggested notes match the game; the prompt says capacity is a ceiling, keep about 3 unless the note asks for more; `PROMPT_VERSION` n2). Redeploy per `backend/DEPLOY.md`, then re-run `scripts/prewarm.py`.
 3. (dropped: the first build out is the world build)
 4. Play Open after R5, decide the gate.
 5. Video; the itch page and uploads go through ChatGPT (release plan, "Who runs it"), with Dylan's go-ahead per push.
@@ -44,7 +44,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 Typed notes without the server: `python -I Scripts/note-stub.py` (port 8011), then `-noteurl=http://127.0.0.1:8011`.
 
-## Requests to BACKEND (unchanged, still open)
+## Requests to BACKEND (done in `backend/` on Nov 13, needs the redeploy above)
 
 `backend/deploy/suggested_notes.json`: Scene 2's `set_capacity` is **6**. Scene 3's stage id is **`S3_LastBugs`**, `set_kinds` **`["bug", "almond"]`**, `set_capacity` **8**. The buttons send `motif` as the player's current motif (`""` until a typed note returns one).
 
@@ -52,6 +52,7 @@ Typed notes without the server: `python -I Scripts/note-stub.py` (port 8011), th
 
 - Nov 13: the title pairing everywhere is "THE DREAD LAND OF CANDY" with an edition stamp (`JamScreens::EditionStamp`: DIRECTOR'S CUT or THEATRICAL RELEASE) at 45 degrees, a little below and right of the title: title screen, Premiere and credits. A generated premiere keeps its own title with the same stamp.
 - Nov 13: itch deployment is ChatGPT's; GAME stops at a zip on disk.
+- Nov 13: title screen subtitle: "A weekend project made by a director who should know better / and machines that can't say no." A typed note may ask for up to the set's capacity (6 goblins, 8 bugs), but that is not the default.
 - Nov 13: release plan; the quest generator, givers and Niagara hookup are cut. Sound effects are "ridiculously over the top". The new knight (`SK_Knight`) replaces the old look.
 - Nov 12: two takes per music cue, pick one at random. Music and Fenella have separate volume sliders. Camera in Backlot: arm 1700 uu, 50 degrees, FOV 55.
 - Team **Imaginary Component**, game **The Dread Land of Candy**; zip `ImaginaryComponent_TheDreadLandOfCandy.zip`.

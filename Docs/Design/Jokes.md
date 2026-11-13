@@ -310,7 +310,7 @@ The rock itself, when it rings: "Incoming rock." / "You have one new rock."
 
 ## Cards and menus
 
-**Title screen:** THE DREAD LAND OF CANDY, with DIRECTOR'S CUT rubber-stamped over it at an angle. Subtitle: *The Definitive Edition of a Game That Never Existed.* Buttons: `Roll Camera` (play), `Notes` (options), `Walk Off Set` (quit).
+**Title screen:** THE DREAD LAND OF CANDY, with DIRECTOR'S CUT rubber-stamped over it at an angle. Subtitle: *A weekend project made by a director who should know better and machines that can't say no.* (Dylan, Nov 13) Buttons: `Roll Camera` (play), `Notes` (options), `Walk Off Set` (quit).
 
 **Rating card (two seconds before the title):** "This film is rated S for Sugar. Contains mild peril, firm guidance, and one napkin."
 
