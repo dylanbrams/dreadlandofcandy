@@ -49,3 +49,7 @@ Assets/Incoming/2D/_drop/
 
 # BACKEND service is its own nested repo
 backend/
+
+# Blender backups and FBX SDK texture extraction folders (regenerated on import)
+*.blend1
+*.fbm/
