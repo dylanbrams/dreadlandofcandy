@@ -4,7 +4,7 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 
 ## Next task
 
-**Dylan plays the R5 build and decides the gate** (release plan, "The gate"), then **R7** with his three worst things. If the gate passes: `GameDefaultMap=/Game/World/L_Sugarborough`, no flag means Open, Backlot behind `-backlot`; repackage, smoke, zip. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
+**R7** with Dylan's four fixes ("Three worst things" below); research each before changing it. The gate is still Dylan's call (release plan, "The gate"). If the gate passes: `GameDefaultMap=/Game/World/L_Sugarborough`, no flag means Open, Backlot behind `-backlot`; repackage, smoke, zip. Tasks, time boxes and fallbacks are in the release plan. Update this line as each R task lands.
 
 ## Hand-off to ChatGPT (itch push, with Dylan's go-ahead)
 
@@ -35,6 +35,13 @@ Read this, then **`Docs/Design/RELEASE_PLAN.md` (governs the rest of the jam)**,
 5. Video; the itch page and uploads go through ChatGPT (release plan, "Who runs it"), with Dylan's go-ahead per push.
 
 **Three worst things (Dylan fills in):**
+
+Dylan's R5 play (Nov 13), the R7 list. Research so far is noted; nothing is fixed yet.
+
+1. **The hero should move faster.** Found: `JamHeroTuning::WalkSpeed = 450` (`Game/JamHero.cpp:50`), scaled by the `MoveSpeed` stat (`JamHero.cpp:747`). Not yet decided: by how much, and whether nuisance chase speeds and the bot's timings need to follow.
+2. **The "LMB" hint is wrong, and clicking did not work.** Dylan's mouse buttons are swapped in Windows; he ended up using Space. Found: the engine respects the Windows swap (`WindowsApplication.cpp`, raw input reads `SM_SWAPBUTTON`), so the primary button already reaches the game as `LeftMouseButton`. The labels (`JamHUD.cpp:262` and `:292`, `JamHudView.cpp:35`) should say "Mouse 1" / "Mouse 2" (or "Click" / "Right-click"), not LMB and RMB. **Not yet researched:** why clicking did not lecture (which mode, first click eaten by viewport capture, the input mode the HUD sets in `JamHUD.cpp:401-412`). Reproduce before fixing.
+3. **The skills need images.** None exist: `FJamHudSkill` has a name and a key, no icon. Needs four icons (Lecture, Form A Line, Sigh, Last Judgment) from ASSETS or generated, plus an image slot in the HUD skill bar. Not researched yet.
+4. **Before each round in the arena, the direction should go big in the centre of the screen for a second, then shrink to where it sits now.** Not researched yet: find the objective or direction line in `JamHudWidget` and where a stage starts.
 
 ## What exists
 
