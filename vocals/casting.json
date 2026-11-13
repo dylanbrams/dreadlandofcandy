@@ -1,0 +1,41 @@
+{
+  "provider": "ElevenLabs",
+  "availability_checked": "2026-11-13",
+  "model_id": "eleven_multilingual_v2",
+  "character_source": "../Assets/Generation/expansion_characters.json",
+  "direction": "Grim fantasy heroes delivering mundane domestic commands with complete dramatic sincerity. No wink, mock accents or comic character voices. Omit language_code for this model.",
+  "cast": {
+    "knight": {
+      "voice_name": "Harry - Fierce Warrior",
+      "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+      "status": "sample_generated_listening_pending",
+      "direction": "Rough, forceful warrior; manners enforced as solemn martial law.",
+      "sample": "output/samples/VO_K02_en_epic.wav"
+    },
+    "archer": {
+      "gender_in_character_brief": "female",
+      "voice_name": "Sarah - Mature, Reassuring, Confident",
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "status": "selected_sample_pending",
+      "direction": "Steely, controlled confidence; precise battlefield commands. Give INCOMING GREENERY! real urgency and DID YOU FLOSS?! the authority of an ultimatum. Avoid a soothing narrator read.",
+      "suggested_sample": "INCOMING GREENERY!"
+    },
+    "barbarian": {
+      "gender_in_character_brief": "male",
+      "voice_name": "Adam - Dominant, Firm",
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "status": "selected_sample_pending",
+      "direction": "Big, chest-led authority, blunt and forceful. EAT YOUR VEGETABLES! is a war cry. Rare Please. Just eat them. is a quiet exhausted parent, with no epic whisper.",
+      "suggested_sample": "EAT YOUR VEGETABLES!"
+    },
+    "mage": {
+      "gender_in_character_brief": "male",
+      "voice_name": "George - Warm, Captivating Storyteller",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+      "status": "selected_sample_pending",
+      "direction": "Mature, measured ritual authority. Domestic hygiene spoken as an ancient catastrophic spell; crisp diction and decisive stress, without cheerful storytelling.",
+      "suggested_sample": "WASH YOUR HANDS!"
+    }
+  },
+  "notes": "Casting choices use provider metadata and character briefs. New voices have not yet been auditioned. Performance descriptions are targets, not verified audio results. Voice settings alone do not guarantee this delivery; audition before bulk generation. German/Japanese and future translations require retrospective fluent review. No new audio generated during casting selection."
+}
