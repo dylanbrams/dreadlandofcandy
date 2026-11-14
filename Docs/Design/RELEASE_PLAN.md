@@ -6,7 +6,35 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 **What "release" means here (Dylan, Nov 13):** a build on the game's own itch page for testers and feedback, not the jam submission. The six AI hours end at that tester build (after R5, or R6 if it fits). The jam submission follows on Nov 15 from the same page, after feedback. **The first build testers see is the full terrain world, with sound, voice and the cast** (first impressions count; no arena build is pushed). So: put a "what to tell me" line on the itch page (where you got lost, what was not funny, frame rate and your GPU), and spend R7 on what testers say, not only on Dylan's own play. Each later push replaces the build through `upload-itch.ps1`, with Dylan's go-ahead every time. **ChatGPT, not GAME, does every itch deployment** (see "Who runs it").
 
-## Nov 14: test, fix, release (rebuilt by GAME at Dylan's request; governs today)
+## Nov 14 afternoon: quest givers are core; package, play, Fixes2, freeze (governs from 14:45)
+
+**Dylan, Nov 14:** quest givers are a core marquee feature. This reverses every
+"quest givers cut" line below and in `BUILD_SPEC.md`. Fixes1 (Fenella recruits
+the hero, golden markers, five villagers with ten linked jobs, backend-improvised
+branches, comic buttons) is committed in `164e0af` and is the game we ship.
+
+**Who:** ChatGPT is GAME for the rest of the jam and the only session that runs
+Unreal. Dylan migrates the backend server with a Sonnet session (BACKEND,
+`Docs/Workers/backend.md`); it touches only `backend/` and the box. Claude
+(Opus) is on call for bugs ChatGPT has failed once.
+
+| When (PST) | Who | What |
+| --- | --- | --- |
+| Now | GAME | P1: package, smoke incl. village autoplay, zip. Hand-off line in STATUS |
+| Now, parallel | Dylan + Sonnet | Server migration; deploy the quest-branches endpoint; live check; report base URL |
+| After P1 | Dylan | Play the packaged build 30 min; `Docs/Feedback/Fixes2.txt`, tagged BLOCKER / SHIP / NICE |
+| After P1 | ChatGPT itch | On Dylan's go, push the P1 zip as the tester build |
+| Evening | GAME | Fixes2, BLOCKER then SHIP. If the host changed: switch base URL, check game HTTPS (note + improvise) |
+| 11 PM | GAME | Feature freeze. Final evening package, smoke, zip: the submission candidate |
+| Nov 15 | as below | Video, BLOCKER fixes until 12:00, R8, submit by 2:00 PM |
+
+**Still cut:** control rebinding, Backlot (never run it), Niagara attack-effect
+wiring, non-English voice, new terrain, save/load of village progress.
+**A blocker in the village loop beats any other fix.** If the packaged village
+loop cannot be made to pass by 11 PM, ship what passes; do not disable quest givers
+without asking Dylan.
+
+## Nov 14 morning: test, fix, release (done; superseded by the section above)
 
 **Latest instruction, Nov 14:** Dylan asked GAME to finish all existing fix batches
 before packaging. Keep building, testing, capturing Open and committing; defer
@@ -84,7 +112,7 @@ The film, with sound and voice, playable by one of four characters, set in the c
 - **Fallback only if R4 fails its time box or the packaged world will not run:** the Backlot arenas with the same sound and voice. Candidate A (R3) exists so there is always something to submit, not because it is the plan.
 - **Stretch:** pick the knight, mage, archer or barbarian on the title screen.
 
-**Cut, do not start:** the quest generator, villager quest givers and dialogue, typed quest requests (O3, O5, O8), the TUNING worker, wiring the Niagara attack effects, non-English voice (stays on disk for after the jam), new terrain or asset generation, T24 street gags.
+**Cut, do not start:** (Nov 14: villager quest givers are back in and core, see the top section) the quest generator, typed quest requests (O3, O5, O8), the TUNING worker, wiring the Niagara attack effects, non-English voice (stays on disk for after the jam), new terrain or asset generation, T24 street gags.
 
 ## Tasks, in order
 

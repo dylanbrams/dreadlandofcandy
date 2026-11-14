@@ -1,65 +1,77 @@
-# STATUS - GAME, Nov 14: batches 1 and 2 green
+# STATUS - GAME, Nov 14 14:45: Fixes1 committed, not packaged
 
-Read CLAUDE.md and Docs/Design/RELEASE_PLAN.md (Nov 14 section).
-Dylan asked to finish existing batches before packaging. No package/ZIP refresh
-or upload was performed. Original wishlist/history:
+Read CLAUDE.md, then Docs/Design/RELEASE_PLAN.md ("Nov 14 afternoon" section).
+Previous STATUS (batches 1 and 2): git history at 3cae0ec. Wishlist archive:
 Docs/Archive/STATUS-before-batch0-2026-11-14.md.
 
-## Next task
+**Quest givers are a core marquee feature (Dylan, Nov 14).** Every earlier
+"quest givers cut" line in the plan or briefs is void. Protect the village loop
+in every fix and every package.
 
-Dylan's hands-on play / tester feedback, then any batch 3 blockers actually
-reported. No new feedback batch exists yet. Quest givers and outer quests remain
-cut. Packaging stays deferred until Dylan resumes it. No Backlot tests/fixes.
-This is a good thread-reset checkpoint; source and handoff are committed.
+## Next task (GAME, ChatGPT)
 
-## Batch 2
+1. **Package, smoke, zip (P1).** `Scripts\package.ps1`, then
+   `Scripts\smoke-packaged.ps1` on the shipped map, then
+   `Scripts\zip-submission.ps1 -TeamName ImaginaryComponent -GameName TheDreadLandOfCandy`.
+   Add a smoke check that the packaged village autoplay reaches
+   `JamVillageAutoplay: PASS main=3 side=10` (the comic widgets, villagers and
+   quest markers are all new since the last package; cooked-only failures show here).
+   Hand-off line here: zip path, size, PASS lines. No upload; ChatGPT itch pushes on Dylan's go.
+2. **Dylan plays** the packaged build, writes numbered BLOCKER / SHIP / NICE lines
+   in `Docs/Feedback/Fixes2.txt`.
+3. **Fixes2**, BLOCKER then SHIP, until feature freeze **11 PM PST**. Each fix:
+   build, `Scripts\run-tests.ps1` (expect 79+, check the log's
+   `EXIT CODE: 0`, not only the shell exit), `Scripts\verify_village_quests.ps1 -Mode offline`,
+   commit. Repackage once at the end of the evening: that zip is the submission candidate.
 
-- Q/E turn camera, Mouse 2 drag looks, wheel zooms (600-2200 uu, zoom offset
-  persists across scene framing), F uses/takes note, R ultimate, Mouse 3 signature.
-  Refuse note moved to X; T writes directions. Keyboard/menu/HUD hints updated.
-- Read-only Controls card in Options and Pause, keyboard/mouse and pad variants;
-  returning from Controls restores its parent menu and selection. No rebinding.
-- Open numeric XP: disable 2, treat 4, collect 2, once-only quest bonus 40.
-  Boss disabling also pays XP. Thresholds: 100 / 250 / 450, one point per level;
-  starting ranks remain 2 / 2 / 1. Open no longer gets milestone levels.
-- Scene-based tests cover both taken/refused note routes: 190 XP = 1.6 levels.
-  Runtime taken route verified: quest totals 64 / 116 / 190; final level 8 +60%.
-- Editor and Development game builds pass; all 72 Jam tests pass, including
-  mappings, yaw/release, zoom bounds/persistence, Controls card, numeric XP.
-- Inspected Saved/Screenshots/WindowsEditor/batch2-controls.png,
-  batch2-pause.png and batch2-xp.png. Layouts and numeric HUD are readable.
-- Saved/Batch2-Editor-Open.log: PASS mode=open main=3 side=0;
-  PASS scenes=3 first=1 takes=4 notes=3/0 ending=directors_cut flees=14
-  lines=13 skills=12 hits=1 dignityfails=0 time=113.7.
+Never run Backlot (`-backlot`): the enlarged mountain blocks its third arena.
 
-## Batch 1 (72a72be)
+## What the game is now
 
-Compass label separated from strip; travel skill/XP HUD restored with clickable
-controls; Open BudgetOut keeps world/gear materials and grade (the global grey
-checker gag caused the grey-screen report); archer bow turns about its long axis.
-Cardboard extras and budget audio/effects remain. Screenshots inspected and
-three-scene Open autoplay passed; both targets and the then-69 tests passed.
-Evidence: Saved/Batch1-Editor-Open.log and batch1-* screenshots.
-Item 11 guaranteed direction prompt and batch 0 mouse/character/pose work remain.
+Hero spawns facing Sugarborough. Fenella waits under a bouncing golden marker,
+recruits the hero, follows and directs all three film-set quests (compass +
+marker at the active set). The wrap says FILM COMPLETE and returns to the
+village. Five villagers (Mayor Bonbon, Baker Crumb, Gardener Sprig, Dr. Molar,
+Scout Taffy) give ten linked jobs: pacify, gather, pacify-then-feed/brush.
+Rewards need a return visit, pay sprinkles + 40 XP once. Pause > Quest Journal.
+Each villager job offers two authored routes or "Ask Fenella to improvise"
+(`POST /v1/director/quest/branches`, falls back to authored on any failure).
+Premiere and credits via Fenella, returning to the same session. Comic-style
+jagged buttons on wrap, notes, menus and quest choices. Progress is session-only.
 
-## R8 paperwork
+Design/contract: `Docs/Design/QuestBranches.md`, `Docs/Design/Village_QuestHooks.md`.
+Fixes1 detail: `Docs/Feedback/Fixes1-progress.md`, `Docs/Feedback/TESTING_HANDOFF.md`.
 
-Declared 88 imported English Fenella clips and 47 SFX (ElevenLabs), expanded
-tools list, updated runtime credits. Dylan confirmed music was ACE Studio with
-his vocals; theme-song vocals credited to Dylan. Unrelated action-card source
-art/declaration edits were preserved. R8 package/smoke/ZIP remains pending.
+## Evidence (Fixes1, commit 164e0af)
 
-## Existing tester ZIP is stale (batch 0)
+- Editor build 11:56; no source changed after it. Game `.exe` is from 10:00: stale, P1 rebuilds it.
+- 79 Jam tests pass (`Saved/Automation/RunTests.log`, EXIT CODE 0).
+- Backend 117 tests pass (`backend/` commit ab328d7, fake model).
+- `JamVillageAutoplay: PASS main=3 side=10` in `Saved/Automation/Fixes1-village.log`
+  (authored), `Fixes1-backend.log` (localhost branches), `Fixes1-fallback.log` (all 503).
+- Screenshots inspected: `fixes1-arrival.png`, `fixes1-questbranches.png`, `village-journal.png`.
 
-Builds/ImaginaryComponent_TheDreadLandOfCandy.zip: 721,385,002 bytes.
-Its last packaged smoke: Saved/R7Mouse/Packaged-Open.log. Batches 1/2 and credits
-are source/editor verified and have NOT been packaged. No git push or upload.
-Itch handoff: Marketing/Itch/LUNA_UPLOAD_HANDOFF.md; explicit go per push.
+## Backend
 
-## Hands-on checks still needed
+Live server (`api.imaginarycomponent.com`) runs `3362c19`/n2: notes and premiere.
+It does **not** have the quest-branches endpoint (game falls back silently on 404).
+Dylan is migrating the server with a Sonnet session: `Docs/Workers/backend.md`
+("Nov 14 migration"). GAME does not touch the backend or the box. When BACKEND
+reports the new URL/endpoint live, GAME checks the game's own HTTPS once
+(typed note + one improvise) and changes the base URL in config if the host changed.
 
-Physical swapped-button/refocus behaviour, right-drag/wheel feel, manual typed
-directions, cast visual approval and the reported golden-rain moment in play.
-Automated tests/captures do not establish those. BACKEND reports n2 deployed,
-pre-warmed and live-checked (46b75af); HTTPS from the game still needs verification.
-Engine handoff: FREE after this checkpoint.
+## Release state
+
+- Tester ZIP on disk is **batch 0** (09:30, 721 MB). Nothing since is packaged.
+- No git push, no itch upload since last night's tester build.
+- `Docs/Devlog/PersonalNotes.txt` is Dylan's, untracked on purpose. `music/`,
+  `vocals/output/*` are source audio, untracked. Never commit the
+  `DefaultEngine.ini` Android SecurityToken block.
+
+## Hands-on checks still needed (Dylan)
+
+Recruitment and village loop feel; whether villagers and markers read at a
+glance; comic buttons with mouse and pad; swapped-button/refocus; right-drag and
+wheel feel; typed directions; golden rain; cast look; game HTTPS to the live backend.
+
+Engine handoff: FREE.

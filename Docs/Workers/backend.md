@@ -2,6 +2,36 @@
 
 Updated 2026-11-14.
 
+## Nov 14 migration (Dylan + Sonnet session): start here
+
+You are BACKEND. Edit only `backend/` (its own nested git repo, git-ignored by
+the game repo) and this file. Never open Unreal or edit `Source/`. Streamed: never
+print env files, keys, connection strings, `env`, or anything in `backend/AnthropicKey/`.
+
+**State:** live box runs `3362c19` (prompt n2: note + premiere). Local `backend/`
+is at `ab328d7`, which adds `POST /v1/director/quest/branches`
+(`director/quests.py`, `tests/test_quests.py`; contract `Docs/Design/QuestBranches.md`;
+new setting `DIRECTOR_SESSION_QUEST_BRANCHES_PER_HOUR`, default 12). 117 tests pass
+with a fake model: `backend\.venv\Scripts\python.exe -m pytest -q backend/tests`.
+No SQL or nginx change is needed for the endpoint itself.
+
+**Do:**
+1. Migrate the service to the new server per Dylan (same topology rules as
+   `DEPLOY.md`: own user, own port, own DB role; key placed with `sudoedit`).
+   Deploy `ab328d7` there, not `3362c19`.
+2. Readyz/healthz, then `scripts/prewarm.py` on the box, then
+   `python3 -I scripts/live_check.py https://<host>` (add one quest-branches
+   request to it if it has none; Haiku spend is a few calls).
+3. Keep the old box serving until the new one passes, so the game never loses notes.
+4. Append the result here: host/base URL, commit deployed, live-check lines, and
+   whether the public URL changed. **If the base URL changed, say so in one line at
+   the top of this file** — GAME then switches the game's config and checks
+   the game's own HTTPS (packaged builds must trust the new certificate).
+
+The game survives a 404 / 503 / timeout on every endpoint (authored fallbacks),
+so a slow migration never blocks the game; a broken certificate on the new
+host silently disables notes, which is the thing to check.
+
 **Deployed Nov 14** (`backend/` commit `3362c19`, prompt version `n2`): files copied to `/srv/director` on the API box over ssh (it is not a git repo, so `git pull` does not apply; stream a tar excluding `AnthropicKey/` and `.git`), pip install, `systemctl restart director`. Pre-warm: 6 of 6 suggested notes cached. `scripts/live_check.py` against `https://api.imaginarycomponent.com` run on the box: all model answers under 3.2 s, refusals and 422s correct. The check now uses one session per note (one session hit the 12 model calls/hour limit). Windows Python reports the public cert as expired although it is valid to 2027-02-09; likely its trust store, not confirmed for the game's own HTTPS.
 
 ## B1: `POST /v1/director/note`, built and tested, deployed Nov 14
