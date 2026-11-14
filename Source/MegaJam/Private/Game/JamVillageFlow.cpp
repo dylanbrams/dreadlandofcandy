@@ -95,7 +95,7 @@ void AJamGameMode::BuildVillage()
 		if (Villager) { Villager->SetName(Giver.Name); Villager->SetRole(Giver.Location); }
 		Villagers.Add(Villager);
 		AJamQuestMarker* Marker = GetWorld()->SpawnActor<AJamQuestMarker>();
-		if (Marker) { Marker->PointAt(At, Villager, 320.f); Marker->SetActorHiddenInGame(true); }
+		if (Marker) { Marker->PointAt(At, Villager, 400.f); Marker->SetActorHiddenInGame(true); }
 		VillagerMarkers.Add(Marker);
 	}
 	if (Faerie)

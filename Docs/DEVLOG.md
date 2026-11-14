@@ -387,3 +387,11 @@ screen capture. Manual interaction and audio checks remain in the worker handoff
 - Editor build, 82 Jam tests and offline village autoplay passed. Captures
   inspected; hands-on controls, voice listening and cooked smoke remain.
 
+# Fixes3 village markers
+
+Raised village giver candy-cane markers from 320 to 400 uu. Editor build and
+82 Jam tests passed; offline village autoplay passed all three main scenes and
+ten village jobs. Arrival capture had shader compilation overlay, so visual
+assessment of the giver markers remains pending. Investigated tree collision:
+the shipped map's baked foliage is nonblocking and needs a targeted trunk pass.
+

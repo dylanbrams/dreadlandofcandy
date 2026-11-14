@@ -1,5 +1,13 @@
 # STATUS - Nov 14: Fixes3 gameplay checkpoint
 
+Fixes3 #19: raised the five village giver candy-cane markers from 320 to 400 uu
+above their anchors. Editor build and 82 Jam tests passed (log EXIT CODE 0);
+offline village autoplay passed main=3, side=10. The arrival screenshot was
+captured but shader compilation obscured visual assessment of giver markers,
+so their final appearance still needs a hands-on check. Tree collision (#23)
+is still open: the shipped terrain's baked foliage is nonblocking; a targeted
+tree-trunk collision pass must preserve clear roads and nonblocking undergrowth.
+
 Fixes3 work is underway. Dylan deferred village terrain and building redesign to
 tomorrow. GO and shield approval remain granted; do not deploy or upload without
 asking. Engine is FREE. No new package or cooked smoke since P1.
