@@ -142,6 +142,10 @@ AJamHero::AJamHero()
 	ArtSword = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtSword"));
 	ArtSword->SetupAttachment(SwordPivot);
 	ArtSword->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ArtShield = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtShield"));
+	ArtShield->SetupAttachment(ArtRig, TEXT("hand_l"));
+	ArtShield->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ArtShield->SetHiddenInGame(true);
     ArtBrush = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ArtBrush"));
     ArtBrush->SetupAttachment(GetRootComponent());
     ArtBrush->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -205,6 +209,15 @@ void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
 	const FVector SwordWorldScale = ArtSword->GetComponentScale();
 	const float Floor = -GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	ArtRig->SetSkeletalMesh(Rig);
+	ArtShield->SetHiddenInGame(true);
+	if (CastIndex == 0)
+	{
+		if (UStaticMesh* Shield = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Art/Props/Shield/SM_KnightShield.SM_KnightShield"), nullptr, LOAD_NoWarn | LOAD_Quiet))
+		{
+			ArtShield->SetStaticMesh(Shield);
+			ArtShield->SetHiddenInGame(false);
+		}
+	}
 	const FBox Box = Rig->GetImportedBounds().GetBox();
 	// Fitted to the capsule like the static one, facing +X (the mannequin faces +Y).
 	const float Scale = JamArt::Height(TEXT("SM_Hero")) / FMath::Max(Box.GetSize().Z, 1.f);
@@ -704,6 +717,7 @@ void AJamHero::TickRig()
 {
     UpdateBrushing();
     UpdateWeaponCarry();
+    UpdateShieldCarry();
 	if (ArtRig->GetSkeletalMeshAsset())
 	{
 		// R4b: a hit tips him back for a moment, then he stands straight again, unmoved.
@@ -722,6 +736,22 @@ void AJamHero::TickRig()
 		ArtRig->SetPlayRate(Want == FName(TEXT("Walk")) ? 1.5f : 1.f);
 		RigPlaying = Want;
 	}
+}
+
+void AJamHero::UpdateShieldCarry()
+{
+    if (CastIndex != 0 || !ArtShield->GetStaticMesh() || !ArtRig->GetSkeletalMeshAsset()) { return; }
+    const FVector Hand = ArtRig->GetSocketLocation(TEXT("hand_l"));
+    const FVector Elbow = ArtRig->GetSocketLocation(TEXT("lowerarm_l"));
+    const FVector AlongArm = (Elbow - Hand).GetSafeNormal();
+    const FVector Up = AlongArm.IsNearlyZero() ? FVector::UpVector : AlongArm;
+    const FVector Outward = -GetActorRightVector();
+    const FVector Size = ArtShield->GetStaticMesh()->GetBoundingBox().GetSize();
+    const float Scale = 76.f / FMath::Max(1.f, Size.Z);
+    // glTF/FBX importers may use X or Y as the thin/front axis; preserve Z-up.
+    const FQuat SourceFacing = Size.X <= Size.Y ? FQuat::Identity : FQuat(FRotator(0, -90.f, 0));
+    const FQuat Facing = FRotationMatrix::MakeFromXZ(Outward, Up).ToQuat() * SourceFacing;
+    ArtShield->SetWorldTransform(FTransform(Facing, Hand + Up * 14.f + Outward * 9.f, FVector(Scale)));
 }
 
 void AJamHero::UpdateWeaponCarry()

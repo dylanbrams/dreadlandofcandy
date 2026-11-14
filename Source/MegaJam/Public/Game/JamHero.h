@@ -157,6 +157,9 @@ private:
 	TObjectPtr<UStaticMeshComponent> ArtBody;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> ArtSword;
+	/** Dylan-approved candy shield; follows the knight's left-hand socket. */
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> ArtShield;
 	/** The rigged hero (T20): replaces ArtBody when it loads; plays one animation at a time by state. */
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USkeletalMeshComponent> ArtRig;
@@ -173,6 +176,7 @@ private:
 	void PlayRigOneShot(FName Anim);
 	void TickRig();
     void UpdateWeaponCarry();
+    void UpdateShieldCarry();
     void BeginBrushFeedback(AJamNuisance* Target, float Seconds);
     void UpdateBrushing();
     FVector BrushingMouth(const AJamNuisance* Target) const;

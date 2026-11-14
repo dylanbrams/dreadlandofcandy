@@ -169,6 +169,14 @@ with it." Approval is now granted, and GO is also granted. Import/attachment
 and game-camera inspection are the remaining steps. Historical pending-approval
 metadata in the generation commit records the state at delivery, not a new gate.
 
+Imported and attached after approval/GO. Inspected
+`Saved/Screenshots/WindowsEditor/fixes2-knight-shield.png`: the decorated face
+points outward, the shield follows hand_l, sits beside the left forearm without
+obvious torso clipping in the raised-sword pose, and matches the dark armour.
+Runtime height 76cm; source import Z height 190.18cm. Build and full 82-test
+suite passed with this component and imported assets. Normal gameplay capture
+also shows it on the left arm. Package/cooked confirmation is a release check.
+
 ## Inherited rows 1 and 5
 
 - 1: ac33908, GameMode/VillageFlow and JamLines (with Jokes source), implements

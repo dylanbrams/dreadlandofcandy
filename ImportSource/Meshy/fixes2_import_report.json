@@ -1,0 +1,75 @@
+{
+  "audio": [
+    "/Game/Audio/VO/VO_RealityIntro_01.VO_RealityIntro_01",
+    "/Game/Audio/VO/VO_RealityIntro_02.VO_RealityIntro_02",
+    "/Game/Audio/VO/VO_RealityIntro_03.VO_RealityIntro_03",
+    "/Game/Audio/VO/VO_RealityIntro_04.VO_RealityIntro_04",
+    "/Game/Audio/VO/VO_RealityIntro_05.VO_RealityIntro_05",
+    "/Game/Audio/VO/VO_RealityPickup_01.VO_RealityPickup_01",
+    "/Game/Audio/VO/VO_RealityPickup_02.VO_RealityPickup_02",
+    "/Game/Audio/VO/VO_RealityPickup_03.VO_RealityPickup_03",
+    "/Game/Audio/VO/VO_RealityPickup_04.VO_RealityPickup_04",
+    "/Game/Audio/VO/VO_RealityPickup_05.VO_RealityPickup_05",
+    "/Game/Audio/VO/VO_RealityPickup_06.VO_RealityPickup_06",
+    "/Game/Audio/VO/VO_VillagePickup_01.VO_VillagePickup_01",
+    "/Game/Audio/VO/VO_VillagePickup_02.VO_VillagePickup_02",
+    "/Game/Audio/VO/VO_VillagePickup_03.VO_VillagePickup_03",
+    "/Game/Audio/VO/VO_VillagePickup_04.VO_VillagePickup_04",
+    "/Game/Audio/VO/VO_VillagePickup_05.VO_VillagePickup_05",
+    "/Game/Audio/VO/VO_VillagePickup_06.VO_VillagePickup_06",
+    "/Game/Audio/VO/VO_HeroPickup_01.VO_HeroPickup_01",
+    "/Game/Audio/VO/VO_HeroPickup_02.VO_HeroPickup_02",
+    "/Game/Audio/VO/VO_HeroPickup_03.VO_HeroPickup_03",
+    "/Game/Audio/VO/VO_HeroPickup_04.VO_HeroPickup_04",
+    "/Game/Audio/VO/VO_HeroPickup_05.VO_HeroPickup_05",
+    "/Game/Audio/VO/VO_HeroPickup_06.VO_HeroPickup_06",
+    "/Game/Audio/VO/VO_ReturnPickup_01.VO_ReturnPickup_01",
+    "/Game/Audio/VO/VO_ReturnPickup_02.VO_ReturnPickup_02"
+  ],
+  "audio_durations": {
+    "RealityIntro_01": 9.613062858581543,
+    "RealityIntro_02": 8.730708122253418,
+    "RealityIntro_03": 10.216792106628418,
+    "RealityIntro_04": 9.659521102905273,
+    "RealityIntro_05": 8.637833595275879,
+    "RealityPickup_01": 4.7833123207092285,
+    "RealityPickup_02": 4.597562313079834,
+    "RealityPickup_03": 4.3189167976379395,
+    "RealityPickup_04": 4.504687309265137,
+    "RealityPickup_05": 5.619229316711426,
+    "RealityPickup_06": 3.8080832958221436,
+    "VillagePickup_01": 5.479916572570801,
+    "VillagePickup_02": 3.4365625381469727,
+    "VillagePickup_03": 4.9226460456848145,
+    "VillagePickup_04": 5.015521049499512,
+    "VillagePickup_05": 4.5511250495910645,
+    "VillagePickup_06": 4.458250045776367,
+    "HeroPickup_01": 4.458250045776367,
+    "HeroPickup_02": 3.7152082920074463,
+    "HeroPickup_03": 5.479916572570801,
+    "HeroPickup_04": 5.1548333168029785,
+    "HeroPickup_05": 4.597562313079834,
+    "HeroPickup_06": 4.7833123207092285,
+    "ReturnPickup_01": 5.479916572570801,
+    "ReturnPickup_02": 4.736875057220459
+  },
+  "shield": {
+    "asset": "/Game/Art/Props/Shield/SM_KnightShield.SM_KnightShield",
+    "bounds_cm": [
+      93.73280715942383,
+      28.819005012512207,
+      190.18020629882812
+    ],
+    "min": [
+      -46.73930358886719,
+      -14.713605880737305,
+      -95.1788101196289
+    ],
+    "max": [
+      46.99350357055664,
+      14.105399131774902,
+      95.00139617919922
+    ],
+    "materials": 1
+  }
+}
