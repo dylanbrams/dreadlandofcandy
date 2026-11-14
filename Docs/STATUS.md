@@ -1,4 +1,14 @@
-# STATUS - GAME, Nov 14 14:45: Fixes1 committed, not packaged
+# STATUS - GAME, Nov 14: P1 packaged and smoked
+
+**P1 handoff:** `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip` (688 MB;
+under 1 GB). This includes Fixes1: Fenella recruitment and markers, ten village
+jobs and quest branches, and comic buttons. Packaged shipped-map smoke passed:
+`JamAutoplay: PASS mode=open main=3 side=0`, `JamAutoplay: PASS scenes=3`,
+`JamVillageAutoplay: PASS main=3 side=10`; all smoke checks passed. Development
+package succeeded; 79 Jam tests passed with log EXIT CODE 0. No upload.
+
+**Next:** Dylan plays this package and records BLOCKER / SHIP / NICE feedback in
+`Docs/Feedback/Fixes2.txt`; GAME then takes Fixes2. Engine handoff: FREE.
 
 Read CLAUDE.md, then Docs/Design/RELEASE_PLAN.md ("Nov 14 afternoon" section).
 Previous STATUS (batches 1 and 2): git history at 3cae0ec. Wishlist archive:
@@ -10,7 +20,7 @@ in every fix and every package.
 
 ## Next task (GAME, ChatGPT)
 
-1. **Package, smoke, zip (P1).** `Scripts\package.ps1`, then
+1. **Done: Package, smoke, zip (P1).** `Scripts\package.ps1`, then
    `Scripts\smoke-packaged.ps1` on the shipped map, then
    `Scripts\zip-submission.ps1 -TeamName ImaginaryComponent -GameName TheDreadLandOfCandy`.
    Add a smoke check that the packaged village autoplay reaches
@@ -62,7 +72,7 @@ reports the new URL/endpoint live, GAME checks the game's own HTTPS once
 
 ## Release state
 
-- Tester ZIP on disk is **batch 0** (09:30, 721 MB). Nothing since is packaged.
+- P1 tester ZIP is on disk (688 MB); Fixes1 is packaged and smoked.
 - No git push, no itch upload since last night's tester build.
 - `Docs/Devlog/PersonalNotes.txt` is Dylan's, untracked on purpose. `music/`,
   `vocals/output/*` are source audio, untracked. Never commit the

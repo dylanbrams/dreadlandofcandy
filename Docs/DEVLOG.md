@@ -329,3 +329,7 @@ Final handoff check found parallel BACKEND commit 46b75af: n2 deployed/pre-warme
 ## 2026-11-14 14:45 - Claude (Opus), Fixes1 checkpoint
 Dylan: quest givers are a core marquee feature, not a cut. Committed the afternoon's Fixes1 work (164e0af): Fenella recruits the hero under a golden marker, quest-site markers, five villagers with ten linked jobs, Quest Journal, backend-improvised branches with authored fallback, comic-style buttons. Evidence reused, not rerun: 79 Jam tests, village autoplay PASS main=3 side=10 offline / localhost / all-503. Backend quest-branches endpoint committed in backend/ (ab328d7, 117 tests); not deployed.
 Also committed comic action-card source art + declaration, devlog checkpoint revisions, itch install text. Rewrote STATUS and the plan's Nov 14 afternoon section: ChatGPT GAME packages next (nothing since batch 0 is packaged); Dylan migrates the server with a Sonnet BACKEND session (handoff at top of Docs/Workers/backend.md).
+
+## Nov 14 - P1 package
+
+Packaged the Fixes1 world build for Windows Development. Packaged smoke passed the three main quests and all ten village quests; added a village autoplay assertion to the smoke script. 79 Jam tests passed (EXIT CODE 0). Submission-format zip: 688 MB. No upload.

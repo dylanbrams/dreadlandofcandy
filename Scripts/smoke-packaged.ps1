@@ -85,6 +85,10 @@ if ($Extra -contains "-autoplay") {
     $Checks += @{ Name = "autoplay passed"; Pattern = "JamAutoplay: PASS"; Want = $true }
     $Checks += @{ Name = "autoplay did not fail"; Pattern = "JamAutoplay: FAIL"; Want = $false }
 }
+if ($Extra -contains "-autovillage") {
+    $Checks += @{ Name = "village autoplay completed all quests"; Pattern = "JamVillageAutoplay: PASS main=3 side=10"; Want = $true }
+    $Checks += @{ Name = "village autoplay did not fail"; Pattern = "JamVillageAutoplay: FAIL"; Want = $false }
+}
 $Failed = 0
 foreach ($C in $Checks) {
     $Found = [regex]::IsMatch($Log, $C.Pattern)
