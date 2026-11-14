@@ -87,6 +87,18 @@ AJamNuisance::AJamNuisance()
 	BoxLabel->SetUsingAbsoluteRotation(true);
 	BoxLabel->SetHiddenInGame(true);
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cone(TEXT("/Engine/BasicShapes/Cone.Cone"));
+	TreatArrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TreatArrow"));
+	TreatArrow->SetupAttachment(Capsule);
+	TreatArrow->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	TreatArrow->SetCastShadow(false);
+	if (Cone.Succeeded()) { TreatArrow->SetStaticMesh(Cone.Object); }
+	if (ShapeMaterial.Succeeded()) { TreatArrow->SetMaterial(0, ShapeMaterial.Object); }
+	TreatArrow->SetRelativeRotation(FRotator(180.f, 0.f, 0.f));   // point down at the head
+	TreatArrow->SetUsingAbsoluteScale(true);                       // same small size on every kind
+	TreatArrow->SetRelativeScale3D(FVector(0.28f, 0.28f, 0.36f));
+	TreatArrow->SetHiddenInGame(true);
+
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> Fx(TEXT("/Game/FX/M_FxUnlit.M_FxUnlit"));
 	OverlayBase = Fx.Object;
 
@@ -118,6 +130,10 @@ void AJamNuisance::PostInitializeComponents()
 void AJamNuisance::BeginPlay()
 {
 	Super::BeginPlay();
+	if (UMaterialInstanceDynamic* Mid = TreatArrow->CreateAndSetMaterialInstanceDynamic(0))
+	{
+		Mid->SetVectorParameterValue(TEXT("Color"), FLinearColor(0.15f, 1.f, 0.55f));
+	}
 	// The generated model first, so the squash, sit and recoil work from its own scale and height.
 	if (!ArtMesh.IsEmpty() && JamArt::Apply(Body, ArtMesh, ArtHeight, -Capsule->GetScaledCapsuleHalfHeight()) && OverlayBase)
 	{
@@ -283,6 +299,15 @@ void AJamNuisance::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	StateTime += DeltaSeconds;
+
+	// Fixes3 #14: bob a small arrow over anything waiting for a brush or a celery stick.
+	const bool bWantsArrow = IsPacified();
+	if (TreatArrow->bHiddenInGame == bWantsArrow) { TreatArrow->SetHiddenInGame(!bWantsArrow); }
+	if (bWantsArrow)
+	{
+		const float Top = Capsule->GetScaledCapsuleHalfHeight() + 70.f + FMath::Sin(GetWorld()->GetTimeSeconds() * 5.f) * 12.f;
+		TreatArrow->SetWorldLocation(GetActorLocation() + FVector(0.f, 0.f, Top));
+	}
 
 	// Recoil: a shove that dies out in a fifth of a second, and a squash that springs back.
 	const float SinceRecoil = GetWorld()->GetTimeSeconds() - RecoilAt;

@@ -128,6 +128,10 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<class UTextRenderComponent> BoxLabel;
 
+	/** Fixes3 #14: a small bobbing arrow while it sits waiting to be treated (brushed or fed). */
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> TreatArrow;
+
 	UPROPERTY(Transient)
 	TObjectPtr<UStaticMesh> BoxMesh;
 

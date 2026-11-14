@@ -406,7 +406,7 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 		GS->Shoot.ReportProgress(1);
 		Say(EJamLineTrigger::Pacified);
 		// Sometimes the pacified one answers back.
-		if (FMath::FRand() < 0.4f) { Bubble(EJamLineTrigger::NuisanceReply, Pacified, FVector(0.f, 0.f, 130.f), 1.8f, false); }
+		if (FMath::FRand() < 0.8f) { Bubble(EJamLineTrigger::NuisanceReply, Pacified, FVector(0.f, 0.f, 130.f), 1.8f, false); }
 	}
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: pacified %s"), Pacified ? *Pacified->GetName() : TEXT("(null)"));
 }
@@ -925,7 +925,13 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 		const EJamLineTrigger Pool = GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : (bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault);
 		Bubble(Pool, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
 	}
-	else { ++SkillCasts; }
+	else
+	{
+		++SkillCasts;
+		// Fixes3 #25: every attack, every class, gets its jagged shout.
+		const AJamGameState* GS = GetJamGameState();
+		Bubble(GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+	}
 }
 
 bool AJamGameMode::IsNotePromptUp() const

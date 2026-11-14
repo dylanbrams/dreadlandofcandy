@@ -176,14 +176,16 @@ namespace
 				TEXT("ABSOLUTELY NOT."), TEXT("WE'VE TALKED ABOUT THIS."), TEXT("I'M NOT ANGRY."), TEXT("I'M DISAPPOINTED."),
 				TEXT("FORM A LINE!"), TEXT("MIND YOUR TEETH!"), TEXT("IS THIS WHO YOU WANT TO BE?"), TEXT("ELBOWS."),
 				TEXT("INDOOR VOICE!"), TEXT("EXCUSE ME."), TEXT("PER MY LAST LECTURE"), TEXT("WE DO NOT EAT THE CROPS."),
-				TEXT("LOOK AT ME WHEN I'M LECTURING."),
+				TEXT("LOOK AT ME WHEN I'M LECTURING."), TEXT("EAT YOUR CELERY!"), TEXT("PEPPERMINT FRESH!"),
+				TEXT("TWO MINUTES, TWICE A DAY!"), TEXT("FLOSS OR PERISH!"), TEXT("THIS IS FOR YOUR OWN GOOD!"),
+				TEXT("SUGAR IS A LIE!"), TEXT("OPEN WIDE!"), TEXT("NOT ON MY WATCH, PLAQUE!"),
 			} },
 			{ EJamLineTrigger::BubbleSadder, {
 				TEXT("if it's not too much trouble"), TEXT("i just worry"), TEXT("no, you go ahead"), TEXT("i'm sure you had your reasons"),
 			} },
 			{ EJamLineTrigger::BubbleBudget, { TEXT("[SHOUTING]"), TEXT("[LECTURE]"), TEXT("[BUBBLE GOES HERE]") } },
 			{ EJamLineTrigger::NuisanceReply, {
-				TEXT("ok"), TEXT("sorry"), TEXT("fine."), TEXT("...mum?"), TEXT("i'll floss"), TEXT("he started it"),
+				TEXT("ok"), TEXT("sorry"), TEXT("fine."), TEXT("...mum?"), TEXT("i'll floss"), TEXT("he started it"), TEXT("my gums..."), TEXT("is that CELERY?"), TEXT("worth it"), TEXT("i want my mum"), TEXT("minty!!"),
 			} },
 			{ EJamLineTrigger::ProductionNote, {
 				TEXT("This walk was restored for the Director's Cut. It was cut for pacing. You can see why."),

@@ -426,3 +426,4 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
   preserving firs and the central square tree; added 67 berry bushes and 67
   succulents so all eight new models appear. Build + 82 tests passed; inspected
   foliage-mix.png. No package/upload; manual traversal remains unverified.
+- Nov 15: Fixes3 #25 shout bubbles on every attack, #2 peppermint popfall on every attack + more replies, #14 treat arrow over pacified nuisances. 82 tests green; unverified live.

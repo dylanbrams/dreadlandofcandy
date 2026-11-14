@@ -42,9 +42,12 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     Fx->bPresentationReview = FParse::Param(FCommandLine::Get(), TEXT("classreview")) || FParse::Value(FCommandLine::Get(), TEXT("castreview="), Fx->CastIndex);
     Fx->CastIndex = Index;
     Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : 3.6f);
-    for (int32 Layer = 0; Layer < 2; ++Layer)
+    // Fixes3 #2: never enough peppermints. Every class's attack also rains the mage's peppermint popfall.
+    TArray<FString> Assets = { Name, Name + TEXT("_Layer1") };
+    if (!Name.Contains(TEXT("Peppermint"))) { Assets.Add(TEXT("NS_M02_PeppermintPopfall")); }
+    for (int32 Layer = 0; Layer < Assets.Num(); ++Layer)
     {
-        const FString AssetName = Name + (Layer == 1 ? TEXT("_Layer1") : TEXT(""));
+        const FString& AssetName = Assets[Layer];
         const FString Path = FString::Printf(TEXT("/Game/FX/Attacks/Systems/%s.%s"), *AssetName, *AssetName);
         UNiagaraSystem* System = LoadObject<UNiagaraSystem>(nullptr, *Path, nullptr, LOAD_NoWarn | LOAD_Quiet);
         if (!System) { if (Layer == 0) { UE_LOG(LogJam, Warning, TEXT("AttackParticles: missing %s"), *Path); } continue; }
