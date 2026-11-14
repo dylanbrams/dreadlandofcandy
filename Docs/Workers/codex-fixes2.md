@@ -50,11 +50,9 @@ is blocked by HOLD's no-game/no-tests rule; remaining independent rows proceed.
   VillageFlow files. No changes to those files by CODEX.
 - CLAUDE: please own the requested note-stub.py proposal route; Scripts/ is
   outside CODEX ownership. HUD proposal hooks are implemented with row 4.
-- CLAUDE: NoteEditor currently sanitizes/counts/truncates with NoteMaxChars=80
-  and labels submission as a note. UI/JamNoteEditor.* is outside the CODEX list.
-  Please provide a proposal mode accepting 160 characters (and suitable prompt,
-  counter and submit text). CODEX can wire its current Open/OnSubmit API now;
-  keyboard proposals are capped at 80 until this companion change lands.
+- Dylan confirmed in this thread: keep the note/proposal editor at **80
+  characters**. No NoteEditor change requested. Backend's 160-character ceiling
+  remains a validation upper bound, not a request to enlarge the editor.
 
 ## 2+3 — candy cane pointers (unverified)
 
@@ -95,12 +93,47 @@ As requested in CLAUDE's progress file, HUD now opens the existing note editor
 for ProposePlan, routes submit to RequestVillageProposal, supports QuestBranch2,
 and returns Esc/B to the offer. It hides the higher-Z offer while editing and
 restores its focus on return. Ordinary typed notes keep their submission path.
-The 80-character editor limitation remains the companion request above.
+The editor deliberately retains the 80-character cap at Dylan's request.
 HUD editor compile succeeded via Scripts/build.ps1 (80.61 seconds).
 Backend commit: a0af558 in backend's own repository. All behavior unverified.
+HUD commit: 03bd006. No Unreal job is running after this compile.
+
+## 6 — Meshy knight shield (generated; STOP for Dylan's approval)
+
+Read GenerationRunbook, styles.json, ASSETS budgets, existing generation status
+and the SK_Hero.png reference corresponding to SK_Hero_Rig. Reference: grim
+angular blackened steel, bevelled silver edges, desaturated armour. New job
+SM_KnightShield in jobs.json uses the locked equipment style and explicitly
+requests one front-facing heater shield with a peppermint crest, restrained
+red/ivory inlays, dull gold/silver rim and rear forearm straps. Target 5,000
+faces; hero gear texture budget 2K. No hand, wielder, base or lettering.
+
+Balance before job: Meshy 215 credits. Existing equipment generation group was
+already approved; **this new shield is not approved for import/use**. Only this
+one job was submitted, through gen_batch.py --only SM_KnightShield after dry-run.
+No approve/route command, alternate generator, editor, import or attachment.
+Stop after generation/file review for Dylan's explicit shield approval.
+
+Result: succeeded, 1.7 minutes, 30 Meshy credits consumed (185 remaining by
+subtraction). ImportSource/Meshy/SM_KnightShield.glb: 8,879,580 bytes, one mesh,
+one material, 4,769 triangles, three 2048x2048 texture maps. Front thumbnail reviewed: dark angular gothic
+heater outline, silver bevelled rim, gold round peppermint/pinwheel crest with
+red/ivory accents, deep red edging. Good stylistic match to hero reference;
+this is an observation, **not approval**. Back/straps, front axis, normals and
+socket fit remain unverified. Review metadata is SM_KnightShield.review.json.
+Preview: ImportSource/Meshy/SM_KnightShield.png; full prompts/task IDs in
+ImportSource/Meshy/manifest.jsonl. gen_batch.py declare added exactly one shield
+line to Docs/Declared.md. GLB remains a local delivery under the existing
+ImportSource/*/*.glb ignore rule; manifest/thumbnail/job/review state are committed.
+No self-approval, import or game/editor activity. Await Dylan before further
+shield work; actual game use additionally waits for GO.
 
 ## Verify at GO
 
+- 6: after Dylan approves the generated shield, CLAUDE imports it, checks actual
+  triangle/texture budgets, aligns the front outward and rear straps to the left
+  hand/forearm socket, and inspects its silhouette, grip, clipping and animation
+  in the game camera. Screenshot review/import remains forbidden during HOLD.
 - 4: run backend pytest in its documented environment with FakeModel; require
   all existing tests plus test_proposals.py to pass. Check that proposal cache
   hits do not spend model budget, invalid vocabulary returns 422, foreign output
@@ -109,7 +142,7 @@ Backend commit: a0af558 in backend's own repository. All behavior unverified.
   Keyboard and gamepad: open/cancel/reopen, submit, select the third plan,
   select authored routes during a request, close the offer during a request,
   confirm late replies cannot reopen it, and check notes still submit normally.
-  Test proposal text 81-160 characters after CLAUDE's NoteEditor update.
+  Confirm text stops at 80 characters; no request to enlarge this cap.
 - 2+3: inspect recruitment, travel, active camp, multi-step destination change,
   Ready return-to-giver, abandonment, and village idle. When a visible target
   marker exists, exactly one is red/gold/larger/moving; other givers remain

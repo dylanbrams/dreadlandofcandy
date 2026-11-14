@@ -514,6 +514,13 @@
       "status": "done",
       "finished": "Thu Nov 12 10:56:10 2026",
       "via": "codex"
+    },
+    "SM_KnightShield": {
+      "status": "done",
+      "error": "",
+      "finished": "Sat Nov 14 18:17:27 2026",
+      "via": "api",
+      "tool": "meshy"
     }
   },
   "approved": [
@@ -613,7 +620,8 @@
     "T_Poster_TheatricalRelease",
     "T_Clock_HourHand",
     "T_Clock_MinuteHand",
-    "T_Villager_Moustache"
+    "T_Villager_Moustache",
+    "SM_KnightShield"
   ],
   "routes": {
     "npc": "rodin",

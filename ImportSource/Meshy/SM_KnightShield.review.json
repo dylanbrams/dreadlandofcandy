@@ -1,0 +1,26 @@
+{
+  "asset": "SM_KnightShield",
+  "triangles": 4769,
+  "texture_dimensions": [
+    [
+      2048,
+      2048
+    ],
+    [
+      2048,
+      2048
+    ],
+    [
+      2048,
+      2048
+    ]
+  ],
+  "approval": "pending Dylan; do not import or attach",
+  "preview": "ImportSource/Meshy/SM_KnightShield.png",
+  "mesh": "ImportSource/Meshy/SM_KnightShield.glb",
+  "limitations": [
+    "Generator front thumbnail reviewed only",
+    "Rear straps, normals, orientation and socket fit unverified",
+    "No Unreal run, editor, screenshots or tests during HOLD"
+  ]
+}

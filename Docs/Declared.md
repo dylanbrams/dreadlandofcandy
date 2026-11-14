@@ -347,3 +347,4 @@ eleven_multilingual_v2, Bella voice hpp4J3VqNfWAUOO0d1Us. Exact texts:
 ocals/output/fenella_pickups_2026-11-14/manifest.json. MP3 originals and
 mono 48 kHz PCM16 WAVs: ocals/output/fenella/VO_<LineId>.*. Generated
 audio delivery only; listening and game import pending.
+| `SM_KnightShield` | Meshy text-to-3D | 2026-11-14 | `ImportSource/Meshy/SM_KnightShield.glb`; prompt in `Assets/Generation/jobs.json` |
