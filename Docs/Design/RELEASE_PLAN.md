@@ -8,21 +8,21 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 ## Nov 14: test, fix, release (rebuilt by GAME at Dylan's request; governs today)
 
-**The day's shape:** Dylan plays and finds, ChatGPT fixes in batches, and every green batch is packaged and pushed to itch as a tester build. Claude has about 10% of a week's quota today, so it takes only bugs that ChatGPT has failed once, or a diagnosis that is eating hours. **Feature freeze: Nov 14, 11 PM PST.** Nov 15 is for the video, blocker fixes and the submission.
+**The day's shape:** Dylan plays and finds, ChatGPT fixes in batches, and each green batch is committed and played in the editor build. **No packaging, zips or itch pushes until batches 0 to 2 are all done** (Dylan, Nov 14: a build was packaged and released last night); then one package and one push. Claude has about 10% of a week's quota today, so it takes only bugs that ChatGPT has failed once, or a diagnosis that is eating hours. **Feature freeze: Nov 14, 11 PM PST.** Nov 15 is for the video, blocker fixes and the submission.
 
 **Starting state (checked Nov 14 morning):**
 - Committed through `802b158` (class presentation, weapons on the back, brushing foam).
 - **Uncommitted and unverified:** the overnight ChatGPT mouse/HUD session left 18 changed files (+279 lines: `JamHUD`, `JamHudWidget`, `JamNuisance`, `JamScreens`, `JamShoot`, and the new tests `UiHudInputTests.cpp` and `NuisancePoseTests.cpp`), probably items 2, 12, 14 and 16 and a start on 7. A zip at `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip` (722 MB, 01:10) is recorded nowhere. `ENGINE_HANDOFF.md` still says BUSY.
-- Nothing playable on itch yet; only butler's `upload-test` README went up.
+- A tester build was packaged and released on itch last night (Dylan).
 - The gate is undecided (still Backlot by default). The backend redeploy (`e1ce3ae`, `8ae1aad`) is pending.
 
 **The loop (three or four rounds today):**
-1. Dylan plays the latest package for 20 to 30 minutes (Open first, then one other class, then one Backlot run) and adds numbered lines to "Dylan's list" in `STATUS.md`, each tagged **BLOCKER**, **SHIP** or **NICE**.
+1. Dylan plays the latest commit in the editor (`UnrealEditor.exe MegaJam.uproject -game`) for 20 to 30 minutes, with two classes, and adds numbered lines to "Dylan's list" in `STATUS.md`, each tagged **BLOCKER**, **SHIP** or **NICE**.
 2. The fixes session takes BLOCKERs, then SHIPs, for at most 2 hours. Each fix gets a build, `Jam.*` tests, the Open autoplay PASS line and a commit.
-3. Package, smoke Open, zip, write the hand-off line in `STATUS.md`.
-4. Dylan says go, and the ChatGPT itch session pushes to the `windows` channel (`Marketing/Itch/LUNA_UPLOAD_HANDOFF.md`).
+3. Update `STATUS.md` with what changed and which items are fixed; Dylan plays it.
+4. Only after batch 2: one package, Open smoke, zip, hand-off line in `STATUS.md`; on Dylan's go the ChatGPT itch session pushes to the `windows` channel (`Marketing/Itch/LUNA_UPLOAD_HANDOFF.md`).
 
-**Batch 0, first thing (fixes session, 45 min): make last night green.** Free the engine handoff, build both targets, run the tests and the Open autoplay on the uncommitted work, set the world as the default (below), then commit it in scoped commits (never the `DefaultEngine.ini` token block). Record in `STATUS.md` which of items 2, 7, 12, 14 and 16 are actually fixed. Then repackage and **push tester build 1 even with known bugs**, because testers need hours to respond.
+**Batch 0, first thing (fixes session, 45 min): make last night green.** Free the engine handoff, build both targets, run the tests and the Open autoplay on the uncommitted work, set the world as the default (below), then commit it in scoped commits (never the `DefaultEngine.ini` token block). Record in `STATUS.md` which of items 2, 7, 12, 14 and 16 are actually fixed. No package.
 
 **Triage of Dylan's list (STATUS items 1 to 18):**
 
@@ -40,10 +40,10 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 | When | Who | What |
 | --- | --- | --- |
-| Morning | Fixes session | Batch 0, then push tester build 1 |
-| Morning | Dylan | Backend redeploy off stream (`backend/DEPLOY.md`, then `scripts/prewarm.py`); play build 1; write the list |
-| Midday | Fixes session | Batch 1 (blockers), then push build 2 |
-| Afternoon | Fixes session | Batch 2 (controls, XP, character sheet), then push build 3 |
+| Morning | Fixes session | Batch 0 |
+| Morning | Dylan | Backend redeploy off stream (`backend/DEPLOY.md`, then `scripts/prewarm.py`); play batch 0 in the editor; write the list |
+| Midday | Fixes session | Batch 1 (blockers) |
+| Afternoon | Fixes session | Batch 2 (controls, XP, character sheet), then the day's one package, smoke and zip; push on Dylan's go |
 | Evening | Fixes session | Batch 3 from tester feedback; R8 paperwork (`Declared.md` lines for the ElevenLabs Fenella lines and SFX, credits and tools list) |
 | 11 PM | All | Feature freeze. The last package of the day is the submission candidate |
 | Nov 15 morning | Dylan | Video, 30 to 60 s (40 min) |
@@ -53,7 +53,7 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 **Sessions:**
 - **ChatGPT fixes (GAME):** the only session that runs Unreal today. Prompt: "You are GAME. Read `CLAUDE.md`, `Docs/STATUS.md` and `Docs/Design/RELEASE_PLAN.md` (the Nov 14 section). Take the next batch."
-- **ChatGPT itch:** one push per green package, with Dylan's go each time.
+- **ChatGPT itch:** idle until batch 2's package; then one push, with Dylan's go.
 - **Claude:** hard bugs only, read-only while the fixes session holds the engine unless it is handed over in `ENGINE_HANDOFF.md`.
 
 ## Where things stand (checked on disk, Nov 13)
