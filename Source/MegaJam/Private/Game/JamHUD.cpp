@@ -3,6 +3,7 @@
 #include "Game/JamHero.h"
 #include "Film/JamCast.h"
 #include "Game/JamNuisance.h"
+#include "Game/JamQuestMarker.h"
 #include "UI/JamHudWidget.h"
 #include "UI/JamScreenWidget.h"
 #include "UI/JamNoteEditor.h"
@@ -124,7 +125,6 @@ void AJamHUD::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	if (SampleName.IsEmpty()) { BuildView(); }
 	else { JamHud::Sample(SampleName, View); }
-	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
 	TickMusic();
 	TickVoice();
 	TickEffects();
@@ -138,16 +138,19 @@ void AJamHUD::Tick(float DeltaSeconds)
 		const ESlateVisibility Vis = bShown ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
 		if (Screen->GetVisibility() != Vis) { Screen->SetVisibility(Vis); }
 		if (bShown) { Screen->ApplyView(ScreenView, GetWorld()->GetRealTimeSeconds()); }
-		// The game HUD hides under any screen (pause too: two captions and a card under the menu was clutter).
-		if (Widget)
-		{
-			const ESlateVisibility HudVis = bShown ? ESlateVisibility::Collapsed : ESlateVisibility::SelfHitTestInvisible;
-			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
-		}
 		TickNoteEditor();
 		const bool bEditor = NoteEditor && NoteEditor->IsOpen();
+		// Resolve every overlay before applying captions, including the note editor.
+		// Caption lifetime belongs to the game state (world time stops during pause).
+		if (bShown || bEditor) { View.Caption.Reset(); View.Bubbles.Reset(); }
+		if (Widget)
+		{
+			const ESlateVisibility HudVis = (bShown || bEditor) ? ESlateVisibility::Collapsed : ESlateVisibility::SelfHitTestInvisible;
+			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
+		}
 		if (!bSample) { UpdateInputMode(bShown && ScreenView.Screen != EJamScreen::Rating ? 1 : (bEditor ? 2 : 0)); }
 	}
+	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
 }
 
 void AJamHUD::DrawHUD()
@@ -508,6 +511,9 @@ void AJamHUD::SetPaused(bool bPause)
 	SubScreen = EJamScreen::None;
 	Selected = 0;
 	if (PlayerOwner) { PlayerOwner->SetPause(bPause); }
+	if (Voice) { Voice->SetPaused(bPause); }
+	// Pause is requested from input between HUD ticks; hide the speech panel immediately.
+	if (bPause && Widget) { Widget->SetVisibility(ESlateVisibility::Collapsed); }
 	UE_LOG(LogJam, Log, TEXT("JamHUD: %s"), bPause ? TEXT("paused") : TEXT("resumed"));
 }
 
@@ -764,6 +770,7 @@ void AJamHUD::TickVoice()
 {
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	if (!GS || !PlayerOwner || !PlayerOwner->IsLocalController()) { return; }
+	if (bPaused) { return; } // Keep the current story line and its paused audio intact.
 	const FName Line = GS->IsCaptionVisible() ? GS->CaptionLineId : NAME_None;
 	if (Line == VoiceLine) { return; }
 	VoiceLine = Line;
