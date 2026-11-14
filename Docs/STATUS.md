@@ -58,7 +58,7 @@ It does **not** have the quest-branches endpoint (game falls back silently on 40
 Dylan is migrating the server with a Sonnet session: `Docs/Workers/backend.md`
 ("Nov 14 migration"). GAME does not touch the backend or the box. When BACKEND
 reports the new URL/endpoint live, GAME checks the game's own HTTPS once
-(typed note + one improvise) and changes the base URL in config if the host changed.
+(typed note + one improvise) and changes `BaseUrl` in `Config/DefaultGame.ini` (`[/Script/MegaJam.JamNoteClient]`, keep it quoted) if the host changed; `-noteurl=<base>` tests a host without editing config.
 
 ## Release state
 
