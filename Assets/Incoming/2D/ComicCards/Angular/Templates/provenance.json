@@ -1,0 +1,25 @@
+{
+  "tool": "built-in image_gen",
+  "templates": [
+    {
+      "id": "lance",
+      "prompt": "Create ONE reusable blank comic action-burst game texture: a long horizontally stretched asymmetric lightning explosion, 10 huge sharp triangular rays, strongly slanted left-to-right. Actual silhouette must be a single irregular angular star polygon from triangular tip to deep V notch to triangular tip, every segment a straight line. NOT a rounded bubble, not a box with teeth, no rectangle, no octagon, no speech tail. The wide central area is formed organically by the ray intersections; absolutely no inset panel or internal border. Flat opaque pale ivory fill, thick sharp black silhouette contour, NO letters, punctuation, symbols, grain, gradient, glow, shadow, loose elements, or perspective. Vintage superhero television action-title backing art, very graphic and dynamic. All rays are fully connected to main shape. Transparent background. Wide composition on square canvas, 10% empty transparent margin all sides. Keep an uninterrupted fairly spacious central area so a word can later be lettered directly on the burst. Only one blank action burst.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-f98e9cd9-9969-486b-b131-e20e2fb1b728.png"
+    },
+    {
+      "id": "shatter",
+      "prompt": "Create ONE reusable blank comic action-burst game texture: a dense angular shattered starburst, 18 irregular straight-edged triangular rays, compact broad silhouette. Actual silhouette must be a single irregular angular star polygon from triangular tip to deep V notch to triangular tip, every segment a straight line. NOT a rounded bubble, not a box with teeth, no rectangle, no octagon, no speech tail. The wide central area is formed organically by the ray intersections; absolutely no inset panel or internal border. Flat opaque pale ivory fill, thick sharp black silhouette contour, NO letters, punctuation, symbols, grain, gradient, glow, shadow, loose elements, or perspective. Vintage superhero television action-title backing art, very graphic and dynamic. All rays are fully connected to main shape. Transparent background. Wide composition on square canvas, 10% empty transparent margin all sides. Keep an uninterrupted fairly spacious central area so a word can later be lettered directly on the burst. Only one blank action burst.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-ed7a5a16-67cd-4b3a-8087-71564d896047.png"
+    },
+    {
+      "id": "thunder",
+      "prompt": "Create ONE reusable blank comic action-burst game texture: a bold oblique zigzag impact explosion, 12 broad irregular triangular rays, diagonally energetic silhouette. Actual silhouette must be a single irregular angular star polygon from triangular tip to deep V notch to triangular tip, every segment a straight line. NOT a rounded bubble, not a box with teeth, no rectangle, no octagon, no speech tail. The wide central area is formed organically by the ray intersections; absolutely no inset panel or internal border. Flat opaque pale ivory fill, thick sharp black silhouette contour, NO letters, punctuation, symbols, grain, gradient, glow, shadow, loose elements, or perspective. Vintage superhero television action-title backing art, very graphic and dynamic. All rays are fully connected to main shape. Transparent background. Wide composition on square canvas, 10% empty transparent margin all sides. Keep an uninterrupted fairly spacious central area so a word can later be lettered directly on the burst. Only one blank action burst.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-c2900d6f-14e9-43af-ab0b-f98b699f2a02.png"
+    },
+    {
+      "id": "flare",
+      "prompt": "Create ONE reusable blank comic action-burst game texture: a classic radial action explosion, 14 unequal long spear points alternating with deep V-shaped notches, broad horizontal silhouette. Actual silhouette must be a single irregular angular star polygon from triangular tip to deep V notch to triangular tip, every segment a straight line. NOT a rounded bubble, not a box with teeth, no rectangle, no octagon, no speech tail. The wide central area is formed organically by the ray intersections; absolutely no inset panel or internal border. Flat opaque pale ivory fill, thick sharp black silhouette contour, NO letters, punctuation, symbols, grain, gradient, glow, shadow, loose elements, or perspective. Vintage superhero television action-title backing art, very graphic and dynamic. All rays are fully connected to main shape. Transparent background. Wide composition on square canvas, 10% empty transparent margin all sides. Keep an uninterrupted fairly spacious central area so a word can later be lettered directly on the burst. Only one blank action burst.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-b57f42f9-8467-4252-bf23-af207f48db68.png"
+    }
+  ]
+}

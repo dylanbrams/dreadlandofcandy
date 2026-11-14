@@ -311,3 +311,26 @@ sets on Nov 13; `Game/JamSfx.cpp` maps gameplay events to these cues.
 
 Asset preparation also uses original project Python scripts, Blender and
 FFmpeg. No new assets or paid generation calls were made for this reconciliation.
+
+
+## 2026-11-14: multilingual action-card source art
+
+Three blank spiky action-burst templates were created with the built-in OpenAI
+image generation tool. Selected templates, exact prompts and original paths:
+`Assets/Incoming/2D/ComicCards/Templates/provenance.json`. Twelve final transparent
+textures are built by original project tooling (`Scripts/build_comic_cards.py`)
+which broadens the central body, colors the outlines and rasterizes the editable
+multilingual words from `Assets/Incoming/2D/ComicCards/roster.json`. Installed
+Windows Impact, Yu Gothic Bold, Malgun Gothic Bold and Microsoft YaHei Bold were
+used for raster lettering; no font binaries are redistributed. Earlier generated
+speech-bubble/long-sentence experiments are not part of this delivery. PNG source
+delivery only; engine import and effects integration remain separate work.
+
+The angular expansion adds four new blank action-burst templates generated with
+the built-in OpenAI image generation tool and 24 additional PNG cards with
+programmatic lettering/color variants. Source prompts and original paths:
+`Assets/Incoming/2D/ComicCards/Angular/Templates/provenance.json`; editable roster
+and final manifest are in its parent `Angular` directory. Original project
+tooling: `Scripts/build_angular_comic_cards.py`. This expansion retains the
+generated burst contours without the first set's added central polygon. It uses
+the same installed fonts as the first set; no font binaries are included.

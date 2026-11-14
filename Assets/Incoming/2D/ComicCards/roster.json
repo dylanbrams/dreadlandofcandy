@@ -1,0 +1,122 @@
+[
+  {
+    "id": "Manners_en",
+    "meaning": "manners",
+    "locale": "en",
+    "text": "MANNERS!",
+    "template": "wide",
+    "outline": "#4778D6",
+    "accent": "#F0C65D",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Manners_de",
+    "meaning": "manners",
+    "locale": "de",
+    "text": "MANIEREN!",
+    "template": "compact",
+    "outline": "#7948B8",
+    "accent": "#F0C65D",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Manners_fr",
+    "meaning": "manners",
+    "locale": "fr",
+    "text": "LES BONNES\nMANIÈRES !",
+    "template": "slanted",
+    "outline": "#168B92",
+    "accent": "#F0C65D",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Manners_ja",
+    "meaning": "manners",
+    "locale": "ja",
+    "text": "礼儀！",
+    "template": "compact",
+    "outline": "#4778D6",
+    "accent": "#F0C65D",
+    "font": "YuGothB.ttc"
+  },
+  {
+    "id": "Brush_en",
+    "meaning": "brush",
+    "locale": "en",
+    "text": "BRUSH!",
+    "template": "slanted",
+    "outline": "#168B92",
+    "accent": "#4AD9D1",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Brush_es",
+    "meaning": "brush",
+    "locale": "es-ES",
+    "text": "¡CEPÍLLATE!",
+    "template": "wide",
+    "outline": "#C43E61",
+    "accent": "#4AD9D1",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Brush_ko",
+    "meaning": "brush",
+    "locale": "ko",
+    "text": "양치해!",
+    "template": "compact",
+    "outline": "#488A38",
+    "accent": "#4AD9D1",
+    "font": "malgunbd.ttf"
+  },
+  {
+    "id": "Brush_zh",
+    "meaning": "brush",
+    "locale": "zh-CN",
+    "text": "刷牙！",
+    "template": "wide",
+    "outline": "#C83C32",
+    "accent": "#4AD9D1",
+    "font": "msyhbd.ttc"
+  },
+  {
+    "id": "Vitamins_en",
+    "meaning": "vitamins",
+    "locale": "en",
+    "text": "VITAMINS!",
+    "template": "wide",
+    "outline": "#D54629",
+    "accent": "#B8D94A",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Vitamins_de",
+    "meaning": "vitamins",
+    "locale": "de",
+    "text": "VITAMINE!",
+    "template": "slanted",
+    "outline": "#D46A20",
+    "accent": "#B8D94A",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Vitamins_fr",
+    "meaning": "vitamins",
+    "locale": "fr",
+    "text": "VITAMINES !",
+    "template": "compact",
+    "outline": "#853C8F",
+    "accent": "#B8D94A",
+    "font": "impact.ttf"
+  },
+  {
+    "id": "Vitamins_pt",
+    "meaning": "vitamins",
+    "locale": "pt-BR",
+    "text": "VITAMINAS!",
+    "template": "slanted",
+    "outline": "#488A38",
+    "accent": "#B8D94A",
+    "font": "impact.ttf"
+  }
+]

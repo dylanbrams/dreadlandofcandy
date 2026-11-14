@@ -1,0 +1,20 @@
+{
+  "tool": "built-in image_gen",
+  "templates": [
+    {
+      "id": "wide",
+      "prompt": "ONE blank wide asymmetrical explosive starburst with 14 long sharp triangular rays, like a vintage live-action superhero television POW / SMACK action title backing shape. NOT a speech balloon: absolutely no tail, no rounded lobes. Transparent background, bold flat 2D ink, opaque uniform ivory #FFF5DA fill, thick near-black outline. Absolutely no writing, lettering, punctuation, symbols, grain, shading, glow or shadow. Huge empty uninterrupted central space for adding text later. Centered wide composition on square canvas, silhouette from x=12% to 88% and y=20% to 80%; generous fully transparent padding, no clipping. All action spikes connect directly to filled main shape. One clean production game VFX texture template.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-f41ccfad-aeb0-49c7-8211-155834525437.png"
+    },
+    {
+      "id": "compact",
+      "prompt": "ONE blank compact explosive zigzag action starburst with 20 alternating short and long spikes, like a vintage live-action superhero television POW / SMACK action title backing shape. NOT a speech balloon: absolutely no tail, no rounded lobes. Transparent background, bold flat 2D ink, opaque uniform ivory #FFF5DA fill, thick near-black outline. Absolutely no writing, lettering, punctuation, symbols, grain, shading, glow or shadow. Huge empty uninterrupted central space for adding text later. Centered wide composition on square canvas, silhouette from x=12% to 88% and y=20% to 80%; generous fully transparent padding, no clipping. All action spikes connect directly to filled main shape. One clean production game VFX texture template.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-d1acd478-b4cf-4b98-ab32-6e497e85ee69.png"
+    },
+    {
+      "id": "slanted",
+      "prompt": "ONE blank dynamic slanted explosive action starburst with 12 broad sharp rays, like a vintage live-action superhero television POW / SMACK action title backing shape. NOT a speech balloon: absolutely no tail, no rounded lobes. Transparent background, bold flat 2D ink, opaque uniform ivory #FFF5DA fill, thick near-black outline. Absolutely no writing, lettering, punctuation, symbols, grain, shading, glow or shadow. Huge empty uninterrupted central space for adding text later. Centered wide composition on square canvas, silhouette from x=12% to 88% and y=20% to 80%; generous fully transparent padding, no clipping. All action spikes connect directly to filled main shape. One clean production game VFX texture template.",
+      "source": "C:\\Users\\dylan\\.codex\\generated_images\\01a1d6ec-08dd-7792-97dc-88b4143dbcdc\\exec-c8d61f95-e966-485a-90ce-74011e118107.png"
+    }
+  ]
+}

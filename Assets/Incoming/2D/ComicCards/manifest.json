@@ -1,0 +1,371 @@
+{
+  "cards": [
+    {
+      "id": "Manners_en",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "MANNERS!",
+      "template": "wide",
+      "outline": "#4778D6",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "file": "T_Comic_Manners_en.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 118,
+      "alpha_bounds": [
+        51,
+        15,
+        1006,
+        949
+      ],
+      "text_bounds": [
+        264,
+        460,
+        762,
+        578
+      ],
+      "sha256": "ed12494541dcaa8ab113760f5188ce1df89ad68b904901b30b7fae0b3f509dc4",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en"
+    },
+    {
+      "id": "Manners_de",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "MANIEREN!",
+      "template": "compact",
+      "outline": "#7948B8",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "file": "T_Comic_Manners_de.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 114,
+      "alpha_bounds": [
+        25,
+        27,
+        995,
+        952
+      ],
+      "text_bounds": [
+        260,
+        460,
+        763,
+        570
+      ],
+      "sha256": "92d013924584cd7778ac9912c676220927470b9fb3fa0cfdb51843726a022af3",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de"
+    },
+    {
+      "id": "Manners_fr",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "LES BONNES\nMANIÈRES !",
+      "template": "slanted",
+      "outline": "#168B92",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "file": "T_Comic_Manners_fr.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 96,
+      "alpha_bounds": [
+        17,
+        32,
+        1004,
+        952
+      ],
+      "text_bounds": [
+        277,
+        416,
+        739,
+        622
+      ],
+      "sha256": "072163e75a77d0eda59f2d77b1f18d348aab239fb83f9147dfdfdafc82818264",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr"
+    },
+    {
+      "id": "Manners_ja",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "礼儀！",
+      "template": "compact",
+      "outline": "#4778D6",
+      "accent": "#F0C65D",
+      "font": "YuGothB.ttc",
+      "file": "T_Comic_Manners_ja.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 162,
+      "alpha_bounds": [
+        25,
+        27,
+        995,
+        952
+      ],
+      "text_bounds": [
+        258,
+        430,
+        764,
+        600
+      ],
+      "sha256": "5acab00b2772f494a2f52954f836ee4231cda4017d9cc3a9917905a0efa65a6c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja"
+    },
+    {
+      "id": "Brush_en",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "BRUSH!",
+      "template": "slanted",
+      "outline": "#168B92",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "file": "T_Comic_Brush_en.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 158,
+      "alpha_bounds": [
+        17,
+        32,
+        1004,
+        952
+      ],
+      "text_bounds": [
+        262,
+        444,
+        754,
+        594
+      ],
+      "sha256": "0e801a7a0cc63bfcdaa1cdc1c47c7b62763b98f84b205c4dd3fb9d64380c6c44",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en"
+    },
+    {
+      "id": "Brush_es",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡CEPÍLLATE!",
+      "template": "wide",
+      "outline": "#C43E61",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "file": "T_Comic_Brush_es.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 108,
+      "alpha_bounds": [
+        51,
+        15,
+        1006,
+        949
+      ],
+      "text_bounds": [
+        265,
+        453,
+        762,
+        585
+      ],
+      "sha256": "a3741f2acf11f72da6420474febea340b0460d92122ffa08ea22e2152aee00ca",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es"
+    },
+    {
+      "id": "Brush_ko",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "양치해!",
+      "template": "compact",
+      "outline": "#488A38",
+      "accent": "#4AD9D1",
+      "font": "malgunbd.ttf",
+      "file": "T_Comic_Brush_ko.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 146,
+      "alpha_bounds": [
+        25,
+        27,
+        995,
+        952
+      ],
+      "text_bounds": [
+        259,
+        436,
+        764,
+        594
+      ],
+      "sha256": "817126065fa40ef541cdaa862fc742bccdab171253078b8be9b5d80c25ede3ab",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko"
+    },
+    {
+      "id": "Brush_zh",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "刷牙！",
+      "template": "wide",
+      "outline": "#C83C32",
+      "accent": "#4AD9D1",
+      "font": "msyhbd.ttc",
+      "file": "T_Comic_Brush_zh.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 160,
+      "alpha_bounds": [
+        51,
+        15,
+        1006,
+        949
+      ],
+      "text_bounds": [
+        264,
+        432,
+        764,
+        606
+      ],
+      "sha256": "a7f4a698bfd946f1fce22d1e592574d7a86e507f04667037254f7e980e0cd345",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh"
+    },
+    {
+      "id": "Vitamins_en",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "VITAMINS!",
+      "template": "wide",
+      "outline": "#D54629",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "file": "T_Comic_Vitamins_en.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 118,
+      "alpha_bounds": [
+        51,
+        15,
+        1006,
+        949
+      ],
+      "text_bounds": [
+        262,
+        460,
+        764,
+        578
+      ],
+      "sha256": "d4cc0daffd7f31155ffd210c87528d482663dd19916477ed45fe02553a849953",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en"
+    },
+    {
+      "id": "Vitamins_de",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "VITAMINE!",
+      "template": "slanted",
+      "outline": "#D46A20",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "file": "T_Comic_Vitamins_de.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 118,
+      "alpha_bounds": [
+        17,
+        32,
+        1004,
+        952
+      ],
+      "text_bounds": [
+        263,
+        462,
+        753,
+        576
+      ],
+      "sha256": "878fa1a44d55a6664d76331b06e88ccbc22b4ed27003f97529c3a5c0bed9e930",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de"
+    },
+    {
+      "id": "Vitamins_fr",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "VITAMINES !",
+      "template": "compact",
+      "outline": "#853C8F",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "file": "T_Comic_Vitamins_fr.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 104,
+      "alpha_bounds": [
+        25,
+        27,
+        995,
+        952
+      ],
+      "text_bounds": [
+        258,
+        462,
+        764,
+        568
+      ],
+      "sha256": "cec9c1feb87b32695fc1e464caf1713d80a3423ad628fc3d4fe2516211a7d259",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr"
+    },
+    {
+      "id": "Vitamins_pt",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "VITAMINAS!",
+      "template": "slanted",
+      "outline": "#488A38",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "file": "T_Comic_Vitamins_pt.png",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "font_size": 102,
+      "alpha_bounds": [
+        17,
+        32,
+        1004,
+        952
+      ],
+      "text_bounds": [
+        264,
+        467,
+        752,
+        571
+      ],
+      "sha256": "bb21fc54826fd03dee4e8ef2f2b2633729f41959f622ad25346e3d4e075bc7bf",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt"
+    }
+  ],
+  "status": "Source PNG delivery; Unreal import and gameplay integration pending",
+  "tool": "Built-in image_gen blank templates; deterministic Pillow lettering and colors",
+  "translation_review": "Thematic translations authored for this set; native-speaker review not performed",
+  "color_space": "sRGB",
+  "alpha": "straight RGBA",
+  "origin": "top-left",
+  "fonts": "Windows installed fonts rasterized only; font binaries are not included"
+}

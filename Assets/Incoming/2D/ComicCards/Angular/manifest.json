@@ -1,0 +1,802 @@
+{
+  "cards": [
+    {
+      "id": "Manners_en_Angular1",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "MANNERS!",
+      "template": "lance",
+      "outline": "#2D6BDD",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#FFF2C2",
+      "ink": "#17121C",
+      "angle": -7,
+      "file": "T_Comic_Manners_en_Angular1.png",
+      "font_size": 80,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        328,
+        462,
+        657,
+        566
+      ],
+      "sha256": "83d949e0196b8853e4f2e225bac40ace061eeda168c6804501293232ca89a548",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en_Angular1"
+    },
+    {
+      "id": "Manners_de_Angular1",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "MANIEREN!",
+      "template": "shatter",
+      "outline": "#DB3B36",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#17121C",
+      "angle": 5,
+      "file": "T_Comic_Manners_de_Angular1.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        286,
+        446,
+        729,
+        569
+      ],
+      "sha256": "fc291b58a00e00d448ee15cfb26725f15fa5ccdf005929be0fe01a4ab0502e26",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de_Angular1"
+    },
+    {
+      "id": "Manners_fr_Angular1",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "LES BONNES\nMANIÈRES !",
+      "template": "thunder",
+      "outline": "#7F38B9",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#17121C",
+      "angle": -4,
+      "file": "T_Comic_Manners_fr_Angular1.png",
+      "font_size": 80,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        326,
+        412,
+        693,
+        591
+      ],
+      "sha256": "be78e9e5a120e2443c715469b78ff0547713cc2535111effbb727fc6421a73f5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr_Angular1"
+    },
+    {
+      "id": "Manners_ja_Angular1",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "礼儀！",
+      "template": "flare",
+      "outline": "#008C92",
+      "accent": "#F0C65D",
+      "font": "YuGothB.ttc",
+      "fill": "#F7DEE9",
+      "ink": "#17121C",
+      "angle": 8,
+      "file": "T_Comic_Manners_ja_Angular1.png",
+      "font_size": 124,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        326,
+        443,
+        649,
+        595
+      ],
+      "sha256": "e58edd2f4280eae9a5d363b28bd16a41c4b256857f610543c2aa85fd3547cd5c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja_Angular1"
+    },
+    {
+      "id": "Brush_en_Angular1",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "BRUSH!",
+      "template": "lance",
+      "outline": "#D66019",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "fill": "#FFF2C2",
+      "ink": "#17121C",
+      "angle": -7,
+      "file": "T_Comic_Brush_en_Angular1.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        334,
+        454,
+        650,
+        575
+      ],
+      "sha256": "1401719fef7d85b59a161fccb04642be6a6ee388cb31a4b142454542250e7ebb",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en_Angular1"
+    },
+    {
+      "id": "Brush_es_Angular1",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡CEPÍLLATE!",
+      "template": "shatter",
+      "outline": "#398531",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#17121C",
+      "angle": 5,
+      "file": "T_Comic_Brush_es_Angular1.png",
+      "font_size": 100,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        286,
+        449,
+        729,
+        580
+      ],
+      "sha256": "11d1ffec1366d4b00670e6e64b896d9ab7b44d2648f388d16a1caaf5094755c3",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es_Angular1"
+    },
+    {
+      "id": "Brush_ko_Angular1",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "양치해!",
+      "template": "thunder",
+      "outline": "#2D6BDD",
+      "accent": "#4AD9D1",
+      "font": "malgunbd.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#17121C",
+      "angle": -4,
+      "file": "T_Comic_Brush_ko_Angular1.png",
+      "font_size": 132,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        298,
+        428,
+        721,
+        575
+      ],
+      "sha256": "14ffc0044b55aa2eb1cf6a018fbee5fc19e79ac4fbcb7587a93023cc2b3288c9",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko_Angular1"
+    },
+    {
+      "id": "Brush_zh_Angular1",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "刷牙！",
+      "template": "flare",
+      "outline": "#DB3B36",
+      "accent": "#4AD9D1",
+      "font": "msyhbd.ttc",
+      "fill": "#F7DEE9",
+      "ink": "#17121C",
+      "angle": 8,
+      "file": "T_Comic_Brush_zh_Angular1.png",
+      "font_size": 112,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        341,
+        454,
+        608,
+        592
+      ],
+      "sha256": "3430670680d5eae9233b2e6d7705a995e3dc231f9fae9c6cf7f81b7b9fb4ad05",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh_Angular1"
+    },
+    {
+      "id": "Vitamins_en_Angular1",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "VITAMINS!",
+      "template": "lance",
+      "outline": "#7F38B9",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#FFF2C2",
+      "ink": "#17121C",
+      "angle": -7,
+      "file": "T_Comic_Vitamins_en_Angular1.png",
+      "font_size": 80,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        331,
+        461,
+        658,
+        566
+      ],
+      "sha256": "b9b1a5a0b8f527adffe01e39571f79f8d3e893803d189bb742a60b487a7ce8ad",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en_Angular1"
+    },
+    {
+      "id": "Vitamins_de_Angular1",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "VITAMINE!",
+      "template": "shatter",
+      "outline": "#008C92",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#17121C",
+      "angle": 5,
+      "file": "T_Comic_Vitamins_de_Angular1.png",
+      "font_size": 112,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        279,
+        442,
+        731,
+        572
+      ],
+      "sha256": "021b6e16d99a80052ffc85b47c5b300fbc1466060a8a2566f233664274da1194",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de_Angular1"
+    },
+    {
+      "id": "Vitamins_fr_Angular1",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "VITAMINES !",
+      "template": "thunder",
+      "outline": "#D66019",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#17121C",
+      "angle": -4,
+      "file": "T_Comic_Vitamins_fr_Angular1.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        303,
+        451,
+        714,
+        553
+      ],
+      "sha256": "c3536f0cd969d57c6316c381f1f1716740c2627cb20bf84693eaed9d1a617250",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr_Angular1"
+    },
+    {
+      "id": "Vitamins_pt_Angular1",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "VITAMINAS!",
+      "template": "flare",
+      "outline": "#398531",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#F7DEE9",
+      "ink": "#17121C",
+      "angle": 8,
+      "file": "T_Comic_Vitamins_pt_Angular1.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        301,
+        450,
+        712,
+        577
+      ],
+      "sha256": "0c7592f13117082a155ff4bcbe24fdf3d35b35cf7bacf02ccb4d2337447b81e2",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt_Angular1"
+    },
+    {
+      "id": "Manners_en_Angular2",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "MANNERS!",
+      "template": "shatter",
+      "outline": "#7F38B9",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#7F38B9",
+      "angle": 5,
+      "file": "T_Comic_Manners_en_Angular2.png",
+      "font_size": 112,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        280,
+        441,
+        736,
+        572
+      ],
+      "sha256": "0162c1a5b275f6d55e3de793e2762be9f934d9599af31ccb1f74d5f72df06cfd",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en_Angular2"
+    },
+    {
+      "id": "Manners_de_Angular2",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "MANIEREN!",
+      "template": "thunder",
+      "outline": "#008C92",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#008C92",
+      "angle": -4,
+      "file": "T_Comic_Manners_de_Angular2.png",
+      "font_size": 100,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        295,
+        445,
+        721,
+        557
+      ],
+      "sha256": "386204ee55ec81d8332660f83ba2e00399b5ae70ba1625b303ff5b4ed6797461",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de_Angular2"
+    },
+    {
+      "id": "Manners_fr_Angular2",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "LES BONNES\nMANIÈRES !",
+      "template": "flare",
+      "outline": "#D66019",
+      "accent": "#F0C65D",
+      "font": "impact.ttf",
+      "fill": "#F7DEE9",
+      "ink": "#D66019",
+      "angle": 8,
+      "file": "T_Comic_Manners_fr_Angular2.png",
+      "font_size": 60,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        363,
+        438,
+        646,
+        591
+      ],
+      "sha256": "313984466681071c4e00994b30ab620388a1a36894e56a874092350cdac951e9",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr_Angular2"
+    },
+    {
+      "id": "Manners_ja_Angular2",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "礼儀！",
+      "template": "lance",
+      "outline": "#398531",
+      "accent": "#F0C65D",
+      "font": "YuGothB.ttc",
+      "fill": "#FFF2C2",
+      "ink": "#398531",
+      "angle": -7,
+      "file": "T_Comic_Manners_ja_Angular2.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        360,
+        458,
+        593,
+        563
+      ],
+      "sha256": "317823bf27b422fa3b8825a923017b71d6b86f65d49e46ebd7de514d2d6c3941",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja_Angular2"
+    },
+    {
+      "id": "Brush_en_Angular2",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "BRUSH!",
+      "template": "shatter",
+      "outline": "#2D6BDD",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#2D6BDD",
+      "angle": 5,
+      "file": "T_Comic_Brush_en_Angular2.png",
+      "font_size": 152,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        281,
+        427,
+        735,
+        588
+      ],
+      "sha256": "f8ca41be08f77cfc1af50a6395c93df00518a3a01a129bc3fc2e4cc3c256b044",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en_Angular2"
+    },
+    {
+      "id": "Brush_es_Angular2",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡CEPÍLLATE!",
+      "template": "thunder",
+      "outline": "#DB3B36",
+      "accent": "#4AD9D1",
+      "font": "impact.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#DB3B36",
+      "angle": -4,
+      "file": "T_Comic_Brush_es_Angular2.png",
+      "font_size": 100,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        283,
+        446,
+        729,
+        560
+      ],
+      "sha256": "8fbdd65ce6ff20bfcdd070645e15362ac538416077d3c427b438c08db0c2e313",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es_Angular2"
+    },
+    {
+      "id": "Brush_ko_Angular2",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "양치해!",
+      "template": "flare",
+      "outline": "#7F38B9",
+      "accent": "#4AD9D1",
+      "font": "malgunbd.ttf",
+      "fill": "#F7DEE9",
+      "ink": "#7F38B9",
+      "angle": 8,
+      "file": "T_Comic_Brush_ko_Angular2.png",
+      "font_size": 116,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        320,
+        439,
+        697,
+        590
+      ],
+      "sha256": "1c69dc912007b05bd7bba34946d3aecff5918db30f6c88caa5ffb8ea2bf3318a",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko_Angular2"
+    },
+    {
+      "id": "Brush_zh_Angular2",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "刷牙！",
+      "template": "lance",
+      "outline": "#008C92",
+      "accent": "#4AD9D1",
+      "font": "msyhbd.ttc",
+      "fill": "#FFF2C2",
+      "ink": "#008C92",
+      "angle": -7,
+      "file": "T_Comic_Brush_zh_Angular2.png",
+      "font_size": 92,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        350,
+        455,
+        574,
+        559
+      ],
+      "sha256": "7c778c450a05e735bf4f253bc81731e81e11e0d727c87650651359b1b3973119",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh_Angular2"
+    },
+    {
+      "id": "Vitamins_en_Angular2",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "VITAMINS!",
+      "template": "shatter",
+      "outline": "#D66019",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#FFE58D",
+      "ink": "#D66019",
+      "angle": 5,
+      "file": "T_Comic_Vitamins_en_Angular2.png",
+      "font_size": 108,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        70,
+        109,
+        947,
+        940
+      ],
+      "text_bounds": [
+        282,
+        445,
+        729,
+        571
+      ],
+      "sha256": "1c84a29d24e7056a6a9c0edaef0da181e1bfb8f411d1a268260bcaf69a280d79",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en_Angular2"
+    },
+    {
+      "id": "Vitamins_de_Angular2",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "VITAMINE!",
+      "template": "thunder",
+      "outline": "#398531",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#E3F9EB",
+      "ink": "#398531",
+      "angle": -4,
+      "file": "T_Comic_Vitamins_de_Angular2.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        82,
+        100,
+        941,
+        947
+      ],
+      "text_bounds": [
+        302,
+        444,
+        718,
+        558
+      ],
+      "sha256": "1671c2f2fed9e8618814b4d9f553902cde8c13f08bac2339b18906add312bbe7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de_Angular2"
+    },
+    {
+      "id": "Vitamins_fr_Angular2",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "VITAMINES !",
+      "template": "flare",
+      "outline": "#2D6BDD",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#F7DEE9",
+      "ink": "#2D6BDD",
+      "angle": 8,
+      "file": "T_Comic_Vitamins_fr_Angular2.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        136,
+        952,
+        926
+      ],
+      "text_bounds": [
+        298,
+        450,
+        716,
+        579
+      ],
+      "sha256": "cbbdd206ece9e16645ad4078c14bad30c60ddf5554c99e2ca1d78928e687d3c0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr_Angular2"
+    },
+    {
+      "id": "Vitamins_pt_Angular2",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "VITAMINAS!",
+      "template": "lance",
+      "outline": "#DB3B36",
+      "accent": "#B8D94A",
+      "font": "impact.ttf",
+      "fill": "#FFF2C2",
+      "ink": "#DB3B36",
+      "angle": -7,
+      "file": "T_Comic_Vitamins_pt_Angular2.png",
+      "font_size": 68,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        64,
+        92,
+        952,
+        947
+      ],
+      "text_bounds": [
+        337,
+        467,
+        649,
+        562
+      ],
+      "sha256": "2ea3045445245f1575a60f90ba9a70ad73300f88bd99206269dc50814d5a2ce3",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt_Angular2"
+    }
+  ],
+  "tool": "Built-in image_gen blank templates; Pillow lettering and colors",
+  "silhouette_policy": "Generated contours with transparent canvas padding; no central rectangle or body polygon",
+  "alpha": "straight RGBA",
+  "color_space": "sRGB",
+  "translation_review": "Inherited thematic translations; native-speaker review not performed",
+  "status": "PNG sources only; Unreal import and effects integration pending"
+}
