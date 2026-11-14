@@ -1,4 +1,17 @@
-# STATUS - GAME, Nov 14: P1 packaged and smoked
+# STATUS - Nov 14: Fixes2 checkpoint for a clean session
+
+Dylan requested a fresh-session handoff. **GO has been given; CODEX owns all
+eight Fixes2 rows. Engine is FREE.** Read `Docs/Workers/codex-fixes2.md` for the
+current commits, verified evidence and exact next chunk. Editor build passes;
+82 Jam tests and 149 backend tests pass. Voice imports and approved shield are
+committed; large skill icons are committed and visually checked.
+
+**Fixes2 is not done:** the screen-owned caption still overlaps bottom menu
+buttons, and offline/proposal/fallback village verification remains. Fix that
+UI chunk next. Round three is waiting in Fixes3.txt; do not start it yet.
+No new package, backend deploy or upload. Older HOLD/P1 notes below are historical.
+
+## Historical P1 snapshot
 
 **Nov 14 voice pickup delivery:** Wrote 20 additional Fenella reality-show,
 village and hero-reaction candidates, and Luna generated those plus the five

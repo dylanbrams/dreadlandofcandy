@@ -360,3 +360,15 @@ resumable runner, 25 MP3 originals and 25 mono 48 kHz PCM16 WAVs, scoped
 manifest and technical review. Listening remains pending; no Unreal imports,
 runtime pool changes, engine tests or packaging in this audio-only task.
 Source audio remains untracked, consistent with project policy.
+
+## Nov 14 — Fixes2 clean-session checkpoint
+
+CODEX took over all eight fixes after Claude quota ended; Dylan explicitly
+released HOLD and approved the Meshy shield. Imported 25 Fenella recordings,
+attached the shield to the knight's left hand, built candy markers and enlarged
+skill icons. Proposal backend and HUD hooks/async guards are committed. Editor
+build succeeds; 82 Jam tests and 149 fake-model backend tests pass. Inspected
+captures show the HUD/shield working, but screen-owned status captions overlap
+bottom menu options. Fixes2 remains open for that UI correction and village
+offline/proposal/failure verification. No package/deploy/upload. Dylan requested
+a clean-session handoff: `Docs/Workers/codex-fixes2.md`; engine FREE.
