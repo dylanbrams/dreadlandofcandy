@@ -298,7 +298,7 @@ Footer on the panel: "Respec unavailable. Levels one to six tested poorly."
 ## Lecture bubbles
 
 Default pool (jagged, all caps):
-ABSOLUTELY NOT. / WE'VE TALKED ABOUT THIS. / I'M NOT ANGRY. / I'M DISAPPOINTED. / FORM A LINE! / MIND YOUR TEETH! / IS THIS WHO YOU WANT TO BE? / ELBOWS. / INDOOR VOICE! / EXCUSE ME. / PER MY LAST LECTURE / WE DO NOT EAT THE CROPS. / LOOK AT ME WHEN I'M LECTURING.
+ABSOLUTELY NOT. / WE'VE TALKED ABOUT THIS. / I'M NOT ANGRY. / I'M DISAPPOINTED. / FORM A LINE! / MIND YOUR TEETH! / IS THIS WHO YOU WANT TO BE? / ELBOWS. / INDOOR VOICE! / EXCUSE ME. / PER MY LAST LECTURE / WE DO NOT EAT THE CROPS. / LOOK AT ME WHEN I'M LECTURING. / EAT YOUR CELERY! / PEPPERMINT FRESH! / TWO MINUTES, TWICE A DAY! / FLOSS OR PERISH! / THIS IS FOR YOUR OWN GOOD! / SUGAR IS A LIE! / OPEN WIDE! / NOT ON MY WATCH, PLAQUE!
 
 "Sadder" note pool (round bubbles, lower case): if it's not too much trouble / i just worry / no, you go ahead / i'm sure you had your reasons
 
@@ -306,7 +306,11 @@ Budget-ran-out pool: [SHOUTING] / [LECTURE] / [BUBBLE GOES HERE]
 
 Damage numbers: show guilt, not damage. `+60 GUILT`. A strong hit: `EXCELLENT ADVICE!` Pacified: `REFORMED`.
 
-Nuisance replies (tiny bubbles): ok / sorry / fine. / ...mum? / i'll floss / he started it
+Nuisance replies (tiny bubbles): ok / sorry / fine. / ...mum? / i'll floss / he started it / my gums... / is that CELERY? / worth it / i want my mum / minty!!
+
+Hit words (jagged, over whatever an attack hits; Fixes3 #2): Knight HARRUMPH! / BONK! / TSK TSK! / MANNERS! / CLANG! · Mage SPARKLE! / FIZZ! / SQUEAKY CLEAN! / POOF! / MINTY! · Archer THWACK! / CRUNCH! / CELERY'D! / TWANG! / FWIP! · Barbarian KNEADED! / WHUMP! / SPLAT! / DOUGH! / KA-BLAM!
+
+Giver afterglow (after all their quests; Fixes3 #10): `VillageAfterglow` in `JamVillageFlow.cpp`, three lines per giver (Mayor Bonbon, Baker Crumb, Gardener Sprig, Dr. Molar, Scout Taffy).
 
 ## Villagers (via the Candy Rock, while standing next to you)
 
