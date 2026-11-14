@@ -28,4 +28,15 @@ Write-Host "== Packaging $ProjectName Win64 $Config -> $ArchiveDir ==" -Foregrou
 & $RunUAT BuildCookRun "-project=$Project" "-target=$GameTarget" -platform=Win64 "-clientconfig=$Config" `
     -build -cook -stage -package -pak -iostore -archive "-archivedirectory=$ArchiveDir" -unattended -utf8output
 if ($LASTEXITCODE -ne 0) { throw "RunUAT failed with exit code $LASTEXITCODE" }
+
+# Give the player-facing launcher the game's title. The root exe is only a bootstrap stub that
+# runs MegaJam\Binaries\Win64\..., so renaming it is safe; the inner binary keeps the target name.
+$ExeName = "TheDreadLandOfCandy.exe"
+$StubExe = Join-Path $ArchiveDir "$GameTarget.exe"
+$NamedExe = Join-Path $ArchiveDir $ExeName
+if (Test-Path $StubExe) {
+    if (Test-Path $NamedExe) { Remove-Item $NamedExe -Force }
+    Rename-Item $StubExe $ExeName
+    Write-Host "Renamed launcher to $ExeName" -ForegroundColor Green
+}
 Write-Host "Packaged to $ArchiveDir" -ForegroundColor Green

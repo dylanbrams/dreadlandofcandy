@@ -367,7 +367,7 @@ TArray<FString> FJamVillageQuestLog::CompletedRoutes() const
 
 namespace
 {
-    FString CleanText(const FString& Text, int32 Limit)
+    FString CleanVillageText(const FString& Text, int32 Limit)
     {
         FString Result;
         for (TCHAR C : Text) { if (C >= 32 && C != 127 && C != TEXT('<') && C != TEXT('>')) { Result.AppendChar(C); } }
@@ -653,7 +653,7 @@ bool JamVillageQuests::ReadProposal(const FString& Json, FName QuestId, int32 Le
         || !Root->TryGetStringField(TEXT("label"), Plan.Label) || !Root->TryGetStringField(TEXT("pitch"), Plan.Pitch)
         || !Root->TryGetStringField(TEXT("reaction"), Plan.Reaction)
         || !Root->TryGetArrayField(TEXT("steps"), Steps) || Steps->IsEmpty() || Steps->Num() > 8) { return false; }
-    Plan.Label = CleanText(Plan.Label, 40); Plan.Pitch = CleanText(Plan.Pitch, 240); Plan.Reaction = CleanText(Plan.Reaction, 160);
+    Plan.Label = CleanVillageText(Plan.Label, 40); Plan.Pitch = CleanVillageText(Plan.Pitch, 240); Plan.Reaction = CleanVillageText(Plan.Reaction, 160);
     if (Plan.Label.IsEmpty() || Plan.Pitch.IsEmpty() || Plan.Reaction.IsEmpty()) { return false; }
     TArray<FJamQuestStep> Parsed;
     for (const TSharedPtr<FJsonValue>& Value : *Steps)
@@ -718,7 +718,7 @@ bool FJamVillageQuestLog::SelectPlan(int32 Index, const FJamQuestPlan& Plan)
     Q.Extra.Reset();
     for (int32 i = 1; i < Clamped.Num(); ++i) { Q.Extra.Add(Clamped[i]); }
     Q.Route = TEXT("proposal");
-    const FString Pitch = CleanText(Plan.Pitch, 240);
+    const FString Pitch = CleanVillageText(Plan.Pitch, 240);
     if (!Pitch.IsEmpty()) { Q.Request = Pitch; }
     return true;
 }

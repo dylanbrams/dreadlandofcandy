@@ -1,3 +1,7 @@
+# STATUS - Nov 15: fresh packaged build
+
+Development package succeeded after renaming a unity-build helper collision in JamVillageQuests.cpp. Packaged Open film autoplay passed all three scenes; packaged village autoplay passed main=3 side=10. Corrected ZIP: Builds/ImaginaryComponent_TheDreadLandOfCandy.zip, 727.3 MiB; launcher and cooked content containers verified. No upload. The smoke and zip scripts select the wrong executable after the launcher rename; the package run used a temporary alias and verified the final archive after removing it. Manual play and upload remain. Engine FREE.
+
 # STATUS - Nov 14: Riverlands map redesign
 
 **GAME redesign:** Dylan authorized a larger, prettier map using the new
