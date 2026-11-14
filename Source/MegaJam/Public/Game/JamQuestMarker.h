@@ -4,7 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "JamQuestMarker.generated.h"
 
-/** A camera-facing, emissive golden triangle. Anchored markers follow their speaker. */
+/** Candy cane pointer: the visible marker nearest the compass target is red/gold and animated. */
 UCLASS()
 class MEGAJAM_API AJamQuestMarker : public AActor
 {
@@ -14,11 +14,17 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	void PointAt(const FVector& Ground, AActor* InAnchor = nullptr, float Height = 300.f);
+	static AJamQuestMarker* FindActive(UWorld* World);
 private:
-	UPROPERTY() TObjectPtr<class UProceduralMeshComponent> Mesh;
+	FVector TargetLocation() const;
+	UPROPERTY() TObjectPtr<class USceneComponent> Pivot;
+	UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Bands;
+	UPROPERTY() TObjectPtr<class UMaterialInstanceDynamic> RedMaterial;
+	UPROPERTY() TObjectPtr<class UMaterialInstanceDynamic> PaleMaterial;
 	UPROPERTY() TObjectPtr<class UMaterialInterface> BaseMaterial;
 	TWeakObjectPtr<AActor> Anchor;
 	FVector Base = FVector::ZeroVector;
 	float Lift = 300.f;
 	float Age = 0.f;
+	bool bActiveStyle = false;
 };

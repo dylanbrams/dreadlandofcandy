@@ -68,6 +68,8 @@ flow hides all markers near the target, none is active (e.g. already at town).
 Fenella deliberately uses this same active style. The compass gets the same
 red/gold cane glyph; edge arrows still show the direction off the strip.
 Existing cooking of engine basic shapes/FX must be checked in the GO package.
+Compile: actor/header and compass glyph built successfully with Scripts/build.ps1.
+No behavior verification during HOLD. Row 8 commit: caa6046.
 
 ## Verify at GO
 

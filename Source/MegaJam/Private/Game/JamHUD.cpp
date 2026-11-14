@@ -709,12 +709,23 @@ void AJamHUD::DrawCompass()
 	const float Pulse = 0.55f + 0.45f * (0.5f + 0.5f * FMath::Sin(GetWorld()->GetRealTimeSeconds() * 2.f * PI * 1.5f));
 	const FLinearColor Gold(1.f, 0.83f, 0.3f, Pulse);
 	const float S = 14.f * Px;
-	// A downward triangle on the strip; at the edge it turns to point the way.
+	// Match the world pointer: a red/gold cane on the active compass bearing.
 	if (FMath::Abs(Rel) <= 60.f)
 	{
-		DrawLine(Mx - S, StripY - S * 1.6f, Mx + S, StripY - S * 1.6f, Gold, 3.f * Px);
-		DrawLine(Mx - S, StripY - S * 1.6f, Mx, StripY, Gold, 3.f * Px);
-		DrawLine(Mx + S, StripY - S * 1.6f, Mx, StripY, Gold, 3.f * Px);
+		for (int32 Band = 0; Band < 6; ++Band)
+		{
+			const float Y = StripY - S * 2.f + Band * S / 3.f;
+			DrawLine(Mx, Y, Mx, Y + S / 3.f, Band % 2 == 0 ? FLinearColor(1.f, 0.05f, 0.08f, Pulse) : Gold, 5.f * Px);
+		}
+		for (int32 Segment = 0; Segment < 8; ++Segment)
+		{
+			const float A = Segment * PI / 8.f, B = (Segment + 1) * PI / 8.f;
+			DrawLine(Mx + S * 0.5f - S * 0.5f * FMath::Cos(A), StripY - S * 2.f - S * 0.5f * FMath::Sin(A),
+				Mx + S * 0.5f - S * 0.5f * FMath::Cos(B), StripY - S * 2.f - S * 0.5f * FMath::Sin(B),
+				Segment % 2 == 0 ? FLinearColor(1.f, 0.05f, 0.08f, Pulse) : Gold, 5.f * Px);
+		}
+		DrawLine(Mx - S * 0.5f, StripY - S * 0.5f, Mx, StripY, Gold, 3.f * Px);
+		DrawLine(Mx + S * 0.5f, StripY - S * 0.5f, Mx, StripY, Gold, 3.f * Px);
 	}
 	else
 	{
