@@ -28,9 +28,9 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 | Bucket | Items |
 | --- | --- |
-| Done Nov 13 | 1 speed, 3 icons, 4 centre directions, 6 starting ranks, 9 compass pulse, 10 weapons on the back. Item 5 is cut off mid-sentence: Dylan finishes it or drops it |
+| Done Nov 13 | 1 speed, 3 icons, 4 centre directions, 6 starting ranks, 9 compass pulse, 10 weapons on the back |
 | Verify in batch 0 | 2, 12 and 16 mouse clicks; 14 enemies sinking; 7 character sheet |
-| Batch 1, BLOCKER | **15b: no HUD in Open mode.** **13: golden rain greys the screen** (fallback: drop the rain's post-process and keep the particles). **17: archer's bow backwards** (grip rotation, folded into the fixes session so only one session holds the engine). **11: the first quest's second leg always offers "directions"** |
+| Batch 1, BLOCKER | **5: the compass's target label sits on top of the compass strip** (`AJamHUD::DrawCompass`; move the label below the strip so neither hides the other). **15b: no HUD in Open mode.** **13: golden rain greys the screen** (fallback: drop the rain's post-process and keep the particles). **17: archer's bow backwards** (grip rotation, folded into the fixes session so only one session holds the engine). **11: the first quest's second leg always offers "directions"** |
 | Batch 2, SHIP | **15 controls:** Q/E turn the camera, right mouse drags it, the wheel zooms, F uses, R is the ultimate, middle mouse is skill 2. The "control settings menu" becomes a read-only controls card in Options and Pause; rebinding is cut. **18 numeric XP:** XP for disabling a goblin, more for brushing it, a bonus per quest, tuned so the three film sets give 1.6 levels (plain C++ rule with tests). **7**, if batch 0 shows it unfinished: level-up opens a character sheet to pick the skill |
 | Decide by 6 PM, default cut | **8 and the rest of 18: town NPCs with more quests at outer spots.** Quest givers were cut on Nov 13. Smallest real version: one villager who, after the three scenes, points the compass to an outer spot that replays a scene with more enemies for XP. It needs Dylan's new spots in the map first. Also cut: control rebinding, and a defeat animation beyond the sinking fix |
 

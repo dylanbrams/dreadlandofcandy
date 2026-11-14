@@ -44,7 +44,7 @@ Dylan's R5 play (Nov 13), the R7 list. Original findings are retained below; imp
 2. **The "LMB" hint is wrong, and clicking did not work.** Dylan's mouse buttons are swapped in Windows; he ended up using Space. Found: the engine respects the Windows swap (`WindowsApplication.cpp`, raw input reads `SM_SWAPBUTTON`), so the primary button already reaches the game as `LeftMouseButton`. The labels (`JamHUD.cpp:262` and `:292`, `JamHudView.cpp:35`) should say "Mouse 1" / "Mouse 2" (or "Click" / "Right-click"), not LMB and RMB. **Not yet researched:** why clicking did not lecture (which mode, first click eaten by viewport capture, the input mode the HUD sets in `JamHUD.cpp:401-412`). Reproduce before fixing.
 3. **The skills need images.** None exist: `FJamHudSkill` has a name and a key, no icon. Needs four icons (Lecture, Form A Line, Sigh, Last Judgment) from ASSETS or generated, plus an image slot in the HUD skill bar. Not researched yet.
 4. **Before each round in the arena, the direction should go big in the centre of the screen for a second, then shrink to where it sits now.** Not researched yet: find the objective or direction line in `JamHudWidget` and where a stage starts.
-5. The navigation compass and its 
+5. The navigation compass and its associated target location are on top of each other. The target location is above the navigation compass, so it's completely useless.
 6. The character starts at level 7 so they have all their skills at level 1 or 2. Let's say the fourth skill is their ult so it's level 1 the entire game. The others can be leveled and all start at level 2. 
 7. The level up screen needs to go to a character sheet where the player can pick which skill to level up.
 8. After the three quests are given, the player can continue to wander around and level up; the open world should have an NPC that will give new quests by sending you to one of the spots further out on the map I'm going to add.
@@ -53,6 +53,12 @@ Dylan's R5 play (Nov 13), the R7 list. Original findings are retained below; imp
 11. The second leg of the first quest should ALWAYS allow the player to choose to enter 'directions'
 12. The player should always be able to use their mouse to click on things to activate them - skills, quests, whatever.  
 13. The golden rain causes all the textures on the screen to go grey. Totally broken.
+14. Sometimes the enemies, when defeated, basically bury themselves in the ground to the neck. Very weird, not very happy about it. They need some sort of animation showing their status.
+15. Controls are bad; the Q and E buttons should turn the camera, and the right mouse should be the drag for moving it around. Rolling the mouse wheel should zoom the camera in and out. Skill 2 on the middle mouse might be okay, with F as use and R as ult. Build a control settings menu. HUD doesn't exist in open world. 
+16. Aiming the mouse button 1 clicks broke.
+17. The archer's bow is geting held backwards when she shoots arrows and it is hilarious.
+18. Make the exp system NUMERIC. I want exp for disabling goblins then brushing their teeth and a bonus for finishing the quest. These three quests should level me up 1.6 times and then there should be some NPC's in the town that give more quests to take me the rest of the way.
+19. Some of the 'path looking' area on the walkable hill is not walkable.
 
 ## R7 checkpoint: hill and initial playtest fixes (Nov 13)
 
