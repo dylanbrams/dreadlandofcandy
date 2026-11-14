@@ -1,3 +1,7 @@
+# STATUS - Nov 15: Fixes3 #1 giant celery
+
+Interacting with any non-goblin (rats, bugs) now shows the hero holding a 260-380 uu `SM_Celery` at its mouth (goblins keep the toothbrush and foam). The prop aligns its longest mesh axis to the mouth, so an X-lying mesh still works. Build clean, 82 Jam tests pass. Not seen live: celery orientation and grip need a look in play.
+
 # STATUS - Nov 15: Fixes3 #9, #10, #12 audio and afterglow lines
 
 Root cause of #9 and the archer audio in #12: every class played the knight's Sword_Raise/Lecture sounds; the mage, archer and barbarian SFX were imported but never cued. `NotifySkillCast` now plays per-class cues (sugar, soap, peppermint; celery, floss; knead, encouragement, rolling pin); the knight's Last Judgment adds the manners dome. #10: each giver has three afterglow lines after their quests are done (`VillageAfterglow` in `JamVillageFlow.cpp`); random quest counts per villager not done. #3 left as is: all classes share one set of hit shapes in GAS; only cosmetics differ. Build clean, 82 Jam tests pass. Not heard or seen live.

@@ -183,6 +183,7 @@ private:
     void TickPresentationReview();
     UPROPERTY(VisibleAnywhere) TObjectPtr<UStaticMeshComponent> ArtBrush;
     TWeakObjectPtr<AJamNuisance> BrushTarget;
+    bool bFeedingCelery = false;   // Fixes3 #1: the held tool is a giant celery stick, not the toothbrush
     FVector EquippedWeaponScale = FVector::OneVector;
     float WeaponDrawUntil = -1.f;
     float BrushUntil = -1.f;

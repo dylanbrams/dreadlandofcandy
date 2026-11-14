@@ -828,16 +828,20 @@ FVector AJamHero::BrushingMouth(const AJamNuisance* Target) const
 
 void AJamHero::BeginBrushFeedback(AJamNuisance* Target, float Seconds)
 {
-    if (!Target || !Target->ArtMesh.Contains(TEXT("Goblin"))) { return; }
+    if (!Target) { return; }
+    // Fixes3 #1: goblins get the toothbrush; everything else is fed a ridiculously large stick of celery.
+    bFeedingCelery = !Target->ArtMesh.Contains(TEXT("Goblin"));
+    UStaticMesh* Tool = JamArt::Load(bFeedingCelery ? TEXT("SM_Celery") : TEXT("SM_Toothbrush"));
+    if (!Tool) { return; }
     BrushTarget = Target;
     BrushUntil = GetWorld()->GetTimeSeconds() + Seconds;
     RigOneShotUntil = -1.f;
     WeaponDrawUntil = -1.f;
     RigPlaying = NAME_None;
-    if (!ArtBrush->GetStaticMesh()) { ArtBrush->SetStaticMesh(JamArt::Load(TEXT("SM_Toothbrush"))); }
+    if (ArtBrush->GetStaticMesh() != Tool) { ArtBrush->SetStaticMesh(Tool); }
     UpdateWeaponCarry();
     UpdateBrushing();
-    UE_LOG(LogJam, Log, TEXT("BrushTool: %s oversized toothbrush -> %s"), *JamCast::Get(CastIndex).Id, *Target->GetName());
+    UE_LOG(LogJam, Log, TEXT("BrushTool: %s oversized %s -> %s"), *JamCast::Get(CastIndex).Id, bFeedingCelery ? TEXT("celery") : TEXT("toothbrush"), *Target->GetName());
 }
 
 void AJamHero::UpdateBrushing()
@@ -854,15 +858,20 @@ void AJamHero::UpdateBrushing()
     const FVector Contact = Mouth + Target->GetActorRightVector() * FMath::Sin(Now * 18.f) * 7.f;
     const FVector Toward = Contact - Grip;
     const FBox Box = ArtBrush->GetStaticMesh()->GetBoundingBox();
-    const float Tall = FMath::Max(1.f, Box.GetSize().Z);
-    const float Length = FMath::Clamp(Toward.Size() / 0.78f, 130.f, 240.f);
+    // The toothbrush stands along Z; the celery may lie along another axis, so use its longest one.
+    const FVector Size = Box.GetSize();
+    const int32 Axis = !bFeedingCelery ? 2 : (Size.X >= Size.Y && Size.X >= Size.Z ? 0 : (Size.Y >= Size.Z ? 1 : 2));
+    const FVector AxisDir = Axis == 0 ? FVector::ForwardVector : (Axis == 1 ? FVector::RightVector : FVector::UpVector);
+    const float Tall = FMath::Max(1.f, Size[Axis]);
+    const float Length = bFeedingCelery ? FMath::Clamp(Toward.Size() / 0.6f, 260.f, 380.f) : FMath::Clamp(Toward.Size() / 0.78f, 130.f, 240.f);
     const float Scale = Length / Tall;
-    const float Tip = Box.Min.Z + Tall * 0.88f;
-    const float GripZ = FMath::Clamp(Tip - Toward.Size() / Scale, Box.Min.Z + Tall * 0.05f, Box.Min.Z + Tall * 0.65f);
-    const FVector LocalGrip(Box.GetCenter().X, Box.GetCenter().Y, GripZ);
-    const FQuat Turn = FQuat::FindBetweenNormals(FVector::UpVector, Toward.GetSafeNormal());
+    const float Tip = Box.Min[Axis] + Tall * 0.88f;
+    const float GripAt = FMath::Clamp(Tip - Toward.Size() / Scale, Box.Min[Axis] + Tall * 0.05f, Box.Min[Axis] + Tall * 0.65f);
+    FVector LocalGrip = Box.GetCenter();
+    LocalGrip[Axis] = GripAt;
+    const FQuat Turn = FQuat::FindBetweenNormals(AxisDir, Toward.GetSafeNormal());
     ArtBrush->SetWorldTransform(FTransform(Turn, Grip - Turn.RotateVector(LocalGrip * Scale), FVector(Scale)));
-    if (Now >= NextBrushFoamAt)
+    if (!bFeedingCelery && Now >= NextBrushFoamAt)
     {
         AJamAttackParticles::SpawnBrushFoam(this, Target, Mouth);
         NextBrushFoamAt = Now + 0.55f;
