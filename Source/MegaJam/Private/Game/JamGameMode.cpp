@@ -900,12 +900,49 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 
 // ---- Fenella (T11) -------------------------------------------------------------------------------------------
 
+void AJamGameMode::NotifyAttackHit(AJamHero* Caster, AActor* Victim)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !Caster || !Victim) { return; }
+	static const TArray<FString> Words[] = {
+		{ TEXT("HARRUMPH!"), TEXT("BONK!"), TEXT("TSK TSK!"), TEXT("MANNERS!"), TEXT("CLANG!") },
+		{ TEXT("SPARKLE!"), TEXT("FIZZ!"), TEXT("SQUEAKY CLEAN!"), TEXT("POOF!"), TEXT("MINTY!") },
+		{ TEXT("THWACK!"), TEXT("CRUNCH!"), TEXT("CELERY'D!"), TEXT("TWANG!"), TEXT("FWIP!") },
+		{ TEXT("KNEADED!"), TEXT("WHUMP!"), TEXT("SPLAT!"), TEXT("DOUGH!"), TEXT("KA-BLAM!") },
+	};
+	const TArray<FString>& Own = Words[FMath::Clamp(Caster->GetCastIndex(), 0, 3)];
+	const float Now = GetWorld()->GetTimeSeconds();
+	GS->Bubbles.RemoveAll([Now, Victim](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid() || B.Anchor.Get() == Victim; });
+	AJamGameState::FWorldBubble B;
+	B.LineId = TEXT("HitWord");
+	B.Text = Own[FMath::RandRange(0, Own.Num() - 1)];
+	B.Anchor = Victim;
+	B.Offset = FVector(FMath::FRandRange(-40.f, 40.f), 0.f, 150.f);
+	B.Until = Now + 0.8f;
+	B.bJagged = true;
+	GS->Bubbles.Add(B);
+}
+
 void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 {
 	if (!InHero || InHero != Hero.Get()) { return; }
 	// The sound of each skill (R1): the lecture winds up (raise, inhale) and lands; the others land.
 	// Fixes3 #9/#12: the mage, archer and barbarian have their own sounds; only the knight raises a sword.
 	const int32 Cast = InHero->GetCastIndex();
+	// Fixes3 #2: the camera feels every attack; ultimates thump again when their big props land.
+	switch (Skill)
+	{
+	case EJamSkill::Lecture:      InHero->AddShake(6.f); break;
+	case EJamSkill::FormALine:    InHero->AddShake(10.f); break;
+	case EJamSkill::LastJudgment:
+		InHero->AddShake(14.f);
+		if (Cast == 1) { InHero->AddShake(26.f, 2.0f); }                                // the giant peppermints land
+		if (Cast == 2) { InHero->AddShake(8.f, 0.75f); InHero->AddShake(12.f, 1.1f); }  // the arrow volley thuds in
+		if (Cast == 3) { InHero->AddShake(14.f, 0.6f); InHero->AddShake(20.f, 1.3f); }
+		if (Cast == 0) { InHero->AddShake(22.f, 0.4f); }
+		break;
+	default: InHero->AddShake(3.f); break;
+	}
 	auto PlayEach = [this](std::initializer_list<TPair<const TCHAR*, float>> Cues) { for (const auto& C : Cues) { JamSfx::Play(this, C.Key, C.Value); } };
 	if (Cast == 1)
 	{

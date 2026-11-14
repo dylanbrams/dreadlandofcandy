@@ -74,6 +74,8 @@ public:
 
 	/** The hero cast a skill (cosmetic: Fenella may remark on the Lecture; autoplay counts casts). */
 	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
+	/** Fixes3 #2: a jagged comic sound word over something an attack just hit, in the caster's class voice. */
+	void NotifyAttackHit(AJamHero* Caster, AActor* Victim);
 
 	/** While the wrap panel is up, a skill button spends a point on that skill. True if it did. */
 	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill, bool bFromCharacterSheet = false);

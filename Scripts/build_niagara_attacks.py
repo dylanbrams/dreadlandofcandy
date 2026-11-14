@@ -136,8 +136,17 @@ def emitter(system, name, recipe, duration):
         pos = "float3(0.0,0.0,5.0)"
         scale = f"User.Radius*0.01*(0.7+0.3*{t})"
     elif kind == "rain":
-        fall = f"max(0.0, {age}-frac(Particles.FXIndex*0.618)*0.55)"
-        pos = f"float3(cos({phase})*User.Radius*sqrt(frac(Particles.FXIndex*0.754+0.1)),sin({phase})*User.Radius*sqrt(frac(Particles.FXIndex*0.754+0.1)),max(0.0,650.0-{fall}*{fall}*1100.0))"
+        # delay/spread/height: a late wave of big ones drops after the small ones (Fixes3 #2).
+        fall = f"max(0.0, {age}-{recipe.get('delay', 0.0)}-frac(Particles.FXIndex*0.618)*{recipe.get('spread', 0.55)})"
+        reach = f"User.Radius*{recipe.get('reach', 1.0)}"
+        pos = f"float3(cos({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),sin({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),max(0.0,{recipe.get('height', 650.0)}-{fall}*{fall}*1100.0))"
+    elif kind == "arrows":
+        # Fixes3 #2, archer identity: celery arrows loosed from the bow, arcing into the area ahead, nose first.
+        u = f"clamp(({age}-frac(Particles.FXIndex*0.618)*{recipe.get('spread', 0.6)})/{recipe.get('flight', 0.7)},0.0,1.0)"
+        land_x = f"User.Length*(0.45+0.55*frac(Particles.FXIndex*0.754+0.1))"
+        land_y = f"sin({phase})*User.Radius*0.8"
+        pos = f"float3({land_x}*{u},{land_y}*{u},120.0*(1.0-{u})+{recipe.get('arc', 420.0)}*sin({u}*3.141593))"
+        pitch = f"atan2({land_x},{recipe.get('arc', 420.0)}*3.141593*cos({u}*3.141593)-120.0)"
     elif kind == "orbit":
         angle = f"{phase}+{age}*9.0"
         pos = f"float3(cos({angle})*User.Radius*0.75,sin({angle})*User.Radius*0.75,80.0+sin({phase}*1.7)*40.0)"
@@ -155,7 +164,10 @@ def emitter(system, name, recipe, duration):
         pos = "float3(0.0,0.0,30.0+Particles.FXIndex*9.0)"
         scale = "1.0"
     elif kind == "volley":
-        pos = f"float3(User.Length*{t},sin({phase})*35.0*sin({t}*3.141593),80.0)"
+        # Fanned volley: each prop takes its own lane and arc, so a cap of 12+ reads as a spray.
+        lane = f"sin({phase})*{recipe.get('fan', 35.0)}*sin({t}*3.141593)"
+        lift = f"80.0+{recipe.get('arc', 0.0)}*sin({t}*3.141593)*frac(Particles.FXIndex*0.754+0.3)"
+        pos = f"float3(User.Length*{t}*(0.8+0.2*frac(Particles.FXIndex*0.31)),{lane},{lift})"
     else:
         raise ValueError(kind)
     base_color = recipe.get("color", "User.PrimaryColor.rgb")
@@ -172,6 +184,8 @@ def emitter(system, name, recipe, duration):
         updates.append(("Particles.MeshOrientation", "quat", f"float4(0.0,0.0,sin(({angle})*0.5),cos(({angle})*0.5))"))
     elif kind == "rain":
         updates.append(("Particles.MeshOrientation", "quat", "float4(0.0,0.70710678,0.0,0.70710678)"))
+    elif kind == "arrows":
+        updates.append(("Particles.MeshOrientation", "quat", f"float4(0.0,sin(({pitch})*0.5),0.0,cos(({pitch})*0.5))"))
     assign(system, name, "ParticleUpdateScript", updates)
     for rend in topology.get_editor_property("Renderers"):
         r = native_ref(system, name, renderer=rend.get_editor_property("RendererIndex"))
@@ -207,6 +221,17 @@ DOME = {"kind": "dome", "mesh": "SM_FX_Dome", "count": "1"}
 STRANDS = {"kind": "strand", "mesh": "SM_FX_Strand", "cap": 6}
 IMPACT = {"kind": "impact", "size": 35}
 
+# Fixes3 #2 signature layers: lots more of each class's own props.
+CANDY_SHOWER = dict(CANDY, cap=220, spread=1.0, reach=1.15)
+CANDY_BIG = dict(CANDY, cap=5, scale=9.0, delay=0.9, spread=0.35, height=1500.0, reach=0.6)
+ARROW_VOLLEY = {"kind": "arrows", "mesh": "SM_FX_Celery", "cap": 48, "scale": 1.1, "spread": 0.7, "flight": 0.75, "arc": 420.0}
+CELERY_SPRAY = dict(SUGAR, mesh="SM_FX_Celery", cap=14, scale=1.8, fan=160.0, arc=220.0)
+SUGAR_SPRAY = dict(SUGAR, cap=36, scale=1.6, fan=140.0, arc=180.0)
+FLOUR_CLOUD = dict(FLOUR, size=120, cap=40, density=2)  # 220/64/4 whited out the camera
+CARD_STORM = dict(CARDS, cap=40)
+CARD_RAIN = {"kind": "rain", "mesh": "SM_FX_Card", "cap": 120, "scale": 1.6, "spread": 1.0}
+PIN_STORM = dict(PINS, cap=48)
+
 RECIPES = [
     ("NS_FX_Impact", CREAM, 0.55, 16, [IMPACT]),
     ("NS_FX_LectureCone", GOLD, 0.6, 16, [CONE]),
@@ -217,17 +242,17 @@ RECIPES = [
     ("NS_FX_SoapTorrent", MINT, 1.2, 48, [FOAM, BUBBLES]),
     ("NS_FX_ShieldDome", GOLD, 3.5, 1, [DOME, RING]),
     ("NS_FX_FlossTether", (1, 1, 1, 1), 2.5, 4, [STRANDS]),
-    ("NS_K01_PoliteShield", GOLD, 0.8, 10, [dict(RING, mesh="SM_FX_Arc"), IMPACT]),
-    ("NS_K02_SternInstruction", GOLD, 0.65, 16, [CONE, CARDS]),
-    ("NS_K03_GoodManners", GOLD, 3.5, 1, [DOME, RING]),
-    ("NS_B01_FuriousKneading", CREAM, 0.45, 12, [IMPACT]),
-    ("NS_B02_RollingPinCyclone", CREAM, 2.3, 8, [PINS, FLOUR]),
-    ("NS_B03_AggressiveEncouragement", WARM, 0.65, 20, [CONE, CARDS]),
-    ("NS_M01_SpoonfulOfSugar", (1, 0.93, 0.6, 1), 0.35, 6, [SUGAR]),
-    ("NS_M02_PeppermintPopfall", (1, 1, 1, 1), 1.9, 6, [CANDY, RING]),
+    ("NS_K01_PoliteShield", GOLD, 0.8, 10, [dict(RING, mesh="SM_FX_Arc"), IMPACT, CARD_STORM]),
+    ("NS_K02_SternInstruction", GOLD, 0.65, 16, [CONE, CARD_STORM]),
+    ("NS_K03_GoodManners", GOLD, 3.5, 1, [DOME, RING, CARD_RAIN]),
+    ("NS_B01_FuriousKneading", CREAM, 1.2, 12, [IMPACT, FLOUR_CLOUD]),
+    ("NS_B02_RollingPinCyclone", CREAM, 2.3, 8, [PIN_STORM, FLOUR_CLOUD]),
+    ("NS_B03_AggressiveEncouragement", WARM, 1.0, 20, [CONE, CARD_STORM, FLOUR_CLOUD]),
+    ("NS_M01_SpoonfulOfSugar", (1, 0.93, 0.6, 1), 0.5, 36, [SUGAR_SPRAY, IMPACT]),
+    ("NS_M02_PeppermintPopfall", (1, 1, 1, 1), 2.6, 220, [CANDY_SHOWER, CANDY_BIG, RING]),
     ("NS_M03_ArcaneSanitization", MINT, 1.2, 48, [FOAM, BUBBLES]),
-    ("NS_A01_CeleryShot", GREEN, 0.35, 1, [dict(SUGAR, mesh="SM_FX_Celery", scale=1)]),
-    ("NS_A02_CeleryVolley", GREEN, 1.6, 10, [CELERY, RING]),
+    ("NS_A01_CeleryShot", GREEN, 0.5, 14, [CELERY_SPRAY, IMPACT]),
+    ("NS_A02_CeleryVolley", GREEN, 1.8, 48, [ARROW_VOLLEY, RING]),
     ("NS_A03_FlossSnare", (1, 1, 1, 1), 2.5, 4, [STRANDS]),
 ]
 

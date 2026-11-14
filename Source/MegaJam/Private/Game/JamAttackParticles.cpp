@@ -8,6 +8,7 @@
 #include "NiagaraSystem.h"
 #include "Components/SceneComponent.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
 #include "MegaJam.h"
 
 AJamAttackParticles::AJamAttackParticles()
@@ -42,32 +43,54 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     Fx->bPresentationReview = FParse::Param(FCommandLine::Get(), TEXT("classreview")) || FParse::Value(FCommandLine::Get(), TEXT("castreview="), Fx->CastIndex);
     Fx->CastIndex = Index;
     Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : 3.6f);
-    // Fixes3 #2: never enough peppermints. Every class's attack also rains the mage's peppermint popfall.
-    TArray<FString> Assets = { Name, Name + TEXT("_Layer1") };
-    if (!Name.Contains(TEXT("Peppermint"))) { Assets.Add(TEXT("NS_M02_PeppermintPopfall")); }
-    for (int32 Layer = 0; Layer < Assets.Num(); ++Layer)
+    // Fixes3 #2: each class's own system, every authored layer (up to three), at its authored prop cap.
+    // Fixes3 #2: the giant peppermints of Peppermint Popfall home in, one dropped on each nearby nuisance.
+    TArray<FVector> HomingTargets;
+    if (Name == TEXT("NS_M02_PeppermintPopfall"))
     {
-        const FString& AssetName = Assets[Layer];
-        const FString Path = FString::Printf(TEXT("/Game/FX/Attacks/Systems/%s.%s"), *AssetName, *AssetName);
-        UNiagaraSystem* System = LoadObject<UNiagaraSystem>(nullptr, *Path, nullptr, LOAD_NoWarn | LOAD_Quiet);
-        if (!System) { if (Layer == 0) { UE_LOG(LogJam, Warning, TEXT("AttackParticles: missing %s"), *Path); } continue; }
+        TArray<AJamNuisance*> Near;
+        const float Reach = FMath::Max(Rank.Radius, 400.f) + 600.f;
+        for (TActorIterator<AJamNuisance> It(Hero->GetWorld()); It; ++It)
+        {
+            if (!It->IsPacified() && !It->IsTreated() && FVector::Dist2D(It->GetActorLocation(), Floor) <= Reach) { Near.Add(*It); }
+        }
+        Near.Sort([Floor](const AJamNuisance& A, const AJamNuisance& B) { return FVector::DistSquared2D(A.GetActorLocation(), Floor) < FVector::DistSquared2D(B.GetActorLocation(), Floor); });
+        for (int32 i = 0; i < FMath::Min(5, Near.Num()); ++i) { HomingTargets.Add(Near[i]->GetActorLocation()); }
+    }
+    const AJamGameState* GS = Hero->GetWorld()->GetGameState<AJamGameState>();
+    auto AddLayer = [&](UNiagaraSystem* System, const FVector* At, int32 PropCount, float Radius)
+    {
         auto* Component = NewObject<UNiagaraComponent>(Fx);
         Component->SetAutoActivate(false);
         Component->SetupAttachment(Fx->GetRootComponent());
         Fx->AddInstanceComponent(Component);
         Component->SetAsset(System);
         Component->RegisterComponent();
+        if (At) { Component->SetWorldLocation(FVector(At->X, At->Y, Floor.Z)); }
         const float Extent = FMath::Max(1000.f, FMath::Max(Rank.Radius, Rank.Length) + 200.f);
-        Component->SetSystemFixedBounds(FBox(FVector(-Extent, -Extent, -100.f), FVector(Extent, Extent, 900.f)));
-        Component->SetVariableFloat(TEXT("User.Radius"), FMath::Max(100.f, Rank.Radius));
+        Component->SetSystemFixedBounds(FBox(FVector(-Extent, -Extent, -100.f), FVector(Extent, Extent, 1800.f)));
+        Component->SetVariableInt(TEXT("User.PropCount"), PropCount);   // each emitter clamps to its own authored cap
+        Component->SetVariableFloat(TEXT("User.Radius"), Radius);
         Component->SetVariableFloat(TEXT("User.Length"), FMath::Max(100.f, Rank.Length > 0.f ? Rank.Length : Rank.Radius));
         Component->SetVariableFloat(TEXT("User.HalfWidth"), Rank.Width * 0.5f);
-        const AJamGameState* GS = Hero->GetWorld()->GetGameState<AJamGameState>();
         Component->SetVariableBool(TEXT("User.BudgetOut"), GS && GS->bBudgetOut);
         if (Fx->bPresentationReview) { Component->SetForceSolo(true); }
         Component->Activate(true);
         if (Fx->bPresentationReview) { Component->AdvanceSimulation(12, 1.f / 60.f); Component->SetPaused(true); }
         Fx->ParticleComponents.Add(Component);
+    };
+    for (int32 Layer = 0; Layer < 4; ++Layer)
+    {
+        const FString AssetName = Layer == 0 ? Name : FString::Printf(TEXT("%s_Layer%d"), *Name, Layer);
+        const FString Path = FString::Printf(TEXT("/Game/FX/Attacks/Systems/%s.%s"), *AssetName, *AssetName);
+        UNiagaraSystem* System = LoadObject<UNiagaraSystem>(nullptr, *Path, nullptr, LOAD_NoWarn | LOAD_Quiet);
+        if (!System) { if (Layer == 0) { UE_LOG(LogJam, Warning, TEXT("AttackParticles: missing %s"), *Path); } continue; }
+        if (Layer == 1 && HomingTargets.Num() > 0)
+        {
+            for (const FVector& Target : HomingTargets) { AddLayer(System, &Target, 1, 10.f); }
+            continue;
+        }
+        AddLayer(System, nullptr, 1000, FMath::Max(100.f, Rank.Radius));
     }
     UE_LOG(LogJam, Log, TEXT("AttackParticles: class=%d skill=%d preset=%s layers=%d"), Index, static_cast<int32>(Skill), *Name, Fx->ParticleComponents.Num());
 }

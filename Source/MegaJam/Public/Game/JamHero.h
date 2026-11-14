@@ -38,6 +38,8 @@ public:
 	 * that skill instead (BUILD_SPEC 3c); otherwise it casts. Input and the bot both come through here.
 	 */
 	bool RequestSkill(EJamSkill Skill);
+	/** Fixes3 #2: kick the camera (uu of jitter), now or after Delay seconds of world time. */
+	void AddShake(float Amplitude, float Delay = 0.f);
 
 	/** Asks the game mode to treat the best interact target. Input and the autoplay bot come through here. */
 	bool RequestInteract();
@@ -204,6 +206,9 @@ private:
 	float WalkPhase = 0.f;
 	float SwordUpAt = -100.f;   // world time of the last Lecture
 	float StaggerUntil = -1.f;   // world time (R4b)
+	TArray<FVector2D> PendingShakes;   // (world time, amplitude)
+	float ShakeAmp = 0.f;
+	void TickShake(float DeltaSeconds);
 	float HitAt = -100.f;       // world time of the last hit: the body tips back for a moment
 	void TickSword();
 

@@ -2,7 +2,8 @@
   "K01": {
     "systems": [
       "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
-      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer2.NS_K01_PoliteShield_Layer2"
     ],
     "cosmetic_only": true
   },
@@ -16,13 +17,15 @@
   "K03": {
     "systems": [
       "/Game/FX/Attacks/Systems/NS_K03_GoodManners.NS_K03_GoodManners",
-      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1"
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1",
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer2.NS_K03_GoodManners_Layer2"
     ],
     "cosmetic_only": true
   },
   "B01": {
     "systems": [
-      "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading"
+      "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading",
+      "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading_Layer1.NS_B01_FuriousKneading_Layer1"
     ],
     "cosmetic_only": true
   },
@@ -36,20 +39,23 @@
   "B03": {
     "systems": [
       "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement.NS_B03_AggressiveEncouragement",
-      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1"
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1",
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer2.NS_B03_AggressiveEncouragement_Layer2"
     ],
     "cosmetic_only": true
   },
   "M01": {
     "systems": [
-      "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar"
+      "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar",
+      "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar_Layer1.NS_M01_SpoonfulOfSugar_Layer1"
     ],
     "cosmetic_only": true
   },
   "M02": {
     "systems": [
       "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall.NS_M02_PeppermintPopfall",
-      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1"
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1",
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer2.NS_M02_PeppermintPopfall_Layer2"
     ],
     "cosmetic_only": true
   },
@@ -62,7 +68,8 @@
   },
   "A01": {
     "systems": [
-      "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot"
+      "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot",
+      "/Game/FX/Attacks/Systems/NS_A01_CeleryShot_Layer1.NS_A01_CeleryShot_Layer1"
     ],
     "cosmetic_only": true
   },

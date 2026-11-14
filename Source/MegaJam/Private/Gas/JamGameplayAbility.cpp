@@ -4,6 +4,8 @@
 #include "Gas/JamGameplayTags.h"
 #include "Game/JamPlayerState.h"
 #include "Game/JamNuisance.h"
+#include "Game/JamGameMode.h"
+#include "Game/JamHero.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "GameplayEffect.h"
@@ -86,7 +88,11 @@ void UJamGA_AoeAttack::Strike(const FGameplayAbilityActorInfo* ActorInfo, const 
 
 		LastHitTargets.Add(Candidate);
 		OnTargetHitNative.Broadcast(Candidate);
-		if (AJamNuisance* Nuisance = Cast<AJamNuisance>(Candidate)) { Nuisance->Recoil(Origin); }
+		if (AJamNuisance* Nuisance = Cast<AJamNuisance>(Candidate))
+		{
+			Nuisance->Recoil(Origin);
+			if (AJamGameMode* GM = Avatar->GetWorld() ? Avatar->GetWorld()->GetAuthGameMode<AJamGameMode>() : nullptr) { GM->NotifyAttackHit(Cast<AJamHero>(Avatar), Nuisance); }
+		}
 	}
 }
 

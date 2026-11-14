@@ -29,7 +29,7 @@ def main():
         ast.parse((ROOT / "Scripts" / name).read_text(encoding="utf-8"))
     assets = json.loads((SRC / "niagara_assets.json").read_text(encoding="utf-8"))
     expected = {a["asset"] for a in assets}
-    assert len(expected) == 33
+    assert len(expected) == 40  # Fixes3 #2 signature layers
     audit = max((ROOT / "Saved/FX/Bytecode").glob("*/NiagaraScripts.csv"), key=lambda p: p.stat().st_mtime)
     rows = list(csv.DictReader(audit.open(encoding="utf-8-sig"), skipinitialspace=True))
     assert rows and all(int(r["OpCount"]) > 0 for r in rows), "Missing/empty VM programs"

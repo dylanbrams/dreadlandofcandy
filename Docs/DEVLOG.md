@@ -429,3 +429,4 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
 - Nov 15: Fixes3 #25 shout bubbles on every attack, #2 peppermint popfall on every attack + more replies, #14 treat arrow over pacified nuisances. 82 tests green; unverified live.
 - Nov 15: Fixes3 #9/#12 per-class skill SFX (imported clips were never cued), #10 per-giver afterglow lines. 82 tests green; not heard live.
 - Nov 15: Fixes3 #1 giant celery held when feeding non-goblins. 82 tests green; not seen live.
+- Nov 15: attack juice pass in Niagara: per-class signature layers (peppermint shower + homing giants, celery arrow volley, flour clouds, card storms), camera shake, per-class hit words. 82 tests green; regenerated 40 systems; not judged in motion.

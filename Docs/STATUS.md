@@ -1,3 +1,7 @@
+# STATUS - Nov 15: Fixes3 #2 attack juice pass (Niagara)
+
+Per-class identity, all through the generated Niagara systems (`Scripts/build_niagara_attacks.py`, then `Scripts/build_attack_fx.ps1`; 40 systems, VM audit clean; the validator's only failure is stale FX review screenshots, which need `-Review`). Mage: Popfall rains ~220 small peppermints, then up to 5 giant ones that C++ drops onto the 5 nearest unpacified nuisances (falls around the mage when none are near); Sugar sprays 36 cubes. Archer: Celery Shot fans 14 celery; Celery Volley is a new `arrows` kind, 48 celery arrows arcing nose-first from the bow. Barbarian: flour clouds on all three skills (size cut after the first pass whited out the camera), 48 orbiting pins. Knight: card storms; Good Manners rains 120 cards over the dome. Camera shake per skill (`AJamHero::AddShake`), with delayed thumps on ultimate landings. Jagged per-class sound words (BONK!, CELERY'D!) pop over nuisances an attack hits. Build clean, 82 Jam tests pass. Classreview captures are unreliable (title menu over some, frozen at 0.2 s), so none of this has been judged in motion. Tune in play.
+
 # STATUS - Nov 15: Fixes3 #1 giant celery
 
 Interacting with any non-goblin (rats, bugs) now shows the hero holding a 260-380 uu `SM_Celery` at its mouth (goblins keep the toothbrush and foam). The prop aligns its longest mesh axis to the mouth, so an X-lying mesh still works. Build clean, 82 Jam tests pass. Not seen live: celery orientation and grip need a look in play.

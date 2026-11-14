@@ -619,6 +619,150 @@
     "visual_review": "pending"
   },
   {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
+    "emitters": 1,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
+      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer2.NS_K01_PoliteShield_Layer2"
+    ],
+    "duration_cap": 0.8,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_ring",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_ring",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 0.8,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer2.NS_K01_PoliteShield_Layer2",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 0.8,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_cone",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_cone",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
     "asset": "/Game/FX/Attacks/Systems/NS_K02_SternInstruction.NS_K02_SternInstruction",
     "emitters": 1,
     "layers": [
@@ -718,7 +862,8 @@
     "asset": "/Game/FX/Attacks/Systems/NS_K03_GoodManners.NS_K03_GoodManners",
     "emitters": 1,
     "layers": [
-      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1"
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer1.NS_K03_GoodManners_Layer1",
+      "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer2.NS_K03_GoodManners_Layer2"
     ],
     "duration_cap": 3.5,
     "authoring_diagnostics_complete": true,
@@ -811,10 +956,59 @@
     "visual_review": "pending"
   },
   {
-    "asset": "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading",
+    "asset": "/Game/FX/Attacks/Systems/NS_K03_GoodManners_Layer2.NS_K03_GoodManners_Layer2",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 0.45,
+    "duration_cap": 3.5,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_rain",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_rain",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading.NS_B01_FuriousKneading",
+    "emitters": 1,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading_Layer1.NS_B01_FuriousKneading_Layer1"
+    ],
+    "duration_cap": 1.2,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -847,6 +1041,53 @@
         },
         {
           "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_B01_FuriousKneading_Layer1.NS_B01_FuriousKneading_Layer1",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 1.2,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_dust",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_dust",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",
@@ -957,9 +1198,10 @@
     "asset": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement.NS_B03_AggressiveEncouragement",
     "emitters": 1,
     "layers": [
-      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1"
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1",
+      "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer2.NS_B03_AggressiveEncouragement_Layer2"
     ],
-    "duration_cap": 0.65,
+    "duration_cap": 1.0,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1006,7 +1248,7 @@
     "asset": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer1.NS_B03_AggressiveEncouragement_Layer1",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 0.65,
+    "duration_cap": 1.0,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1050,10 +1292,59 @@
     "visual_review": "pending"
   },
   {
-    "asset": "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar",
+    "asset": "/Game/FX/Attacks/Systems/NS_B03_AggressiveEncouragement_Layer2.NS_B03_AggressiveEncouragement_Layer2",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 0.35,
+    "duration_cap": 1.0,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_dust",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_dust",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar.NS_M01_SpoonfulOfSugar",
+    "emitters": 1,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar_Layer1.NS_M01_SpoonfulOfSugar_Layer1"
+    ],
+    "duration_cap": 0.5,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1086,6 +1377,53 @@
         },
         {
           "emitterName": "FX_0_volley",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M01_SpoonfulOfSugar_Layer1.NS_M01_SpoonfulOfSugar_Layer1",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 0.5,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",
@@ -1100,9 +1438,10 @@
     "asset": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall.NS_M02_PeppermintPopfall",
     "emitters": 1,
     "layers": [
-      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1"
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1",
+      "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer2.NS_M02_PeppermintPopfall_Layer2"
     ],
-    "duration_cap": 1.9,
+    "duration_cap": 2.6,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1149,7 +1488,54 @@
     "asset": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer1.NS_M02_PeppermintPopfall_Layer1",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 1.9,
+    "duration_cap": 2.6,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_rain",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_rain",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_M02_PeppermintPopfall_Layer2.NS_M02_PeppermintPopfall_Layer2",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 2.6,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1291,8 +1677,10 @@
   {
     "asset": "/Game/FX/Attacks/Systems/NS_A01_CeleryShot.NS_A01_CeleryShot",
     "emitters": 1,
-    "layers": [],
-    "duration_cap": 0.35,
+    "layers": [
+      "/Game/FX/Attacks/Systems/NS_A01_CeleryShot_Layer1.NS_A01_CeleryShot_Layer1"
+    ],
+    "duration_cap": 0.5,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1325,6 +1713,53 @@
         },
         {
           "emitterName": "FX_0_volley",
+          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        }
+      ]
+    },
+    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
+    "visual_review": "pending"
+  },
+  {
+    "asset": "/Game/FX/Attacks/Systems/NS_A01_CeleryShot_Layer1.NS_A01_CeleryShot_Layer1",
+    "emitters": 1,
+    "layers": [],
+    "duration_cap": 0.5,
+    "authoring_diagnostics_complete": true,
+    "authoring_error": "",
+    "authoring_diagnostics": {
+      "aggregateStatus": "UpToDate",
+      "bIsCompiling": false,
+      "bIsStale": false,
+      "bHasErrors": false,
+      "bHasWarnings": false,
+      "scripts": [
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "None",
+          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
+          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
+          "lastCompileStatus": "UpToDate",
+          "errorSummary": "",
+          "compileEvents": []
+        },
+        {
+          "emitterName": "FX_0_impact",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",
@@ -1341,7 +1776,7 @@
     "layers": [
       "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley_Layer1.NS_A02_CeleryVolley_Layer1"
     ],
-    "duration_cap": 1.6,
+    "duration_cap": 1.8,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1366,14 +1801,14 @@
           "compileEvents": []
         },
         {
-          "emitterName": "FX_0_rain",
+          "emitterName": "FX_0_arrows",
           "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",
           "compileEvents": []
         },
         {
-          "emitterName": "FX_0_rain",
+          "emitterName": "FX_0_arrows",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",
@@ -1388,7 +1823,7 @@
     "asset": "/Game/FX/Attacks/Systems/NS_A02_CeleryVolley_Layer1.NS_A02_CeleryVolley_Layer1",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 1.6,
+    "duration_cap": 1.8,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1468,102 +1903,6 @@
         },
         {
           "emitterName": "FX_0_strand",
-          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        }
-      ]
-    },
-    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
-    "visual_review": "pending"
-  },
-  {
-    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield.NS_K01_PoliteShield",
-    "emitters": 1,
-    "layers": [
-      "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1"
-    ],
-    "duration_cap": 0.8,
-    "authoring_diagnostics_complete": true,
-    "authoring_error": "",
-    "authoring_diagnostics": {
-      "aggregateStatus": "UpToDate",
-      "bIsCompiling": false,
-      "bIsStale": false,
-      "bHasErrors": false,
-      "bHasWarnings": false,
-      "scripts": [
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_ring",
-          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_ring",
-          "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        }
-      ]
-    },
-    "compile_validation": "Requires external forced bytecode audit; authoring state may be stale",
-    "visual_review": "pending"
-  },
-  {
-    "asset": "/Game/FX/Attacks/Systems/NS_K01_PoliteShield_Layer1.NS_K01_PoliteShield_Layer1",
-    "emitters": 1,
-    "layers": [],
-    "duration_cap": 0.8,
-    "authoring_diagnostics_complete": true,
-    "authoring_error": "",
-    "authoring_diagnostics": {
-      "aggregateStatus": "UpToDate",
-      "bIsCompiling": false,
-      "bIsStale": false,
-      "bHasErrors": false,
-      "bHasWarnings": false,
-      "scripts": [
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemSpawnScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "None",
-          "scriptName": "ENiagaraScriptUsage::SystemUpdateScript",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_impact",
-          "scriptName": "ENiagaraScriptUsage::ParticleSpawnScriptInterpolated",
-          "lastCompileStatus": "UpToDate",
-          "errorSummary": "",
-          "compileEvents": []
-        },
-        {
-          "emitterName": "FX_0_impact",
           "scriptName": "ENiagaraScriptUsage::ParticleUpdateScript",
           "lastCompileStatus": "UpToDate",
           "errorSummary": "",

@@ -710,6 +710,7 @@ void AJamHero::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	UpdateFacing();
 	TickFollowCamera(DeltaSeconds);
+	TickShake(DeltaSeconds);
 	TickSword();
 	TickRig();
     TickPresentationReview();
@@ -728,6 +729,23 @@ void AJamHero::PlayRigOneShot(FName Anim)
     WeaponDrawUntil = GetWorld()->GetTimeSeconds() + 2.f;
 	RigPlaying = Anim;
 	RigOneShotUntil = GetWorld()->GetTimeSeconds() + FMath::Min((*Found)->GetPlayLength(), 1.6f);
+}
+
+void AJamHero::AddShake(float Amplitude, float Delay)
+{
+	PendingShakes.Add(FVector2D(GetWorld()->GetTimeSeconds() + Delay, Amplitude));
+}
+
+void AJamHero::TickShake(float DeltaSeconds)
+{
+	const float Now = GetWorld()->GetTimeSeconds();
+	for (int32 i = PendingShakes.Num() - 1; i >= 0; --i)
+	{
+		if (PendingShakes[i].X <= Now) { ShakeAmp = FMath::Max(ShakeAmp, PendingShakes[i].Y); PendingShakes.RemoveAtSwap(i); }
+	}
+	ShakeAmp = ShakeAmp * FMath::Exp(-7.f * DeltaSeconds);
+	if (ShakeAmp < 0.1f) { ShakeAmp = 0.f; }
+	CameraArm->SocketOffset = FVector(0.f, FMath::Sin(Now * 71.f) * ShakeAmp, FMath::Cos(Now * 59.f) * ShakeAmp * 0.8f);
 }
 
 void AJamHero::TickRig()
