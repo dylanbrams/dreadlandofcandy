@@ -24,6 +24,7 @@
 #include "Game/JamSfx.h"
 #include "MegaJam.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Misc/CommandLine.h"
@@ -511,6 +512,8 @@ void AJamHUD::UpdateInputMode(int32 Want)
         Mode.SetHideCursorDuringCapture(false);
         Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
         PlayerOwner->SetInputMode(Mode);
+		// UIOnly leaves keyboard focus on the closed menu until the viewport is clicked.
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
 	}
 	// Keep HUD controls reachable in both modes. Open camera uses Mouse 2 drag, Q/E and wheel zoom.
 	PlayerOwner->bShowMouseCursor = true;
@@ -519,6 +522,7 @@ void AJamHUD::UpdateInputMode(int32 Want)
 void AJamHUD::SetPaused(bool bPause)
 {
 	bPaused = bPause;
+	bLevelUpCharacter = false;
 	SubScreen = EJamScreen::None;
 	Selected = 0;
 	if (PlayerOwner) { PlayerOwner->SetPause(bPause); }
@@ -583,6 +587,7 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::Fine:
 	case EJamMenuAction::Back:
 		if (SubScreen == EJamScreen::Controls) { Selected = ControlsParentSelected; SubScreen = ControlsParent; }
+		else if (SubScreen == EJamScreen::Character && bLevelUpCharacter) { SetPaused(false); }
 		else { Selected = ParentSelected; SubScreen = EJamScreen::None; }
 		break;
 	case EJamMenuAction::RankBasic:
@@ -781,7 +786,7 @@ void AJamHUD::TickEffects()
             if (PS->GetProgression().GetPoints() > 0 && !FParse::Param(FCommandLine::Get(), TEXT("autoplay")))
             {
                 RequestPause();
-                if (bPaused) { SubScreen = EJamScreen::Character; }
+                if (bPaused) { SubScreen = EJamScreen::Character; bLevelUpCharacter = true; }
             }
         }
 		SeenLevel = Level;

@@ -319,8 +319,8 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	{
 		return false;
 	}
-	// Open mode: skills go where the player looks (the bot's aim override already faces its target).
-	if (bFollowCamera && AimOverride.IsNearlyZero()) { SetActorRotation(FRotator(0.f, CameraYaw, 0.f)); }
+	// Gamepad attacks follow the camera; mouse attacks retain the cursor aim set by UpdateFacing.
+	if (bFollowCamera && AimOverride.IsNearlyZero() && AimSource != EAimSource::Mouse) { SetActorRotation(FRotator(0.f, CameraYaw, 0.f)); }
 	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetSkillHandle(Skill));
 	if (bActivated)
 	{
@@ -995,11 +995,11 @@ void AJamHero::UpdateFacing()
 	FVector Facing = FVector::ZeroVector;
 	APlayerController* PC = Cast<APlayerController>(GetController());
 
-	// The mouse takes over as soon as it moves (Backlot only; in Open it turns the camera).
+	// Mouse movement aims unless it is being used to drag the follow camera.
 	FVector2D Mouse;
-	if (!bFollowCamera && PC && PC->GetMousePosition(Mouse.X, Mouse.Y))
+	if (PC && PC->GetMousePosition(Mouse.X, Mouse.Y))
 	{
-		if (LastMousePosition.X >= 0.f && FVector2D::Distance(Mouse, LastMousePosition) > 2.f)
+		if ((!bFollowCamera || !PC->IsInputKeyDown(EKeys::RightMouseButton)) && LastMousePosition.X >= 0.f && FVector2D::Distance(Mouse, LastMousePosition) > 2.f)
 		{
 			AimSource = EAimSource::Mouse;
 			bUsingGamepad = false;

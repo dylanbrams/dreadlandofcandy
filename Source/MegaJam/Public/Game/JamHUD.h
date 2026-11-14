@@ -84,6 +84,7 @@ private:
 	int32 Selected = 0;
 	int32 ParentSelected = 0;                  // the line to return to when a sub-screen closes
 	bool bPaused = false;
+	bool bLevelUpCharacter = false; // Returning from an automatic level-up resumes play.
 	bool bMenuGamepad = false;
 	int32 InputModeState = -1;                 // 0 game, 1 UI
 	FString ScreenSampleName;
