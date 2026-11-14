@@ -1,8 +1,10 @@
 # BACKEND hand-over
 
-Updated 2026-11-12.
+Updated 2026-11-14.
 
-## B1: `POST /v1/director/note`, built and tested, not deployed yet
+**Deployed Nov 14** (`backend/` commit `3362c19`, prompt version `n2`): files copied to `/srv/director` on the API box over ssh (it is not a git repo, so `git pull` does not apply; stream a tar excluding `AnthropicKey/` and `.git`), pip install, `systemctl restart director`. Pre-warm: 6 of 6 suggested notes cached. `scripts/live_check.py` against `https://api.imaginarycomponent.com` run on the box: all model answers under 3.2 s, refusals and 422s correct. The check now uses one session per note (one session hit the 12 model calls/hour limit). Windows Python reports the public cert as expired although it is valid to 2027-02-09; likely its trust store, not confirmed for the game's own HTTPS.
+
+## B1: `POST /v1/director/note`, built and tested, deployed Nov 14
 
 Code is in its own git repo at `backend/` (inside this checkout, not part of this repo's history). README and runbook: `backend/README.md`, `backend/DEPLOY.md`.
 
@@ -13,7 +15,7 @@ Code is in its own git repo at `backend/` (inside this checkout, not part of thi
 - Tests: 70 pytest tests, all passing, including 23 canned notes (13 hostile: knob abuse, prompt injection, SQL, markup, links, phone, self-harm, sexual, hateful, too long, blank). They run with a fake model and an in-memory store. The request shape was checked against a local stub of the Messages API.
 - **Not yet done:** deploying, and the real-model run of the canned notes. Both need Dylan: SSH to the box, and the API key placed with `sudoedit` off stream. Steps: `backend/DEPLOY.md`, "First deploy". The done-when check is `python3 -I scripts/live_check.py https://<api host>`, which fails any answer over 5 s or outside the contract.
 
-## B2: `POST /v1/director/premiere`, built and tested, not deployed yet
+## B2: `POST /v1/director/premiere`, built and tested, deployed Nov 14
 
 Same service, same deploy: `backend/` commit `e79116d`. Contract `NoteForm.md` v1, unchanged. Request `v`, `session_id`, `motif`, `notes` (1 to 6, 80 chars each), `stats`, `ending` (`directors_cut` | `theatrical`); response `source` `model` (with `title`, `tagline`, 3 `reviews`), `refused`, or `budget`; 422, 429 and 503 as for notes. Never cached; counts against the same daily budget; 3 per session per hour. Notes that fail the input screen are dropped before the model sees them. 97 tests pass in total (27 new, with a fake model); `scripts/live_check.py` now also sends three canned logs to it (three more Haiku calls). The real-model run is pending, like B1's.
 
@@ -34,4 +36,4 @@ For GAME (T16a): send `notes` as the player's typed notes, oldest first, and `mo
 
 ## Next
 
-B1 and B2 deploy and live check (with Dylan; one deploy covers both), then pre-warm.
+Nothing. Redeploy after any prompt or suggested-note change, then re-run `scripts/prewarm.py` on the box.
