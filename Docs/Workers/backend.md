@@ -2,6 +2,8 @@
 
 Updated 2026-11-14.
 
+**Base URL unchanged: `https://api.imaginarycomponent.com`. GAME has nothing to switch.**
+
 ## Nov 14 migration (Dylan + Sonnet session): start here
 
 You are BACKEND. Edit only `backend/` (its own nested git repo, git-ignored by
@@ -31,6 +33,8 @@ No SQL or nginx change is needed for the endpoint itself.
 The game survives a 404 / 503 / timeout on every endpoint (authored fallbacks),
 so a slow migration never blocks the game; a broken certificate on the new
 host silently disables notes, which is the thing to check.
+
+**Migration result (Nov 14):** no new server was needed. The OpenProject key opens the existing API box (`ubuntu@3.232.61.147`), which already ran `/srv/director` and the DB (remote, reached via readyz; no SQL change in `ab328d7`). Deployed `backend/` `ab328d7` there (tar stream, restart; backup of the old tree at `/srv/director.bak-3362c19` on the box). `readyz` true; pre-warm 0 not warm (all cached); `live_check.py` (now also runs premiere and quest-branches, which `main` had not been calling) 0 problems: notes all under 1 s, premiere x3 about 2.0 s, quest/branches 200 model 2.68 s with both routes and in-range camp and count. Public HTTPS: `readyz` 200, quest/branches 422 on an empty body. Local `backend/` head is `6ebf137` (live_check only; the box runs `ab328d7` code plus that script). Note: Haiku echoes "Pacify 3 rats (between 2 and 4)" into branch pitches; the game builds objective text from its own recipes, so it is cosmetic.
 
 **Deployed Nov 14** (`backend/` commit `3362c19`, prompt version `n2`): files copied to `/srv/director` on the API box over ssh (it is not a git repo, so `git pull` does not apply; stream a tar excluding `AnthropicKey/` and `.git`), pip install, `systemctl restart director`. Pre-warm: 6 of 6 suggested notes cached. `scripts/live_check.py` against `https://api.imaginarycomponent.com` run on the box: all model answers under 3.2 s, refusals and 422s correct. The check now uses one session per note (one session hit the 12 model calls/hour limit). Windows Python reports the public cert as expired although it is valid to 2027-02-09; likely its trust store, not confirmed for the game's own HTTPS.
 
