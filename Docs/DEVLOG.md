@@ -430,3 +430,4 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
 - Nov 15: Fixes3 #9/#12 per-class skill SFX (imported clips were never cued), #10 per-giver afterglow lines. 82 tests green; not heard live.
 - Nov 15: Fixes3 #1 giant celery held when feeding non-goblins. 82 tests green; not seen live.
 - Nov 15: attack juice pass in Niagara: per-class signature layers (peppermint shower + homing giants, celery arrow volley, flour clouds, card storms), camera shake, per-class hit words. 82 tests green; regenerated 40 systems; not judged in motion.
+- Nov 15 ~02:30: comic HUD panels/bubbles, villager props + chef hat, bugs eat planted crops, Fenella creature-word filter, attack light flashes. 82 tests; packaged + smoke PASS + zip 737.7 MB. Not playtested.

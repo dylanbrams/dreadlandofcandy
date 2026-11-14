@@ -289,6 +289,8 @@ void AJamGameMode::ClearStageActors()
 		if (P) { P->Destroy(); }
 	}
 	Pickups.Reset();
+	for (const TWeakObjectPtr<AActor>& C : Crops) { if (C.IsValid()) { C->Destroy(); } }
+	Crops.Reset();
 	CropsEaten = 0.f;
 	WaveLeft = 0;
 }
@@ -297,6 +299,35 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 {
 	const FKindTuning Tuning = TuningFor(Stage.Target);
 	const int32 Already = Nuisances.Num();
+	// Fenella talks about the creatures actually on set.
+	Nag.AvoidWords = Stage.Target == EJamTargetKind::Bug ? TArray<FString>{ TEXT("rat"), TEXT("goblin") }
+		: Stage.Target == EJamTargetKind::Goblin ? TArray<FString>{ TEXT("rat") }
+		: Stage.Target == EJamTargetKind::Rat ? TArray<FString>{ TEXT("goblin") } : TArray<FString>{};
+	// Fixes3 #4: bugs need something to eat. Plant a patch of candy crops with the first wave.
+	if (Stage.Target == EJamTargetKind::Bug && Already == 0 && Crops.IsEmpty())
+	{
+		if (UStaticMesh* CropMesh = JamArt::Load(TEXT("SM_CandyCrop")))
+		{
+			const FVector2D Centre = FieldBounds.GetCenter();
+			for (int32 i = 0; i < 7; ++i)
+			{
+				const float Angle = UE_TWO_PI * i / 7.f + 0.4f;
+				const FVector2D Spot = Centre + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * (i == 0 ? 0.f : 260.f);
+				const FVector Loc(Spot, bOpenMode ? TraceGround(Spot) : GroundZ);
+				AActor* Crop = GetWorld()->SpawnActor<AActor>(AActor::StaticClass(), FTransform(Loc));
+				if (!Crop) { continue; }
+				UStaticMeshComponent* Mesh = NewObject<UStaticMeshComponent>(Crop);
+				Crop->SetRootComponent(Mesh);
+				Crop->AddInstanceComponent(Mesh);
+				Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+				Mesh->RegisterComponent();
+				JamArt::Apply(Mesh, TEXT("SM_CandyCrop"), JamArt::Height(TEXT("SM_CandyCrop")), 0.f);
+				Crop->SetActorLocation(Loc);
+				Crop->Tags.Add(TEXT("JamCrop"));
+				Crops.Add(Crop);
+			}
+		}
+	}
 	for (int32 i = 0; i < Count; ++i)
 	{
 		// Waves come in over the far wall (up the screen), spread across it.
@@ -911,15 +942,22 @@ void AJamGameMode::NotifyAttackHit(AJamHero* Caster, AActor* Victim)
 		{ TEXT("KNEADED!"), TEXT("WHUMP!"), TEXT("SPLAT!"), TEXT("DOUGH!"), TEXT("KA-BLAM!") },
 	};
 	const TArray<FString>& Own = Words[FMath::Clamp(Caster->GetCastIndex(), 0, 3)];
+	Quip(Victim, Own[FMath::RandRange(0, Own.Num() - 1)], 0.8f, true, FVector(FMath::FRandRange(-40.f, 40.f), 0.f, 150.f));
+}
+
+void AJamGameMode::Quip(AActor* Anchor, const FString& Text, float Seconds, bool bJagged, const FVector& Offset)
+{
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !Anchor || Text.IsEmpty()) { return; }
 	const float Now = GetWorld()->GetTimeSeconds();
-	GS->Bubbles.RemoveAll([Now, Victim](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid() || B.Anchor.Get() == Victim; });
+	GS->Bubbles.RemoveAll([Now, Anchor](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid() || B.Anchor.Get() == Anchor; });
 	AJamGameState::FWorldBubble B;
-	B.LineId = TEXT("HitWord");
-	B.Text = Own[FMath::RandRange(0, Own.Num() - 1)];
-	B.Anchor = Victim;
-	B.Offset = FVector(FMath::FRandRange(-40.f, 40.f), 0.f, 150.f);
-	B.Until = Now + 0.8f;
-	B.bJagged = true;
+	B.LineId = TEXT("Quip");
+	B.Text = Text;
+	B.Anchor = Anchor;
+	B.Offset = Offset;
+	B.Until = Now + Seconds;
+	B.bJagged = bJagged;
 	GS->Bubbles.Add(B);
 }
 

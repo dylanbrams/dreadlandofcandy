@@ -5,6 +5,7 @@
 #include "Misc/Parse.h"
 #include "Game/JamHero.h"
 #include "Game/JamGameMode.h"
+#include "Game/JamPickup.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamResolveAttributeSet.h"
 #include "Gas/JamGameplayTags.h"
@@ -251,6 +252,70 @@ bool AJamNuisance::Treat()
 	return true;
 }
 
+bool AJamNuisance::TickMunch(float DeltaSeconds)
+{
+	// Fixes3 #4: a bug is always trying to eat something. Returns true while it is busy chewing.
+	const float Now = GetWorld()->GetTimeSeconds();
+	if (Now < MunchUntil)
+	{
+		Steer(FVector2D::ZeroVector, DeltaSeconds);
+		SetActorRotation(GetActorRotation() + FRotator(0.f, FMath::Sin(Now * 30.f) * 4.f, 0.f));   // head-down chewing wiggle
+		return true;
+	}
+	if (NextMunchAt <= 0.f) { NextMunchAt = Now + FMath::FRandRange(1.5f, 4.f); }
+	const bool bArrived = bHeadingForFood && FVector2D::Distance(WanderTarget, FVector2D(GetActorLocation())) < 70.f;
+	if (bArrived || (!bHeadingForFood && Now >= NextMunchAt))
+	{
+		// Look for a snack first; with nothing near, it eats the ground (which in this village is candy).
+		if (!bHeadingForFood && !bArrived)
+		{
+			const AActor* Food = nullptr;
+			float Best = 1100.f;
+			if (const AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>())
+			{
+				// Crops first (that is what bugs are for), then any loose pickup.
+				float CropBest = 2400.f;
+				for (const TWeakObjectPtr<AActor>& C : GM->GetCrops())
+				{
+					const float D = C.IsValid() ? FVector::Dist2D(C->GetActorLocation(), GetActorLocation()) : TNumericLimits<float>::Max();
+					if (D < CropBest) { CropBest = D; Food = C.Get(); }
+				}
+			}
+			if (!Food)
+			{
+				for (TActorIterator<AJamPickup> It(GetWorld()); It; ++It)
+				{
+					const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation());
+					if (D < Best) { Best = D; Food = *It; }
+				}
+			}
+			if (Food) { WanderTarget = FVector2D(Food->GetActorLocation()); FoodTarget = const_cast<AActor*>(Food); bHeadingForFood = true; return false; }
+		}
+		static const TCHAR* Noms[] = { TEXT("nom nom nom"), TEXT("*crunch*"), TEXT("mine!"), TEXT("CHOMP"), TEXT("tastes like candy"), TEXT("snack!"), TEXT("*munch munch*") };
+		if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>())
+		{
+			GM->Quip(this, Noms[FMath::RandRange(0, UE_ARRAY_COUNT(Noms) - 1)], 1.2f, false, FVector(0.f, 0.f, 110.f));
+		}
+		// A bitten crop shrinks; three or four bites and it is gone.
+		if (bArrived && FoodTarget.IsValid() && FoodTarget->ActorHasTag(TEXT("JamCrop")))
+		{
+			const float Left = FoodTarget->GetActorScale3D().X * 0.72f;
+			if (Left < 0.4f)
+			{
+				FoodTarget->Destroy();
+				if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>()) { GM->Quip(this, TEXT("*BURP*"), 1.4f, true, FVector(0.f, 0.f, 110.f)); }
+			}
+			else { FoodTarget->SetActorScale3D(FVector(Left)); }
+		}
+		FoodTarget.Reset();
+		bHeadingForFood = false;
+		MunchUntil = Now + 1.3f;
+		NextMunchAt = MunchUntil + FMath::FRandRange(2.5f, 5.f);
+		return true;
+	}
+	return false;
+}
+
 void AJamNuisance::PickWanderTarget()
 {
 	WanderTarget = FVector2D(FMath::FRandRange(SetBounds.Min.X, SetBounds.Max.X), FMath::FRandRange(SetBounds.Min.Y, SetBounds.Max.Y));
@@ -375,11 +440,12 @@ void AJamNuisance::Tick(float DeltaSeconds)
 			const FVector2D Away = (FVector2D(GetActorLocation()) - FVector2D(Hero->GetActorLocation())).GetSafeNormal();
 			Steer(Away * Speed, DeltaSeconds);
 		}
+		else if (bErratic && TickMunch(DeltaSeconds)) {}
 		else
 		{
 			const FVector2D ToTarget = WanderTarget - FVector2D(GetActorLocation());
 			// Erratic (bugs): a new heading every half second or so, not only on arrival.
-			if (ToTarget.Size() < 40.f || (bErratic && FMath::Fmod(StateTime, 0.5f) < DeltaSeconds)) { PickWanderTarget(); }
+			if (ToTarget.Size() < 40.f || (bErratic && !bHeadingForFood && FMath::Fmod(StateTime, 0.5f) < DeltaSeconds)) { PickWanderTarget(); }
 			Steer(ToTarget.GetSafeNormal() * Speed * WanderSpeedScale, DeltaSeconds);
 		}
 		break;

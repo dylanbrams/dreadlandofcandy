@@ -113,6 +113,7 @@ private:
 	void HandlePacified(AActor* Pacified);
 	void HandleResolveChanged(const FOnAttributeChangeData& Data);
 	void PickWanderTarget();
+	bool TickMunch(float DeltaSeconds);
 	const AActor* FindNearestHero(float& OutDistance) const;
 	void Steer(const FVector2D& DesiredVelocity, float DeltaSeconds);
 
@@ -161,6 +162,11 @@ private:
 	float SlowUntil = -1.f;
 	float StateTime = 0.f;
 	FVector2D WanderTarget = FVector2D::ZeroVector;
+	// Fixes3 #4: bugs go for food. Between munches they head for the nearest pickup, then stop and chew.
+	float NextMunchAt = 0.f;
+	float MunchUntil = -1.f;
+	bool bHeadingForFood = false;
+	TWeakObjectPtr<AActor> FoodTarget;
 	FVector BodyBaseScale = FVector::OneVector;
 	FVector BodyBaseLocation = FVector::ZeroVector;
 };

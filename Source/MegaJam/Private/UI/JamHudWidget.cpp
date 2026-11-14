@@ -199,7 +199,12 @@ void UJamHudWidget::BuildTree()
 	// Top centre: objective, meter, and the hint under them.
 	{
 		UVerticalBox* Column = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
-		ObjectivePanel = MakePanel(PanelDark, 8.f, FMargin(24.f, 12.f));
+		// Fixes3 #1b: bright jagged comic panels instead of grey boxes.
+		ObjectivePanel = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+		ObjectivePanel->SetBrush(Rounded(FLinearColor::White, 8.f, FLinearColor(1.f, 0.82f, 0.15f), 3.f));
+		ObjectivePanel->SetBrushColor(FLinearColor(0.42f, 0.05f, 0.5f, 0.93f));
+		ObjectivePanel->SetPadding(FMargin(30.f, 16.f));
+		ObjectivePanel->SetVisibility(ESlateVisibility::HitTestInvisible);
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 		ObjectiveText = MakeText(28, FLinearColor::White, true);
 		Box->AddChildToVerticalBox(ObjectiveText)->SetHorizontalAlignment(HAlign_Center);
@@ -254,7 +259,11 @@ void UJamHudWidget::BuildTree()
 	CardPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
 	// Bottom centre: Fenella's caption, film-subtitle style, her name in her colour.
-	CaptionPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.72f), 6.f, FMargin(22.f, 10.f));
+	CaptionPanel = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+	CaptionPanel->SetBrush(Rounded(FLinearColor::White, 6.f, FLinearColor(0.35f, 0.95f, 1.f), 3.f));
+	CaptionPanel->SetBrushColor(FLinearColor(0.03f, 0.12f, 0.3f, 0.93f));
+	CaptionPanel->SetPadding(FMargin(30.f, 16.f));
+	CaptionPanel->SetVisibility(ESlateVisibility::HitTestInvisible);
 	{
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 		CaptionSpeaker = MakeText(16, FLinearColor(0.8f, 0.6f, 1.f), true);
@@ -381,8 +390,11 @@ UBorder* UJamHudWidget::GetBubble(int32 Index)
 {
 	while (Bubbles.Num() <= Index)
 	{
-		UBorder* B = MakePanel(FLinearColor::White, 14.f, FMargin(16.f, 10.f));
-		UTextBlock* T = MakeText(22, FLinearColor(0.05f, 0.05f, 0.05f), true);
+		UBorder* B = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+		B->SetPadding(FMargin(22.f, 14.f));
+		B->SetVisibility(ESlateVisibility::HitTestInvisible);
+		B->SetRenderTransformPivot(FVector2D(0.5f, 1.f));
+		UTextBlock* T = MakeText(24, FLinearColor(0.05f, 0.05f, 0.05f), true);
 		T->SetShadowOffset(FVector2D::ZeroVector);
 		T->SetWrapTextAt(420.f);
 		T->SetJustification(ETextJustify::Center);
@@ -484,8 +496,14 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		const FJamHudBubble& Data = View.Bubbles[i];
 		UBorder* B = GetBubble(i);
 		Show(B, true);
+		// Fixes3 #1b: shouts are hot yellow comic bursts that wobble; replies are white with a purple edge.
 		B->SetBrush(Data.bJagged ? Rounded(FLinearColor::White, 2.f, RecRed, 3.f) : Rounded(FLinearColor::White, 18.f, FLinearColor(0.6f, 0.4f, 0.9f), 2.f));
-		B->SetBrushColor(FLinearColor::White);
+		B->SetBrushColor(Data.bJagged ? FLinearColor(1.f, 0.88f, 0.12f) : FLinearColor::White);
+		const float Wob = RealSeconds * (Data.bJagged ? 9.f : 4.f) + i * 1.7f;
+		FWidgetTransform Pop;
+		Pop.Angle = FMath::Sin(Wob) * (Data.bJagged ? 4.f : 1.5f);
+		Pop.Scale = FVector2D(1.f + (Data.bJagged ? 0.06f : 0.02f) * FMath::Sin(Wob * 1.3f));
+		B->SetRenderTransform(Pop);
 		SetTextIfChanged(Cast<UTextBlock>(B->GetContent()), Data.Text);
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(B->Slot)) { S->SetPosition(Data.Position); }
 	}

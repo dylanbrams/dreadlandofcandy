@@ -54,6 +54,8 @@ public:
 	void Reset(int32 NewSeed);
 
 	const FJamNagConfig& GetConfig() const { return Config; }
+	/** Lines containing any of these words (case-insensitive) are skipped while others remain: no rat jokes in a bug scene. */
+	TArray<FString> AvoidWords;
 
 private:
 	const FJamLine* Pick(EJamLineTrigger Trigger);

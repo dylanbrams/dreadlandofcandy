@@ -76,6 +76,11 @@ public:
 	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
 	/** Fixes3 #2: a jagged comic sound word over something an attack just hit, in the caster's class voice. */
 	void NotifyAttackHit(AJamHero* Caster, AActor* Victim);
+	/** Fixes3 #4: the candy crops planted with a bug stage's first wave; bugs eat them. */
+	const TArray<TWeakObjectPtr<AActor>>& GetCrops() const { return Crops; }
+	TArray<TWeakObjectPtr<AActor>> Crops;
+	/** A one-off world bubble with literal text over Anchor (replaces that anchor's current bubble). */
+	void Quip(AActor* Anchor, const FString& Text, float Seconds, bool bJagged, const FVector& Offset = FVector(0.f, 0.f, 150.f));
 
 	/** While the wrap panel is up, a skill button spends a point on that skill. True if it did. */
 	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill, bool bFromCharacterSheet = false);

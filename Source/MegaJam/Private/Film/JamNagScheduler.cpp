@@ -18,8 +18,17 @@ void FJamNagScheduler::Reset(int32 NewSeed)
 
 const FJamLine* FJamNagScheduler::Pick(EJamLineTrigger Trigger)
 {
-	const TArray<const FJamLine*> Pool = JamLines::ForTrigger(Trigger);
+	TArray<const FJamLine*> Pool = JamLines::ForTrigger(Trigger);
 	if (Pool.IsEmpty()) { return nullptr; }
+	if (AvoidWords.Num() > 0)
+	{
+		TArray<const FJamLine*> Fitting = Pool.FilterByPredicate([this](const FJamLine* L)
+		{
+			for (const FString& W : AvoidWords) { if (L->Text.Contains(W, ESearchCase::IgnoreCase)) { return false; } }
+			return true;
+		});
+		if (Fitting.Num() > 0) { Pool = MoveTemp(Fitting); }
+	}
 	TSet<FName>& UsedSet = Used[(int32)Trigger];
 
 	auto Gather = [&](bool bSkipUsed, bool bSkipRecent)

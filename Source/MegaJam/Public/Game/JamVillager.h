@@ -17,5 +17,8 @@ public:
 private:
 	UPROPERTY() TObjectPtr<class UStaticMeshComponent> Art;
 	UPROPERTY() TObjectPtr<class UStaticMeshComponent> RoleProp;
+	UPROPERTY() TObjectPtr<class UStaticMeshComponent> HatPuff;
+	UPROPERTY() TObjectPtr<class UStaticMesh> CylinderMesh;
+	UPROPERTY() TObjectPtr<class UMaterialInterface> ShapeMat;   // Fixes3 #11: top of the baker's chef hat
 	UPROPERTY() TObjectPtr<class UTextRenderComponent> Label;
 };

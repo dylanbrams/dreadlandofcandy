@@ -20,6 +20,10 @@ public:
     virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 private:
     UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraComponent>> ParticleComponents;
+    /** Fixes3 #2: a class-coloured light flash at the cast (and a second one when an ultimate lands). */
+    UPROPERTY(Transient) TObjectPtr<class UPointLightComponent> Flash;
+    float FlashPeak = 0.f;
+    float SecondFlashAt = -1.f;
     TWeakObjectPtr<AJamHero> Caster;
     int32 CastIndex = 0;
     float Started = 0.f;

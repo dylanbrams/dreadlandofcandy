@@ -6,6 +6,7 @@
 #include "Game/JamGameState.h"
 #include "NiagaraComponent.h"
 #include "NiagaraSystem.h"
+#include "Components/PointLightComponent.h"
 #include "Components/SceneComponent.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -44,6 +45,25 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     Fx->CastIndex = Index;
     Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : 3.6f);
     // Fixes3 #2: each class's own system, every authored layer (up to three), at its authored prop cap.
+    // Fixes3 #2: flashes. A bright light in the class colour pops at the cast and fades in a quarter second;
+    // ultimates pop again when their big props land.
+    if (Name != TEXT("NS_FX_Impact"))
+    {
+        static const FLinearColor ClassFlash[] = { FLinearColor(1.f, 0.85f, 0.35f), FLinearColor(1.f, 0.35f, 0.75f), FLinearColor(0.45f, 1.f, 0.3f), FLinearColor(1.f, 0.6f, 0.25f) };
+        auto* Light = NewObject<UPointLightComponent>(Fx);
+        Light->SetupAttachment(Fx->GetRootComponent());
+        Fx->AddInstanceComponent(Light);
+        Light->SetRelativeLocation(FVector(Rank.Length > 0.f ? FMath::Min(Rank.Length * 0.4f, 500.f) : 150.f, 0.f, 180.f));
+        Light->SetIntensityUnits(ELightUnits::Candelas);
+        Light->SetAttenuationRadius(FMath::Max(Rank.Radius, Rank.Length) + 900.f);
+        Light->SetLightColor(ClassFlash[Index]);
+        Light->SetCastShadows(false);
+        Light->RegisterComponent();
+        Fx->Flash = Light;
+        Fx->FlashPeak = Skill == EJamSkill::LastJudgment ? 150000.f : 60000.f;   // daylight scene: it must beat the sun
+        if (Skill == EJamSkill::LastJudgment) { Fx->SecondFlashAt = Index == 1 ? 2.0f : Index == 2 ? 1.1f : Index == 3 ? 1.3f : 0.4f; }
+        Light->SetIntensity(Fx->FlashPeak);
+    }
     // Fixes3 #2: the giant peppermints of Peppermint Popfall home in, one dropped on each nearby nuisance.
     TArray<FVector> HomingTargets;
     if (Name == TEXT("NS_M02_PeppermintPopfall"))
@@ -108,6 +128,13 @@ void AJamAttackParticles::Tick(float DeltaSeconds)
         (!bPresentationReview && bSpawnedDuringTake && GS && (GS->GetShoot().GetState() != EJamShootState::Rolling || GS->TakeFailedAt >= Started)))
     { Destroy(); return; }
     for (const auto& Component : ParticleComponents) { if (Component) { Component->SetVariableBool(TEXT("User.BudgetOut"), GS && GS->bBudgetOut); } }
+    if (Flash)
+    {
+        const float Age = GetWorld()->GetTimeSeconds() - Started;
+        float Glow = FMath::Exp(-Age * 9.f);
+        if (SecondFlashAt > 0.f && Age >= SecondFlashAt) { Glow = FMath::Max(Glow, 1.4f * FMath::Exp(-(Age - SecondFlashAt) * 7.f)); }
+        Flash->SetIntensity(FlashPeak * Glow);
+    }
 }
 
 void AJamAttackParticles::EndPlay(const EEndPlayReason::Type Reason)
