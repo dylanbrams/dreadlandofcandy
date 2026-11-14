@@ -71,6 +71,7 @@ private:
 	TObjectPtr<class UJamNoteEditor> NoteEditor;
 	void TickNoteEditor();
 	bool bEditorSample = false;
+	bool bProposalEditor = false;
 	uint8 WeatherSample = 0;
 	FJamMenuSettings MenuSettings() const;
 	class UJamSettings* Settings() const;

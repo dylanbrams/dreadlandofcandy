@@ -104,8 +104,14 @@ void AJamHUD::BeginPlay()
 			{
 				AJamGameMode* GM = AuthGameMode();
 				AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
-				if (GM && H) { GM->HandleTypedNote(H, Note); }
+				if (bProposalEditor)
+				{
+					bProposalEditor = false;
+					if (GM) { GM->RequestVillageProposal(Note); }
+				}
+				else if (GM && H) { GM->HandleTypedNote(H, Note); }
 			});
+			NoteEditor->OnCancel.BindLambda([this]() { bProposalEditor = false; });
 		}
 		if (Arg == TEXT("rain")) { WeatherSample = 1; }
 		if (Arg == TEXT("snow")) { WeatherSample = 2; }
@@ -134,12 +140,13 @@ void AJamHUD::Tick(float DeltaSeconds)
 		FJamScreenView Sample;
 		const bool bSample = !ScreenSampleName.IsEmpty() && JamScreens::Sample(ScreenSampleName, Sample);
 		ScreenView = bSample ? Sample : BuildScreen();
-		const bool bShown = ScreenView.Screen != EJamScreen::None;
+		TickNoteEditor();
+		const bool bEditor = NoteEditor && NoteEditor->IsOpen();
+		// The proposal editor replaces the offer temporarily; Esc returns to its choices.
+		const bool bShown = ScreenView.Screen != EJamScreen::None && !(bProposalEditor && bEditor);
 		const ESlateVisibility Vis = bShown ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
 		if (Screen->GetVisibility() != Vis) { Screen->SetVisibility(Vis); }
 		if (bShown) { Screen->ApplyView(ScreenView, GetWorld()->GetRealTimeSeconds()); }
-		TickNoteEditor();
-		const bool bEditor = NoteEditor && NoteEditor->IsOpen();
 		// Resolve every overlay before applying captions, including the note editor.
 		// Caption lifetime belongs to the game state (world time stops during pause).
 		if (bShown || bEditor) { View.Caption.Reset(); View.Bubbles.Reset(); }
@@ -215,7 +222,11 @@ void AJamHUD::TickNoteEditor()
 	if (!NoteEditor) { return; }
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	// It closes itself on give or back; it also goes when CUT! does (or a pause covers it).
-	if (NoteEditor->IsOpen() && !bEditorSample && (!GS || !GS->IsNotePrompt() || GS->bReadingNote)) { NoteEditor->Close(); }
+	const AJamGameMode* GM = AuthGameMode();
+	const bool bContextGone = bProposalEditor ? (!GM || !GM->GetQuestOffer().bVisible)
+		: (!GS || !GS->IsNotePrompt() || GS->bReadingNote);
+	if (NoteEditor->IsOpen() && !bEditorSample && bContextGone) { NoteEditor->Close(); }
+	if (!NoteEditor->IsOpen()) { bProposalEditor = false; }
 	const bool bShow = NoteEditor->IsOpen() && !bPaused;
 	const ESlateVisibility Vis = bShow ? ESlateVisibility::Visible : ESlateVisibility::Collapsed;
 	if (NoteEditor->GetVisibility() != Vis) { NoteEditor->SetVisibility(Vis); }
@@ -553,6 +564,16 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::OpenControls: ControlsParent = SubScreen; ControlsParentSelected = Selected; SubScreen = EJamScreen::Controls; Selected = 0; break;
 	case EJamMenuAction::QuestBranch0: if (GM) { GM->ChooseVillageBranch(0); Selected = 0; } break;
 	case EJamMenuAction::QuestBranch1: if (GM) { GM->ChooseVillageBranch(1); Selected = 0; } break;
+	case EJamMenuAction::QuestBranch2: if (GM) { GM->ChooseVillageBranch(2); Selected = 0; } break;
+	case EJamMenuAction::ProposePlan:
+		if (GM && NoteEditor && GM->GetQuestOffer().bVisible && GM->GetQuestOffer().bCanPropose)
+		{
+			bProposalEditor = true;
+			NoteEditor->Open(TEXT("How would you solve it?"), GM->ProposalSuggestions(), bMenuGamepad);
+			// Force a new focus assignment even if the previous input mode was also UI.
+			InputModeState = -1;
+		}
+		break;
 	case EJamMenuAction::ImproviseQuest: if (GM) { GM->RequestVillageBranches(); Selected = 0; } break;
 	case EJamMenuAction::CancelQuestOffer: if (GM) { GM->CancelVillageOffer(); Selected = 0; } break;
 	case EJamMenuAction::AbandonQuest: if (GM && SubScreen == EJamScreen::QuestJournal) { GM->AbandonVillageQuest(); Selected = 0; } break;

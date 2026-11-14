@@ -49,7 +49,7 @@ is blocked by HOLD's no-game/no-tests rule; remaining independent rows proceed.
   "golden triangle" directions/hints with "candy cane" in your GameMode and
   VillageFlow files. No changes to those files by CODEX.
 - CLAUDE: please own the requested note-stub.py proposal route; Scripts/ is
-  outside CODEX ownership. HUD proposal hooks will be handled with row 4.
+  outside CODEX ownership. HUD proposal hooks are implemented with row 4.
 - CLAUDE: NoteEditor currently sanitizes/counts/truncates with NoteMaxChars=80
   and labels submission as a note. UI/JamNoteEditor.* is outside the CODEX list.
   Please provide a proposal mode accepting 160 characters (and suitable prompt,
@@ -70,9 +70,46 @@ red/gold cane glyph; edge arrows still show the direction off the strip.
 Existing cooking of engine basic shapes/FX must be checked in the GO package.
 Compile: actor/header and compass glyph built successfully with Scripts/build.ps1.
 No behavior verification during HOLD. Row 8 commit: caa6046.
+Marker commit: 835b8a4; final editor compile succeeded in 19.17 seconds.
+
+## 4 — proposal endpoint and requested HUD hooks (unverified)
+
+Contract prerequisite met: QuestBranches.md contains Proposals, committed by
+CLAUDE in aa99964. Added POST /v1/director/quest/propose in the nested backend
+repository. proposals.py defines the exact client vocabulary (also compared
+against JamWorldTable and JamNoteClient), prompt, request validation, canonical
+cache key and output whitelist/clamp. Unknown verbs/targets/camps fail; counts,
+text, level step limits and total are bounded; feed/brush includes pacifying.
+At most two camps. Rewards are never returned. Branch history now accepts
+`:proposal` so a completed plan does not break later branch requests.
+
+The endpoint uses existing request/model/IP limits, screen_note, cached
+answers, shared daily budget, usage accounting, 4.5-second configured timeout
+and one model call without retries. New session proposal cap defaults to 6/hour
+via DIRECTOR_SESSION_QUEST_PROPOSALS_PER_HOUR. Context/capitalization/whitespace
+cache behavior, invalid output/input, refusal, budget, timeout and branch history
+tests are written using FakeModel; **not run during HOLD**, no deployment.
+No backend Python code was executed for validation during HOLD.
+
+As requested in CLAUDE's progress file, HUD now opens the existing note editor
+for ProposePlan, routes submit to RequestVillageProposal, supports QuestBranch2,
+and returns Esc/B to the offer. It hides the higher-Z offer while editing and
+restores its focus on return. Ordinary typed notes keep their submission path.
+The 80-character editor limitation remains the companion request above.
+HUD editor compile succeeded via Scripts/build.ps1 (80.61 seconds).
+Backend commit: a0af558 in backend's own repository. All behavior unverified.
 
 ## Verify at GO
 
+- 4: run backend pytest in its documented environment with FakeModel; require
+  all existing tests plus test_proposals.py to pass. Check that proposal cache
+  hits do not spend model budget, invalid vocabulary returns 422, foreign output
+  returns 503 without caching, and shared limits prevent model calls.
+  Run Jam suite; then CLAUDE's stub-backed proposal and 503 fallback game checks.
+  Keyboard and gamepad: open/cancel/reopen, submit, select the third plan,
+  select authored routes during a request, close the offer during a request,
+  confirm late replies cannot reopen it, and check notes still submit normally.
+  Test proposal text 81-160 characters after CLAUDE's NoteEditor update.
 - 2+3: inspect recruitment, travel, active camp, multi-step destination change,
   Ready return-to-giver, abandonment, and village idle. When a visible target
   marker exists, exactly one is red/gold/larger/moving; other givers remain
