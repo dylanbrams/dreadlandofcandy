@@ -57,7 +57,7 @@ namespace JamWorldTableRows   // named, not anonymous: the game target is a unit
 	FJamWorldDef Build()
 	{
 		FJamWorldDef W;
-		W.Bounds = FBox2D(FVector2D(-HalfSize, -HalfSize), FVector2D(HalfSize, HalfSize));
+		W.Bounds = FBox2D(FVector2D(-HalfSize, -HalfSize), FVector2D(26000.f, HalfSize));
 		W.VillageRadius = VillageRadius;
 
 		// Biomes. Display names are placeholders until Jokes.md names them. Grade offsets add to JamLook's.
@@ -79,11 +79,11 @@ namespace JamWorldTableRows   // named, not anonymous: the game target is a unit
 		// The village: the square, two givers by the road, a signpost.
 		L.Add(Loc(TEXT("Village"), EJamLocationKind::Village, EJamBiome::Village, FVector2D::ZeroVector, VillageRadius));
 		L.Add(Loc(TEXT("Signpost"), EJamLocationKind::Landmark, EJamBiome::Village, Polar(60.f, 500.f), 100.f));
-		L.Add(Loc(TEXT("GiverMayor"), EJamLocationKind::Giver, EJamBiome::Village, Polar(180.f, 700.f), 150.f, 0.f));
-		L.Add(Loc(TEXT("GiverBaker"), EJamLocationKind::Giver, EJamBiome::Village, Polar(-60.f, 900.f), 150.f, 120.f));
-		L.Add(Loc(TEXT("GiverGardener"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(800.f, 400.f), 150.f, -150.f));
-		L.Add(Loc(TEXT("GiverDentist"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-800.f, -600.f), 150.f, 35.f));
-		L.Add(Loc(TEXT("GiverScout"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-400.f, 1000.f), 150.f, -70.f));
+		L.Add(Loc(TEXT("GiverMayor"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-1100.f, 0.f), 150.f, 0.f));
+		L.Add(Loc(TEXT("GiverBaker"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(650.f, -950.f), 150.f, 90.f));
+		L.Add(Loc(TEXT("GiverGardener"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(1100.f, 900.f), 150.f, 180.f));
+		L.Add(Loc(TEXT("GiverDentist"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-850.f, -950.f), 150.f, 35.f));
+		L.Add(Loc(TEXT("GiverScout"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-800.f, 1100.f), 150.f, -90.f));
 
 		// The film sets (the main questline). Half sides match the backlot sets: 1800, 1400 and 2000 square.
 		L.Add(Set(TEXT("SetField"),   EJamBiome::Meadow,  Polar(MeadowYaw, 6000.f),  900.f,  0));
@@ -98,7 +98,9 @@ namespace JamWorldTableRows   // named, not anonymous: the game target is a unit
 		// Camps: three per biome, two near the village road and one far out.
 		L.Add(Camp(TEXT("CampMeadowWest"),  EJamBiome::Meadow, Polar(MeadowYaw - 35.f, 4200.f), { K::Rat }, 6));
 		L.Add(Camp(TEXT("CampMeadowEast"),  EJamBiome::Meadow, Polar(MeadowYaw + 35.f, 4200.f), { K::Rat, K::Almond }, 6));
-		L.Add(Camp(TEXT("CampMeadowFar"),   EJamBiome::Meadow, Polar(MeadowYaw + 10.f, 9800.f), { K::Rat }, 8));
+		L.Add(Camp(TEXT("CampMeadowFar"),   EJamBiome::Meadow, FVector2D(22200.f, 0.f), { K::Rat }, 8));
+		L.Add(Camp(TEXT("CampRiverbank"), EJamBiome::Meadow, FVector2D(17000.f, -3000.f), { K::Rat, K::Almond }, 8));
+		L.Add(Camp(TEXT("CampMintGrove"), EJamBiome::Meadow, FVector2D(22500.f, 4200.f), { K::Rat, K::Almond }, 10));
 
 		L.Add(Camp(TEXT("CampMolarsNear"),  EJamBiome::Molars, Polar(MolarsYaw + 30.f, 4300.f), { K::Goblin }, 5));
 		L.Add(Camp(TEXT("CampMolarsRidge"), EJamBiome::Molars, Polar(MolarsYaw - 35.f, 8000.f), { K::Goblin }, 6));

@@ -789,7 +789,9 @@ void AJamHero::UpdateWeaponCarry(bool bForce)
         ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepWorldTransform, Def.WeaponHand);
         ArtSword->SetRelativeRotation(Def.WeaponGrip);
         const FTransform Hand = ArtRig->GetSocketTransform(Def.WeaponHand);
-        ArtSword->SetWorldLocation(Hand.GetLocation() + Hand.GetRotation().RotateVector(FVector(7.f, 0.f, 0.f)));
+        // Keep the prop snug to the hand socket. A larger forward offset made
+        // the oversized class props read as detached from the character.
+        ArtSword->SetWorldLocation(Hand.GetLocation() + Hand.GetRotation().RotateVector(FVector(2.f, 0.f, 0.f)));
         ArtSword->SetWorldScale3D(EquippedWeaponScale);
     }
     else

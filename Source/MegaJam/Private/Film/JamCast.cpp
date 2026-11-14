@@ -39,7 +39,7 @@ namespace
             D.SkillAnimations = { TEXT("MageLecture"), TEXT("MageLine"), TEXT(""), TEXT("MageJudgment") };
             D.PrimaryColor = Colour(TEXT("8D5BDB"));
             D.SkillDamageColors = { Sweetness, Hygiene, Sweetness, Sweetness };
-            D.BackOffset = FVector(-38.f, -18.f, 30.f);
+            D.BackOffset = FVector(-30.f, -12.f, 24.f);
             D.BackAxis = FVector(0.f, 0.3f, 0.95f);
         }
         else if (D.Id == TEXT("archer"))
@@ -52,7 +52,7 @@ namespace
             D.WeaponHand = TEXT("hand_l");
             // Turn about the bow's long axis so its limbs face forward without inverting it.
             D.WeaponGrip = (FRotator(0.f, 0.f, -90.f).Quaternion() * FQuat(FVector::UpVector, PI)).Rotator();
-            D.BackOffset = FVector(-35.f, 0.f, 25.f);
+            D.BackOffset = FVector(-28.f, 0.f, 20.f);
             D.BackAxis = FVector(0.f, -0.35f, 0.94f);
             D.BackTwist = 90.f;
         }
@@ -63,7 +63,7 @@ namespace
             D.SkillAnimations = { TEXT("BarbarianKnead"), TEXT("BarbarianBellow"), TEXT(""), TEXT("BarbarianCyclone") };
             D.PrimaryColor = Colour(TEXT("C65736"));
             D.SkillDamageColors = { Domestic, Manners, Domestic, Domestic };
-            D.BackOffset = FVector(-40.f, 16.f, -10.f);
+            D.BackOffset = FVector(-32.f, 12.f, -8.f);
             D.BackAxis = FVector(0.f, -0.45f, 0.89f);
         }
 		return D;

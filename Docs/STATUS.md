@@ -1,4 +1,35 @@
-# STATUS - Nov 14: Fixes3 gameplay checkpoint
+# STATUS - Nov 14: Riverlands map redesign
+
+**GAME redesign:** Dylan authorized a larger, prettier map using the new
+terrain assets, a retained hill, river and bridge, relocated quest destinations,
+and Fixes3 physical lines 21/23 (items 20/22). This overrides the earlier new
+terrain cut.
+
+The saved map now has seven generated village buildings (including two small
+houses), a peppermint square tree, an eastern terrain opening and Riverlands.
+Playable area grows 58.3%, from 240x240m to 380x240m. The Molar hill and film
+sets are retained. Far meadow moves to (22200,0), with riverbank and mint-grove
+camps added. Givers move beside their workplaces; authored quest IDs remain
+stable. Imported assets and reproducible scripts: `ImportSource/Terrain/Expansion`.
+
+The large-icon skill HUD request was already implemented and is retained.
+Class hand/back carry offsets are tightened; live pose inspection remains.
+Existing trunk hulls are adopted, with tree HISM collision restricted to Pawn;
+new riverland trunks have narrow hidden cylinders. Camera channels ignore
+these hulls. This alone does not prove foliage never obscures the hero.
+
+Village review screenshot inspected: `Saved/Screenshots/WindowsEditor/riverlands-village.png`.
+Terra's cleaned Bridge126 is imported and fitted to the river. Editor build
+succeeded; 82 Jam tests passed with log EXIT CODE 0. Offline village autoplay
+passed main=3 side=10. Saved-world route traces pass across the bridge to the
+far camp; a simple collision query hits the selected tree trunk, with Pawn
+blocking verified on all 17 tree groups. Report: `Expansion/validation.json`.
+River preview: `Saved/Screenshots/WindowsEditor/riverlands-river.png`.
+Manual crossing, weapon clearance in every animation, camera occlusion and
+cooked delivery remain unverified. No package, deployment or upload. Earlier
+notes below are historical. Engine is FREE after the final review capture.
+
+## Earlier Fixes3 gameplay checkpoint
 
 **Terrain handoff, Fixes3 #23/#24:** Dylan is assigning a terrain rebuild to a
 Sol agent. Tree collision work is stopped and its changes are uncommitted:

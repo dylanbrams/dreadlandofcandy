@@ -403,3 +403,19 @@ Editor build and 82 Jam tests passed. Celery Shot and speech bubbles still need
 live visual and gameplay verification. Tree collision work was handed to the
 incoming terrain agent with its uncommitted state documented in STATUS.
 
+## Nov 14: Sugarborough and Riverlands redesign
+
+Dylan requested a larger landscape, new generated village/foliage, the Molar
+hill, and a bridged river. Expanded playable area by 58.3%, opened the eastern
+terrain wall, retained the original hill/film sets, and added rolling mint
+riverlands. Imported the village buildings and peppermint square tree; moved
+givers to workplaces and far meadow across the river, adding two camp choices.
+Terra's generated Bridge126 replaces the procedural crossing. Ground sampling
+passes along the approach/crossing/far clearing; saved tree groups use Pawn-only
+trunk collision. All generated staging sources remain intact.
+
+Physical Fixes3 lines 21/23: retained the existing full-tile skill icons with
+small footer text, and tightened class equipment offsets. Village review
+inspected; manual weapon poses, manual crossing and cooked delivery remain
+unverified. No deployment/upload. Final verification recorded in STATUS.
+

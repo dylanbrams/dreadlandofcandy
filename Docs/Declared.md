@@ -348,3 +348,15 @@ eleven_multilingual_v2, Bella voice hpp4J3VqNfWAUOO0d1Us. Exact texts:
 mono 48 kHz PCM16 WAVs: ocals/output/fenella/VO_<LineId>.*. Generated
 audio delivery only; listening and game import pending.
 | `SM_KnightShield` | Meshy text-to-3D | 2026-11-14 | `ImportSource/Meshy/SM_KnightShield.glb`; prompt in `Assets/Generation/jobs.json` |
+
+## 2026-11-14: Riverlands and village redesign
+
+Original Riverlands terrain, river ribbon, wafer bridge, and eastern terrain
+opening authored during the jam using OpenAI Codex and Blender 4.5. Scripts
+and FBXs: `ImportSource/Terrain/Expansion/`. Seven user-generated village
+buildings from `Assets/DylanGeneration` and six user-provided Tripo foliage
+models from `Assets/DylanGenerationFoliageTwo/LowPoly` imported with their
+textures into `/Game/World/Expansion`. Original supplied sources preserved.
+Bridge models supplied by Dylan and cleaned by Terra are staged separately in
+`Assets/DylanGenerationFoliageThree`; provenance and variants in its manifest.
+Its Clean Bridge126 is imported for the river crossing with the source texture.
