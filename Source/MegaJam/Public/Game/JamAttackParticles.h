@@ -26,4 +26,5 @@ private:
     TWeakObjectPtr<AJamNuisance> Brushee;
     bool bMouthFoam = false;
     bool bPresentationReview = false;
+    bool bSpawnedDuringTake = false;
 };

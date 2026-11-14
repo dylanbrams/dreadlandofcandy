@@ -395,3 +395,11 @@ ten village jobs. Arrival capture had shader compilation overlay, so visual
 assessment of the giver markers remains pending. Investigated tree collision:
 the shipped map's baked foliage is nonblocking and needs a targeted trunk pass.
 
+# Fixes3 attack effect lifetime
+
+Kept village attack Niagara actors alive for their normal lifespan when spawned
+outside a rolling film take; take-bound effects retain their existing cleanup.
+Editor build and 82 Jam tests passed. Celery Shot and speech bubbles still need
+live visual and gameplay verification. Tree collision work was handed to the
+incoming terrain agent with its uncommitted state documented in STATUS.
+

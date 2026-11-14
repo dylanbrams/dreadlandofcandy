@@ -37,6 +37,8 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     Fx->Caster = Hero;
     Fx->CastIndex = Index;
     Fx->Started = Hero->GetWorld()->GetTimeSeconds();
+    const AJamGameState* SpawnState = Hero->GetWorld()->GetGameState<AJamGameState>();
+    Fx->bSpawnedDuringTake = SpawnState && SpawnState->GetShoot().GetState() == EJamShootState::Rolling;
     Fx->bPresentationReview = FParse::Param(FCommandLine::Get(), TEXT("classreview")) || FParse::Value(FCommandLine::Get(), TEXT("castreview="), Fx->CastIndex);
     Fx->CastIndex = Index;
     Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : 3.6f);
@@ -77,7 +79,7 @@ void AJamAttackParticles::Tick(float DeltaSeconds)
         return;
     }
     if (!Caster.IsValid() || Caster->GetCastIndex() != CastIndex ||
-        (!bPresentationReview && GS && (GS->GetShoot().GetState() != EJamShootState::Rolling || GS->TakeFailedAt >= Started)))
+        (!bPresentationReview && bSpawnedDuringTake && GS && (GS->GetShoot().GetState() != EJamShootState::Rolling || GS->TakeFailedAt >= Started)))
     { Destroy(); return; }
     for (const auto& Component : ParticleComponents) { if (Component) { Component->SetVariableBool(TEXT("User.BudgetOut"), GS && GS->bBudgetOut); } }
 }

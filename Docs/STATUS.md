@@ -1,5 +1,24 @@
 # STATUS - Nov 14: Fixes3 gameplay checkpoint
 
+**Terrain handoff, Fixes3 #23/#24:** Dylan is assigning a terrain rebuild to a
+Sol agent. Tree collision work is stopped and its changes are uncommitted:
+`Content/World/L_Sugarborough.umap`, the eleven tree meshes under
+`Content/World/Polish/Meshes/`, and
+`ImportSource/Terrain/Polish/tree_collision_probe.py`. The meshes have narrow
+convex cylinder hulls on their lower trunks. The saved map enables QueryOnly
+BlockAll on 17 tree groups (1,026 instances), leaving other foliage nonblocking.
+This blocks camera/visibility too; the attempted Pawn-only configuration was not
+saved or verified. An initial trace reported a hit but did not prove the hit was
+the selected trunk. The terrain agent should review or replace this work, verify
+actual pawn collision and clear camera sightlines, and coordinate ownership of
+these uncommitted files. Do not assume #23 or #24 is complete.
+
+Fixes3 #25: attack particles spawned outside an active film take no longer get
+destroyed on their first tick merely because the shoot is not rolling. Editor
+build and 82 Jam tests pass (EXIT CODE 0). Celery Shot visuals, projectile
+behavior and speech bubbles still need a live check; no screenshot or village
+autoplay was run after this code change. Engine released for terrain.
+
 Fixes3 #19: raised the five village giver candy-cane markers from 320 to 400 uu
 above their anchors. Editor build and 82 Jam tests passed (log EXIT CODE 0);
 offline village autoplay passed main=3, side=10. The arrival screenshot was
