@@ -205,6 +205,13 @@ namespace JamScenes
 		Feed.Target = EJamTargetKind::Rat;
 		Feed.Count = 3;
 		Feed.Objective = TEXT("Feed each rat celery");
+        // Dylan's playtest: always offer direction entry before the first quest's second leg.
+        S.NoteBeforeStage = 1;
+        S.Note.Id = TEXT("S1_RatMotivation");
+        S.Note.PitchLineId = TEXT("CutPitch_01");
+        S.Note.GrossMultiplier = 1.25f;
+        S.Note.BubblePool = TEXT("Default");
+        S.Note.Replacement = Feed;
 		return S;
 	}
 

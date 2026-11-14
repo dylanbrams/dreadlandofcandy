@@ -146,10 +146,22 @@ void AJamNuisance::SetState(EJamNuisanceState NewState)
 	if (BodyMaterial) { BodyMaterial->SetVectorParameterValue(TEXT("Color"), ColourFor(State, BaseColour)); }
 	UpdateStateOverlay();
 
-	// Pacified sits (squashed); everything else stands.
-	const bool bSitting = State == EJamNuisanceState::Pacified || State == EJamNuisanceState::Treated;
-	Body->SetRelativeScale3D(bSitting ? BodyBaseScale * FVector(1.15f, 1.15f, 0.55f) : BodyBaseScale);
-	Body->SetRelativeLocation(bSitting ? BodyBaseLocation - FVector(0.f, 0.f, 35.f) : BodyBaseLocation);
+	// Settle into a calm pose in Tick, keeping the imported feet on the floor.
+    if (State == EJamNuisanceState::Pacified || State == EJamNuisanceState::Treated)
+    {
+        RecoilAt = -100.f;
+        RecoilVelocity = FVector2D::ZeroVector;
+    }
+    ApplyBodySquash(1.f);
+}
+
+void AJamNuisance::ApplyBodySquash(float Squash)
+{
+    const float Widen = 1.f + (1.f - Squash) / 3.f;
+    Body->SetRelativeScale3D(BodyBaseScale * FVector(Widen, Widen, Squash));
+    const UStaticMesh* Mesh = Body->GetStaticMesh();
+    const float Bottom = Mesh ? Mesh->GetBoundingBox().Min.Z * BodyBaseScale.Z : 0.f;
+    Body->SetRelativeLocation(BodyBaseLocation + FVector(0.f, 0.f, Bottom * (1.f - Squash)));
 }
 
 void AJamNuisance::HandlePacified(AActor* /*Pacified*/)
@@ -257,7 +269,7 @@ void AJamNuisance::Steer(const FVector2D& DesiredVelocity, float DeltaSeconds)
 		FCollisionQueryParams Params(TEXT("JamNuisanceGround"), false, this);
 		if (GetWorld()->LineTraceSingleByObjectType(Hit, FVector(Next, Here.Z + 400.f), FVector(Next, Here.Z - 800.f), FCollisionObjectQueryParams(ECC_WorldStatic), Params))
 		{
-			Z = Hit.ImpactPoint.Z + GroundOffset;
+			Z = Hit.ImpactPoint.Z + GroundOffset * GetActorScale3D().Z;
 		}
 	}
 	SetActorLocation(FVector(Next, Z));
@@ -274,17 +286,23 @@ void AJamNuisance::Tick(float DeltaSeconds)
 
 	// Recoil: a shove that dies out in a fifth of a second, and a squash that springs back.
 	const float SinceRecoil = GetWorld()->GetTimeSeconds() - RecoilAt;
-	if (SinceRecoil < 0.35f)
+	if (IsPacified() || IsTreated())
+    {
+        const float Settle = FMath::SmoothStep(0.f, 0.3f, StateTime);
+        const float Breathe = FMath::Sin(StateTime * 2.f * PI * 0.7f) * 0.018f * Settle;
+        ApplyBodySquash(FMath::Lerp(1.f, 0.55f, Settle) + Breathe);
+    }
+	else if (SinceRecoil < 0.35f)
 	{
 		if (!RecoilVelocity.IsNearlyZero()) { Steer(RecoilVelocity, DeltaSeconds); RecoilVelocity *= FMath::Pow(0.0005f, DeltaSeconds); }
 		const float Squash = FMath::Sin(PI * SinceRecoil / 0.35f) * 0.3f;
-		Body->SetRelativeScale3D(BodyBaseScale * FVector(1.f + Squash, 1.f + Squash, 1.f - Squash));
+		ApplyBodySquash(1.f - Squash);
 	}
 	else if (RecoilAt > 0.f)
 	{
 		RecoilAt = -100.f;
 		RecoilVelocity = FVector2D::ZeroVector;
-		Body->SetRelativeScale3D(BodyBaseScale);
+		ApplyBodySquash(1.f);
 	}
 
 	float HeroDistance = 0.f;

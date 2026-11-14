@@ -479,7 +479,7 @@ void AJamHero::PawnClientRestart()
 	CreateInput();
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
-		PC->bShowMouseCursor = !bFollowCamera;   // Backlot: the hero faces the cursor; Open: the mouse turns the camera
+		PC->bShowMouseCursor = true;   // Both modes keep HUD controls reachable
 		if (UEnhancedInputLocalPlayerSubsystem* Sub = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
 		{
 			Sub->AddMappingContext(InputContext, 0);
@@ -505,6 +505,8 @@ void AJamHero::OnMove(const FInputActionValue& Value)
 void AJamHero::OnLook(const FInputActionValue& Value)
 {
 	if (!bFollowCamera || bCameraPinned) { return; }
+	const APlayerController* PC = Cast<APlayerController>(GetController());
+	if (!PC || !PC->IsInputKeyDown(EKeys::MiddleMouseButton)) { return; }
 	const FVector2D Axis = Value.Get<FVector2D>();   // mouse counts this frame
 	bUsingGamepad = false;
 	CameraYaw = FRotator::NormalizeAxis(CameraYaw + Axis.X * JamHeroTuning::MouseYawSpeed);
@@ -523,7 +525,7 @@ void AJamHero::EnableFollowCamera(float Yaw)
 	CameraArm->bEnableCameraLag = true;
 	CameraArm->CameraLagSpeed = 10.f;
 	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
-	if (APlayerController* PC = Cast<APlayerController>(GetController())) { PC->bShowMouseCursor = false; }
+	if (APlayerController* PC = Cast<APlayerController>(GetController())) { PC->bShowMouseCursor = true; }
 }
 
 void AJamHero::SetFollowFraming(bool bScene, float SceneYaw)

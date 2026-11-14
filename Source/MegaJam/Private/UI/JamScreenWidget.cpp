@@ -306,6 +306,7 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 			OptionRows[i]->SetVisibility(bOpt ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		}
 		if (!bOpt) { continue; }
+		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::Character ? 900.f : 620.f); }
 		const FJamMenuOption& O = View.Options[i];
 		const bool bSel = i == View.Selected && O.bEnabled;
 		OptionRows[i]->SetBrush(ScreenRounded(bSel ? ScreenGold : FLinearColor(1.f, 1.f, 1.f, 0.15f), 8.f, bSel ? 3.f : 1.f));

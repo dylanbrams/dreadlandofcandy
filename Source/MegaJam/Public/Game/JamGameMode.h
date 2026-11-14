@@ -62,7 +62,7 @@ public:
 	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
 
 	/** While the wrap panel is up, a skill button spends a point on that skill. True if it did. */
-	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill);
+	bool HandleSpendPoint(AJamHero* Hero, EJamSkill Skill, bool bFromCharacterSheet = false);
 	bool IsNotePromptUp() const;
 
 	/**

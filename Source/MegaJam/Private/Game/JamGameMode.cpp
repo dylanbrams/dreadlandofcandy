@@ -192,7 +192,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	// never z-fight. The hero starts on the first scene's set mark.
 	const float TemplateFloorZ = NewHero->GetActorLocation().Z - NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	GroundZ = TemplateFloorZ + 2.f;
-	bOpenMode = FParse::Param(Cmd, TEXT("open")) && !FParse::Param(Cmd, TEXT("backlot"));
+	bOpenMode = !FParse::Param(Cmd, TEXT("backlot"));   // Dylan: Open is now the default; -backlot keeps the fallback.
 	if (bOpenMode)
 	{
 		StartOpenWorld(NewHero, Cmd);
@@ -331,6 +331,7 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 			if (!FMath::IsNearlyEqual(NoteCosmetics.Scale, 1.f)) { N->SetActorScale3D(FVector(NoteCosmetics.Scale)); }
 		}
 		else if (Stage.ResolveMultiplier >= 3.f) { N->SetActorScale3D(FVector(1.8f)); }
+		N->AddActorWorldOffset(FVector(0.f, 0.f, 70.f * (N->GetActorScale3D().Z - 1.f)));
 		N->GetResolveSet()->OnPacified.AddUObject(this, &AJamGameMode::HandlePacified);
 		Nuisances.Add(N);
 	}
@@ -880,11 +881,15 @@ bool AJamGameMode::IsNotePromptUp() const
 	return GS && GS->IsNotePrompt();
 }
 
-bool AJamGameMode::HandleSpendPoint(AJamHero* InHero, EJamSkill Skill)
+bool AJamGameMode::HandleSpendPoint(AJamHero* InHero, EJamSkill Skill, bool bFromCharacterSheet)
 {
 	AJamGameState* GS = GetJamGameState();
 	AJamPlayerState* PS = GetHeroState();
-	if (!GS || !PS || !InHero || InHero != Hero.Get() || !GS->IsWrapVisible()) { return false; }
+	if (!GS || !PS || !InHero || InHero != Hero.Get()) { return false; }
+    const APlayerController* PC = Cast<APlayerController>(InHero->GetController());
+    const AJamHUD* HUD = PC ? Cast<AJamHUD>(PC->GetHUD()) : nullptr;
+    const bool bSheet = bFromCharacterSheet && HUD && HUD->IsCharacterSheetOpen() && GS->Phase == EJamFilmPhase::Shooting;
+    if (!GS->IsWrapVisible() && !bSheet) { return false; }
 	FJamProgression& Prog = PS->EditProgression();
 	if (!Prog.SpendPoint(Skill)) { return false; }
 	ApplyHeroStats();

@@ -260,6 +260,8 @@ bool FJamFilmShootForcedRetake::RunTest(const FString&)
 	Shoot.ReportProgress(3);
 	TestEqual(TEXT("take 2 clears normally"), Shoot.GetState(), EJamShootState::StageCleared);
 	Shoot.Action();
+	TestEqual(TEXT("first quest always offers direction entry before feeding"), Shoot.GetState(), EJamShootState::NotePrompt);
+	TestTrue(TEXT("first quest can accept directions"), Shoot.AnswerNote(true));
 	Shoot.ReportProgress(3);
 	Shoot.Action();
 	TestEqual(TEXT("scene 1 wraps"), Shoot.GetState(), EJamShootState::Wrap);
@@ -300,7 +302,7 @@ bool FJamFilmScenesFinishable::RunTest(const FString&)
 		}
 	}
 	TestTrue(TEXT("only scene 1 forces a retake"), Scenes[0].bForcedRetakeOnFirstStage && !Scenes[1].bForcedRetakeOnFirstStage && !Scenes[2].bForcedRetakeOnFirstStage);
-	TestEqual(TEXT("scene 1 has no note"), Scenes[0].NoteBeforeStage, (int32)INDEX_NONE);
+	TestEqual(TEXT("scene 1 always offers directions before feeding"), Scenes[0].NoteBeforeStage, 1);
 	TestNotEqual(TEXT("scene 2 has a note"), Scenes[1].NoteBeforeStage, (int32)INDEX_NONE);
 	TestNotEqual(TEXT("scene 3 has a note"), Scenes[2].NoteBeforeStage, (int32)INDEX_NONE);
 	TestTrue(TEXT("scene 2 fails by countdown"), Scenes[1].Stages.ContainsByPredicate([](const FJamStageDef& S) { return S.TimeLimit > 0.f; }));

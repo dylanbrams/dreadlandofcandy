@@ -5,6 +5,9 @@
 #include "UI/JamHudView.h"
 #include "JamHudWidget.generated.h"
 
+enum class EJamHudAction : uint8 { Skill1, Skill2, Ultimate, TakeNote, RefuseNote, WriteNote, Interact, Continue, Character, Pause };
+DECLARE_DELEGATE_OneParam(FOnJamHudAction, EJamHudAction);
+
 class UBorder;
 class UCanvasPanel;
 class UProgressBar;
@@ -27,12 +30,19 @@ class MEGAJAM_API UJamHudWidget : public UUserWidget
 public:
 	/** Draw this view. Time is real seconds, for the REC blink and the card pop. */
 	void ApplyView(const FJamHudView& View, float RealSeconds);
+	FOnJamHudAction OnAction;
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual FReply NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 private:
+	friend class FJamHudInputTest;
 	void BuildTree();
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> ChoiceTiles;
+	UPROPERTY(Transient) TObjectPtr<UBorder> PauseControl;
+	FJamHudView InputView;
 	UBorder* MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding);
 	UTextBlock* MakeText(int32 Size, const FLinearColor& Colour, bool bBold);
 	UBorder* GetBubble(int32 Index);

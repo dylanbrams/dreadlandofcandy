@@ -107,6 +107,8 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 private:
+	friend class FJamNuisancePoseTest;
+	void ApplyBodySquash(float Squash);
 	void SetState(EJamNuisanceState NewState);
 	void HandlePacified(AActor* Pacified);
 	void HandleResolveChanged(const FOnAttributeChangeData& Data);

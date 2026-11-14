@@ -28,6 +28,7 @@ public:
 
 	/** Esc / Start in play: pause and open the Pause menu. */
 	void RequestPause();
+	bool IsCharacterSheetOpen() const { return bPaused && SubScreen == EJamScreen::Character; }
 
 	/** CUT!: open the note editor (T12b). False unless the note prompt is up and she is not already reading one. */
 	bool OpenNoteEditor(bool bGamepad);

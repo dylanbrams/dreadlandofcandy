@@ -1,0 +1,118 @@
+#include "Misc/AutomationTest.h"
+#include "UI/JamHudWidget.h"
+#include "UI/JamScreens.h"
+#include "Components/Border.h"
+#include "Components/TextBlock.h"
+#include "Engine/Engine.h"
+#include "Engine/World.h"
+#include "Input/HittestGrid.h"
+#include "InputCoreTypes.h"
+#include "Rendering/DrawElements.h"
+#include "Types/PaintArgs.h"
+#include "Widgets/SWindow.h"
+#include "Widgets/SNullWidget.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamHudInputTest, "Jam.UI.Hud.MouseControls",
+    EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+bool FJamHudInputTest::RunTest(const FString&)
+{
+    UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+    FWorldContext& Context = GEngine->CreateNewWorldContext(EWorldType::Game);
+    Context.SetCurrentWorld(World);
+    UJamHudWidget* Hud = NewObject<UJamHudWidget>(World);
+    Hud->Initialize();
+    const TSharedRef<SWidget> SlateHud = Hud->TakeWidget();
+    const TSharedRef<SWindow> Window = SNew(SWindow).ClientSize(FVector2D(1920.f, 1080.f));
+    Window->SetContent(SlateHud);
+    FHittestGrid Grid;
+    Grid.SetHittestArea(FVector2D::ZeroVector, FVector2D(1920.f, 1080.f));
+    const FGeometry Geometry = FGeometry::MakeRoot(FVector2D(1920.f, 1080.f), FSlateLayoutTransform());
+    auto Paint = [&]()
+    {
+        Grid.Clear();
+        SlateHud->SlatePrepass(1.f);
+        FSlateWindowElementList Elements(Window);
+        const FPaintArgs Args(&Window.Get(), Grid, FVector2D::ZeroVector, 10.0, 0.016f);
+        SlateHud->Paint(Args, Geometry, FSlateRect(0.f, 0.f, 1920.f, 1080.f), Elements, 0, FWidgetStyle(), true);
+    };
+    int32 Calls = 0;
+    EJamHudAction LastAction = EJamHudAction::Pause;
+    Hud->OnAction.BindLambda([&](EJamHudAction Action) { ++Calls; LastAction = Action; });
+    auto Click = [&](UWidget* Control, EJamHudAction Expected, const TCHAR* Label)
+    {
+        const FGeometry& ControlGeometry = Control->GetCachedGeometry();
+        TestTrue(FString::Printf(TEXT("%s has layout"), Label), ControlGeometry.GetLocalSize().SizeSquared() > 1.f);
+        const FVector2D Position = ControlGeometry.LocalToAbsolute(ControlGeometry.GetLocalSize() * 0.5f);
+        bool bInHitPath = false;
+        for (const FWidgetAndPointer& Hit : Grid.GetBubblePath(Position, 0.f, true))
+        {
+            bInHitPath |= Hit.Widget == Control->GetCachedWidget();
+        }
+        TestTrue(FString::Printf(TEXT("%s is mouse reachable through ancestors"), Label), bInHitPath);
+        const int32 Before = Calls;
+        const FPointerEvent Primary(0, Position, Position, TSet<FKey>{ EKeys::LeftMouseButton }, EKeys::LeftMouseButton, 0.f, FModifierKeysState());
+        TestTrue(FString::Printf(TEXT("%s handles primary click"), Label), Hud->NativeOnMouseButtonDown(Geometry, Primary).IsEventHandled());
+        TestEqual(FString::Printf(TEXT("%s dispatches once"), Label), Calls, Before + 1);
+        TestEqual(FString::Printf(TEXT("%s dispatches correct action"), Label), LastAction, Expected);
+        const FPointerEvent Secondary(0, Position, Position, TSet<FKey>{ EKeys::RightMouseButton }, EKeys::RightMouseButton, 0.f, FModifierKeysState());
+        TestTrue(TEXT("secondary click cannot cast through a control"), Hud->NativeOnMouseButtonDown(Geometry, Secondary).IsEventHandled());
+        TestEqual(TEXT("secondary click does not activate primary action"), Calls, Before + 1);
+    };
+    FJamHudView View;
+    JamHud::Sample(TEXT("hud"), View);
+    Hud->ApplyView(View, 10.f);
+    Paint();
+    Click(Hud->SkillTiles[0], EJamHudAction::Skill1, TEXT("basic tile"));
+    Click(Hud->SkillTiles[1], EJamHudAction::Skill2, TEXT("signature tile"));
+    Click(Hud->SkillTiles[2], EJamHudAction::Ultimate, TEXT("ultimate tile uses enum slot 3"));
+    Click(Hud->PromptPanel, EJamHudAction::Interact, TEXT("interact prompt"));
+    Click(Hud->PauseControl, EJamHudAction::Pause, TEXT("pause"));
+    const FVector2D Empty(1800.f, 500.f);
+    const FPointerEvent WorldClick(0, Empty, Empty, TSet<FKey>{ EKeys::LeftMouseButton }, EKeys::LeftMouseButton, 0.f, FModifierKeysState());
+    TestFalse(TEXT("empty space forwards gameplay click"), Hud->NativeOnMouseButtonDown(Geometry, WorldClick).IsEventHandled());
+    JamHud::Sample(TEXT("cut"), View);
+    Hud->ApplyView(View, 12.f);
+    Paint();
+    Click(Hud->ChoiceTiles[0], EJamHudAction::TakeNote, TEXT("take note"));
+    Click(Hud->ChoiceTiles[1], EJamHudAction::RefuseNote, TEXT("refuse note"));
+    Click(Hud->ChoiceTiles[2], EJamHudAction::WriteNote, TEXT("write direction"));
+    View.bReadingNote = true;
+    Hud->ApplyView(View, 13.f);
+    TestEqual(TEXT("note choices hide while request pending"), Hud->ChoiceTiles[0]->GetVisibility(), ESlateVisibility::Collapsed);
+    JamHud::Sample(TEXT("wrap"), View);
+    Hud->ApplyView(View, 14.f);
+    Hud->ApplyView(View, 15.f);
+    Paint();
+    Click(Hud->WrapContinue, EJamHudAction::Continue, TEXT("continue"));
+    Window->SetContent(SNullWidget::NullWidget);
+    Hud->ReleaseSlateResources(true);
+    GEngine->DestroyWorldContext(World);
+    World->DestroyWorld(false);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamCharacterSpendingTest, "Jam.UI.Character.SkillChoices",
+    EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+bool FJamCharacterSpendingTest::RunTest(const FString&)
+{
+    FJamProgression Progression;
+    const FJamMenuSettings Settings;
+    FJamScreenView Sheet = JamScreens::Character(Progression, Settings);
+    TestEqual(TEXT("three active skills plus back"), Sheet.Options.Num(), 4);
+    TestFalse(TEXT("no point means basic disabled"), Sheet.Options[0].bEnabled);
+    Progression.ReachMilestone(EJamMilestone::Scene1Wrap);
+    Sheet = JamScreens::Character(Progression, Settings);
+    TestTrue(TEXT("basic can rank up"), Sheet.Options[0].bEnabled);
+    TestTrue(TEXT("signature can rank up"), Sheet.Options[1].bEnabled);
+    TestFalse(TEXT("ultimate remains rank one"), Sheet.Options[2].bEnabled);
+    TestEqual(TEXT("ultimate menu action"), Sheet.Options[2].Action, EJamMenuAction::RankUltimate);
+    TestTrue(TEXT("choose signature"), Progression.SpendPoint(EJamSkill::FormALine));
+    TestEqual(TEXT("signature raised"), Progression.GetRank(EJamSkill::FormALine), 3);
+    Sheet = JamScreens::Character(Progression, Settings);
+    TestFalse(TEXT("maxed signature disabled"), Sheet.Options[1].bEnabled);
+    TestFalse(TEXT("cannot spend ultimate"), Progression.SpendPoint(EJamSkill::LastJudgment));
+    return true;
+}
+#endif

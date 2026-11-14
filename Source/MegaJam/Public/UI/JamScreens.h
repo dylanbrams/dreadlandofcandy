@@ -38,6 +38,9 @@ enum class EJamMenuAction : uint8
 	Locked,           // "Budget: Low (locked)", never selectable
 	CharacterSheet,
 	Casting,          // R6: left / right picks who plays the hero
+	RankBasic,
+	RankSignature,
+	RankUltimate,
 };
 
 struct MEGAJAM_API FJamMenuOption

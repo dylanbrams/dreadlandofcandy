@@ -18,6 +18,7 @@
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 #include "Styling/CoreStyle.h"
+#include "InputCoreTypes.h"
 
 namespace
 {
@@ -85,7 +86,8 @@ void UJamHudWidget::BuildTree()
 {
 	Root = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass());
 	WidgetTree->RootWidget = Root;
-	Root->SetVisibility(ESlateVisibility::HitTestInvisible);
+	Root->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 
 	auto Place = [this](UWidget* W, const FAnchors& Anchors, const FVector2D& Alignment, const FVector2D& Position, int32 Z = 0)
 	{
@@ -111,7 +113,7 @@ void UJamHudWidget::BuildTree()
 
 	// Bubble layer: fills the screen, under the panels and the card.
 	BubbleLayer = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass());
-	BubbleLayer->SetVisibility(ESlateVisibility::HitTestInvisible);
+	BubbleLayer->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	{
 		UCanvasPanelSlot* S = Root->AddChildToCanvas(BubbleLayer);
 		S->SetAnchors(FAnchors(0.f, 0.f, 1.f, 1.f));
@@ -320,6 +322,13 @@ void UJamHudWidget::BuildTree()
 	Place(NotePanel, FAnchors(0.5f, 0.45f), FVector2D(0.5f, 0.5f), FVector2D::ZeroVector, 21);
 	NotePanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
+	PauseControl = MakePanel(PanelDark, 6.f, FMargin(18.f, 10.f));
+	UTextBlock* PauseLabel = MakeText(18, Gold, true);
+	PauseLabel->SetText(FText::FromString(TEXT("PAUSE / Esc")));
+	PauseControl->SetContent(PauseLabel);
+	Place(PauseControl, FAnchors(1.f, 0.f), FVector2D(1.f, 0.f), FVector2D(-36.f, 32.f), 6);
+	PauseControl->SetToolTipText(FText::FromString(TEXT("Pause and character sheet")));
+
 	BuildWrapPanel();
 	BuildSkillBar();
 
@@ -358,6 +367,7 @@ UBorder* UJamHudWidget::MakeChoiceTile(const FLinearColor& Accent, const TCHAR* 
 	}
 	Size->SetContent(Box);
 	Tile->SetContent(Size);
+	ChoiceTiles.Add(Tile);
 	return Tile;
 }
 
@@ -383,6 +393,7 @@ UBorder* UJamHudWidget::GetBubble(int32 Index)
 void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 {
 	if (!Root) { return; }
+	InputView = View;
 
 	Show(FlashLayer, View.FailFlash > 0.f);
 	if (View.FailFlash > 0.f) { FlashLayer->SetRenderOpacity(0.55f * View.FailFlash * View.FailFlash); }
@@ -484,9 +495,9 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		FString Pitch = View.NotePitch;
 		if (Pitch.StartsWith(TEXT("CUT!"))) { Pitch.RightChopInline(4); Pitch.TrimStartInline(); }
 		SetTextIfChanged(NotePitchText, FString::Printf(TEXT("\u201C%s\u201D"), *Pitch));
-		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("HOLD [E]"));
-		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("PRESS [Q]"));
-		SetTextIfChanged(WriteKeyText, View.bGamepad ? TEXT("PRESS (Y)") : TEXT("PRESS [T]"));
+		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("CLICK / HOLD [E]"));
+		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("CLICK / [Q]"));
+		SetTextIfChanged(WriteKeyText, View.bGamepad ? TEXT("PRESS (Y)") : TEXT("CLICK / [T]"));
 		Show(NoteTiles, !View.bReadingNote);
 		Show(NoteReadingText, View.bReadingNote);
 		if (View.bReadingNote)
@@ -501,6 +512,24 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 
 	ApplySkills(View, RealSeconds);
 	ApplyWrap(View.Wrap);
+	// Only controls participate in hit testing; empty HUD space reaches gameplay.
+	auto Control = [](UWidget* W, bool bShow) { W->SetVisibility(bShow ? ESlateVisibility::Visible : ESlateVisibility::Collapsed); W->SetCursor(EMouseCursor::Hand); };
+	NotePanel->SetVisibility(View.bNotePrompt ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	NoteTiles->SetVisibility(View.bNotePrompt && !View.bReadingNote ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	for (UBorder* Tile : ChoiceTiles) { Control(Tile, View.bNotePrompt && !View.bReadingNote); }
+	WrapPanel->SetVisibility(View.Wrap.bVisible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	Control(WrapContinue, View.Wrap.bVisible && !View.Wrap.ContinueHint.IsEmpty());
+	SkillBar->SetVisibility(View.bShootVisible && !View.Skills.IsEmpty() ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	for (int32 i = 0; i < SkillTiles.Num(); ++i)
+	{
+		const bool bSlot = View.bShootVisible && View.Skills.IsValidIndex(i);
+		SkillTiles[i]->GetParent()->SetVisibility(bSlot ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+		Control(SkillTiles[i], bSlot);
+	}
+	Control(LevelText, View.bShootVisible);
+	Control(PointsText, View.bShootVisible && View.Points > 0);
+	Control(PromptPanel, View.bPromptVisible);
+	Control(PauseControl, true);
 	if (View.Wrap.bVisible)
 	{
 		if (!bWrapShown) { bWrapShown = true; WrapShownAt = RealSeconds; }
@@ -919,4 +948,40 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 			}
 		}
 	}
+}
+
+FReply UJamHudWidget::NativeOnMouseButtonDoubleClick(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    return NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+}
+
+FReply UJamHudWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    const FVector2D Position = InMouseEvent.GetScreenSpacePosition();
+    auto Under = [&Position](const UWidget* W) { return W && W->IsVisible() && W->GetCachedGeometry().IsUnderLocation(Position); };
+    auto Dispatch = [this, &InMouseEvent](EJamHudAction Action)
+    {
+        // Consume other buttons over a control too: they must never cast through UI.
+        if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton) { OnAction.ExecuteIfBound(Action); }
+        return FReply::Handled();
+    };
+    if (InputView.bNotePrompt && !InputView.bReadingNote)
+    {
+        for (int32 i = 0; i < ChoiceTiles.Num(); ++i)
+        {
+            if (Under(ChoiceTiles[i])) { return Dispatch(static_cast<EJamHudAction>(static_cast<uint8>(EJamHudAction::TakeNote) + i)); }
+        }
+    }
+    if (InputView.Wrap.bVisible && Under(WrapContinue)) { return Dispatch(EJamHudAction::Continue); }
+    if (InputView.bShootVisible)
+    {
+        for (int32 i = 0; i < SkillTiles.Num(); ++i)
+        {
+            if (Under(SkillTiles[i])) { return Dispatch(static_cast<EJamHudAction>(i)); }
+        }
+        if (Under(LevelText) || (InputView.Points > 0 && Under(PointsText))) { return Dispatch(EJamHudAction::Character); }
+    }
+    if (InputView.bPromptVisible && Under(PromptPanel)) { return Dispatch(EJamHudAction::Interact); }
+    if (Under(PauseControl)) { return Dispatch(EJamHudAction::Pause); }
+    return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }

@@ -61,7 +61,31 @@ void AJamHUD::BeginPlay()
 	if (PlayerOwner && PlayerOwner->IsLocalController())
 	{
 		Widget = CreateWidget<UJamHudWidget>(PlayerOwner, UJamHudWidget::StaticClass());
-		if (Widget) { Widget->AddToViewport(0); }
+		if (Widget)
+        {
+            Widget->AddToViewport(0);
+            Widget->OnAction.BindLambda([this](EJamHudAction Action)
+            {
+                if (bPaused || (Screen && Screen->IsVisible()) || (NoteEditor && NoteEditor->IsOpen())) { return; }
+                AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+                if (!Hero) { return; }
+                bool bAccepted = false;
+                switch (Action)
+                {
+                case EJamHudAction::Skill1: bAccepted = Hero->RequestSkill(EJamSkill::Lecture); break;
+                case EJamHudAction::Skill2: bAccepted = Hero->RequestSkill(EJamSkill::FormALine); break;
+                case EJamHudAction::Ultimate: bAccepted = Hero->RequestSkill(EJamSkill::LastJudgment); break;
+                case EJamHudAction::TakeNote:
+                case EJamHudAction::Interact:
+                case EJamHudAction::Continue: bAccepted = Hero->RequestInteract(); break;
+                case EJamHudAction::RefuseNote: bAccepted = Hero->RequestRefuseNote(); break;
+                case EJamHudAction::WriteNote: bAccepted = OpenNoteEditor(false); break;
+                case EJamHudAction::Character: RequestPause(); SubScreen = EJamScreen::Character; bAccepted = bPaused; break;
+                case EJamHudAction::Pause: RequestPause(); bAccepted = bPaused; break;
+                }
+                JamSfx::Play(this, bAccepted ? TEXT("UI_Click") : TEXT("UI_Unavailable"));
+            });
+        }
 		Screen = CreateWidget<UJamScreenWidget>(PlayerOwner, UJamScreenWidget::StaticClass());
 		if (Screen)
 		{
@@ -117,7 +141,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 		// The game HUD hides under any screen (pause too: two captions and a card under the menu was clutter).
 		if (Widget)
 		{
-			const ESlateVisibility HudVis = bShown ? ESlateVisibility::Collapsed : ESlateVisibility::HitTestInvisible;
+			const ESlateVisibility HudVis = bShown ? ESlateVisibility::Collapsed : ESlateVisibility::SelfHitTestInvisible;
 			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
 		}
 		TickNoteEditor();
@@ -209,6 +233,10 @@ void AJamHUD::BuildView()
 	View.bRolling = State == EJamShootState::Rolling;
 	View.FilmSeconds = GS->FilmSeconds;
 	View.Hint = GS->Hint;
+	if (const AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr)
+	{
+		if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Middle-mouse drag: camera"); }
+	}
 
 	View.bDignityVisible = GS->bDignityVisible;
 	View.DignityFraction = GS->GetDignity().GetFraction();
@@ -253,9 +281,9 @@ void AJamHUD::BuildView()
 	if (GS->IsWrapVisible())
 	{
 		View.Wrap = GS->Wrap;
-		View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? FString()
+		View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? TEXT("Click to open the Premiere")
 			: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
-				? TEXT("Hold (A) to continue") : TEXT("Hold [E] to continue"));
+				? TEXT("Hold (A) to continue") : TEXT("Click or hold [E] to continue"));
 	}
 	// Skill bar and XP from the hero's progression; cooldowns from the ability system.
 	if (const AJamPlayerState* PS = PlayerOwner ? PlayerOwner->GetPlayerState<AJamPlayerState>() : nullptr)
@@ -333,7 +361,7 @@ void AJamHUD::BuildView()
 			{
 				const TCHAR* Verb = Stage && Stage->Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
 				View.bPromptVisible = true;
-				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Hold [E]"), Verb);
+				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Click / Hold [E]"), Verb);
 				View.PromptPosition = OnScreen;
 			}
 		}
@@ -395,7 +423,11 @@ FJamScreenView AJamHUD::BuildScreen() const
 		V = JamScreens::Credits(GS->Premiere.bDirectorsCut, S);
 		V.Scroll = InPhase / FMath::Max(1.f, V.Body.Num() * CreditSecondsPerLine);
 	}
-	if (V.Options.Num() > 0) { V.Selected = FMath::Clamp(Selected, 0, V.Options.Num() - 1); }
+	if (V.Options.Num() > 0)
+	{
+		V.Selected = FMath::Clamp(Selected, 0, V.Options.Num() - 1);
+		if (!V.Options[V.Selected].bEnabled) { V.Selected = JamScreens::Step(V.Options, V.Selected, 1); }
+	}
 	return V;
 }
 
@@ -413,11 +445,13 @@ void AJamHUD::UpdateInputMode(int32 Want)
 	}
 	else
 	{
-		PlayerOwner->SetInputMode(FInputModeGameOnly());
+		FInputModeGameAndUI Mode;
+        Mode.SetHideCursorDuringCapture(false);
+        Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+        PlayerOwner->SetInputMode(Mode);
 	}
-	// Backlot: the hero faces the cursor. Open: the mouse turns the camera, so the cursor hides in play. Menus are clickable.
-	const AJamHero* HeroPawn = Cast<AJamHero>(PlayerOwner->GetPawn());
-	PlayerOwner->bShowMouseCursor = Focus != nullptr || !(HeroPawn && HeroPawn->IsFollowCamera());
+	// Keep HUD controls reachable in both modes. Open camera uses middle-mouse drag.
+	PlayerOwner->bShowMouseCursor = true;
 }
 
 void AJamHUD::SetPaused(bool bPause)
@@ -466,6 +500,17 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::WalkOffSet:     ParentSelected = Selected; SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
 	case EJamMenuAction::Fine:
 	case EJamMenuAction::Back:           Selected = ParentSelected; SubScreen = EJamScreen::None; break;
+	case EJamMenuAction::RankBasic:
+    case EJamMenuAction::RankSignature:
+    case EJamMenuAction::RankUltimate:
+        if (GM && IsCharacterSheetOpen())
+        {
+            const EJamSkill Skill = Option.Action == EJamMenuAction::RankBasic ? EJamSkill::Lecture
+                : Option.Action == EJamMenuAction::RankSignature ? EJamSkill::FormALine : EJamSkill::LastJudgment;
+            AJamHero* Hero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+            GM->HandleSpendPoint(Hero, Skill, true);
+        }
+        break;
 	case EJamMenuAction::Resume:      SetPaused(false); break;
 	case EJamMenuAction::MusicVolume:
 	case EJamMenuAction::VoiceVolume:
@@ -511,7 +556,7 @@ void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
 		break;
 	case EJamMenuInput::Confirm:
 		JamSfx::Play(this, Options[ScreenView.Selected].bEnabled ? TEXT("UI_Click") : TEXT("UI_Unavailable"));
-		Activate(Options[ScreenView.Selected]);
+		if (Options[ScreenView.Selected].bEnabled) { Activate(Options[ScreenView.Selected]); }
 		break;
 	case EJamMenuInput::Back:
 		JamSfx::Play(this, TEXT("UI_Back"));
@@ -623,10 +668,12 @@ void AJamHUD::DrawCompass()
 	DrawText(Label, Gold, Lx, StripY + 14.f * Px, Font, Scale);
 	if (!GS->Hint.IsEmpty())
 	{
+		const AJamHero* H = Cast<AJamHero>(Pawn);
+		const FString WalkHint = GS->Hint + (H && !H->IsUsingGamepad() ? TEXT("   Middle-mouse drag: camera") : TEXT(""));
 		float Hw = 0.f, Hh = 0.f;
-		GetTextSize(GS->Hint, Hw, Hh, Font, Px);
-		DrawText(GS->Hint, FLinearColor::Black, Cx - Hw * 0.5f + 2.f * Px, StripY + 14.f * Px + Th + 6.f * Px, Font, Px);
-		DrawText(GS->Hint, FLinearColor::White, Cx - Hw * 0.5f, StripY + 12.f * Px + Th + 6.f * Px, Font, Px);
+		GetTextSize(WalkHint, Hw, Hh, Font, Px);
+		DrawText(WalkHint, FLinearColor::Black, Cx - Hw * 0.5f + 2.f * Px, StripY + 14.f * Px + Th + 6.f * Px, Font, Px);
+		DrawText(WalkHint, FLinearColor::White, Cx - Hw * 0.5f, StripY + 12.f * Px + Th + 6.f * Px, Font, Px);
 	}
 }
 
@@ -639,7 +686,15 @@ void AJamHUD::TickEffects()
 	if (const AJamPlayerState* PS = PlayerOwner->GetPlayerState<AJamPlayerState>())
 	{
 		const int32 Level = PS->GetProgression().GetLevel();
-		if (SeenLevel > 0 && Level > SeenLevel) { JamSfx::Play(this, TEXT("LevelUp"), 0.3f); }
+		if (SeenLevel > 0 && Level > SeenLevel)
+        {
+            JamSfx::Play(this, TEXT("LevelUp"), 0.3f);
+            if (PS->GetProgression().GetPoints() > 0 && !FParse::Param(FCommandLine::Get(), TEXT("autoplay")))
+            {
+                RequestPause();
+                if (bPaused) { SubScreen = EJamScreen::Character; }
+            }
+        }
 		SeenLevel = Level;
 	}
 	const bool bWant = GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut;   // the money going takes the extras with it

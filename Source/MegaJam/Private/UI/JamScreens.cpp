@@ -299,8 +299,8 @@ FJamScreenView JamScreens::Character(const FJamProgression& Prog, const FJamMenu
 	FJamScreenView V;
 	V.Screen = EJamScreen::Character;
 	V.Kicker = TEXT("CHARACTER SHEET");
-	V.Title = TEXT("The Hero");
-	V.Subtitle = FString::Printf(TEXT("Level %d. %d skill point%s unspent (spend them on a wrap card)."),
+	V.Title = JamCast::Get(S.CastIndex).Name;
+	V.Subtitle = FString::Printf(TEXT("Level %d. %d skill point%s available. Choose a skill to rank up."),
 		Prog.GetLevel(), Prog.GetPoints(), Prog.GetPoints() == 1 ? TEXT("") : TEXT("s"));
 	const FJamStatBlock St = Prog.GetStats();
 	V.Rows = {
@@ -314,8 +314,19 @@ FJamScreenView JamScreens::Character(const FJamProgression& Prog, const FJamMenu
 	{
 		V.Quotes.Add(FString::Printf(TEXT("%s (rank %d): %s"), *P.Name, P.Rank, *P.Tooltip));
 	}
-	V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
-	V.Footer = FString::Printf(TEXT("%s back"), Confirm(S));
+	const FJamClassDef& Cast = JamCast::Get(S.CastIndex);
+    const EJamMenuAction RankActions[] = { EJamMenuAction::RankBasic, EJamMenuAction::RankSignature, EJamMenuAction::RankUltimate };
+    for (int32 i = 0; i < JamProgression::ActiveSkills().Num(); ++i)
+    {
+        const EJamSkill Skill = JamProgression::ActiveSkills()[i];
+        const int32 Index = static_cast<int32>(Skill);
+        const FString Name = Cast.SkillNames.IsValidIndex(Index) ? Cast.SkillNames[Index] : JamProgression::SkillName(Skill);
+        const FString Rank = FString::Printf(TEXT("Rank %d/%d%s"), Prog.GetRank(Skill), JamProgression::MaxRank(Skill), Skill == EJamSkill::LastJudgment ? TEXT(" (ultimate)") : TEXT(""));
+        V.Options.Add(Opt(RankActions[i], *Name, Rank, Prog.CanSpendPoint(Skill)));
+    }
+    V.Options.Add(Opt(EJamMenuAction::Back, TEXT("Back")));
+    V.Selected = Step(V.Options, V.Options.Num() - 1, 1);
+    V.Footer = MenuFooter(S);
 	V.bOpaque = true;
 	return V;
 }
