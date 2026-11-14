@@ -91,6 +91,15 @@ const TArray<FJamSfxCue>& JamSfx::Table()
 		Cue(TEXT("Backlot_Ambience_Loop"), 0.3f),
 		Cue(TEXT("Quest_Accept"), 1.0f),
 		CueAs(TEXT("Hero_Hit"), TEXT("Shield_Bash"), 1.0f, 0.08f, 0.2f),   // R4b: something hit him back
+		// Fixes3 #9/#12: each class's own skill sounds (were imported but never played).
+		Cue(TEXT("Sugar_Volley"), 1.0f, 0.06f), Cue(TEXT("Sugar_Impact"), 1.0f, 0.08f),
+		Cue(TEXT("Soap_Finish"), 1.0f, 0.05f),
+		Cue(TEXT("Peppermint_Fall"), 1.0f, 0.05f), Cue(TEXT("Peppermint_Impact"), 1.0f, 0.1f),
+		Cue(TEXT("Celery_Launch"), 1.0f, 0.08f), Cue(TEXT("Celery_Impact"), 1.0f, 0.1f),
+		Cue(TEXT("Floss_Launch"), 1.0f, 0.06f), Cue(TEXT("Floss_Snare"), 1.0f, 0.06f), Cue(TEXT("Floss_Retract"), 0.9f, 0.06f),
+		Cue(TEXT("Knead_Impact"), 1.0f, 0.1f), Cue(TEXT("Encouragement_Blast"), 1.0f, 0.05f),
+		Cue(TEXT("RollingPin_Stray"), 1.0f, 0.1f), Cue(TEXT("RollingPin_Finale"), 1.0f, 0.04f),
+		Cue(TEXT("Manners_Dome_Open"), 1.0f, 0.03f), Cue(TEXT("Manners_Dome_Rebuke"), 1.0f, 0.05f),
 	};
 	return Cues;
 }

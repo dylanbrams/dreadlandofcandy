@@ -427,3 +427,4 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
   succulents so all eight new models appear. Build + 82 tests passed; inspected
   foliage-mix.png. No package/upload; manual traversal remains unverified.
 - Nov 15: Fixes3 #25 shout bubbles on every attack, #2 peppermint popfall on every attack + more replies, #14 treat arrow over pacified nuisances. 82 tests green; unverified live.
+- Nov 15: Fixes3 #9/#12 per-class skill SFX (imported clips were never cued), #10 per-giver afterglow lines. 82 tests green; not heard live.

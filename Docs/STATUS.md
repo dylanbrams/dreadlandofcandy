@@ -1,3 +1,7 @@
+# STATUS - Nov 15: Fixes3 #9, #10, #12 audio and afterglow lines
+
+Root cause of #9 and the archer audio in #12: every class played the knight's Sword_Raise/Lecture sounds; the mage, archer and barbarian SFX were imported but never cued. `NotifySkillCast` now plays per-class cues (sugar, soap, peppermint; celery, floss; knead, encouragement, rolling pin); the knight's Last Judgment adds the manners dome. #10: each giver has three afterglow lines after their quests are done (`VillageAfterglow` in `JamVillageFlow.cpp`); random quest counts per villager not done. #3 left as is: all classes share one set of hit shapes in GAS; only cosmetics differ. Build clean, 82 Jam tests pass. Not heard or seen live.
+
 # STATUS - Nov 15: Fixes3 #2, #14, #25 effects pass
 
 Every non-Lecture skill (all classes) now pops a jagged hero shout bubble; pacified nuisances answer back 80% of the time (was 40%); eight new shouts and five replies added to `JamLines.cpp` (not yet mirrored in `Jokes.md`). Every class's attack also spawns `NS_M02_PeppermintPopfall` as an extra layer (#2). Pacified nuisances show a small bobbing mint-green cone arrow until treated (#14). Build clean, 82 Jam tests pass. None of this has been seen live: no screenshot, no repackage. Engine FREE.

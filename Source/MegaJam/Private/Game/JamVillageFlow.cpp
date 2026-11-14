@@ -17,6 +17,38 @@
 #include "MegaJam.h"
 #include "Misc/CommandLine.h"
 
+namespace
+{
+    // Fixes3 #10: once a giver has nothing left to offer, each has their own afterglow instead of one shared thanks.
+    FString VillageAfterglow(const FString& Giver)
+    {
+        static const TMap<FString, TArray<FString>> Lines = {
+            { TEXT("Mayor Bonbon"), {
+                TEXT("Mayor Bonbon says: I've named a pothole after you. It's our finest pothole."),
+                TEXT("Mayor Bonbon says: Re-election is assured. Not mine. Yours. You're mayor now. Kidding. Unless?"),
+                TEXT("Mayor Bonbon says: The council rats have filed a complaint about you. I framed it.") } },
+            { TEXT("Baker Crumb"), {
+                TEXT("Baker Crumb says: The almond cake is real now. It's terrible. I've never been happier."),
+                TEXT("Baker Crumb says: I'm baking you a celery loaf. Nobody asked for this. I'm doing it anyway."),
+                TEXT("Baker Crumb says: Flour on your boots? That's a Crumb customer. Wear it with pride.") } },
+            { TEXT("Gardener Sprig"), {
+                TEXT("Gardener Sprig says: The celery stands taller when you walk by. It's showing off."),
+                TEXT("Gardener Sprig says: I planted a row in your honour. Then the rats ate it. In your honour."),
+                TEXT("Gardener Sprig says: Soil's good, crops are smug. Couldn't ask for more.") } },
+            { TEXT("Dr. Molar"), {
+                TEXT("Dr. Molar says: Let me see those teeth. Mm. Heroic. Floss anyway."),
+                TEXT("Dr. Molar says: My waiting room is empty. Do you know how rare that is? Unsettling. Thank you."),
+                TEXT("Dr. Molar says: Two minutes, twice a day. I'll know if you don't. I always know.") } },
+            { TEXT("Scout Taffy"), {
+                TEXT("Scout Taffy says: Perimeter secure. I counted the trees twice. One of them blinked."),
+                TEXT("Scout Taffy says: I've added you to the map. You're a small heroic dot. Very accurate."),
+                TEXT("Scout Taffy says: Nothing out there but goblins with good dental habits now. Your fault.") } },
+        };
+        if (const TArray<FString>* Own = Lines.Find(Giver)) { return (*Own)[FMath::RandRange(0, Own->Num() - 1)]; }
+        return Giver + TEXT(" says: Thanks again, hero. The village remembers. The invoice has been paid.");
+    }
+}
+
 namespace JamVillageFlow
 {
 	constexpr float TalkRange = 300.f;
@@ -211,7 +243,7 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 		return true;
 	}
 	const int32 Index = VillageQuests.ForGiver(JamVillageQuests::Givers()[Target].Location);
-	if (Index == INDEX_NONE) { Direct(JamVillageQuests::Givers()[Target].Name + TEXT(" says: Thanks again, hero. The village remembers. The invoice has been paid.")); return true; }
+	if (Index == INDEX_NONE) { Direct(VillageAfterglow(JamVillageQuests::Givers()[Target].Name)); return true; }
 	const FJamVillageQuestDef& Quest = VillageQuests.Offer(Index);
 	const EJamVillageQuestState State = VillageQuests.State(Index);
 	// Captured before TurnIn: an encore is rebuilt bigger the moment it is paid.
@@ -239,7 +271,7 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 	}
 	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { OfferVillageQuest(Index); }
 	else if (State == EJamVillageQuestState::Locked) { Direct(Quest.GiverName + TEXT(" has work for you after our three quests. First, follow my candy cane.")); }
-	else if (State == EJamVillageQuestState::Complete) { Direct(Quest.GiverName + TEXT(" says: Thanks again, hero. The village remembers. The invoice has been paid.")); }
+	else if (State == EJamVillageQuestState::Complete) { Direct(VillageAfterglow(Quest.GiverName)); }
 	else if (VillageQuests.Active() == Index) { Direct(TEXT("Finish the marked errand, then come back here for your reward.")); }
 	else { Direct(TEXT("One errand at a time, hero. Finish the current quest and return to its giver first.")); }
 	return true;

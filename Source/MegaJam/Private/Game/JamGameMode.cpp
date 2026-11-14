@@ -904,6 +904,31 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 {
 	if (!InHero || InHero != Hero.Get()) { return; }
 	// The sound of each skill (R1): the lecture winds up (raise, inhale) and lands; the others land.
+	// Fixes3 #9/#12: the mage, archer and barbarian have their own sounds; only the knight raises a sword.
+	const int32 Cast = InHero->GetCastIndex();
+	auto PlayEach = [this](std::initializer_list<TPair<const TCHAR*, float>> Cues) { for (const auto& C : Cues) { JamSfx::Play(this, C.Key, C.Value); } };
+	if (Cast == 1)
+	{
+		if (Skill == EJamSkill::Lecture) { PlayEach({ { TEXT("Hero_Inhale"), 0.f }, { TEXT("Sugar_Volley"), 0.15f }, { TEXT("Sugar_Impact"), 0.55f } }); }
+		else if (Skill == EJamSkill::FormALine) { PlayEach({ { TEXT("Soap_Finish"), 0.1f }, { TEXT("Sugar_Impact"), 0.6f } }); }
+		else if (Skill == EJamSkill::LastJudgment) { PlayEach({ { TEXT("Peppermint_Fall"), 0.f }, { TEXT("Peppermint_Impact"), 0.7f }, { TEXT("Peppermint_Impact"), 1.0f } }); }
+		else if (Skill == EJamSkill::DisappointedSigh) { JamSfx::Play(this, TEXT("DisappointedSigh")); }
+	}
+	else if (Cast == 2)
+	{
+		if (Skill == EJamSkill::Lecture) { PlayEach({ { TEXT("Celery_Launch"), 0.05f }, { TEXT("Celery_Impact"), 0.45f } }); }
+		else if (Skill == EJamSkill::FormALine) { PlayEach({ { TEXT("Floss_Launch"), 0.f }, { TEXT("Floss_Snare"), 0.35f }, { TEXT("Floss_Retract"), 0.9f } }); }
+		else if (Skill == EJamSkill::LastJudgment) { PlayEach({ { TEXT("Celery_Launch"), 0.f }, { TEXT("Celery_Launch"), 0.15f }, { TEXT("Celery_Launch"), 0.3f }, { TEXT("Celery_Impact"), 0.6f }, { TEXT("Celery_Impact"), 0.8f } }); }
+		else if (Skill == EJamSkill::DisappointedSigh) { JamSfx::Play(this, TEXT("DisappointedSigh")); }
+	}
+	else if (Cast == 3)
+	{
+		if (Skill == EJamSkill::Lecture) { PlayEach({ { TEXT("Hero_Inhale"), 0.f }, { TEXT("Knead_Impact"), 0.3f }, { TEXT("Knead_Impact"), 0.6f } }); }
+		else if (Skill == EJamSkill::FormALine) { PlayEach({ { TEXT("Encouragement_Blast"), 0.1f } }); }
+		else if (Skill == EJamSkill::LastJudgment) { PlayEach({ { TEXT("RollingPin_Stray"), 0.f }, { TEXT("RollingPin_Stray"), 0.5f }, { TEXT("RollingPin_Finale"), 1.2f } }); }
+		else if (Skill == EJamSkill::DisappointedSigh) { JamSfx::Play(this, TEXT("DisappointedSigh")); }
+	}
+	else
 	switch (Skill)
 	{
 	case EJamSkill::Lecture:
@@ -913,7 +938,7 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 		break;
 	case EJamSkill::FormALine:        JamSfx::Play(this, TEXT("FormLine_Contact"), 0.15f); break;
 	case EJamSkill::DisappointedSigh: JamSfx::Play(this, TEXT("DisappointedSigh")); break;
-	case EJamSkill::LastJudgment:     JamSfx::Play(this, TEXT("LastJudgment_Contact"), 0.2f); break;
+	case EJamSkill::LastJudgment:     JamSfx::Play(this, TEXT("Manners_Dome_Open")); JamSfx::Play(this, TEXT("LastJudgment_Contact"), 0.2f); JamSfx::Play(this, TEXT("Manners_Dome_Rebuke"), 0.6f); break;
 	default: break;
 	}
 	if (Skill == EJamSkill::Lecture)
