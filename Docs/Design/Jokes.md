@@ -4,6 +4,26 @@ Written 2026-11-11 as design text (declared in `Docs/Declared.md`). Everything h
 
 ## How the comedy works (read before adding a line)
 
+Nov 14 plot revision (Dylan): Fenella is filming a reality TV show,
+**Heroes of Dread: The Land of Candy**. She assembled the villagers and cast
+the hero, and wants huge problems and maximum drama. This introduction plays
+automatically on arrival in Sugarborough; talking to her skips ahead to work.
+The villagers' concerns remain sincere. Runtime text: `RealityIntro_01..05`.
+
+> Welcome to Heroes of Dread: The Land of Candy! I'm Fenella Flicker, producer, director and the only person here who understands reality television.
+>
+> I've assembled these villagers and cast YOU as our hero. They bring the problems. You bring the brooding. I'll bring the camera alarmingly close.
+>
+> I want MASSIVE problems. Impossible odds! Tears before breakfast! The villagers asked for a quiet life. Terrible television. I've requested revisions.
+>
+> Every little village crisis will become an EPIC catastrophe. Entirely real reactions, naturally. If yours aren't dramatic enough, we'll do another take.
+>
+> Now come to my golden triangle, hero. Your starring role awaits. Try to look haunted. It's candy country; you'll have to make an effort.
+
+These opening beats use longer reading times than the short ambient captions.
+Voice clips for `RealityIntro_01..05` have not been recorded; captions and
+Fenella's speaking animation carry the introduction for now.
+
 - **The hero never speaks and never reacts.** Total grim commitment. The hero is the straight man; do not give them a quip. (One exception, set piece 12.)
 - **Fenella is cheerful, never bitter.** A producer who is certain she is helping. She is rude about the performance, never about the player.
 - **Villagers are sincere.** To them, a rat that won't eat celery is a real emergency and a seven-foot knight is the obvious contractor.

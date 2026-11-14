@@ -982,7 +982,9 @@ void AJamGameMode::ShowCaption(const FJamLine& Line)
 {
 	AJamGameState* GS = GetJamGameState();
 	if (!GS) { return; }
-	const float Seconds = JamFenellaTuning::CaptionSeconds(Line.Text);
+	const float Seconds = Line.Trigger == EJamLineTrigger::RealityIntro
+		? FMath::Clamp(2.f + Line.Text.Len() * 0.055f, 5.f, 12.f)
+		: JamFenellaTuning::CaptionSeconds(Line.Text);
 	GS->CaptionLineId = Line.Id;
 	GS->CaptionText = Line.Text;
 	GS->CaptionUntil = GetWorld()->GetTimeSeconds() + Seconds;

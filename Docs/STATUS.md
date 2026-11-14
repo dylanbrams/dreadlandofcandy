@@ -1,5 +1,16 @@
 # STATUS - GAME, Nov 14: P1 packaged and smoked
 
+**Nov 14 follow-up:** Fenella's arrival introduction now establishes her
+reality show, *Heroes of Dread: The Land of Candy*, the assembled villagers,
+the hero's casting, and her demand for massive drama. Five ordered captions
+play automatically; talking to her skips ahead. New voice recordings remain
+pending. Editor build and all 79 Jam tests passed (EXIT CODE 0); offline
+autoplay passed all three main scenes and ten village jobs. Luna inspected
+`Saved/Screenshots/WindowsEditor/village-arrival.png`: readable, no clipping.
+This change is
+not yet in the P1 package below. `AGENTS.md` records Dylan's preference for
+Luna subagents for routine tests and checks.
+
 **P1 handoff:** `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip` (688 MB;
 under 1 GB). This includes Fixes1: Fenella recruitment and markers, ten village
 jobs and quest branches, and comic buttons. Packaged shipped-map smoke passed:

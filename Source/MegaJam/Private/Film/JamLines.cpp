@@ -12,6 +12,13 @@ namespace
 	TArray<FPool> BuildPools()
 	{
 		return {
+			{ EJamLineTrigger::RealityIntro, {
+				TEXT("Welcome to Heroes of Dread: The Land of Candy! I'm Fenella Flicker, producer, director and the only person here who understands reality television."),
+				TEXT("I've assembled these villagers and cast YOU as our hero. They bring the problems. You bring the brooding. I'll bring the camera alarmingly close."),
+				TEXT("I want MASSIVE problems. Impossible odds! Tears before breakfast! The villagers asked for a quiet life. Terrible television. I've requested revisions."),
+				TEXT("Every little village crisis will become an EPIC catastrophe. Entirely real reactions, naturally. If yours aren't dramatic enough, we'll do another take."),
+				TEXT("Now come to my golden triangle, hero. Your starring role awaits. Try to look haunted. It's candy country; you'll have to make an effort."),
+			} },
 			{ EJamLineTrigger::SceneStart, {
 				TEXT("Places, everyone! And by everyone I mean you."),
 				TEXT("Quiet on set! It's a field. It was already quiet. Well done, all."),
@@ -160,7 +167,7 @@ namespace
 	}
 
 	const TCHAR* const GNames[] = {
-		TEXT("SceneStart"), TEXT("Level7Intro"), TEXT("FailedTake"), TEXT("Take3"), TEXT("Take4"), TEXT("Take5"), TEXT("Take6"),
+		TEXT("SceneStart"), TEXT("Level7Intro"), TEXT("RealityIntro"), TEXT("FailedTake"), TEXT("Take3"), TEXT("Take4"), TEXT("Take5"), TEXT("Take6"),
 		TEXT("CutPitch"), TEXT("NoteTaken"), TEXT("NoteRefused"), TEXT("ForcedRetake"), TEXT("NarrationCut"), TEXT("Wrap"),
 		TEXT("BudgetOut"), TEXT("Premiere"), TEXT("Pause"), TEXT("Idle"), TEXT("Strayed"), TEXT("LectureCast"), TEXT("Pacified"),
 		TEXT("Interact"), TEXT("Sulking"), TEXT("Commentary"), TEXT("BubbleDefault"), TEXT("BubbleSadder"), TEXT("BubbleBudget"),
@@ -220,6 +227,7 @@ namespace JamLines
 	bool IsOnce(EJamLineTrigger Trigger)
 	{
 		return Trigger == EJamLineTrigger::Level7Intro
+			|| Trigger == EJamLineTrigger::RealityIntro
 			|| (Trigger >= EJamLineTrigger::Take3 && Trigger <= EJamLineTrigger::Take6);
 	}
 

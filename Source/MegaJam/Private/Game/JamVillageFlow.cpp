@@ -1,4 +1,5 @@
 #include "Game/JamGameMode.h"
+#include "Film/JamLines.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
 #include "Game/JamFaerie.h"
@@ -72,7 +73,14 @@ void AJamGameMode::BeginRecruitment()
 	GS->CompassLabel = TEXT("FENELLA - START YOUR ADVENTURE");
 	GS->Hint = TEXT("Meet Fenella in Sugarborough. Follow the golden triangle; click her prompt or hold F / (A) to talk.");
 	MarkQuest(FVector2D(Faerie->GetActorLocation()), Faerie, 160.f);
-	Direct(TEXT("Over here, hero! Fenella Flicker, director. Come to the golden triangle. I have a village to save and a starring role to fill."));
+	// Play the introduction in order on arrival; talking to her can skip to the quest.
+	CaptionQueue.Reset();
+	const TArray<const FJamLine*> Intro = JamLines::ForTrigger(EJamLineTrigger::RealityIntro);
+	if (!Intro.IsEmpty())
+	{
+		ShowCaption(*Intro[0]);
+		for (int32 i = 1; i < Intro.Num(); ++i) { CaptionQueue.Add(Intro[i]->Id); }
+	}
 	UE_LOG(LogJam, Log, TEXT("JamQuest: recruitment waiting hero=%s fenella=%s"), Hero.IsValid() ? *Hero->GetActorLocation().ToString() : TEXT("none"), *Faerie->GetActorLocation().ToString());
 }
 

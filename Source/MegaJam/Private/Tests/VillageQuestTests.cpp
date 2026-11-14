@@ -91,6 +91,8 @@ bool FJamVillageFlowTest::RunTest(const FString&)
 	GM->BuildVillage();
 	GS->Phase = EJamFilmPhase::Shooting;
 	GM->BeginRecruitment();
+	TestTrue(TEXT("arrival introduces the reality show"), GS->CaptionText.Contains(TEXT("Heroes of Dread: The Land of Candy")));
+	TestEqual(TEXT("remaining introduction beats queue in order"), GM->CaptionQueue.Num(), 4);
 	TestEqual(TEXT("two named villagers"), GM->Villagers.Num(), 5);
 	TestTrue(TEXT("recruitment has a visible marker"), GM->QuestMarker && !GM->QuestMarker->IsHidden());
 	Hero->SetActorLocation(FVector(GM->SceneFloor(0).GetCenter(), 96.f));
@@ -99,6 +101,7 @@ bool FJamVillageFlowTest::RunTest(const FString&)
 	TestFalse(TEXT("recruitment requires proximity"), GM->HandleVillageInteract(Hero));
 	Hero->SetActorLocation(GM->Faerie->GetActorLocation() + FVector(100, 0, -80));
 	TestTrue(TEXT("talk recruits Fenella"), GM->HandleVillageInteract(Hero));
+	TestTrue(TEXT("recruiting skips remaining introduction"), GM->CaptionQueue.IsEmpty());
 	TestTrue(TEXT("recruitment starts walk to first quest"), GM->bBetweenScenes);
 	TestEqual(TEXT("quest marker moves to first clearing"), FVector2D(GM->QuestMarker->GetActorLocation()), GM->SceneFloor(0).GetCenter());
 	Hero->SetActorLocation(FVector(GM->SceneFloor(0).GetCenter(), 96.f));

@@ -333,3 +333,19 @@ Also committed comic action-card source art + declaration, devlog checkpoint rev
 ## Nov 14 - P1 package
 
 Packaged the Fixes1 world build for Windows Development. Packaged smoke passed the three main quests and all ten village quests; added a village autoplay assertion to the smoke script. 79 Jam tests passed (EXIT CODE 0). Submission-format zip: 688 MB. No upload.
+
+## Nov 14 - Reality television introduction and routine delegation
+
+Fenella now introduces Heroes of Dread: The Land of Candy automatically on
+arrival: she assembled the villagers, cast the hero, and demands massive
+problems and drama. Five ordered captions have longer reading times; talking
+to her skips to recruitment. New voice recordings remain pending. Authored
+text recorded in Jokes.md. Added recruitment intro/skip assertions.
+
+Editor build succeeded; 79 Jam tests passed with EXIT CODE 0; offline autoplay
+passed three main scenes and ten village jobs. Luna ran verification and
+inspected village-arrival.png: readable caption, no clipping. Arrival capture
+required elevated execution after a sandbox DDC write failure. No packaging
+or upload. AGENTS.md now requests Luna subagents for routine checks, concise
+briefs without inherited history, and coordinated exclusive Unreal access,
+per Dylan's token-cost preference.

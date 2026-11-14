@@ -13,6 +13,7 @@ enum class EJamLineTrigger : uint8
 	// Fenella, event triggers ("story": always spoken when asked)
 	SceneStart,
 	Level7Intro,
+	RealityIntro,
 	FailedTake,
 	Take3,
 	Take4,
