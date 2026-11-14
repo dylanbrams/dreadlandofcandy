@@ -123,6 +123,7 @@ Typed notes without the server: `python -I Scripts/note-stub.py` (port 8011), th
 
 ## Decisions (Dylan)
 
+- Nov 14: Backlot is abandoned. The world (`L_Sugarborough`, Open) is the default and the only mode tested, smoked or fixed; no Backlot autoplay or smoke gates any task. Backlot code stays behind `-backlot`, untouched.
 - Nov 13: the title pairing everywhere is "THE DREAD LAND OF CANDY" with an edition stamp (`JamScreens::EditionStamp`: DIRECTOR'S CUT or THEATRICAL RELEASE) at 45 degrees, a little below and right of the title: title screen, Premiere and credits. A generated premiere keeps its own title with the same stamp.
 - Nov 13: itch deployment is ChatGPT's; GAME stops at a zip on disk.
 - Nov 13: title screen subtitle: "A weekend project made by a director who should know better / and machines that can't say no." A typed note may ask for up to the set's capacity (6 goblins, 8 bugs), but that is not the default.

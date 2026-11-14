@@ -18,11 +18,11 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 **The loop (three or four rounds today):**
 1. Dylan plays the latest package for 20 to 30 minutes (Open first, then one other class, then one Backlot run) and adds numbered lines to "Dylan's list" in `STATUS.md`, each tagged **BLOCKER**, **SHIP** or **NICE**.
-2. The fixes session takes BLOCKERs, then SHIPs, for at most 2 hours. Each fix gets a build, `Jam.*` tests, both autoplay PASS lines and a commit.
-3. Package, smoke both modes, zip, write the hand-off line in `STATUS.md`.
+2. The fixes session takes BLOCKERs, then SHIPs, for at most 2 hours. Each fix gets a build, `Jam.*` tests, the Open autoplay PASS line and a commit.
+3. Package, smoke Open, zip, write the hand-off line in `STATUS.md`.
 4. Dylan says go, and the ChatGPT itch session pushes to the `windows` channel (`Marketing/Itch/LUNA_UPLOAD_HANDOFF.md`).
 
-**Batch 0, first thing (fixes session, 45 min): make last night green.** Free the engine handoff, build both targets, run the tests and both autoplays on the uncommitted work, then commit it in scoped commits (never the `DefaultEngine.ini` token block). Record in `STATUS.md` which of items 2, 7, 12, 14 and 16 are actually fixed. Then repackage and **push tester build 1 even with known bugs**, because testers need hours to respond.
+**Batch 0, first thing (fixes session, 45 min): make last night green.** Free the engine handoff, build both targets, run the tests and the Open autoplay on the uncommitted work, set the world as the default (below), then commit it in scoped commits (never the `DefaultEngine.ini` token block). Record in `STATUS.md` which of items 2, 7, 12, 14 and 16 are actually fixed. Then repackage and **push tester build 1 even with known bugs**, because testers need hours to respond.
 
 **Triage of Dylan's list (STATUS items 1 to 18):**
 
@@ -34,15 +34,15 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 | Batch 2, SHIP | **15 controls:** Q/E turn the camera, right mouse drags it, the wheel zooms, F uses, R is the ultimate, middle mouse is skill 2. The "control settings menu" becomes a read-only controls card in Options and Pause; rebinding is cut. **18 numeric XP:** XP for disabling a goblin, more for brushing it, a bonus per quest, tuned so the three film sets give 1.6 levels (plain C++ rule with tests). **7**, if batch 0 shows it unfinished: level-up opens a character sheet to pick the skill |
 | Decide by 6 PM, default cut | **8 and the rest of 18: town NPCs with more quests at outer spots.** Quest givers were cut on Nov 13. Smallest real version: one villager who, after the three scenes, points the compass to an outer spot that replays a scene with more enemies for XP. It needs Dylan's new spots in the map first. Also cut: control rebinding, and a defeat animation beyond the sinking fix |
 
-**The gate:** decided at Dylan's first play of tester build 1. If Open runs well, batch 1 sets `GameDefaultMap` to `/Game/World/L_Sugarborough` and Backlot moves behind `-backlot`.
+**Backlot is abandoned (Dylan, Nov 14).** The world is the game: batch 0 sets `GameDefaultMap` to `/Game/World/L_Sugarborough` and makes Open the default with no flag. No more Backlot autoplay, Backlot smoke, Backlot fixes or Backlot screenshots; this overrides every "Backlot autoplay PASS" requirement in this file, `STATUS.md` and `BUILD_SPEC.md`. The code stays behind `-backlot` untouched; nobody spends time on it.
 
 **Timeline (PST, slide as needed):**
 
 | When | Who | What |
 | --- | --- | --- |
 | Morning | Fixes session | Batch 0, then push tester build 1 |
-| Morning | Dylan | Backend redeploy off stream (`backend/DEPLOY.md`, then `scripts/prewarm.py`); play build 1; write the list; decide the gate |
-| Midday | Fixes session | Batch 1 (blockers and the gate), then push build 2 |
+| Morning | Dylan | Backend redeploy off stream (`backend/DEPLOY.md`, then `scripts/prewarm.py`); play build 1; write the list |
+| Midday | Fixes session | Batch 1 (blockers), then push build 2 |
 | Afternoon | Fixes session | Batch 2 (controls, XP, character sheet), then push build 3 |
 | Evening | Fixes session | Batch 3 from tester feedback; R8 paperwork (`Declared.md` lines for the ElevenLabs Fenella lines and SFX, credits and tools list) |
 | 11 PM | All | Feature freeze. The last package of the day is the submission candidate |
