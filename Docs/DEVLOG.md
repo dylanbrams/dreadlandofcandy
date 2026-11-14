@@ -378,3 +378,12 @@ Fixed unattended village autoplay repeatedly selecting an encore before visiting
 the other givers. Editor build and 82 Jam tests passed; offline, proposal and
 proposal-fallback village runs completed all ten jobs. Inspected the proposal
 screen capture. Manual interaction and audio checks remain in the worker handoff.
+# Nov 14 - Fixes3 gameplay checkpoint
+
+- Restored menu-to-game focus, level-up return and mouse aiming; made Fenella
+  available during town errands and corrected weapon carry during village casts.
+- Imported 154 translated battle cries; the first use of each skill per player
+  is English, subsequent eligible cries select a random translated clip.
+- Editor build, 82 Jam tests and offline village autoplay passed. Captures
+  inspected; hands-on controls, voice listening and cooked smoke remain.
+

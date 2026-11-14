@@ -1,4 +1,36 @@
-# STATUS - Nov 14: Fixes2 checkpoint for a clean session
+# STATUS - Nov 14: Fixes3 gameplay checkpoint
+
+Fixes3 work is underway. Dylan deferred village terrain and building redesign to
+tomorrow. GO and shield approval remain granted; do not deploy or upload without
+asking. Engine is FREE. No new package or cooked smoke since P1.
+
+- `61a5c5c`: restore viewport focus after menus, resume directly from an
+  automatic level-up sheet, and restore mouse-directed attack aiming in Open.
+  Keyboard/gamepad and aiming still need hands-on verification.
+- `3c6fdc0`: class weapon carry applies the correct hand/grip and draws during
+  village skill animations. Archer attack pose inspected; mage and live village
+  combat still need hands-on inspection.
+- `fa448d7`: Fenella can be addressed in town during an active errand; nearby
+  villagers retain priority. The active-errand interaction needs a manual check.
+- `85d7986`: 154 translated attack cries imported. First use of each skill per
+  player is English; later cries randomly select a translated recording, with
+  English fallback. PlayerState tracks first uses for the current session. Voice
+  listening and packaged playback remain unverified.
+
+Latest editor build succeeded; 82 Jam tests passed with log EXIT CODE 0 and the
+offline village autoplay passed main=3 side=10. Its log records English first
+cries followed by multiple international variants. Captures inspected:
+`fixes3-control-check.png`, `fixes3-archer-cast-open.png`,
+`fixes3-fenella-arrival.png`, and `fixes3-multilingual-hud.png`.
+
+Next substantial gameplay item: Fixes3 #16. Village enemies are explicitly
+peaceful and village mode bypasses the film Dignity/retake path. A safe solution
+needs a separate recoverable encore defeat path, scaling, and tests; do not
+reuse the film failure path or disturb the ten authored jobs. Also still open:
+class-specific attack patterns, bugs eating, effects, mage/archer audio and
+hands-on Fixes2 checks. The P1 ZIP predates all Fixes2/3 changes.
+
+## Earlier Fixes2 checkpoint
 
 **Fixes2 verification update:** Screen-caption layout is fixed and visually checked
 in the latest worker handoff. Autoplay no longer loops on the first repeatable
