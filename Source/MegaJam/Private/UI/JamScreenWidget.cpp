@@ -138,6 +138,13 @@ void UJamScreenWidget::BuildTree()
 	Subtitle->SetWrapTextAt(1300.f);
 	Add(Subtitle, FMargin(0.f, 18.f, 0.f, 10.f));
 
+	// Screen reactions belong in the flow, so they cannot cover menu options.
+	CaptionPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.72f), 6.f, FMargin(22.f, 10.f));
+	CaptionText = MakeText(26, FLinearColor::White, false);
+	CaptionText->SetWrapTextAt(1400.f);
+	CaptionPanel->SetContent(CaptionText);
+	Add(CaptionPanel, FMargin(0.f, 4.f, 0.f, 4.f));
+
 	RowsBox = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 	for (int32 i = 0; i < MaxRows; ++i)
 	{
@@ -213,18 +220,6 @@ void UJamScreenWidget::BuildTree()
 		UCanvasPanelSlot* S = Root->AddChildToCanvas(Column);
 		S->SetAnchors(FAnchors(0.5f, 0.45f));
 		S->SetAlignment(FVector2D(0.5f, 0.5f));
-		S->SetAutoSize(true);
-	}
-
-	CaptionPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.72f), 6.f, FMargin(22.f, 10.f));
-	CaptionText = MakeText(26, FLinearColor::White, false);
-	CaptionText->SetWrapTextAt(1400.f);
-	CaptionPanel->SetContent(CaptionText);
-	{
-		UCanvasPanelSlot* S = Root->AddChildToCanvas(CaptionPanel);
-		S->SetAnchors(FAnchors(0.5f, 1.f));
-		S->SetAlignment(FVector2D(0.5f, 1.f));
-		S->SetPosition(FVector2D(0.f, -96.f));
 		S->SetAutoSize(true);
 	}
 
@@ -308,6 +303,8 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 			OptionRows[i]->SetVisibility(bOpt ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		}
 		if (!bOpt) { continue; }
+		// Tall menus need room for their caption and footer as well as every option.
+		OptionRows[i]->SetPadding(FMargin(30.f, ShownOptions >= 8 ? 9.f : 16.f));
 		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::QuestBranches ? 1000.f : View.Screen == EJamScreen::Character ? 900.f : 620.f); }
 		OptionLabels[i]->SetWrapTextAt(View.Screen == EJamScreen::QuestBranches ? 950.f : 0.f);
 		const FJamMenuOption& O = View.Options[i];

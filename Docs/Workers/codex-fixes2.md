@@ -1,5 +1,17 @@
 # Fixes2 clean-session handoff — Nov 14
 
+## Caption layout checkpoint
+
+The screen-owned caption now flows above the screen content instead of sitting
+over bottom buttons. Menus with eight or more options use tighter row padding
+to leave room for the title and footer. Editor build succeeded; the full Jam
+suite passed 82/82 with log EXIT CODE 0. Inspected
+`fixes2-pause-caption-layout.png`: title, caption, all options and footer fit
+without overlap. Inspected `fixes2-quest-proposal-layout.png`: the reaction and
+all four choices fit separately; its dense objective copy remains readable.
+The pause capture is still a screen sample, not a real pause/resume audio test.
+The remaining verify-at-GO checks below remain outstanding. No Fixes3 work.
+
 **User requested this checkpoint and a fresh session. Stop this session here.**
 Fixes2 is **not finished**. Round three is in `Docs/Feedback/Fixes3.txt`; do not
 start it until Fixes2 is finished. Engine resource is **FREE**, no jobs running.
