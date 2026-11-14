@@ -1,0 +1,39 @@
+id,agent,model,lane,task,start,end,confidence,evidence
+C01,Claude,Sonnet 5.5,Setup,Pre-jam setup: UE 5.8 skeleton / scripts / GAS test template / design briefs,2026-11-11 15:00,2026-11-11 21:42,commit-times,296f444 62579eb 063af55 8ab5d40
+C02,Claude,Fable 5.2,Design,Build spec / joke sheet / style lock / worker split / spend plan,2026-11-11 21:42,2026-11-11 22:36,commit-times,af0db3d..99c99c8
+C03,Claude,Opus 5.5,Assets,Asset list / generation map / 2D handoff / voice-line candidates,2026-11-11 22:36,2026-11-11 23:33,commit-times,829e5c6 bd0f2b9 403e69a 8ca0389
+C04,Claude,Opus 5.5,Assets,UI two-layer style + generation tooling (parallel runner / Meshy rig / ingest),2026-11-11 23:33,2026-11-12 00:00,commit-times,bf992f5 0883d11
+C05,Claude,Opus 5.5,Assets,Mesh routing (Rodin / Tripo / fal.ai) + test stage + compare viewer,2026-11-12 06:28,2026-11-12 07:36,commit-times,e7caefd 3b54674 e2bd659 dbb0851 279bab1
+C06,Claude,Opus 5.5,Game,T01 hero + ASC + nuisances + autoplay bot,2026-11-12 07:25,2026-11-12 07:49,devlog,87bace6
+C07,Claude,Opus 5.5,Game,T02 first package + packaged smoke test,2026-11-12 07:49,2026-11-12 08:02,commit-times,ee3d274
+C08,Claude,Opus 5.5,Game,T05 nuisance states / steering / hold-to-treat,2026-11-12 08:02,2026-11-12 08:23,commit-times,d92d056
+C09,Claude,Opus 5.5,Game,T03 FJamShoot state machine + T06 Scene 1 playable end to end,2026-11-12 08:23,2026-11-12 08:48,commit-times,ff319e2 8a8bcc3
+C10,Claude,Sonnet 5.5,Rules,RULES: ledger / nag scheduler / progression / note clamp / Scenes 2-3,2026-11-12 08:30,2026-11-12 08:58,approx,6c42e86 c43749a 307ec43 c587e6c 5492ee2
+C11,Claude,Sonnet 5.5,Backend,BACKEND B1 director-note service (built and tested),2026-11-12 08:00,2026-11-12 08:52,approx,1a24fb0
+C12,Claude,Sonnet 5.5,Backend,BACKEND B2 pre-warm / hand-over,2026-11-12 08:52,2026-11-12 10:52,approx,868d116
+C13,Claude,Opus 5.5,Game,Merge rules + T08 backlot sets (C++ layout table),2026-11-12 08:58,2026-11-12 11:03,commit-times,d9d9b51 cd7905b
+C14,Claude,Opus 5.5,Game,T07 flags + whole film plays under autoplay,2026-11-12 11:03,2026-11-12 11:23,commit-times,3be40c8
+C15,Claude,Opus 5.5,Game,T10 widget HUD + T11 Fenella + captions,2026-11-12 11:23,2026-11-12 11:54,commit-times,8743ac3 412b7bc
+C16,Claude,Opus 5.5,Game,T12 CUT! note panel + T13 failure presentation,2026-11-12 11:54,2026-11-12 12:37,commit-times,bb13a81 17cf245
+C17,Claude,Opus 5.5,Game,T14 wrap card + T16 title / pause / Premiere / credits,2026-11-12 12:37,2026-11-12 13:13,commit-times,406a9dc ba5a2ba
+C18,Claude,Opus 5.5,Game,T05a skills (GAS) + T14a skill bar,2026-11-12 13:13,2026-11-12 13:33,commit-times,041872d 415aa80
+C19,Claude,Opus 5.5,Game,T18 music + T19 Lecture presentation,2026-11-12 13:33,2026-11-12 13:55,commit-times,075a0d4 38c2e8e
+C20,Claude,Opus 5.5,Game,T21 budget runs out + T22 commentary + volume sliders,2026-11-12 13:55,2026-11-12 14:18,commit-times,ef358cd 437981b
+C21,Claude,Opus 5.5,Art,T20 art pass: 30 models in the cast and set dressing,2026-11-12 14:18,2026-11-12 14:52,commit-times,8cbef99 1b65fca 1a2c69a
+C22,Claude,Opus 5.5,Art,T20 rigged knight (headless import) + hero animations,2026-11-12 14:52,2026-11-12 16:39,commit-times,5ac9795 a0dae84 d7e0dab
+C23,Claude,Opus 5.5,Game,T23 voice-over hookup,2026-11-12 15:00,2026-11-12 16:13,commit-times,ad52ffb
+C24,Claude,Opus 5.5,Game,T15 finale waves + T12b typed director's notes + T16a generated Premiere,2026-11-12 16:39,2026-11-12 18:21,commit-times,44f1303 ff3bca9 7caf315 09be3df
+C25,Claude,Opus 5.5,Art,Look: sun / sky / grade,2026-11-12 18:21,2026-11-12 18:31,commit-times,4a661b9
+C26,Claude,Fable 5.2,Design,Spec 3d (multi-class) and 3e (open world) + hand-over,2026-11-12 17:34,2026-11-12 19:12,commit-times,bb87851 6810924 7e1288b
+C27,Claude,Opus 5.5,Game,O1 open-world table + queries + tests,2026-11-12 19:12,2026-11-12 19:15,commit-times,442057a
+C28,Claude,Sonnet 5.5,Game,O1 verified after merge (57 tests),2026-11-12 23:10,2026-11-12 23:18,commit-times,47187bf
+C29,Claude,Fable 5.2,Design,Release plan R0-R8,2026-11-13 17:25,2026-11-13 18:00,commit-times,c4e1a9a 804a2fb 2b2046b 8f4f40a
+C30,Claude,Opus 5.5,Game,R0 checkpoint + R1 sound (47 SFX / 88 lines) + R2 theme song,2026-11-13 18:00,2026-11-13 18:22,commit-times,55d7816..f4ccb22
+C31,Claude,Opus 5.5,Game,R4 world slim + R4b enemies hit back + Dignity meter,2026-11-13 18:22,2026-11-13 19:18,commit-times,a358df0 e5e1edd 1e02626
+C32,Claude,Opus 5.5,Game,Typed notes live on the deployed backend + title pairing,2026-11-13 19:18,2026-11-13 19:42,commit-times,b46accf b51fbb0 79886d4
+C33,Claude,Opus 5.5,Game,R6 the cast: four playable classes,2026-11-13 19:42,2026-11-13 20:13,commit-times,9695d9d
+C34,Claude,Opus 5.5,Game,R5 package + gate build (689 MB zip),2026-11-13 20:13,2026-11-13 20:31,commit-times,8d2722c
+C35,Claude,Opus 5.5,Docs,Dylan's R7 list from the R5 play + research,2026-11-13 20:31,2026-11-13 21:47,commit-times,58e2212
+C36,Claude,Opus 5.5,Design,Nov 14 release plan / triage / engine handoff,2026-11-14 09:00,2026-11-14 09:39,commit-times,4e68882 c76d42f eaf40ae 1e58350 91a7fc1
+C37,Claude,Sonnet 5.5,Backend,BACKEND redeploy n2 (live check passes),2026-11-14 09:31,2026-11-14 09:50,commit-times,46b75af
+C38,Claude,Sonnet 5.5,Docs,Devlog checkpoint: outline / deck / Gantt,2026-11-14 10:15,2026-11-14 10:45,approx,this commit
