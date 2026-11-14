@@ -140,8 +140,8 @@ int32 AJamGameMode::VillageTarget(const AJamHero* InHero) const
 		if (Distance < Best) { Best = Distance; Target = Id; }
 	};
 	if (bRecruitmentPending) { Near(Faerie, JamVillageFlow::FenellaTarget); }
-	// Fenella offers the Premiere only back in town, between errands.
-	if (bVillageExploration && VillageQuests.Active() == INDEX_NONE && FVector2D(InHero->GetActorLocation()).Size() < JamWorld::Def().VillageRadius)
+	// Fenella is available at the hero's shoulder in town, including during an errand.
+	if (bVillageExploration && FVector2D(InHero->GetActorLocation()).Size() < JamWorld::Def().VillageRadius)
 	{
 		// She follows at a little over 300 uu: the offer belongs to the hero, at her shoulder.
 		Target = JamVillageFlow::FenellaTarget;
@@ -170,7 +170,7 @@ bool AJamGameMode::VillageInteractPrompt(const AJamHero* InHero, AActor*& Anchor
 	if (Target == JamVillageFlow::FenellaTarget)
 	{
 		Anchor = Faerie;
-		Text = Key + (bRecruitmentPending ? TEXT("  Talk to Fenella") : TEXT("  Fenella: watch the Premiere"));
+		Text = Key + (bRecruitmentPending ? TEXT("  Talk to Fenella") : ActiveQuest != INDEX_NONE ? TEXT("  Talk to Fenella") : TEXT("  Fenella: watch the Premiere"));
 		return Anchor != nullptr;
 	}
 	Anchor = Villagers[Target];
@@ -202,6 +202,10 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 			JamSfx::Play(this, TEXT("Quest_Accept"));
 			BeginWalkToSet(FirstSceneIndex);
 			UE_LOG(LogJam, Log, TEXT("JamQuest: Fenella recruited"));
+		}
+		else if (bVillageExploration && VillageQuests.Active() != INDEX_NONE)
+		{
+			Direct(TEXT("Finish the marked errand, then return to its giver. The Premiere can wait for its star."));
 		}
 		else if (bVillageExploration) { RequestPremiere(); }
 		return true;
