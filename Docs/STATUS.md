@@ -9,7 +9,7 @@ Docs/Archive/STATUS-before-batch0-2026-11-14.md.
 Batch 1 BLOCKERs: 5 compass target label overlap; 15b Open HUD absent during
 travel; 13 golden rain/grey screen (investigate BudgetOut world-material gag);
 17 archer bow grip. Item 11 was included in the overnight work and is now verified
-by scene finishability tests and both full autoplay runs; manual direction entry
+by scene finishability tests and the Open autoplay run; manual direction entry
 still needs Dylan's play. Do not repeat batch 0 or start quest-giver expansion.
 
 ## Batch 0 result
