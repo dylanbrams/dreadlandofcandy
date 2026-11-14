@@ -334,3 +334,16 @@ and final manifest are in its parent `Angular` directory. Original project
 tooling: `Scripts/build_angular_comic_cards.py`. This expansion retains the
 generated burst contours without the first set's added central polygon. It uses
 the same installed fonts as the first set; no font binaries are included.
+
+
+## 2026-11-14: Fenella reality-show voice pickups
+
+Twenty additional lines were authored with OpenAI Codex during the jam; the
+five existing RealityIntro speeches are included verbatim. A GPT-6 Luna
+subagent generated the 25 English recordings with ElevenLabs
+eleven_multilingual_v2, Bella voice hpp4J3VqNfWAUOO0d1Us. Exact texts:
+ocals/fenella_new_lines_2026-11-14.json; source sheet:
+ocals/Fenella_NewLines_2026-11-14.md; request/settings and technical metadata:
+ocals/output/fenella_pickups_2026-11-14/manifest.json. MP3 originals and
+mono 48 kHz PCM16 WAVs: ocals/output/fenella/VO_<LineId>.*. Generated
+audio delivery only; listening and game import pending.

@@ -1,0 +1,177 @@
+[
+  {
+    "id": "RealityIntro_01",
+    "speaker": "fenella",
+    "text": "Welcome to Heroes of Dread: The Land of Candy! I'm Fenella Flicker, producer, director and the only person here who understands reality television.",
+    "source": "Source/MegaJam/Private/Film/JamLines.cpp",
+    "runtime_integrated": true
+  },
+  {
+    "id": "RealityIntro_02",
+    "speaker": "fenella",
+    "text": "I've assembled these villagers and cast YOU as our hero. They bring the problems. You bring the brooding. I'll bring the camera alarmingly close.",
+    "source": "Source/MegaJam/Private/Film/JamLines.cpp",
+    "runtime_integrated": true
+  },
+  {
+    "id": "RealityIntro_03",
+    "speaker": "fenella",
+    "text": "I want MASSIVE problems. Impossible odds! Tears before breakfast! The villagers asked for a quiet life. Terrible television. I've requested revisions.",
+    "source": "Source/MegaJam/Private/Film/JamLines.cpp",
+    "runtime_integrated": true
+  },
+  {
+    "id": "RealityIntro_04",
+    "speaker": "fenella",
+    "text": "Every little village crisis will become an EPIC catastrophe. Entirely real reactions, naturally. If yours aren't dramatic enough, we'll do another take.",
+    "source": "Source/MegaJam/Private/Film/JamLines.cpp",
+    "runtime_integrated": true
+  },
+  {
+    "id": "RealityIntro_05",
+    "speaker": "fenella",
+    "text": "Now come to my golden triangle, hero. Your starring role awaits. Try to look haunted. It's candy country; you'll have to make an effort.",
+    "source": "Source/MegaJam/Private/Film/JamLines.cpp",
+    "runtime_integrated": true
+  },
+  {
+    "id": "RealityPickup_01",
+    "speaker": "fenella",
+    "text": "Just be yourself, darling. The version with a terrible secret and better posture.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "RealityPickup_02",
+    "speaker": "fenella",
+    "text": "Nothing here is scripted. I've written that down so everyone says it correctly.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "RealityPickup_03",
+    "speaker": "fenella",
+    "text": "We need a cliffhanger. This hill will have to do. Look uncertain near it.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "RealityPickup_04",
+    "speaker": "fenella",
+    "text": "Tell the camera how you feel. If it's fine, tell it how you nearly felt.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "RealityPickup_05",
+    "speaker": "fenella",
+    "text": "Nobody panic! Until I find the lens cap. Then absolutely everybody panic.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "RealityPickup_06",
+    "speaker": "fenella",
+    "text": "The villagers are being terribly reasonable. I'll see what I can do.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_01",
+    "speaker": "fenella",
+    "text": "The mayor needs help. Give him your full attention. Three quarters of your face to camera.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_02",
+    "speaker": "fenella",
+    "text": "The baker's in trouble. Finally, some stakes I can eat.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_03",
+    "speaker": "fenella",
+    "text": "Sprig wants the garden saved. I want a tear rolling down a leaf. We can both win.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_04",
+    "speaker": "fenella",
+    "text": "Doctor Molar has uncovered a cavity. Hold for the gasp. It's a very small reveal.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_05",
+    "speaker": "fenella",
+    "text": "Taffy has a scouting report. I've asked for a shocking discovery on page two.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "VillagePickup_06",
+    "speaker": "fenella",
+    "text": "Pick the solution you believe in. Then explain why the other one betrayed you.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_01",
+    "speaker": "fenella",
+    "text": "You solved it without an argument. Wonderful. Could you argue about how well it went?",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_02",
+    "speaker": "fenella",
+    "text": "That's real kindness. Keep doing that. I'll move the camera.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_03",
+    "speaker": "fenella",
+    "text": "A whole basket of supplies! Set it down like it contains your last hope. Mind the eggs.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_04",
+    "speaker": "fenella",
+    "text": "Beautiful brushing. I saw my reflection in that tooth. Naturally, I kept the shot.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_05",
+    "speaker": "fenella",
+    "text": "You fed them! Hold on the chewing. This is our quiet, expensive bit.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "HeroPickup_06",
+    "speaker": "fenella",
+    "text": "Another problem solved. At this rate we'll have to interview the problems' families.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "ReturnPickup_01",
+    "speaker": "fenella",
+    "text": "Back to the village! Everyone act as though we've been gone for years. Gary, put the kettle down.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  },
+  {
+    "id": "ReturnPickup_02",
+    "speaker": "fenella",
+    "text": "What a journey. Friendship, courage, celery. I knew the celery would carry it.",
+    "source": "vocals/Fenella_NewLines_2026-11-14.md",
+    "runtime_integrated": false
+  }
+]

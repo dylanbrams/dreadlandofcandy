@@ -1,10 +1,19 @@
 # STATUS - GAME, Nov 14: P1 packaged and smoked
 
+**Nov 14 voice pickup delivery:** Wrote 20 additional Fenella reality-show,
+village and hero-reaction candidates, and Luna generated those plus the five
+exact arrival speeches with ElevenLabs/Bella. All 25 MP3/WAV pairs are in
+`vocals/output/fenella/`; scoped manifest:
+`vocals/output/fenella_pickups_2026-11-14/manifest.json`. Source and production
+notes: `vocals/Fenella_NewLines_2026-11-14.md`. Listening review and Unreal
+import remain pending; the 20 candidates have no runtime hooks. No game code,
+engine run or package changed in this audio-only task.
+
 **Nov 14 follow-up:** Fenella's arrival introduction now establishes her
 reality show, *Heroes of Dread: The Land of Candy*, the assembled villagers,
 the hero's casting, and her demand for massive drama. Five ordered captions
-play automatically; talking to her skips ahead. New voice recordings remain
-pending. Editor build and all 79 Jam tests passed (EXIT CODE 0); offline
+play automatically; talking to her skips ahead. New voice recordings are now
+generated, awaiting import (see delivery above). Editor build and all 79 Jam tests passed (EXIT CODE 0); offline
 autoplay passed all three main scenes and ten village jobs. Luna inspected
 `Saved/Screenshots/WindowsEditor/village-arrival.png`: readable, no clipping.
 This change is
