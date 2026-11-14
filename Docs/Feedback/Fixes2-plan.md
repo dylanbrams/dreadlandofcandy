@@ -4,6 +4,16 @@ Source: `Docs/Feedback/Fixes2.txt` (Dylan's QA round on the P1 package).
 Two threads work at once in the main checkout: **CLAUDE (GAME)** and **CODEX**.
 Feature freeze 11 PM PST tonight; submission Nov 15, 5:59 PM PST.
 
+## UPDATE (Nov 14, later): CODEX runs all eight
+
+Claude is out of quota for about seven hours. **CODEX takes every row below**, the
+CLAUDE ones included, and owns every file listed in both ownership lists. Order: 8, 7,
+2+3, 1 (code side), 4 (write the Proposals contract in `QuestBranches.md` first, then
+client, then backend), 5, 6 (Meshy job, stop for Dylan's approval). HOLD still applies.
+Editor imports (voice, shield) stay post-GO. Claude returns at the end to review,
+integrate and package, so keep `Docs/Workers/codex-fixes2.md` current: per fix, the
+commit hash, files touched, what's unfinished, open questions, and the "verify at GO" list.
+
 ## HOLD: no testing until Dylan says GO
 
 Dylan is doing a QA pass on this machine. Until he writes **GO** in the thread
