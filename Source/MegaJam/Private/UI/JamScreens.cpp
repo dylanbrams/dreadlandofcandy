@@ -475,10 +475,10 @@ FJamScreenView JamScreens::QuestBranches(const FJamQuestOfferView& Offer, const 
         V.Quotes.Add(bFixed ? FString::Printf(TEXT("%d. %s.  %s"), i + 1, *Branch.Objective, *Branch.Variation.Pitch.Left(160))
             : FString::Printf(TEXT("%d. %s: %d.  %s"), i + 1, *Branch.Objective, Shown, *Branch.Variation.Pitch.Left(160)));
     }
-    if (Offer.bCanImprovise) { V.Options.Add(Opt(EJamMenuAction::ImproviseQuest, Offer.bReading ? TEXT("Fenella is thinking...") : TEXT("Ask Fenella to improvise"), FString(), !Offer.bReading)); }
+    if (Offer.bCanImprovise) { V.Options.Add(Opt(EJamMenuAction::ImproviseQuest, Offer.bReading ? TEXT("Fenella is thinking...") : TEXT("Ask Fenella to improvise"), FString(), !Offer.bReading && !Offer.bProposing)); }
     if (Offer.bCanPropose || Offer.bProposing)
     {
-        V.Options.Add(Opt(EJamMenuAction::ProposePlan, Offer.bProposing ? TEXT("Fenella is reading your plan...") : TEXT("Propose a plan"), FString(), !Offer.bProposing));
+        V.Options.Add(Opt(EJamMenuAction::ProposePlan, Offer.bProposing ? TEXT("Fenella is reading your plan...") : TEXT("Propose a plan"), FString(), !Offer.bProposing && !Offer.bReading));
     }
     V.Options.Add(Opt(EJamMenuAction::CancelQuestOffer, TEXT("Maybe later")));
     V.Caption = Offer.Status;

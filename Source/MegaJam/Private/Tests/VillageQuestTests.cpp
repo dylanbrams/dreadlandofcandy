@@ -101,7 +101,9 @@ bool FJamVillageFlowTest::RunTest(const FString&)
 	TestFalse(TEXT("recruitment requires proximity"), GM->HandleVillageInteract(Hero));
 	Hero->SetActorLocation(GM->Faerie->GetActorLocation() + FVector(100, 0, -80));
 	TestTrue(TEXT("talk recruits Fenella"), GM->HandleVillageInteract(Hero));
-	TestTrue(TEXT("recruiting skips remaining introduction"), GM->CaptionQueue.IsEmpty());
+	TestFalse(TEXT("recruiting skips remaining introduction"), GM->CaptionQueue.ContainsByPredicate(
+        [](FName Id) { return Id.ToString().StartsWith(TEXT("RealityIntro_")); }));
+    TestTrue(TEXT("the new walk's reality pickup stays queued"), GM->CaptionQueue.Contains(TEXT("RealityPickup_01")));
 	TestTrue(TEXT("recruitment starts walk to first quest"), GM->bBetweenScenes);
 	TestEqual(TEXT("quest marker moves to first clearing"), FVector2D(GM->QuestMarker->GetActorLocation()), GM->SceneFloor(0).GetCenter());
 	Hero->SetActorLocation(FVector(GM->SceneFloor(0).GetCenter(), 96.f));
@@ -454,6 +456,18 @@ bool FJamQuestProposalTest::RunTest(const FString&)
     FJamQuestOfferView Offer; Offer.bVisible = true; Offer.bCanPropose = true; Offer.Branches.SetNum(2);
     const FJamScreenView Screen = JamScreens::QuestBranches(Offer, FJamMenuSettings());
     TestTrue(TEXT("propose button when online"), Screen.Options.ContainsByPredicate([](const FJamMenuOption& O) { return O.Action == EJamMenuAction::ProposePlan && O.bEnabled; }));
+    Offer.bReading = true;
+    Offer.bCanImprovise = true;
+    const FJamScreenView Reading = JamScreens::QuestBranches(Offer, FJamMenuSettings());
+    TestFalse(TEXT("cannot propose during an improvise request"), Reading.Options.ContainsByPredicate(
+        [](const FJamMenuOption& O) { return O.Action == EJamMenuAction::ProposePlan && O.bEnabled; }));
+    TestTrue(TEXT("authored routes remain usable during improvise"), Reading.Options[0].bEnabled && Reading.Options[1].bEnabled);
+    Offer.bReading = false;
+    Offer.bProposing = true;
+    const FJamScreenView Proposing = JamScreens::QuestBranches(Offer, FJamMenuSettings());
+    TestFalse(TEXT("cannot improvise during a proposal request"), Proposing.Options.ContainsByPredicate(
+        [](const FJamMenuOption& O) { return O.Action == EJamMenuAction::ImproviseQuest && O.bEnabled; }));
+    TestTrue(TEXT("authored routes remain usable during proposal"), Proposing.Options[0].bEnabled && Proposing.Options[1].bEnabled);
     return true;
 }
 #endif

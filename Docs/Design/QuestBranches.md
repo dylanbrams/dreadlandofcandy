@@ -79,7 +79,7 @@ branches, plus tests. Nothing here changes `/quest/branches`.
 
 The quest offer screen gets a fourth button, **Propose a plan**, under the two
 authored routes and "Ask Fenella to improvise". It opens the existing note editor
-(keyboard or gamepad on-screen keys), 160 characters, placeholder
+(keyboard input or gamepad suggestions), **80 characters** (Dylan's preference), placeholder
 "How would you solve it?". Submitting sends the request; the screen stays usable
 and both authored routes stay selectable while it waits. A usable reply adds a
 third route, labelled with the reply's `label`, whose description lists the steps
@@ -136,8 +136,10 @@ Request:
 
 - `level`: the giver's relationship level, 0 Stranger, 1 Acquaintance, 2 Friend,
   3 Bestie (Fixes2 #5). Higher levels may get longer plans (see limits below).
-- `proposal`: the player's text, control characters stripped, at most 160
-  characters (server rejects longer with 422). Untrusted: screen it like a note.
+- `proposal`: the player's text, control characters stripped. The editor caps
+  input at 80 characters; the transport/server retains a 160-character upper
+  bound for compatibility (server rejects longer with 422). Untrusted: screen
+  it like a note.
 - `recipe`: the job's authored shape, for context only.
 - `vocabulary`: the closed sets, sent every time so the server prompt and
   validator never drift from the client. The server should still hard-code the

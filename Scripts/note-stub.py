@@ -63,6 +63,16 @@ def quest_branches(req):
         for route in req["routes"]]}
 
 
+def quest_proposal(req):
+    # Two playable steps also exercise the destination transition. Feeding already
+    # includes pacifying, so a separate pacify step would be merged by the client.
+    return {"v": 1, "source": "model", "quest_id": req["quest_id"],
+            "label": "Snack diplomacy", "pitch": "Gather celery, then calm and feed the rats.",
+            "reaction": "Bribery! Wonderful. We will call it a catering subplot.",
+            "steps": [{"verb": "gather", "target": "celery", "count": 3, "destination": "CampMeadowEast"},
+                      {"verb": "feed", "target": "rat", "count": 3, "destination": "CampMeadowWest"}]}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8011)
@@ -87,6 +97,8 @@ def main():
                 body = note_form(req)
             elif self.path.endswith("/quest/branches"):
                 body = quest_branches(req)
+            elif self.path.endswith("/quest/propose"):
+                body = quest_proposal(req)
             elif self.path.endswith("/premiere"):
                 body = premiere()
             else:

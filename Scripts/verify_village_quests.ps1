@@ -7,7 +7,7 @@
   .\Scripts\verify_village_quests.ps1 -Mode choices
 #>
 param(
-    [ValidateSet('arrival','journal','choices','offline','backend','fallback')]
+    [ValidateSet('arrival','journal','choices','offline','backend','fallback','proposal','proposalfallback')]
     [string]$Mode = 'offline',
     [int]$Port = 8019,
     [int]$TimeoutSeconds = 240,
@@ -30,13 +30,15 @@ if ($Capture) {
 }
 $Stub = $null; $Game = $null
 try {
-    if ($Mode -in @('backend','fallback')) {
-        $Status = if ($Mode -eq 'fallback') { '503' } else { '200' }
+    if ($Mode -in @('backend','fallback','proposal','proposalfallback')) {
+        $Status = if ($Mode -in @('fallback','proposalfallback')) { '503' } else { '200' }
         $StubArgs = @('-I', "`"$(Join-Path $PSScriptRoot 'note-stub.py')`"", '--port', $Port, '--delay', '0.05', '--status', $Status)
         $Stub = Start-Process -FilePath 'python' -ArgumentList $StubArgs -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $LogDir "Village-$Mode-stub.log") -RedirectStandardError (Join-Path $LogDir "Village-$Mode-stub-error.log")
         Start-Sleep -Seconds 1
         if ($Stub.HasExited) { throw 'The local branch stub failed to start; check its log or choose another port.' }
-        $VillageArgs += @('-autobranches', "-noteurl=http://127.0.0.1:$Port")
+        $VillageArgs += "-noteurl=http://127.0.0.1:$Port"
+        if ($Mode -in @('proposal','proposalfallback')) { $VillageArgs += '-autopropose="feed them"' }
+        else { $VillageArgs += '-autobranches' }
     }
     $VillageArgs += "-abslog=`"$LogPath`""
     $Exe = Join-Path $EnginePath $(if ($Capture) { 'Engine\Binaries\Win64\UnrealEditor.exe' } else { 'Engine\Binaries\Win64\UnrealEditor-Cmd.exe' })
@@ -53,6 +55,9 @@ try {
     if (-not $Capture -and $Log -notmatch 'JamVillageAutoplay: PASS main=3 side=10') { throw 'All ten village quests did not finish.' }
     if ($Mode -eq 'backend' -and ([regex]::Matches($Log, 'backend branches ready')).Count -ne 10) { throw 'Expected ten successful backend branch offers.' }
     if ($Mode -eq 'fallback' -and ([regex]::Matches($Log, 'authored branches retained')).Count -ne 10) { throw 'Expected ten backend failures retaining authored routes.' }
+    if ($Mode -eq 'proposal' -and ([regex]::Matches($Log, 'proposal ready')).Count -ne 10) { throw 'Expected ten successful player proposals.' }
+    if ($Mode -eq 'proposal' -and ([regex]::Matches($Log, 'accepted .*route=proposal steps=2')).Count -ne 10) { throw 'Expected ten accepted two-step player plans.' }
+    if ($Mode -eq 'proposalfallback' -and ([regex]::Matches($Log, 'proposal unusable')).Count -ne 10) { throw 'Expected ten proposal failures retaining authored routes.' }
     if ($Capture) {
         $Shot = Get-ChildItem -LiteralPath (Join-Path $ProjectDir 'Saved\Screenshots') -Filter "village-$Mode.png" -Recurse | Select-Object -First 1
         if (-not $Shot) { throw 'No screenshot was written.' }

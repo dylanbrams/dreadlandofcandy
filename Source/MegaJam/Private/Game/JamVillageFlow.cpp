@@ -114,7 +114,7 @@ void AJamGameMode::BeginRecruitment()
 	GS->bCompass = true;
 	GS->CompassTarget = Faerie->GetActorLocation();
 	GS->CompassLabel = TEXT("FENELLA - START YOUR ADVENTURE");
-	GS->Hint = TEXT("Meet Fenella in Sugarborough. Follow the golden triangle; click her prompt or hold F / (A) to talk.");
+	GS->Hint = TEXT("Meet Fenella in Sugarborough. Follow the candy cane; click her prompt or hold F / (A) to talk.");
 	MarkQuest(FVector2D(Faerie->GetActorLocation()), Faerie, 160.f);
 	// Play the introduction in order on arrival; talking to her can skip to the quest.
 	CaptionQueue.Reset();
@@ -234,7 +234,7 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 		UE_LOG(LogJam, Log, TEXT("JamQuest: turned in %s reward=%d completed=%d level=%d"), *Title, Payout, VillageQuests.Completed(), LevelNow);
 	}
 	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { OfferVillageQuest(Index); }
-	else if (State == EJamVillageQuestState::Locked) { Direct(Quest.GiverName + TEXT(" has work for you after our three quests. First, follow my golden triangle.")); }
+	else if (State == EJamVillageQuestState::Locked) { Direct(Quest.GiverName + TEXT(" has work for you after our three quests. First, follow my candy cane.")); }
 	else if (State == EJamVillageQuestState::Complete) { Direct(Quest.GiverName + TEXT(" says: Thanks again, hero. The village remembers. The invoice has been paid.")); }
 	else if (VillageQuests.Active() == Index) { Direct(TEXT("Finish the marked errand, then come back here for your reward.")); }
 	else { Direct(TEXT("One errand at a time, hero. Finish the current quest and return to its giver first.")); }
@@ -268,7 +268,7 @@ void AJamGameMode::AcceptVillageQuest(int32 Index)
 	if (!VillageQuests.Accept(Index)) { return; }
 	const FJamVillageQuestDef& Quest = VillageQuests.Offer(Index);
 	StartVillageStep();
-	Direct(FString::Printf(TEXT("%s: %s Plan: %s. Reward: %d sprinkles and 40 XP. Follow the triangle, then return to me."),
+	Direct(FString::Printf(TEXT("%s: %s Plan: %s. Reward: %d sprinkles and 40 XP. Follow the candy cane, then return to me."),
 		*Quest.GiverName, *Quest.Request, *JamVillageFlow::PlanText(JamVillageQuests::Steps(Quest)), VillageQuests.Payout(Index)));
 	JamSfx::Play(this, TEXT("Quest_Accept"));
 	SayOnce(SaidOnce.Contains(TEXT("RealityPickup_04")) ? TEXT("RealityPickup_05") : TEXT("RealityPickup_04"));
@@ -335,7 +335,7 @@ void AJamGameMode::UpdateVillageObjective()
 		GS->CompassTarget = FVector(Location->Position, TraceGround(Location->Position) + 150.f);
 		GS->CompassLabel = bReady ? TEXT("RETURN TO ") + Quest.GiverName.ToUpper() : Quest.Title.ToUpper();
 		GS->Hint = bReady ? TEXT("Quest ready! Return to ") + Quest.GiverName + TEXT(" and talk to claim your reward.")
-			: FString::Printf(TEXT("%s: %s%s %d/%d. Follow the golden triangle; return to %s afterwards."), *Quest.Title,
+			: FString::Printf(TEXT("%s: %s%s %d/%d. Follow the candy cane; return to %s afterwards."), *Quest.Title,
 				*StepTag, *Step.Objective, VillageQuests.Progress(), Step.Count, *Quest.GiverName);
 		MarkQuest(Location->Position);
 		if (bReady && QuestMarker) { QuestMarker->SetActorHiddenInGame(true); } // giver already has a marker
@@ -346,7 +346,7 @@ void AJamGameMode::UpdateVillageObjective()
 		GS->CompassLabel = TEXT("SUGARBOROUGH");
 		GS->Hint = VillageQuests.Completed() == JamVillageQuests::All().Num()
 			? TEXT("All village quests complete! Villagers offer encores, or talk to Fenella in Sugarborough to watch the Premiere.")
-			: TEXT("Return to Sugarborough. Talk to a villager under a golden triangle. Pause > Quest Journal lists every quest.");
+			: TEXT("Return to Sugarborough. Talk to a villager under a candy cane. Pause > Quest Journal lists every quest.");
 		MarkQuest(FVector2D::ZeroVector);
 		if (Hero.IsValid() && FVector2D(Hero->GetActorLocation()).Size() < 1200.f && QuestMarker) { QuestMarker->SetActorHiddenInGame(true); }
 	}
@@ -364,7 +364,7 @@ void AJamGameMode::TickVillage(float DeltaSeconds)
 		if (VillageQuests.Step() != SpawnedVillageStep)
 		{
 			StartVillageStep();
-			Direct(TEXT("Step complete! Next: ") + JamVillageQuests::StepText(VillageQuests.CurrentStep(Active)) + TEXT(". Follow the triangle."));
+			Direct(TEXT("Step complete! Next: ") + JamVillageQuests::StepText(VillageQuests.CurrentStep(Active)) + TEXT(". Follow the candy cane."));
 		}
 		if (VillageQuests.CurrentStep(Active).Verb == EJamStageVerb::Collect)
 		{
@@ -562,7 +562,7 @@ void AJamGameMode::ChooseVillageBranch(int32 Choice)
 
 void AJamGameMode::RequestVillageBranches()
 {
-    if (!QuestOffer.bVisible || QuestOffer.bReading || !QuestOffer.bCanImprovise || OfferedQuest == INDEX_NONE) { return; }
+    if (!QuestOffer.bVisible || QuestOffer.bReading || QuestOffer.bProposing || !QuestOffer.bCanImprovise || OfferedQuest == INDEX_NONE) { return; }
     UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
     if (!Client || !Client->IsOnline()) { return; }
     const int32 Index = OfferedQuest;
@@ -602,7 +602,7 @@ void AJamGameMode::ResolveVillageBranches(int32 Serial, int32 Index, bool bOk, c
 
 void AJamGameMode::RequestVillageProposal(const FString& Text)
 {
-    if (!QuestOffer.bVisible || QuestOffer.bProposing || !QuestOffer.bCanPropose || OfferedQuest == INDEX_NONE) { return; }
+    if (!QuestOffer.bVisible || QuestOffer.bProposing || QuestOffer.bReading || !QuestOffer.bCanPropose || OfferedQuest == INDEX_NONE) { return; }
     FString Clean;
     for (TCHAR C : Text) { if (C >= 32 && C != 127) { Clean.AppendChar(C); } }
     Clean = Clean.Left(160).TrimStartAndEnd();
@@ -613,6 +613,9 @@ void AJamGameMode::RequestVillageProposal(const FString& Text)
     const int32 Serial = ++ProposalSerial;
     QuestOffer.bProposing = true;
     QuestOffer.bCanPropose = false;   // one proposal per offer
+    // A later branch reply would replace the proposal's third route. Keep the
+    // two generators exclusive for this offer while authored routes stay usable.
+    QuestOffer.bCanImprovise = false;
     QuestOffer.Status = TEXT("Fenella is reading your plan. The routes above are still yours to pick.");
     const AJamPlayerState* PS = GetHeroState();
     TWeakObjectPtr<AJamGameMode> Weak(this);
