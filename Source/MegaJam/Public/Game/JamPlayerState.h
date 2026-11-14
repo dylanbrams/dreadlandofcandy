@@ -38,6 +38,8 @@ public:
 
 	/** The score: the hero's cut over the run. */
 	int32 Sprinkles = 0;
+	/** Skills already used by this player; their first attack cry is in English. */
+	uint8 HeardFirstAttackMask = 0;
 
 private:
 	UPROPERTY(VisibleAnywhere)

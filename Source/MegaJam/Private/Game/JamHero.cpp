@@ -282,17 +282,34 @@ void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
 	TickRig();
 	UE_LOG(LogJam, Log, TEXT("JamHero: cast %s (%s), %d animations, bounds %s, scale %.3f"), *Def.Id, bCast ? TEXT("cast rig") : TEXT("old hero rig"),
 		RigAnims.Num(), *Box.GetSize().ToString(), Scale);
-	if (bAnnounce) { LastCryAt = -100.0; PlayCry(); }
+	if (bAnnounce) { LastCryAt = -100.0; PlayCry(EJamSkill::Lecture, false); }
 }
 
-void AJamHero::PlayCry()
+void AJamHero::PlayCry(EJamSkill Skill, bool bAttack)
 {
 	const double Now = FPlatformTime::Seconds();
-	if (Now - LastCryAt < JamCast::CryMinInterval) { return; }
-	const FString Id = JamCast::CryFor(JamCast::Get(CastIndex), CryCount);
+	AJamPlayerState* PS = GetPlayerState<AJamPlayerState>();
+	const uint8 SkillBit = uint8(1u << static_cast<uint8>(Skill));
+	const bool bFirst = bAttack && PS && !(PS->HeardFirstAttackMask & SkillBit);
+	if (bFirst) { PS->HeardFirstAttackMask |= SkillBit; }
+	if (!bFirst && Now - LastCryAt < JamCast::CryMinInterval) { return; }
+	const FJamClassDef& Def = JamCast::Get(CastIndex);
+	const FString Id = bAttack && Def.SkillCries.IsValidIndex(static_cast<int32>(Skill))
+		? Def.SkillCries[static_cast<int32>(Skill)] : JamCast::CryFor(Def, CryCount);
 	if (Id.IsEmpty()) { return; }
-	const FString Name = TEXT("VO_Cry_") + Id;
-	USoundBase* Clip = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/Cast/%s.%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	FString Name = TEXT("VO_Cry_") + Id;
+	USoundBase* Clip = nullptr;
+	if (bAttack && !bFirst)
+	{
+		static const TCHAR* Languages[] = { TEXT("de"), TEXT("fr"), TEXT("ja"), TEXT("ko"), TEXT("zh_CN"), TEXT("pt_BR"), TEXT("es_ES"), TEXT("it"), TEXT("pl"), TEXT("ru"), TEXT("tr"), TEXT("uk"), TEXT("cs"), TEXT("th") };
+		Name += TEXT("_") + FString(Languages[FMath::RandRange(0, UE_ARRAY_COUNT(Languages) - 1)]);
+		Clip = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/Cast/International/%s.%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	}
+	if (!Clip)
+	{
+		Name = TEXT("VO_Cry_") + Id;
+		Clip = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/Cast/%s.%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+	}
 	if (!Clip) { UE_LOG(LogJam, Warning, TEXT("JamHero: missing cry %s"), *Name); return; }
 	const UJamSettings* Settings = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamSettings>() : nullptr;
 	const float Volume = Settings ? Settings->VoiceVolume : 0.8f;
@@ -326,7 +343,7 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	{
 		DrawSkillShape(Skill, PS->GetProgression().GetSkillNumbers(Skill));
 		UE_LOG(LogJam, Log, TEXT("JamHero: %s cast"), JamProgression::SkillName(Skill));
-		PlayCry();
+		PlayCry(Skill, true);
 		if (GM) { GM->NotifySkillCast(this, Skill); }
 	}
 	else { UE_LOG(LogJam, Verbose, TEXT("JamHero: %s refused"), JamProgression::SkillName(Skill)); }

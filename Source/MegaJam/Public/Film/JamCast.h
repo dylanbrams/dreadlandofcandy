@@ -14,6 +14,7 @@ struct MEGAJAM_API FJamClassDef
 	FString Rig;             // "Knight": /Game/Art/Cast/Knight/SK_Knight_Rig
 	FString Blurb;           // one line under the title while this one is cast
 	TArray<FString> Cries;   // "K01": /Game/Audio/VO/Cast/VO_Cry_K01
+	TArray<FString> SkillCries; // indexed by EJamSkill, aligned with the displayed skills
 	// Enum-indexed presentation data: 0 basic, 1 signature, 2 unused, 3 ultimate.
 	TArray<FString> SkillNames;
 	TArray<FString> SkillIcons;

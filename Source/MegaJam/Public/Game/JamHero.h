@@ -171,7 +171,7 @@ private:
 	int32 CryCount = 0;
 	double LastCryAt = -100.0;
 	/** The cast member's battle cry (R6), at the Fenella volume; at most one per JamCast::CryMinInterval. */
-	void PlayCry();
+	void PlayCry(EJamSkill Skill, bool bAttack);
 	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
 	void PlayRigOneShot(FName Anim);
 	void TickRig();

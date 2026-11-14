@@ -26,6 +26,7 @@ namespace
         const FLinearColor Domestic = Colour(TEXT("E8D2A0"));
         if (D.Id == TEXT("knight"))
         {
+            D.SkillCries = { TEXT("K01"), TEXT("K02"), TEXT("K01"), TEXT("K03") };
             D.SkillIcons = { TEXT("/Game/Art/UI/Skills/T_Skill_K01"), TEXT("/Game/Art/UI/Skills/T_Skill_K02"), TEXT(""), TEXT("/Game/Art/UI/Skills/T_Skill_K03") };
             D.SkillAnimations = { TEXT("KnightShield"), TEXT("SwordRaise"), TEXT(""), TEXT("KnightWard") };
             D.PrimaryColor = Colour(TEXT("4778D6"));
@@ -33,6 +34,7 @@ namespace
         }
         else if (D.Id == TEXT("mage"))
         {
+            D.SkillCries = { TEXT("M01"), TEXT("M03"), TEXT("M01"), TEXT("M02") };
             D.SkillIcons = { TEXT("/Game/Art/UI/Skills/T_Skill_M01"), TEXT("/Game/Art/UI/Skills/T_Skill_M03"), TEXT(""), TEXT("/Game/Art/UI/Skills/T_Skill_M02") };
             D.SkillAnimations = { TEXT("MageLecture"), TEXT("MageLine"), TEXT(""), TEXT("MageJudgment") };
             D.PrimaryColor = Colour(TEXT("8D5BDB"));
@@ -42,6 +44,7 @@ namespace
         }
         else if (D.Id == TEXT("archer"))
         {
+            D.SkillCries = { TEXT("A01"), TEXT("A03"), TEXT("A01"), TEXT("A02") };
             D.SkillIcons = { TEXT("/Game/Art/UI/Skills/T_Skill_A01"), TEXT("/Game/Art/UI/Skills/T_Skill_A03"), TEXT(""), TEXT("/Game/Art/UI/Skills/T_Skill_A02") };
             D.SkillAnimations = { TEXT("ArcherShot"), TEXT("ArcherLine"), TEXT(""), TEXT("ArcherJudgment") };
             D.PrimaryColor = Colour(TEXT("3C9D68"));
@@ -55,6 +58,7 @@ namespace
         }
         else
         {
+            D.SkillCries = { TEXT("B01"), TEXT("B03"), TEXT("B01"), TEXT("B03") };
             D.SkillIcons = { TEXT("/Game/Art/UI/Skills/T_Skill_B01"), TEXT("/Game/Art/UI/Skills/T_Skill_B03"), TEXT(""), TEXT("/Game/Art/UI/Skills/T_Skill_B02") };
             D.SkillAnimations = { TEXT("BarbarianKnead"), TEXT("BarbarianBellow"), TEXT(""), TEXT("BarbarianCyclone") };
             D.PrimaryColor = Colour(TEXT("C65736"));
