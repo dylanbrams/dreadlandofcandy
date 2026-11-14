@@ -377,10 +377,13 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 	AJamGameState* GS = GetJamGameState();
 	JamSfx::Play(this, TEXT("Pacify"));
 	const FJamStageDef* Stage = GS ? GS->Shoot.GetStage() : nullptr;
+	if (GS && GS->Phase == EJamFilmPhase::Shooting && !bBetweenScenes && Stage && GS->Shoot.GetState() == EJamShootState::Rolling)
+	{
+		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
+	}
 	if (Stage && Stage->Verb == EJamStageVerb::Pacify)
 	{
 		GS->Shoot.ReportProgress(1);
-		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
 		Say(EJamLineTrigger::Pacified);
 		// Sometimes the pacified one answers back.
 		if (FMath::FRand() < 0.4f) { Bubble(EJamLineTrigger::NuisanceReply, Pacified, FVector(0.f, 0.f, 130.f), 1.8f, false); }
@@ -501,7 +504,7 @@ void AJamGameMode::TickShoot(float DeltaSeconds)
 			JamSfx::Play(this, TEXT("Cut_Horn"));
 			GS->SuggestedNotes = JamNoteSuggestions::For(Shoot.GetScene().Id);
 			UE_LOG(LogJam, Log, TEXT("JamShoot: CUT! note %s pitched"), *Shoot.GetScene().Note.Id.ToString());
-			if (SceneIndex == 2)
+			if (!bOpenMode && SceneIndex == 2)
 			{
 				if (AJamPlayerState* PS = GetHeroState())
 				{
@@ -1090,9 +1093,9 @@ void AJamGameMode::RollWrap(bool bLastScene)
 
 	const FJamStatBlock Before = Prog.GetStats();
 	if (Out.LootIndices.IsValidIndex(Out.EquippedSlot)) { Prog.AddLoot(Out.LootIndices[Out.EquippedSlot]); }
-	int32 Gained = 0;
-	if (SceneIndex == 0) { Gained = Prog.ReachMilestone(EJamMilestone::Scene1Wrap); }
-	else if (SceneIndex == 1) { Gained = Prog.ReachMilestone(EJamMilestone::Scene2Wrap); }
+	int32 Gained = bOpenMode ? Prog.CompleteQuest(SceneIndex) : 0;
+	if (!bOpenMode && SceneIndex == 0) { Gained = Prog.ReachMilestone(EJamMilestone::Scene1Wrap); }
+	else if (!bOpenMode && SceneIndex == 1) { Gained = Prog.ReachMilestone(EJamMilestone::Scene2Wrap); }
 	PS->Sprinkles += Out.Ledger.HeroCut;
 	ApplyHeroStats();
 
@@ -1119,6 +1122,7 @@ void AJamGameMode::RollWrap(bool bLastScene)
 	UE_LOG(LogJam, Log, TEXT("JamWrap: scene %d gross %d cut %d (sprinkles %d), equipped %s (%s), level %d, radius %.0f -> %.0f"),
 		SceneIndex + 1, Out.Ledger.Gross, Out.Ledger.HeroCut, PS->Sprinkles, *Equipped.Name, *JamWrap::StatText(Equipped),
 		Prog.GetLevel(), Before.Radius, Prog.GetStats().Radius);
+	if (bOpenMode) { UE_LOG(LogJam, Log, TEXT("JamXP: quest=%d total=%d level=%d progress=%.3f"), SceneIndex + 1, Prog.GetXp(), Prog.GetLevel(), Prog.GetLevelProgress()); }
 }
 
 bool AJamGameMode::HandleDismissWrap(AJamHero* InHero)
@@ -1470,6 +1474,7 @@ void AJamGameMode::ClearNoteCosmetics()
 
 void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
 {
+	if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().EnableNumericXp(); }
 	// O1: the world from its table. On the template map, build the flat fallback; on TERRAIN's map, only find
 	// the ground under the village square (gameplay actors at the table's locations arrive with O4).
 	const FString MapPath = GetWorld()->GetOutermost()->GetName();

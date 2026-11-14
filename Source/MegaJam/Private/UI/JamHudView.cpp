@@ -33,8 +33,8 @@ namespace
 		V.Points = 1;
 		V.Skills = {
 			{ TEXT("Lecture"), TEXT("Mouse 1"), 2, 4, true, 0.f, true },
-			{ TEXT("Form A Line"), TEXT("Mouse 2"), 1, 3, true, 0.6f, true },
-			{ TEXT("Good Manners"), TEXT("Q"), 1, 1, true, 0.f, false } };
+			{ TEXT("Form A Line"), TEXT("Mouse 3"), 1, 3, true, 0.6f, true },
+			{ TEXT("Good Manners"), TEXT("R"), 1, 1, true, 0.f, false } };
 		const TCHAR* Icons[] = { TEXT("T_Skill_Lecture"), TEXT("T_Skill_FormALine"), TEXT("T_Skill_LastJudgment") };
 		for (int32 i = 0; i < V.Skills.Num(); ++i) { V.Skills[i].IconPath = FString(TEXT("/Game/Art/UI/Icons/")) + Icons[i]; }
 	}
@@ -70,7 +70,7 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 	{
 		Rolling(V);
 		V.bPromptVisible = true;
-		V.Prompt = TEXT("Hold [E]  Feed celery");
+		V.Prompt = TEXT("Hold [F]  Feed celery");
 		V.PromptPosition = FVector2D(1100.f, 560.f);
 	}
 	else if (N == TEXT("slate"))
@@ -135,7 +135,7 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 			const FJamStatBlock Before = P.GetStats();
 			P.AddLoot(Out.LootIndices[Out.EquippedSlot]);
 			V.Wrap = JamWrap::MakeView(Out, JamScenes::Scene1().Title, Before, P.GetStats(), 1, 0);
-			V.Wrap.ContinueHint = TEXT("Hold [E] to continue");
+			V.Wrap.ContinueHint = TEXT("Hold [F] to continue");
 		}
 	}
 	else if (N == TEXT("meter"))

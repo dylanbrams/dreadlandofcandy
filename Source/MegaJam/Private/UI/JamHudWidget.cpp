@@ -495,8 +495,8 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		FString Pitch = View.NotePitch;
 		if (Pitch.StartsWith(TEXT("CUT!"))) { Pitch.RightChopInline(4); Pitch.TrimStartInline(); }
 		SetTextIfChanged(NotePitchText, FString::Printf(TEXT("\u201C%s\u201D"), *Pitch));
-		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("CLICK / HOLD [E]"));
-		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("CLICK / [Q]"));
+		SetTextIfChanged(TakeKeyText, View.bGamepad ? TEXT("HOLD (A)") : TEXT("CLICK / HOLD [F]"));
+		SetTextIfChanged(RefuseKeyText, View.bGamepad ? TEXT("PRESS (B)") : TEXT("CLICK / [X]"));
 		SetTextIfChanged(WriteKeyText, View.bGamepad ? TEXT("PRESS (Y)") : TEXT("CLICK / [T]"));
 		Show(NoteTiles, !View.bReadingNote);
 		Show(NoteReadingText, View.bReadingNote);
@@ -847,7 +847,9 @@ void UJamHudWidget::BuildSkillBar()
 	XpSlot->SetPadding(FMargin(10.f, 0.f));
 	PointsText = MakeText(16, Gold, true);
 	XpRow->AddChildToHorizontalBox(PointsText)->SetVerticalAlignment(VAlign_Center);
-	Box->AddChildToVerticalBox(XpRow)->SetPadding(FMargin(0.f, 0.f, 0.f, 8.f));
+	Box->AddChildToVerticalBox(XpRow)->SetPadding(FMargin(0.f, 0.f, 0.f, 4.f));
+	XpText = MakeText(16, FLinearColor(0.7f, 0.82f, 1.f), false);
+	Box->AddChildToVerticalBox(XpText)->SetPadding(FMargin(0.f, 0.f, 0.f, 6.f));
 
 	UHorizontalBox* Tiles = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
 	for (int32 i = 0; i < JamProgression::ActiveSkills().Num(); ++i)
@@ -915,6 +917,8 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 	if (!bBar) { return; }
 	SetTextIfChanged(LevelText, FString::Printf(TEXT("LV %d"), View.Level));
 	XpBar->SetPercent(FMath::Clamp(View.Xp, 0.f, 1.f));
+	Show(XpText, View.XpNeeded > 0);
+	SetTextIfChanged(XpText, FString::Printf(TEXT("XP %d / %d"), View.XpEarned, View.XpNeeded));
 	Show(PointsText, View.Points > 0);
 	SetTextIfChanged(PointsText, FString::Printf(TEXT("+%d point%s"), View.Points, View.Points == 1 ? TEXT("") : TEXT("s")));
 	const bool bPulse = FMath::Fmod(RealSeconds, 0.8f) < 0.4f;

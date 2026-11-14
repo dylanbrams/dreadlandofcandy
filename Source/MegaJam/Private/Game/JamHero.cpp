@@ -423,22 +423,28 @@ void AJamHero::CreateInput()
 	LookAction = NewObject<UInputAction>(this, TEXT("IA_Look"));
 	LookAction->ValueType = EInputActionValueType::Axis2D;
 	InputContext->MapKey(LookAction, EKeys::Mouse2D);
+	CameraTurnAction = NewObject<UInputAction>(this, TEXT("IA_CameraTurn"));
+	CameraTurnAction->ValueType = EInputActionValueType::Axis1D;
+	InputContext->MapKey(CameraTurnAction, EKeys::Q).Modifiers.Add(NewObject<UInputModifierNegate>(InputContext));
+	InputContext->MapKey(CameraTurnAction, EKeys::E);
+	ZoomAction = NewObject<UInputAction>(this, TEXT("IA_Zoom"));
+	ZoomAction->ValueType = EInputActionValueType::Axis1D;
+	InputContext->MapKey(ZoomAction, EKeys::MouseWheelAxis);
 
-	// BUILD_SPEC 3: skill 1 on LMB / RT, interact on E / A. Space also lectures (handy on a laptop).
+	// Nov 14: primary / RT, interact on F / A. Space also lectures (handy on a laptop).
 	InputContext->MapKey(LectureAction, EKeys::LeftMouseButton);
 	InputContext->MapKey(LectureAction, EKeys::SpaceBar);
 	InputContext->MapKey(LectureAction, EKeys::Gamepad_RightTrigger);
-	InputContext->MapKey(InteractAction, EKeys::E);
+	InputContext->MapKey(InteractAction, EKeys::F);
 	InputContext->MapKey(InteractAction, EKeys::Gamepad_FaceButton_Bottom);
-	// At the CUT! prompt: hold E / A takes the note, Q / B refuses it (placeholder until the T12 prompt UI).
-	InputContext->MapKey(RefuseAction, EKeys::Q);
+	// At CUT!: hold F / A takes the note, X / B refuses it.
+	InputContext->MapKey(RefuseAction, EKeys::X);
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 	InputContext->MapKey(PauseAction, EKeys::Escape);
 	InputContext->MapKey(WriteAction, EKeys::T);
-	// Three active slots: Mouse 1 / Mouse 2 / Q, RT / RB / LB. R remains an ultimate alias.
-	InputContext->MapKey(SkillActions[0], EKeys::RightMouseButton);
+	// Three active slots: Mouse 1 / Mouse 3 / R, RT / RB / LB.
+	InputContext->MapKey(SkillActions[0], EKeys::MiddleMouseButton);
 	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
-	InputContext->MapKey(SkillActions[2], EKeys::Q);
 	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_LeftShoulder);
 	InputContext->MapKey(SkillActions[2], EKeys::R);
 	InputContext->MapKey(WriteAction, EKeys::Gamepad_FaceButton_Top);
@@ -456,6 +462,10 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
 		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &AJamHero::OnLook);
+		Input->BindAction(CameraTurnAction, ETriggerEvent::Triggered, this, &AJamHero::OnCameraTurn);
+		Input->BindAction(CameraTurnAction, ETriggerEvent::Completed, this, &AJamHero::OnCameraTurn);
+		Input->BindAction(CameraTurnAction, ETriggerEvent::Canceled, this, &AJamHero::OnCameraTurn);
+		Input->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &AJamHero::OnZoom);
 		Input->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AJamHero::OnInteract);
 		Input->BindAction(InteractAction, ETriggerEvent::Started, this, &AJamHero::OnInteractPressed);
 		Input->BindAction(InteractAction, ETriggerEvent::Canceled, this, &AJamHero::OnInteractReleased);
@@ -506,12 +516,28 @@ void AJamHero::OnLook(const FInputActionValue& Value)
 {
 	if (!bFollowCamera || bCameraPinned) { return; }
 	const APlayerController* PC = Cast<APlayerController>(GetController());
-	if (!PC || !PC->IsInputKeyDown(EKeys::MiddleMouseButton)) { return; }
+	if (!PC || !PC->IsInputKeyDown(EKeys::RightMouseButton)) { return; }
 	const FVector2D Axis = Value.Get<FVector2D>();   // mouse counts this frame
 	bUsingGamepad = false;
 	CameraYaw = FRotator::NormalizeAxis(CameraYaw + Axis.X * JamHeroTuning::MouseYawSpeed);
 	CameraPitchFollow = FMath::Clamp(CameraPitchFollow + Axis.Y * JamHeroTuning::MouseYawSpeed * 0.6f,
 		JamHeroTuning::FollowPitchMin, JamHeroTuning::FollowPitchMax);
+}
+
+void AJamHero::OnCameraTurn(const FInputActionValue& Value)
+{
+	CameraTurn = Value.Get<float>();
+	if (!FMath::IsNearlyZero(CameraTurn)) { bUsingGamepad = false; }
+}
+
+void AJamHero::OnZoom(const FInputActionValue& Value)
+{
+	if (!bFollowCamera || bCameraPinned) { return; }
+	const float Base = bSceneFraming ? JamHeroTuning::FollowSceneArmLength : JamHeroTuning::FollowArmLength;
+	const float Distance = FMath::Clamp(Base + CameraZoomOffset - Value.Get<float>() * 120.f, 600.f, 2200.f);
+	CameraZoomOffset = Distance - Base;
+	CameraArm->TargetArmLength = Distance;
+	bUsingGamepad = false;
 }
 
 void AJamHero::EnableFollowCamera(float Yaw)
@@ -533,13 +559,14 @@ void AJamHero::SetFollowFraming(bool bScene, float SceneYaw)
 	if (!bFollowCamera) { return; }
 	bSceneFraming = bScene;
 	if (bScene && !bCameraPinned) { CameraYaw = SceneYaw; }
-	CameraArm->TargetArmLength = bScene ? JamHeroTuning::FollowSceneArmLength : JamHeroTuning::FollowArmLength;
+	CameraArm->TargetArmLength = FMath::Clamp((bScene ? JamHeroTuning::FollowSceneArmLength : JamHeroTuning::FollowArmLength) + CameraZoomOffset, 600.f, 2200.f);
 	if (!bCameraPinned) { CameraPitchFollow = bScene ? JamHeroTuning::FollowScenePitch : JamHeroTuning::FollowWalkPitch; }
 }
 
 void AJamHero::TickFollowCamera(float DeltaSeconds)
 {
 	if (!bFollowCamera) { return; }
+	if (!bCameraPinned) { CameraYaw = FRotator::NormalizeAxis(CameraYaw + CameraTurn * 120.f * DeltaSeconds); }
 	if (!bCameraPinned && StickLook.Size() >= JamHeroTuning::StickAimDeadZone)
 	{
 		CameraYaw = FRotator::NormalizeAxis(CameraYaw + StickLook.X * JamHeroTuning::StickYawSpeed * DeltaSeconds);

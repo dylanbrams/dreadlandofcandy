@@ -315,3 +315,10 @@ Moved the compass label clear of its strip and restored the travel skill/XP HUD,
 Traced the grey-screen report to BudgetOut's global material replacement/desaturation; Open keeps authored materials and colour while extras still become boxes. Turned the archer bow about its long axis in the left hand.
 Editor build, 69 Jam tests and Open autoplay pass (three scenes, 107.1 s); inspected Saved/Screenshots/WindowsEditor/batch1-budget.png and the travel/bow captures. Development game build also passes.
 Dylan deferred packaging to finish all existing batches first: the current ZIP remains batch 0. No push/upload. GAME continues into batch 2.
+
+
+## 2026-11-14 10:00 - GAME, batch 2 and release paperwork
+Revised camera/skill/use controls and added a read-only keyboard/mouse/gamepad Controls card to Options and Pause. Open now earns numeric XP directly: disable 2, treat 4, collect 2 and once-only quest 40. Both authored note routes total 190 XP (1.6 levels); no quest-giver expansion.
+Fixed a missing MakeText argument caught by the first build. Editor and Development game targets and all 72 Jam tests pass; Open autoplay passes three scenes in 113.7 s, with quest XP totals 64/116/190. Inspected Saved/Screenshots/WindowsEditor/batch2-controls.png, batch2-pause.png and batch2-xp.png.
+Reconciled ElevenLabs Fenella/SFX declarations and tools; credited ACE Studio music and Dylan's theme-song vocals from his confirmation. Preserved unrelated action-card work.
+No package, ZIP refresh, push or upload, per Dylan's instruction to finish batches first. No new tester feedback batch exists yet; hands-on controls/typed-note/cast checks and the final package remain. Engine released; STATUS is ready for a fresh thread.

@@ -100,6 +100,8 @@ struct MEGAJAM_API FJamHudView
 	TArray<FJamHudSkill> Skills;
 	int32 Level = 0;
 	float Xp = 0.f;
+	int32 XpEarned = 0;
+	int32 XpNeeded = 0;
 	int32 Points = 0;
 
 	/** The wrap panel; replaces the card while up. */

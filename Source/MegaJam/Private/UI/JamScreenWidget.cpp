@@ -21,7 +21,7 @@ namespace
 	const FLinearColor StampRed(1.f, 0.2f, 0.12f);
 	constexpr int32 MaxRows = 4;
 	constexpr int32 MaxQuotes = 6;
-	constexpr int32 MaxOptions = 8;
+	constexpr int32 MaxOptions = 9;
 	constexpr int32 MaxCredits = 40;
 	constexpr float CreditsClipHeight = 560.f;
 	constexpr float CreditLineHeight = 46.f;
@@ -343,7 +343,7 @@ FReply UJamScreenWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 	else if (IsAny(K, { EKeys::S, EKeys::Down, EKeys::Gamepad_DPad_Down, EKeys::Gamepad_LeftStick_Down })) { Input = EJamMenuInput::Down; }
 	else if (IsAny(K, { EKeys::A, EKeys::Left, EKeys::Gamepad_DPad_Left, EKeys::Gamepad_LeftStick_Left })) { Input = EJamMenuInput::Left; }
 	else if (IsAny(K, { EKeys::D, EKeys::Right, EKeys::Gamepad_DPad_Right, EKeys::Gamepad_LeftStick_Right })) { Input = EJamMenuInput::Right; }
-	else if (IsAny(K, { EKeys::E, EKeys::Enter, EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom })) { Input = EJamMenuInput::Confirm; }
+	else if (IsAny(K, { EKeys::F, EKeys::Enter, EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom })) { Input = EJamMenuInput::Confirm; }
 	else if (IsAny(K, { EKeys::Escape, EKeys::Gamepad_FaceButton_Right, EKeys::Gamepad_Special_Right })) { Input = EJamMenuInput::Back; }
 	else { return Super::NativeOnKeyDown(InGeometry, InKeyEvent); }
 	OnMenuInput.ExecuteIfBound(Input, INDEX_NONE);

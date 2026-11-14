@@ -37,6 +37,8 @@ public:
 	const FJamHudView& GetView() const { return View; }
 
 private:
+	EJamScreen ControlsParent = EJamScreen::None;
+	int32 ControlsParentSelected = 0;
 	void BuildView();
 	/** The music (T18): one cue per moment, a random take, crossfaded, at the "Fenella" volume. */
 	void TickMusic();

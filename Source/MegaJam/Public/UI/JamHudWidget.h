@@ -93,6 +93,7 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UWidget> SkillBar;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> LevelText;
 	UPROPERTY(Transient) TObjectPtr<UProgressBar> XpBar;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> XpText;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> PointsText;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillTiles;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillKeys;

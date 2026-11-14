@@ -14,8 +14,19 @@ namespace JamProgression
 		}
 	}
 
-	int32 XpValue(EJamXpSource Source)
+	int32 XpValue(EJamXpSource Source, bool bNumeric)
 	{
+		if (bNumeric)
+		{
+			switch (Source)
+			{
+			case EJamXpSource::Pacify: return 2;
+			case EJamXpSource::Treat: return 4;
+			case EJamXpSource::Collect: return 2;
+			case EJamXpSource::Quest: return 40;
+			default: return 0;
+			}
+		}
 		switch (Source)
 		{
 		case EJamXpSource::Pacify: return 8;
@@ -181,6 +192,13 @@ void FJamProgression::GrantLevels(int32 NewLevel)
 
 int32 FJamProgression::AddXp(EJamXpSource Source)
 {
+	if (bNumericXp)
+	{
+		const int32 Before = Xp;
+		Xp = FMath::Min(JamProgression::XpForLevel(JamProgression::MaxLevel), Xp + JamProgression::XpValue(Source, true));
+		while (Level < JamProgression::MaxLevel && Xp >= JamProgression::XpForLevel(Level + 1)) { GrantLevels(Level + 1); }
+		return Xp - Before;
+	}
 	// Held one short of the next level; only a card raises the level.
 	const int32 Cap = Level >= JamProgression::MaxLevel ? INT32_MAX : JamProgression::XpForLevel(Level + 1) - 1;
 	const int32 Before = Xp;
@@ -190,12 +208,22 @@ int32 FJamProgression::AddXp(EJamXpSource Source)
 
 int32 FJamProgression::ReachMilestone(EJamMilestone Milestone)
 {
+	if (bNumericXp) { return 0; }
 	const int32 Target = JamProgression::MilestoneLevel(Milestone);
 	if (Target <= Level) { return 0; }
 	const int32 Gained = Target - Level;
 	GrantLevels(Target);
 	Xp = FMath::Max(Xp, JamProgression::XpForLevel(Level));
 	return Gained;
+}
+
+int32 FJamProgression::CompleteQuest(int32 SceneIndex)
+{
+	if (!bNumericXp || SceneIndex < 0 || SceneIndex >= 3 || (CompletedQuests & (1 << SceneIndex))) { return 0; }
+	CompletedQuests |= (1 << SceneIndex);
+	const int32 Before = Level;
+	AddXp(EJamXpSource::Quest);
+	return Level - Before;
 }
 
 float FJamProgression::GetLevelProgress() const

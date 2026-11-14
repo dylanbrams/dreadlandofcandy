@@ -240,7 +240,7 @@ void AJamHUD::BuildView()
 		View.Hint = GS->Hint;
 		if (const AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr)
 		{
-			if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Middle-mouse drag: camera"); }
+			if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Mouse 2 drag / Q-E: camera; wheel: zoom"); }
 		}
 
 		View.bDignityVisible = GS->bDignityVisible;
@@ -288,7 +288,7 @@ void AJamHUD::BuildView()
 			View.Wrap = GS->Wrap;
 			View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? TEXT("Click to open the Premiere")
 				: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
-					? TEXT("Hold (A) to continue") : TEXT("Click or hold [E] to continue"));
+					? TEXT("Hold (A) to continue") : TEXT("Click or hold [F] to continue"));
 		}
 	}
 	// Skill bar and XP from the hero's progression; cooldowns from the ability system.
@@ -296,7 +296,7 @@ void AJamHUD::BuildView()
 	{
 		const FJamProgression& Prog = PS->GetProgression();
 		const bool bPad = PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad();
-		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 2"), TEXT(""), TEXT("Q") };
+		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 3"), TEXT(""), TEXT("R") };
 		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT(""), TEXT("LB") };
 		const FGameplayTag CooldownTags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Sigh, JamGameplayTags::Cooldown_Judgment };
 		const bool bWrap = !bTravel && GS->IsWrapVisible();
@@ -327,11 +327,17 @@ void AJamHUD::BuildView()
 		}
 		View.Level = Prog.GetLevel();
 		View.Xp = Prog.GetLevelProgress();
+		if (Prog.IsNumericXp())
+		{
+			View.XpEarned = Prog.GetXp() - JamProgression::XpForLevel(Prog.GetLevel());
+			View.XpNeeded = Prog.GetLevel() < JamProgression::MaxLevel
+				? JamProgression::XpForLevel(Prog.GetLevel() + 1) - JamProgression::XpForLevel(Prog.GetLevel()) : 0;
+		}
 		View.Points = Prog.GetPoints();
 		if (bWrap && View.Points > 0)
 		{
 			View.Wrap.LevelLine = FString::Printf(TEXT("LEVEL %d!  %d skill point%s: press a skill's button (%s) to rank it up"),
-				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 2 / Q"));
+				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 3 / R"));
 		}
 	}
 	if (bTravel)
@@ -375,7 +381,7 @@ void AJamHUD::BuildView()
 			{
 				const TCHAR* Verb = Stage && Stage->Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
 				View.bPromptVisible = true;
-				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Click / Hold [E]"), Verb);
+				View.Prompt = FString::Printf(TEXT("%s  %s"), Hero->IsUsingGamepad() ? TEXT("Hold (A)") : TEXT("Click / Hold [F]"), Verb);
 				View.PromptPosition = OnScreen;
 			}
 		}
@@ -437,6 +443,7 @@ FJamScreenView AJamHUD::BuildScreen() const
 		V = JamScreens::Credits(GS->Premiere.bDirectorsCut, S);
 		V.Scroll = InPhase / FMath::Max(1.f, V.Body.Num() * CreditSecondsPerLine);
 	}
+	if (SubScreen == EJamScreen::Controls && (GS->Phase == EJamFilmPhase::Title || bPaused)) { V = JamScreens::Controls(S); V.bOpaque = !bPaused; }
 	if (V.Options.Num() > 0)
 	{
 		V.Selected = FMath::Clamp(Selected, 0, V.Options.Num() - 1);
@@ -464,7 +471,7 @@ void AJamHUD::UpdateInputMode(int32 Want)
         Mode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
         PlayerOwner->SetInputMode(Mode);
 	}
-	// Keep HUD controls reachable in both modes. Open camera uses middle-mouse drag.
+	// Keep HUD controls reachable in both modes. Open camera uses Mouse 2 drag, Q/E and wheel zoom.
 	PlayerOwner->bShowMouseCursor = true;
 }
 
@@ -510,10 +517,14 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	{
 	case EJamMenuAction::RollCamera:  if (GM) { GM->RequestRollCamera(); } break;
 	case EJamMenuAction::OpenOptions:    ParentSelected = Selected; SubScreen = EJamScreen::Options; Selected = 0; break;
+	case EJamMenuAction::OpenControls: ControlsParent = SubScreen; ControlsParentSelected = Selected; SubScreen = EJamScreen::Controls; Selected = 0; break;
 	case EJamMenuAction::CharacterSheet: ParentSelected = Selected; SubScreen = EJamScreen::Character; Selected = 0; break;
 	case EJamMenuAction::WalkOffSet:     ParentSelected = Selected; SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
 	case EJamMenuAction::Fine:
-	case EJamMenuAction::Back:           Selected = ParentSelected; SubScreen = EJamScreen::None; break;
+	case EJamMenuAction::Back:
+		if (SubScreen == EJamScreen::Controls) { Selected = ControlsParentSelected; SubScreen = ControlsParent; }
+		else { Selected = ParentSelected; SubScreen = EJamScreen::None; }
+		break;
 	case EJamMenuAction::RankBasic:
     case EJamMenuAction::RankSignature:
     case EJamMenuAction::RankUltimate:

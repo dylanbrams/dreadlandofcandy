@@ -18,6 +18,7 @@ enum class EJamScreen : uint8
 	Character,    // the character sheet and the six passives already spent
 	Premiere,
 	Credits,
+	Controls,
 };
 
 /** What choosing a menu line does. */
@@ -41,6 +42,7 @@ enum class EJamMenuAction : uint8
 	RankBasic,
 	RankSignature,
 	RankUltimate,
+	OpenControls,
 };
 
 struct MEGAJAM_API FJamMenuOption
@@ -99,6 +101,7 @@ namespace JamScreens
 	MEGAJAM_API FJamScreenView Rating();
 	MEGAJAM_API FJamScreenView Title(const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Options(const FJamMenuSettings& S);
+	MEGAJAM_API FJamScreenView Controls(const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView QuitConfirm(const FJamMenuSettings& S, bool bFromPause);
 	MEGAJAM_API FJamScreenView Pause(const FJamMenuSettings& S);
 	/** Stats, level, points, and the greyed passives panel (BUILD_SPEC 3c). */

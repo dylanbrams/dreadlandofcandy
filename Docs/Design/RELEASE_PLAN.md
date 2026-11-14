@@ -8,6 +8,10 @@ Deadline: **Nov 15, 5:59 PM PST**. Target upload: **Nov 15, 2:00 PM PST**.
 
 ## Nov 14: test, fix, release (rebuilt by GAME at Dylan's request; governs today)
 
+**Latest instruction, Nov 14:** Dylan asked GAME to finish all existing fix batches
+before packaging. Keep building, testing, capturing Open and committing; defer
+the package/ZIP steps below until Dylan resumes them. Nothing is uploaded by GAME.
+
 **The day's shape:** Dylan plays and finds, ChatGPT fixes in batches, and each green batch is committed and played in the editor build. **No packaging, zips or itch pushes until batches 0 to 2 are all done** (Dylan, Nov 14: a build was packaged and released last night); then one package and one push. Claude has about 10% of a week's quota today, so it takes only bugs that ChatGPT has failed once, or a diagnosis that is eating hours. **Feature freeze: Nov 14, 11 PM PST.** Nov 15 is for the video, blocker fixes and the submission.
 
 **Starting state (checked Nov 14 morning):**

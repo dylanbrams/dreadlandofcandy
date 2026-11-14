@@ -99,20 +99,27 @@ public:
 	virtual void PawnClientRestart() override;
 
 private:
+	friend class FJamHeroControlsTest;
 	void CreateInput();
 	void OnMove(const FInputActionValue& Value);
 	void OnLecture(const FInputActionValue& Value);
 	void OnAim(const FInputActionValue& Value);
 	void OnLook(const FInputActionValue& Value);
+	void OnCameraTurn(const FInputActionValue& Value);
+	void OnZoom(const FInputActionValue& Value);
 	void TickFollowCamera(float DeltaSeconds);
 	bool bFollowCamera = false;
 	bool bCameraPinned = false;
 	bool bSceneFraming = false;   // a take: the camera looks along the path into the set and the bot does not swing it
 	float CameraYaw = 0.f;
+	float CameraTurn = 0.f;
+	float CameraZoomOffset = 0.f;
 	float CameraPitchFollow = -14.f;
 	FVector2D StickLook = FVector2D::ZeroVector;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> LookAction;
+	UPROPERTY(Transient) TObjectPtr<UInputAction> CameraTurnAction;
+	UPROPERTY(Transient) TObjectPtr<UInputAction> ZoomAction;
 	void OnInteract(const FInputActionValue& Value);
 	void OnRefuse(const FInputActionValue& Value);
 	void OnInteractPressed(const FInputActionValue& Value);

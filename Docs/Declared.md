@@ -58,7 +58,13 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | Tool | Used for |
 | --- | --- |
 | Claude Code | Code, scripts, docs, the ability layer port and test scene |
-| ChatGPT | Pre-jam design briefs in `Docs/Design/` |
+| ChatGPT | Design briefs and generated 2D art, icons and action-card templates |
+| OpenAI Codex | Game code, scripts, asset integration, verification and release documentation |
+| Meshy | Generated models, character rigs, animation library and text-to-motion clips |
+| Hyper3D Rodin | Generated environment, character and prop meshes |
+| fal.ai (Hunyuan3D) | Generated environment, prop and particle meshes |
+| ElevenLabs | English Fenella dialogue, cast battle cries and sound effects |
+| ACE Studio | Music, with Dylan's own vocals on the theme song |
 | Unreal MCP + PCG and Niagara toolsets (engine plugins, Experimental) | Lets the agent drive the editor, build PCG graphs and Niagara systems |
 
 ## Generated during the jam
@@ -237,7 +243,8 @@ Dylan supplied `music/theme-song.mp3` (2:18) during the jam. Its lyrics are an
 adjusted version of "Big Rock Candy Mountain" (Harry McClintock, recorded 1928),
 kept in `Docs/BigRockCandyMountainAdjustedLyrics.txt`. The song plays only over
 the end credits (`/Game/Audio/Music/M_theme_song_take1`) and in the trailer.
-**Dylan: add which tool made the recording.** Also imported the same day:
+Dylan confirmed Nov 14: the recording was made with **ACE Studio and his own vocals**.
+The other music cues were also made with ACE Studio. Also imported the same day:
 `village_take1/2` from `music/` (same source as the other score cues).
 
 ## 2026-11-13 — the cast in game (R6)
@@ -285,3 +292,21 @@ colours and original output paths are retained in the class-icon source manifest
 The giant brushing prop reuses the previously declared Rodin SM_Toothbrush;
 mouth foam reuses the existing original Niagara systems. No third-party assets
 or external project code were copied.
+
+
+## 2026-11-13: imported Fenella dialogue and sound effects (R1; reconciled Nov 14)
+
+The 88 English Fenella SoundWave assets under `/Game/Audio/VO/VO_*` were
+rendered with ElevenLabs `eleven_multilingual_v2` text-to-speech during the jam.
+Authored lines are in `Docs/Design/Jokes.md` and `vocals/generate_dialogue.py`;
+source clips are `vocals/output/fenella/VO_<LineId>.wav`, with dialogue request
+metadata in `vocals/output/dialogue/manifest.json`.
+
+The 47 runtime SoundWave assets under `/Game/Audio/SFX/` were generated with
+ElevenLabs `eleven_text_to_sound_v2`; prompts and clip/request metadata are in
+`vocals/generate_core_sfx.py` and `vocals/output/sfx/manifest.json`. Source WAVs:
+`vocals/output/sfx/SFX_<Name>_v01.wav`. `Scripts/import_audio.py` imported both
+sets on Nov 13; `Game/JamSfx.cpp` maps gameplay events to these cues.
+
+Asset preparation also uses original project Python scripts, Blender and
+FFmpeg. No new assets or paid generation calls were made for this reconciliation.

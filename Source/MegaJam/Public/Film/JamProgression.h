@@ -5,10 +5,9 @@
 /**
  * Levels, points, skill ranks, stats and loot (BUILD_SPEC 3c). Headless; lives on the PlayerState.
  *
- * The hero starts at level 7 with six points already spent on passives that do nothing. Levels change only on
- * the three cards: level 8 at Scene 1's wrap, 9 at Scene 2's wrap, 10 at the CUT! before Scene 3's final stage.
- * Ordinary XP fills the bar but is held just short of the next level until its card arrives.
- * Each level is one skill point, spent on the card. The Last Judgment unlocks by itself at level 10.
+ * The hero starts at level 7; basic/signature ranks are 2 and the ultimate stays rank 1.
+ * Open earns levels directly from numeric XP, one skill point per level. Quest bonuses are once-only.
+ * Legacy Backlot holds ordinary XP below the next threshold and advances on its three cards.
  */
 
 enum class EJamSkill : uint8
@@ -20,7 +19,7 @@ enum class EJamSkill : uint8
 	Count
 };
 
-enum class EJamXpSource : uint8 { Pacify, Treat, Collect };
+enum class EJamXpSource : uint8 { Pacify, Treat, Collect, Quest };
 
 enum class EJamMilestone : uint8 { Scene1Wrap, Scene2Wrap, Scene3FinalNote };
 
@@ -73,7 +72,7 @@ namespace JamProgression
 
 	/** XP at which the given level (8 to 10) is reached; 0 for the start level. */
 	MEGAJAM_API int32 XpForLevel(int32 Level);
-	MEGAJAM_API int32 XpValue(EJamXpSource Source);
+	MEGAJAM_API int32 XpValue(EJamXpSource Source, bool bNumeric = false);
 	MEGAJAM_API int32 MilestoneLevel(EJamMilestone Milestone);
 
 	/** The jam uses basic, signature and ultimate; the old Sigh enum remains for asset compatibility. */
@@ -101,6 +100,11 @@ public:
 
 	int32 GetLevel() const { return Level; }
 	int32 GetXp() const { return Xp; }
+	/** Open earns levels directly from XP; the legacy card progression remains for Backlot. */
+	void EnableNumericXp() { bNumericXp = true; }
+	bool IsNumericXp() const { return bNumericXp; }
+	/** A once-only bonus per authored quest. Returns levels gained. */
+	int32 CompleteQuest(int32 SceneIndex);
 	/** Unspent skill points. */
 	int32 GetPoints() const { return Points; }
 	int32 GetRank(EJamSkill Skill) const { return Ranks[(int32)Skill]; }
@@ -108,9 +112,9 @@ public:
 	/** Points spent on skills, not counting the six passives. */
 	int32 GetSpent() const;
 
-	/** Awards ordinary XP, held below the next level's threshold. Returns the XP actually added. */
+	/** Awards XP; Open levels immediately, legacy Backlot holds below its next card. Returns the XP actually added. */
 	int32 AddXp(EJamXpSource Source);
-	/** A card arrives: raises the level to the milestone's. Returns the levels gained (0 if already reached). */
+	/** Legacy Backlot card: raises the level to the milestone's; no-op in numeric mode. Returns the levels gained (0 if already reached). */
 	int32 ReachMilestone(EJamMilestone Milestone);
 
 	/** XP bar: 0 to 1 within the current level; 1 at the top level. */
@@ -134,6 +138,8 @@ private:
 	int32 Xp = 0;
 	int32 Level = JamProgression::StartLevel;
 	int32 Points = 0;
+	bool bNumericXp = false;
+	uint8 CompletedQuests = 0;
 	int32 Ranks[(int32)EJamSkill::Count] = { 2, 2, 0, 1 };
 	TArray<int32> Loot;
 };

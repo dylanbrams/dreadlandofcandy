@@ -7,7 +7,7 @@
 
 namespace
 {
-	const TCHAR* Confirm(const FJamMenuSettings& S) { return S.bGamepad ? TEXT("(A)") : TEXT("[E] / Enter"); }
+	const TCHAR* Confirm(const FJamMenuSettings& S) { return S.bGamepad ? TEXT("(A)") : TEXT("[F] / Enter"); }
 	const TCHAR* BackKey(const FJamMenuSettings& S) { return S.bGamepad ? TEXT("(B)") : TEXT("Esc"); }
 
 	FString MenuFooter(const FJamMenuSettings& S)
@@ -71,10 +71,37 @@ FJamScreenView JamScreens::Options(const FJamMenuSettings& S)
 		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
 		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
 		Opt(EJamMenuAction::EffectsVolume, TEXT("Effects"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.EffectsVolume))),
+		Opt(EJamMenuAction::OpenControls, TEXT("Controls")),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::Back, TEXT("Back")) };
 	V.Footer = FString::Printf(TEXT("%s     %s / %s adjust"), *MenuFooter(S), S.bGamepad ? TEXT("D-pad left") : TEXT("A"), S.bGamepad ? TEXT("right") : TEXT("D"));
+	return V;
+}
+
+FJamScreenView JamScreens::Controls(const FJamMenuSettings& S)
+{
+	FJamScreenView V;
+	V.Screen = EJamScreen::Controls;
+	V.Kicker = TEXT("CONTROLS");
+	V.Title = TEXT("Know your marks");
+	V.Subtitle = TEXT("Default controls");
+	V.Quotes = S.bGamepad ? TArray<FString>{
+		TEXT("Left stick: move    Right stick: camera"),
+		TEXT("RT: basic    RB: signature    LB: ultimate"),
+		TEXT("Hold A: use / take note    B: refuse note"),
+		TEXT("Y: write directions    Menu: pause"),
+		TEXT("Pause > Character Sheet: spend skill points"),
+		TEXT("D-pad: menu selection    A: choose    B: back") }
+		: TArray<FString>{
+		TEXT("WASD / arrows: move    Q / E: turn camera"),
+		TEXT("Mouse 2 drag: camera    Mouse wheel: zoom"),
+		TEXT("Mouse 1 / Space: basic    Mouse 3: signature    R: ultimate"),
+		TEXT("Hold F: use / take note    X: refuse    T: write directions"),
+		TEXT("Esc: pause    Click level / points: character sheet"),
+		TEXT("Click controls to use them    F / Enter: menu selection") };
+	V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
+	V.Footer = MenuFooter(S);
 	return V;
 }
 
@@ -102,6 +129,7 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 		Opt(EJamMenuAction::MusicVolume, TEXT("Music"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.MusicVolume))),
 		Opt(EJamMenuAction::VoiceVolume, TEXT("Fenella"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.VoiceVolume))),
 		Opt(EJamMenuAction::EffectsVolume, TEXT("Effects"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.EffectsVolume))),
+		Opt(EJamMenuAction::OpenControls, TEXT("Controls")),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
 		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
 		Opt(EJamMenuAction::CharacterSheet, TEXT("Character Sheet")),
@@ -227,8 +255,12 @@ TArray<FString> JamScreens::CreditLines(bool bDirectorsCut)
 		TEXT("— THE REAL CREDITS —"),
 		TEXT("Made by Dylan for the 2026 Epic AI MegaJam"),
 		TEXT("Engine: Unreal Engine 5.8"),
-		TEXT("Code, scripts and docs: Claude Code"),
-		TEXT("Design briefs: ChatGPT"),
+		TEXT("Code, scripts and docs: Claude Code and OpenAI Codex"),
+		TEXT("Design briefs and generated 2D art: ChatGPT"),
+		TEXT("Music: Dylan, with ACE Studio"),
+		TEXT("Theme-song vocals: Dylan"),
+		TEXT("Character voices and sound effects: ElevenLabs"),
+		TEXT("Asset preparation: Blender, Python and FFmpeg"),
 		TEXT("3D models: Meshy, Hyper3D Rodin, fal.ai (Hunyuan3D)"),
 		TEXT("Pre-jam work, tools and assets are declared on the itch.io page"),
 		TEXT(""),
@@ -266,7 +298,8 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
 {
 	FJamMenuSettings S;
 	const FString N = Name.ToLower();
-	if (N == TEXT("rating")) { Out = Rating(); }
+	if (N == TEXT("controls")) { Out = Controls(S); }
+	else if (N == TEXT("rating")) { Out = Rating(); }
 	else if (N == TEXT("title")) { Out = Title(S); }
 	else if (N == TEXT("options")) { Out = Options(S); Out.Selected = 1; }
 	else if (N == TEXT("quit")) { Out = QuitConfirm(S, false); }
