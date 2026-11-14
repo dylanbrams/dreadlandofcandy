@@ -175,7 +175,7 @@ private:
 	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
 	void PlayRigOneShot(FName Anim);
 	void TickRig();
-    void UpdateWeaponCarry();
+    void UpdateWeaponCarry(bool bForce = false);
     void UpdateShieldCarry();
     void BeginBrushFeedback(AJamNuisance* Target, float Seconds);
     void UpdateBrushing();

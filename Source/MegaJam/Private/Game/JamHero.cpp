@@ -278,7 +278,7 @@ void AJamHero::ApplyCast(int32 Index, bool bAnnounce)
     BrushUntil = -1.f;
     BrushTarget.Reset();
     bWeaponDrawn = true;
-    UpdateWeaponCarry();
+    UpdateWeaponCarry(true);
 	TickRig();
 	UE_LOG(LogJam, Log, TEXT("JamHero: cast %s (%s), %d animations, bounds %s, scale %.3f"), *Def.Id, bCast ? TEXT("cast rig") : TEXT("old hero rig"),
 		RigAnims.Num(), *Box.GetSize().ToString(), Scale);
@@ -754,7 +754,7 @@ void AJamHero::UpdateShieldCarry()
     ArtShield->SetWorldTransform(FTransform(Facing, Hand + Up * 14.f + Outward * 9.f, FVector(Scale)));
 }
 
-void AJamHero::UpdateWeaponCarry()
+void AJamHero::UpdateWeaponCarry(bool bForce)
 {
     if (!ArtRig->GetSkeletalMeshAsset() || !ArtSword->GetStaticMesh()) { return; }
     const float Now = GetWorld()->GetTimeSeconds();
@@ -762,9 +762,9 @@ void AJamHero::UpdateWeaponCarry()
     bool bDraw = !bBrushing && (Now < RigOneShotUntil ||
         (Now < WeaponDrawUntil && GetVelocity().Size2D() < 60.f));
     const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
-    if (PresentationReviewMode == -2 && GS && GS->GetShoot().GetState() != EJamShootState::Rolling) { bDraw = false; }
+    if (PresentationReviewMode == -2 && GS && GS->GetShoot().GetState() != EJamShootState::Rolling && Now >= RigOneShotUntil) { bDraw = false; }
     if (PresentationReviewMode == -1) { bDraw = false; }
-    if (bDraw == bWeaponDrawn) { return; }
+    if (!bForce && bDraw == bWeaponDrawn) { return; }
     bWeaponDrawn = bDraw;
     const FJamClassDef& Def = JamCast::Get(CastIndex);
     if (bDraw)
