@@ -1,0 +1,8 @@
+1) Fenella is shooting a reality TV show and needs to talk through her introduction of that concept. New voice lines are generated and need to be added to the game.
+2) Current quest needs distinguishing arrow. Should be different from the others.
+3) The arrows should be candy themed somehow. Candy cane arrows (red and white normally, red and gold and moving when active quest)
+4) The quests should allow the player to propose a solution and then the AI return should tell the game what to spawn and do.
+5) After you complete quests, the relationship with that contact should level up, and the quests should get more complex over time.
+6) The knight needs a shield, should be generated with Meshy to fit with his overall look and so on.
+7) The cooldown graphics on the skill bar are not working.
+8) When pausing, the subtitles for Fenella's dialogue are over the menus. This is not good.

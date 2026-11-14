@@ -27,8 +27,9 @@ jobs and quest branches, and comic buttons. Packaged shipped-map smoke passed:
 `JamVillageAutoplay: PASS main=3 side=10`; all smoke checks passed. Development
 package succeeded; 79 Jam tests passed with log EXIT CODE 0. No upload.
 
-**Next:** Dylan plays this package and records BLOCKER / SHIP / NICE feedback in
-`Docs/Feedback/Fixes2.txt`; GAME then takes Fixes2. Engine handoff: FREE.
+**Next:** Fixes2 is split between CLAUDE (GAME) and CODEX in
+`Docs/Feedback/Fixes2-plan.md`. **HOLD is on:** code and compile only, no tests,
+game runs, editor or packaging until Dylan says GO. Engine handoff: FREE.
 
 Read CLAUDE.md, then Docs/Design/RELEASE_PLAN.md ("Nov 14 afternoon" section).
 Previous STATUS (batches 1 and 2): git history at 3cae0ec. Wishlist archive:
