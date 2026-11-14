@@ -1,5 +1,13 @@
 # STATUS - Nov 14: Fixes2 checkpoint for a clean session
 
+**Fixes2 verification update:** Screen-caption layout is fixed and visually checked
+in the latest worker handoff. Autoplay no longer loops on the first repeatable
+encore before visiting other givers. Editor build and 82 Jam tests pass; offline,
+proposal and proposal-fallback village runs all pass main=3, side=10. Proposal
+and fallback used the local stub, not the live backend. Manual interaction,
+visual and audio checks remain in `Docs/Workers/codex-fixes2.md`; Fixes2 is not
+yet fully verified. No new package, deploy or upload. Engine is FREE.
+
 Dylan requested a fresh-session handoff. **GO has been given; CODEX owns all
 eight Fixes2 rows. Engine is FREE.** Read `Docs/Workers/codex-fixes2.md` for the
 current commits, verified evidence and exact next chunk. Editor build passes;

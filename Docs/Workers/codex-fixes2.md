@@ -1,5 +1,26 @@
 # Fixes2 clean-session handoff — Nov 14
 
+## Continued verification
+
+Offline autoplay initially timed out repeating the first villager's encore: its
+selection favored that available repeatable job over the other givers. Village
+autoplay now skips encore indices while completing the ten authored jobs. This
+changes the unattended bot only. Editor build succeeded; all 82 Jam tests passed
+with `EXIT CODE: 0`. Offline, proposal, and proposalfallback village verification
+passed sequentially. Proposal logged ten ready and ten accepted two-step plans;
+fallback logged ten unusable proposals and completed all ten authored jobs.
+Each mode reported `JamVillageAutoplay: PASS main=3 side=10`. The initial proposal
+launch failed because the configured derived-data cache was not writable in the
+sandbox; both local-stub modes passed on retry with cache access.
+The post-change `fixes2-after-autoplay.png` proposal screen was captured and
+inspected at 1920x1080.
+
+Still outstanding: real keyboard/gamepad proposal interactions and late reply;
+visual inspection of active and inactive markers together, multi-step transitions,
+ready return, relationship/journal and encore; actual pause/resume, voice skip and
+subjective listening. No new package or cooked smoke. No deploy or upload. Engine
+is FREE. Do not start Fixes3.
+
 ## Caption layout checkpoint
 
 The screen-owned caption now flows above the screen content instead of sitting

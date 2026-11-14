@@ -372,3 +372,9 @@ captures show the HUD/shield working, but screen-owned status captions overlap
 bottom menu options. Fixes2 remains open for that UI correction and village
 offline/proposal/failure verification. No package/deploy/upload. Dylan requested
 a clean-session handoff: `Docs/Workers/codex-fixes2.md`; engine FREE.
+# Nov 14 — Fixes2 village verification
+
+Fixed unattended village autoplay repeatedly selecting an encore before visiting
+the other givers. Editor build and 82 Jam tests passed; offline, proposal and
+proposal-fallback village runs completed all ten jobs. Inspected the proposal
+screen capture. Manual interaction and audio checks remain in the worker handoff.

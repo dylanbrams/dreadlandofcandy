@@ -457,7 +457,8 @@ void AJamGameMode::TickAutoplayVillage(float DeltaSeconds)
 		for (int32 i = 0; i < Villagers.Num(); ++i)
 		{
 			const int32 QuestIndex = VillageQuests.ForGiver(JamVillageQuests::Givers()[i].Location);
-			if (VillageQuests.State(QuestIndex) == EJamVillageQuestState::Available) { Goal = Villagers[i]; bTalk = true; break; }
+			// Finish the ten authored jobs before considering repeatable encores.
+			if (QuestIndex >= 0 && QuestIndex < JamVillageQuests::All().Num() && VillageQuests.State(QuestIndex) == EJamVillageQuestState::Available) { Goal = Villagers[i]; bTalk = true; break; }
 		}
 	}
 	else if (VillageQuests.State(Active) == EJamVillageQuestState::Ready) { Goal = Villagers[VillageQuests.GiverIndex(Active)]; bTalk = true; }
