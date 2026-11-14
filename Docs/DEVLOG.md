@@ -421,3 +421,8 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
 
 
 - Nov 15: Fixes3 #8 (refocus viewport for 0.5 s after menus) and #15 (speed-scaled walk play rate); smoke/zip scripts prefer the renamed launcher. Build + 82 tests green; unverified live, not repackaged.
+
+- Nov 15: mixed 134 FoliageTwo candy trees into original broadleaf stands,
+  preserving firs and the central square tree; added 67 berry bushes and 67
+  succulents so all eight new models appear. Build + 82 tests passed; inspected
+  foliage-mix.png. No package/upload; manual traversal remains unverified.

@@ -1,3 +1,15 @@
+# STATUS - Nov 15: generated foliage mixed into original woodland
+
+Replaced 134 existing non-snow Birch/Blossom placements (one in five) with
+45 peppermint, 44 candy apple and 45 candy trees. Added 67 berry bushes and
+67 succulents at those footprints; all eight FoliageTwo models now appear.
+Snow firs and the central square tree are preserved. Crowns/understory are
+nonblocking; replacement trunks block Pawn and ignore camera. Build and Jam
+tests passed (82/82). Offscreen review inspected:
+`Saved/Screenshots/WindowsEditor/foliage-mix.png`; scale and palette blend with
+the older woodland. Manual traversal and cooked delivery remain unverified.
+No repackage or upload.
+
 # STATUS - Nov 15: Fixes3 #8, #15 and script fixes
 
 Fixes3 #8: after a menu closes, the HUD keeps reclaiming game viewport focus for 0.5 s, so WASD should work after accepting a quest without a click. Fixes3 #15: the walk animation rate now follows ground speed (2.1x at base walk speed, clamped 1.2 to 3) to cut foot sliding. Smoke and zip scripts now pick the renamed TheDreadLandOfCandy.exe launcher. Editor build clean, 82 Jam tests pass. Neither fix has been seen live; no screenshot or repackage since. The Nov 15 ZIP predates these changes. #16 (escalating, losable quests) skipped: the village has no defeat path. Engine FREE.

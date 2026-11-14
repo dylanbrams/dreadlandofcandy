@@ -1,5 +1,14 @@
 # Riverlands expansion
 
+Nov 15 foliage mix: `intersperse_foliage.py` replaces one in five existing
+Birch/Blossom instances with generated peppermint, candy apple and candy trees
+(134 total), retaining their positions. Fir/snow groups and the square landmark
+are preserved. Narrow hidden Pawn-only trunks retain collision; decorative
+crowns and undergrowth do not block the camera. Berry bushes and succulents
+complete the eight-model foliage set. The script guards against applying twice.
+`review_foliage_mix.py` corrects the initial understory alternation, writes final
+counts to `foliage_mix.json`, and creates a separate camera review map.
+
 The original Molar hill and three film sets are retained. The eastern boundary
 opens into a rolling meadow and a north/south mint river, with one walkable
 bridge. Runtime bounds are (-12000,-12000) to (26000,12000), 58.3% more area.
