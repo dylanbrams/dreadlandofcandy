@@ -1675,14 +1675,14 @@ void AJamGameMode::BeginWalkToSet(int32 Next)
 	SceneTime = 0.f;
 	BotStuckFor = BotSideStepFor = 0.f;
 	GS->SceneNumber = Next + 1;
-	GS->Hint = FString::Printf(TEXT("Fenella: follow the golden triangle to %s"), *SceneSign(Next));
+	GS->Hint = FString::Printf(TEXT("Fenella: follow the candy cane to %s"), *SceneSign(Next));
 	const FVector2D Centre = SceneFloor(Next).GetCenter();
 	GS->bCompass = true;
 	GS->CompassTarget = FVector(Centre, TraceGround(Centre) + 150.f);
 	const TArray<FJamSceneDef> Scenes = JamScenes::All();
 	GS->CompassLabel = Scenes.IsValidIndex(Next) ? Scenes[Next].Title.ToUpper() : FString(TEXT("NEXT SET"));
 	MarkQuest(Centre);
-	Direct(FString::Printf(TEXT("%s Next, %s. I have marked the starting point with a golden triangle. Walk into the clearing and we will begin."),
+	Direct(FString::Printf(TEXT("%s Next, %s. I have marked the starting point with a candy cane. Walk into the clearing and we will begin."),
 		Next == FirstSceneIndex ? TEXT("You are hired! I will stay with you.") : TEXT("Good work, hero!"), *SceneSign(Next)));
 	// The reality show keeps rolling between sets: one pickup per walk, in order.
 	SayOnce(*FString::Printf(TEXT("RealityPickup_%02d"), FMath::Clamp(Next - FirstSceneIndex, 0, 4) + 1));

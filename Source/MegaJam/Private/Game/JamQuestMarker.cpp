@@ -62,7 +62,7 @@ void AJamQuestMarker::BeginPlay()
 		PaleMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(1.8f, 1.8f, 1.8f));
 		RedMaterial->SetScalarParameterValue(TEXT("Opacity"), 1.f);
 		PaleMaterial->SetScalarParameterValue(TEXT("Opacity"), 1.f);
-		for (int32 i = 0; i < Bands.Num(); ++i) { Bands[i]->SetMaterial(0, i % 2 == 0 ? RedMaterial : PaleMaterial); }
+		for (int32 i = 0; i < Bands.Num(); ++i) { Bands[i]->SetMaterial(0, i % 2 == 0 && i != 20 ? RedMaterial : PaleMaterial); }
 	}
 }
 
@@ -108,9 +108,10 @@ void AJamQuestMarker::Tick(float DeltaSeconds)
 	if (bActive != bActiveStyle)
 	{
 		bActiveStyle = bActive;
-		if (PaleMaterial) { PaleMaterial->SetVectorParameterValue(TEXT("Color"), bActive ? FLinearColor(3.f, 1.9f, 0.05f) : FLinearColor(1.8f, 1.8f, 1.8f)); }
+		if (PaleMaterial) { PaleMaterial->SetVectorParameterValue(TEXT("Color"), bActive ? FLinearColor(1.5f, 0.65f, 0.04f) : FLinearColor(1.8f, 1.8f, 1.8f)); }
 	}
-	SetActorScale3D(FVector(bActive ? 1.65f : 1.f));
+	// Readable at distance, but shorter than a character when standing beside Fenella.
+	SetActorScale3D(FVector(bActive ? 0.85f : 0.6f));
 	SetActorLocation(TargetLocation() + FVector(0, 0, Lift + (bActive ? 26.f * FMath::Sin(Age * 4.f) : 0.f)));
 	const APlayerCameraManager* Camera = UGameplayStatics::GetPlayerCameraManager(this, 0);
 	const float Facing = Camera ? (Camera->GetCameraLocation() - GetActorLocation()).Rotation().Yaw + 90.f : 0.f;
