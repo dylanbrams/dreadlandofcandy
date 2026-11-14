@@ -37,3 +37,9 @@ C35,Claude,Opus 5.5,Docs,Dylan's R7 list from the R5 play + research,2026-11-13 
 C36,Claude,Opus 5.5,Design,Nov 14 release plan / triage / engine handoff,2026-11-14 09:00,2026-11-14 09:39,commit-times,4e68882 c76d42f eaf40ae 1e58350 91a7fc1
 C37,Claude,Sonnet 5.5,Backend,BACKEND redeploy n2 (live check passes),2026-11-14 09:31,2026-11-14 09:50,commit-times,46b75af
 C38,Claude,Sonnet 5.5,Docs,Devlog checkpoint: outline / deck / Gantt,2026-11-14 10:15,2026-11-14 10:45,approx,this commit
+G03,ChatGPT,Codex,Terrain,Sugarborough terrain world + packaged validation,2026-11-12 19:30,2026-11-12 22:54,devlog,Docs/Workers/terrain.md: TERRAIN active (Codex); 6db66c9
+G06,ChatGPT,Codex,Terrain,Dense PCG candy world with grass / foliage / snow,2026-11-13 00:00,2026-11-13 09:08,devlog,Docs/Declared.md: dense terrain ecology; e82dbc6
+G07,ChatGPT,Codex,Assets,Mage / Archer / Barbarian generated and rigged; knight refreshed,2026-11-13 09:08,2026-11-13 10:47,devlog,Docs/Declared.md: expansion character generation and knight refresh; e8b12eb f189a15
+G08,ChatGPT,Codex,Art,Knight wrist correction on the sword raise,2026-11-13 10:47,2026-11-13 15:38,devlog,Docs/Declared.md: knight sword-raise wrist correction; d153ccf
+G15,ChatGPT,Codex,Design,Jam design briefs drafted with ChatGPT (date only),2026-11-11 12:00,2026-11-11 12:15,approx,Docs/Declared.md: design briefs dated Nov 11; time unknown
+G16,ChatGPT,Codex image generation,Assets,Generated UI icons cards and other 2D art (date only),2026-11-12 12:00,2026-11-12 12:15,approx,Docs/Declared.md: 2D asset credits dated Nov 12; time unknown

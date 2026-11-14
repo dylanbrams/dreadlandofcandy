@@ -1,12 +1,8 @@
 id,agent,model,lane,task,start,end,confidence,evidence
 G01,ChatGPT?,Codex?,Assets,Asset prompts prepared; test-stage models generated and reviewed; batch1 models + first ten UI assets,2026-11-12 06:00,2026-11-12 08:09,unconfirmed,fe42625 963a61f e9c235b abae9ca 0165775
 G02,ChatGPT?,Codex?,Assets,Batches completed + thin winged Fenella regenerated,2026-11-12 08:09,2026-11-12 11:13,unconfirmed,7f541d0
-G03,ChatGPT?,Codex?,Terrain,Sugarborough terrain world + packaged validation,2026-11-12 19:30,2026-11-12 22:54,unconfirmed,6db66c9
 G04,ChatGPT?,Codex?,FX,Niagara attack pipeline + saved-script repair,2026-11-12 19:30,2026-11-12 23:07,unconfirmed,2e4d872
 G05,ChatGPT?,Codex?,Assets,Eight low-poly Hyper3D candy foliage assets,2026-11-12 23:07,2026-11-12 23:14,unconfirmed,2fe77ff
-G06,ChatGPT?,Codex?,Terrain,Dense PCG candy world with grass / foliage / snow,2026-11-13 00:00,2026-11-13 09:08,unconfirmed,e82dbc6
-G07,ChatGPT?,Codex?,Assets,Mage / Archer / Barbarian generated and rigged; knight refreshed,2026-11-13 09:08,2026-11-13 10:47,unconfirmed,e8b12eb f189a15
-G08,ChatGPT?,Codex?,Art,Knight wrist correction on the sword raise,2026-11-13 10:47,2026-11-13 15:38,unconfirmed,d153ccf
 G09,ChatGPT?,Codex?,Audio,SFX handoff + ElevenLabs onboarding / voices / request fixes,2026-11-13 15:38,2026-11-13 17:24,unconfirmed,78673aa 8f99bdf 77bbca5 b067c27 6d1f5f6
 G10,ChatGPT?,Codex?,Art,Shared cast animations / weapons / Niagara integration,2026-11-13 18:30,2026-11-13 22:21,unconfirmed,f22fe7f
 G11,ChatGPT?,Codex?,Game,Molar Hills + first R7 playtest fixes,2026-11-13 22:21,2026-11-13 23:04,unconfirmed,bf38431

@@ -45,3 +45,13 @@ Gantt: `gantt/gantt.png`, rows in `gantt/work_log.csv`. ChatGPT side: not yet ga
 ## Open items
 
 Hands-on checks (swapped mouse buttons, camera feel, typed directions, cast visuals, golden rain), game HTTPS to the backend, one package + smoke + zip, itch tester push on Dylan's go, submission by Nov 15 5:59 PM PST.
+
+## ChatGPT / Codex review (Nov 14)
+
+The project credits ChatGPT with the Nov 11 design briefs and Codex image generation with the Nov 12 UI art. It explicitly credits Codex with terrain ecology, three generated and rigged expansion characters, the knight refresh and the wrist correction. See `Docs/Declared.md` and `Docs/Workers/terrain.md`. The Gantt now includes these documented contributions and separately hatches unconfirmed candidates.
+
+**Dispute / qualification:** The attribution of all T01?T23 and R0?R6 to Opus is too broad to establish from co-author trailers alone: a commit can integrate work created by another worker. The deck?s claim that Opus was the only worker to open the editor also needs evidence; terrain records describe Codex Unreal work. Treat worker roles as descriptions, not exclusive authorship. The 29 untrailered commits are not proof of Codex authorship either.
+
+**Timing:** commit dates mark snapshots, not continuous working sessions. The design and 2D-art rows have only a known date; their short noon bars are visual placeholders, not measured hours. Candidate bars retain Claude?s tentative estimates. Do not add bar lengths to calculate effort. The original 10:00 snapshot and counts are historical, not a current release status.
+
+**To recover tomorrow:** review ChatGPT/Codex session transcripts for the unconfirmed rows, exact start times, Dylan?s decisions and rejected attempts; capture gameplay and verify package/submission status before presenting it as shipped.

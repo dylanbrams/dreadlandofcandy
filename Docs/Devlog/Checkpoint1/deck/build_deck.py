@@ -54,14 +54,14 @@ SLIDES = [
                   "Packaged Win64 build, 689 to 721 MB zip."]),
 
     dict(kind="image", title="Who built what, hour by hour", image=str(GANTT),
-         caption="Gantt of the Claude side, from git commit times (approximate). ChatGPT rows to be added from work_log.csv."),
+         caption="Claude and documented ChatGPT / Codex work; hatched rows are unconfirmed. Times are approximate."),
 
     dict(kind="bullets", title="The cast of workers",
          bullets=["Dylan: director, taster, approver. Plays every build, owns every \"is this funny\" call.",
                   "Claude Fable 5.2: specs and plans (build spec, release plan, open-world spec).",
-                  "Claude Opus 5.5: GAME worker, the only one that opens the editor. Most of Day 1.",
+                  "Claude Opus 5.5: GAME worker; most of Day 1.",
                   "Claude Sonnet 5.5: RULES (ledger, progression, note clamp), BACKEND (director service), checkpoints.",
-                  "ChatGPT / Codex: terrain (PCG world), Niagara FX, cast generation and rigging, ElevenLabs audio, itch page, R7 fix batches. [ChatGPT to confirm]"],
+                  "ChatGPT / Codex: terrain (PCG world), Niagara FX, cast generation and rigging, ElevenLabs audio, itch page and fixes are candidates awaiting attribution."],
          notes="WORKERS.md describes the folder-ownership rules that let them run in parallel."),
 
     dict(kind="bullets", title="Day 0, Nov 11 (before the jam): rules of engagement",

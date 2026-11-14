@@ -32,3 +32,11 @@ Working outline for the post-jam devlog and video. `[ ]` = still to write or cap
 | Per-worker detail | `Docs/Workers/*.md` |
 | Screenshots | `Docs/Devlog/Screenshots/` (109), `Marketing/Itch/screenshots/`, `Saved/Screenshots/` |
 | Dylan's feedback lists | `Docs/Feedback/`, `Docs/STATUS.md`, `Docs/Archive/STATUS-before-batch0-2026-11-14.md` |
+
+## ChatGPT / Codex follow-up
+
+- Show the collaboration as overlapping handoffs: design and 2D art, terrain ecology, generated cast, and animation correction have explicit project credits; other candidate work needs session evidence.
+- [ ] Find transcripts for the initial MMO exchange and the terrain, Niagara, audio, marketing and fix sessions; use direct quotes only after checking them.
+- [ ] Tell the story of the rejected incomplete barbarian and regenerated model (`Docs/Declared.md`) and the wrist correction.
+- [ ] Record Dylan?s decisions and hands-on testing alongside model output; the Gantt is not a measure of effort.
+- [ ] Add final package, submission, reception and lessons after the jam.

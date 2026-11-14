@@ -28,3 +28,7 @@ Claude rows come from `Co-Authored-By: Claude ...` trailers in `git log` plus DE
 git log --oneline | wc -l
 git log --format='%ad|%(trailers:key=Co-Authored-By,valueonly)' --date=format:'%m-%d' | awk -F'|' '{c[$1" "($2~/Claude/?"claude":"other")]++} END{for(k in c)print k,c[k]}'
 ```
+
+## Codex attribution review
+
+The chart and deck include documented ChatGPT/Codex work and hatched candidates. Rebuild with `python build_gantt.py --candidates` and `python build_gantt.py --slide --candidates`, then rebuild the deck. See the review in CHECKPOINT.md for attribution disputes and the date-only placeholder bars. The existing Claude bars and the candidate estimates have not been independently verified.
