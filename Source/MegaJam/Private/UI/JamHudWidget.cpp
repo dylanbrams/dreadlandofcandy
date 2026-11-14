@@ -868,16 +868,16 @@ void UJamHudWidget::BuildSkillBar()
 	for (int32 i = 0; i < JamProgression::ActiveSkills().Num(); ++i)
 	{
 		UOverlay* Stack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
-		UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 6.f, FMargin(6.f, 4.f));
+		UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 6.f, FMargin(4.f));
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
-		Size->SetWidthOverride(86.f);
-		Size->SetHeightOverride(132.f);
-		UVerticalBox* V = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
-		UTextBlock* Key = MakeText(15, Gold, true);
-		UTextBlock* Name = MakeText(12, FLinearColor::White, true);
-		Name->SetWrapTextAt(80.f);
+		Size->SetWidthOverride(112.f);
+		Size->SetHeightOverride(112.f);
+		UOverlay* Face = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
+		UTextBlock* Key = MakeText(12, Gold, true);
+		UTextBlock* Name = MakeText(11, FLinearColor::White, true);
+		Name->SetWrapTextAt(104.f);
 		Name->SetJustification(ETextJustify::Center);
-		UTextBlock* Rank = MakeText(13, Gold, false);
+		UTextBlock* Rank = MakeText(9, Gold, false);
 		UImage* Icon = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
 		UMaterialInstanceDynamic* IconMaterial = nullptr;
 		if (UMaterialInterface* Base = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Art/UI/Materials/M_SkillCooldown")))
@@ -887,24 +887,32 @@ void UJamHudWidget::BuildSkillBar()
 		}
 		SkillIconMaterials.Add(IconMaterial);
 		ShownIconPaths.Add(FString());
-		USizeBox* IconSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
-		IconSize->SetWidthOverride(48.f);
-		IconSize->SetHeightOverride(48.f);
-		IconSize->SetContent(Icon);
-		V->AddChildToVerticalBox(IconSize)->SetHorizontalAlignment(HAlign_Center);
+		// The cooldown material is the button's background, rather than a tiny
+		// thumbnail above several rows of text. Labels sit over its edges.
+		UOverlaySlot* ArtSlot = Face->AddChildToOverlay(Icon);
+		ArtSlot->SetHorizontalAlignment(HAlign_Fill);
+		ArtSlot->SetVerticalAlignment(VAlign_Fill);
+		UBorder* KeyPanel = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.78f), 3.f, FMargin(4.f, 1.f));
+		KeyPanel->SetContent(Key);
+		UOverlaySlot* KeySlot = Face->AddChildToOverlay(KeyPanel);
+		KeySlot->SetHorizontalAlignment(HAlign_Left);
+		KeySlot->SetVerticalAlignment(VAlign_Top);
+		KeySlot->SetPadding(FMargin(2.f));
+		UBorder* Footer = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.78f), 3.f, FMargin(3.f, 2.f));
+		UVerticalBox* Labels = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
+		Labels->AddChildToVerticalBox(Name)->SetHorizontalAlignment(HAlign_Center);
+		Labels->AddChildToVerticalBox(Rank)->SetHorizontalAlignment(HAlign_Center);
 		UBorder* DamageAccent = MakePanel(Gold, 1.f, FMargin(0.f));
 		USizeBox* AccentSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
-		AccentSize->SetWidthOverride(48.f);
-		AccentSize->SetHeightOverride(3.f);
+		AccentSize->SetHeightOverride(2.f);
 		AccentSize->SetContent(DamageAccent);
-		V->AddChildToVerticalBox(AccentSize)->SetHorizontalAlignment(HAlign_Center);
+		Labels->AddChildToVerticalBox(AccentSize)->SetPadding(FMargin(0.f, 2.f, 0.f, 0.f));
 		SkillDamageAccents.Add(DamageAccent);
-		V->AddChildToVerticalBox(Key)->SetHorizontalAlignment(HAlign_Center);
-		UVerticalBoxSlot* NameSlot = V->AddChildToVerticalBox(Name);
-		NameSlot->SetHorizontalAlignment(HAlign_Center);
-		NameSlot->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-		V->AddChildToVerticalBox(Rank)->SetHorizontalAlignment(HAlign_Center);
-		Size->SetContent(V);
+		Footer->SetContent(Labels);
+		UOverlaySlot* FooterSlot = Face->AddChildToOverlay(Footer);
+		FooterSlot->SetHorizontalAlignment(HAlign_Fill);
+		FooterSlot->SetVerticalAlignment(VAlign_Bottom);
+		Size->SetContent(Face);
 		Tile->SetContent(Size);
 		Stack->AddChildToOverlay(Tile);
 		Tiles->AddChildToHorizontalBox(Stack)->SetPadding(FMargin(i == 0 ? 0.f : 6.f, 0.f, 0.f, 0.f));

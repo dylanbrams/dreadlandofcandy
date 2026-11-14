@@ -5,6 +5,8 @@
 #include "UI/JamScreens.h"
 #include "Components/Border.h"
 #include "Components/TextBlock.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/Texture.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "Input/HittestGrid.h"
@@ -65,6 +67,27 @@ bool FJamHudInputTest::RunTest(const FString&)
     FJamHudView View;
     JamHud::Sample(TEXT("hud"), View);
     Hud->ApplyView(View, 10.f);
+    // Diagnose the MID parameters as well as the GAS read: replacing an icon
+    // must retain the material and continue updating its radial parameter.
+    UMaterialInstanceDynamic* OriginalCooldown = Hud->SkillIconMaterials[1];
+    TestNotNull(TEXT("cooldown material is loadable"), OriginalCooldown);
+    if (OriginalCooldown)
+    {
+        float Ratio = -1.f;
+        TestTrue(TEXT("Cooldown scalar exists"), OriginalCooldown->GetScalarParameterValue(FMaterialParameterInfo(TEXT("Cooldown")), Ratio));
+        TestEqual(TEXT("sample cooldown reaches the material"), Ratio, 0.6f);
+        View.Skills[1].IconPath = TEXT("/Game/Art/UI/Skills/T_Skill_K02");
+        Hud->ApplyView(View, 10.f);
+        TestEqual(TEXT("class icon load retains the MID"), Hud->SkillIconMaterials[1].Get(), OriginalCooldown);
+        UTexture* IconTexture = nullptr;
+        TestTrue(TEXT("icon texture parameter exists"), OriginalCooldown->GetTextureParameterValue(FMaterialParameterInfo(TEXT("IconTexture")), IconTexture));
+        TestTrue(TEXT("class icon texture actually loaded"), IconTexture && IconTexture->GetName() == TEXT("T_Skill_K02"));
+        View.Skills[1].Cooldown = 0.25f;
+        Hud->ApplyView(View, 10.f);
+        OriginalCooldown->GetScalarParameterValue(FMaterialParameterInfo(TEXT("Cooldown")), Ratio);
+        TestEqual(TEXT("cooldown updates after icon replacement"), Ratio, 0.25f);
+        AddInfo(FString::Printf(TEXT("Cooldown MID retained through K02 icon load; scalar %.2f"), Ratio));
+    }
     Paint();
     Click(Hud->SkillTiles[0], EJamHudAction::Skill1, TEXT("basic tile"));
     Click(Hud->SkillTiles[1], EJamHudAction::Skill2, TEXT("signature tile"));

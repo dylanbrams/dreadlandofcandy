@@ -8,6 +8,7 @@
 #include "Gas/JamGameplayTags.h"
 #include "Gas/JamResolveAttributeSet.h"
 #include "Testing/JamAbilityTestRig.h"
+#include "Game/JamPlayerState.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -225,6 +226,43 @@ bool FJamSkillsTest::RunTest(const FString& Parameters)
 
 	DestroyTestWorld(World);
 	return true;
+}
+
+// Diagnostic/regression for the actual PlayerState-owned cooldown path used by AJamHUD.
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamCooldownHudReadTest, "Jam.Gas.CooldownHudRead", JamFlags)
+bool FJamCooldownHudReadTest::RunTest(const FString&)
+{
+    UAbilitySystemGlobals::Get().InitGlobalData();
+    UWorld* World = CreateTestWorld();
+    AJamTestCombatant* Avatar = SpawnCombatant(World, FVector::ZeroVector, JamGameplayTags::Team_Hero);
+    AJamPlayerState* Player = World->SpawnActor<AJamPlayerState>();
+    Player->InitForAvatar(Avatar);
+    UAbilitySystemComponent* ASC = Player->GetAbilitySystemComponent();
+    const EJamSkill Skills[] = { EJamSkill::Lecture, EJamSkill::FormALine, EJamSkill::LastJudgment };
+    const FGameplayTag Tags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Judgment };
+    for (int32 i = 0; i < UE_ARRAY_COUNT(Skills); ++i)
+    {
+        const float Expected = Player->GetProgression().GetSkillNumbers(Skills[i]).Cooldown;
+        TestTrue(TEXT("starting skill casts on the real owner"), ASC->TryActivateAbility(Player->GetSkillHandle(Skills[i])));
+        const FGameplayEffectQuery Query = FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(Tags[i]));
+        const TArray<TPair<float, float>> Effects = ASC->GetActiveEffectsTimeRemainingAndDuration(Query);
+        TestEqual(TEXT("HUD query finds one cooldown"), Effects.Num(), 1);
+        if (Effects.Num() != 1) { continue; }
+        AddInfo(FString::Printf(TEXT("%s: remaining=%.3f duration=%.3f expected=%.3f ratio=%.3f"),
+            *Tags[i].ToString(), Effects[0].Key, Effects[0].Value, Expected, Effects[0].Key / FMath::Max(Effects[0].Value, SMALL_NUMBER)));
+        TestTrue(TEXT("real progression duration survives application"), FMath::IsNearlyEqual(Effects[0].Value, Expected));
+        TestTrue(TEXT("newly cast ratio is one"), Effects[0].Value > 0.f && FMath::IsNearlyEqual(Effects[0].Key / Effects[0].Value, 1.f));
+    }
+    World->Tick(LEVELTICK_All, 0.25f);
+    for (const FGameplayTag& Tag : Tags)
+    {
+        const auto Effects = ASC->GetActiveEffectsTimeRemainingAndDuration(
+            FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(Tag)));
+        TestTrue(TEXT("cooldown still present after a quarter second"), Effects.Num() == 1);
+        if (Effects.Num() == 1) { TestTrue(TEXT("HUD ratio decreases with world time"), Effects[0].Key > 0.f && Effects[0].Key < Effects[0].Value); }
+    }
+    DestroyTestWorld(World);
+    return true;
 }
 
 #endif

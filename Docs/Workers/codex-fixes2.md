@@ -1,8 +1,23 @@
-# CODEX Fixes2 — HOLD
+# CODEX Fixes2 — GO received; verification in progress
 
-Read CLAUDE.md, STATUS, RELEASE_PLAN and Fixes2-plan. The Fixes2 split governs.
-Only CODEX-owned files are edited. No tests, game/editor, screenshots, packaging,
-pytest, deploys or subagents during HOLD. All behavior below is **unverified**.
+Read CLAUDE.md, STATUS, RELEASE_PLAN and Fixes2-plan. Its later cc64ce0 update
+assigns all eight fixes to CODEX while CLAUDE is out of quota. Dylan confirmed
+the takeover in this thread and then explicitly said **GO**. Earlier HOLD was
+respected: no tests, game/editor, screenshots, packaging, pytest, deploys or
+subagents before GO. Verification is now underway, one Unreal job at a time.
+No backend deployment or upload is authorized. Round three remains separate.
+
+## Current checkpoint (GO; engine returned, verification resumed)
+
+| Row | Commits / files | Current state and remaining work |
+| --- | --- | --- |
+| 8 | caa6046; JamHUD.cpp | Compiled; pause/caption screenshot and story-resume check pending. |
+| 7 | GasTests.cpp, UiHudInputTests.cpp diagnostics (uncommitted) | GAS read passes; sample material sweeps. Dylan confirmed the sweep is visible in the current build. P1 failure not reproduced; no production cooldown edit. |
+| 2+3 | 835b8a4; JamQuestMarker.*, JamHUD.cpp | Compiled original; screenshot exposed oversized nearby marker. Smaller scale/gold tip and GameMode/VillageFlow directions await compile/review. |
+| 1 | ac33908; GameMode/VillageFlow, JamLines.*, Jokes | Code compiled. Import 25 WAVs and sync/skip verification pending; stale queue test corrected, awaiting rerun. |
+| 4 | aa99964 contract, 7bc1f8b client, 03bd006 HUD, backend a0af558 + 650d97e | Backend 149 tests pass. Async request guards, UI checks, 80-char contract clarification and local stub await compile/runtime verification. |
+| 5 | 7bc1f8b; JamVillageQuests.*, VillageFlow, JamScreens, VillageQuestTests | Pure relationship/proposal tests passed in first suite. Full flow rerun and multi-step/level-up visual review pending. |
+| 6 | 2fc58bc; jobs.json, shield manifest/preview/review metadata, Declared | Dylan approved, GO received. Import script and JamHero left-hand shield code prepared; not yet built/imported or inspected in game. |
 
 ## 8 — subtitles over menus
 
@@ -40,16 +55,37 @@ Evidence collected during HOLD:
 Root cause: **not established**. Hypotheses still requiring live evidence:
 packaged material/shader state or a runtime difference in the queried effects.
 Do not claim a duration or parameter bug based on guesses. No functional change
-to cooldowns or ratio test until the actual failure is identified. Investigation
-is blocked by HOLD's no-game/no-tests rule; remaining independent rows proceed.
+to cooldowns before live evidence. During HOLD the investigation was blocked
+by the no-game/no-tests rule; remaining independent rows proceeded.
+
+**Post-GO outcome:** GAS diagnostic passes (real PlayerState, all three skills);
+rendered fixed sample shows the sweep. Dylan explicitly answered "Yes, the sweep
+is visible" while playing the latest compiled game. Thus #7 is working in the
+current build, with no production cooldown patch warranted. The old P1 report's
+root cause is not established and no claim is made to have diagnosed that past
+package. Keep the read/MID diagnostics as regression coverage and check the next
+package when packaging is authorized in the release flow.
+
+Dylan then clarified the visual improvement he wants: big icon as the button
+background, small organized text, so the recharge graphic is larger. Scoped
+that work to JamHudWidget.cpp/BuildSkillBar: 112x112 icon-backed button face
+(previous icon 48x48), compact 12pt key chip, 11pt name / 9pt rank footer,
+damage-color strip retained. Existing cooldown MID now fills the face. No GAS
+change. This is a requested layout improvement, separate from the unreproduced
+P1 defect. The editor build and all 82 tests now pass. Inspected
+`Saved/Screenshots/WindowsEditor/fixes2-large-skill-icons-settled.png` at 1920x1080:
+all three icons fill their button faces, key chips and name/rank footers are
+readable, and the sample Line icon shows its partial grey/color sweep. First
+3-second capture had pending shader/texture preparation; the settled 12-second
+capture is the accepted visual evidence. No additional cooldown/GAS patch.
 
 ## Requests
 
-- CLAUDE: marker style will fold Fenella into active red/gold. Please replace
-  "golden triangle" directions/hints with "candy cane" in your GameMode and
-  VillageFlow files. No changes to those files by CODEX.
-- CLAUDE: please own the requested note-stub.py proposal route; Scripts/ is
-  outside CODEX ownership. HUD proposal hooks are implemented with row 4.
+- With the full takeover, CODEX has replaced runtime marker directions in
+  GameMode/VillageFlow with "candy cane" and added the requested local proposal
+  stub route (not launched during HOLD). Existing recorded RealityIntro_05 says
+  "golden triangle"; its exact caption stays synced to the recording. Review
+  this legacy phrase in context at GO; no unrequested voice regeneration.
 - Dylan confirmed in this thread: keep the note/proposal editor at **80
   characters**. No NoteEditor change requested. Backend's 160-character ceiling
   remains a validation upper bound, not a request to enlarge the editor.
@@ -98,7 +134,7 @@ HUD editor compile succeeded via Scripts/build.ps1 (80.61 seconds).
 Backend commit: a0af558 in backend's own repository. All behavior unverified.
 HUD commit: 03bd006. No Unreal job is running after this compile.
 
-## 6 — Meshy knight shield (generated; STOP for Dylan's approval)
+## 6 — Meshy knight shield (generated; Dylan approved preview after GO)
 
 Read GenerationRunbook, styles.json, ASSETS budgets, existing generation status
 and the SK_Hero.png reference corresponding to SK_Hero_Rig. Reference: grim
@@ -127,6 +163,71 @@ line to Docs/Declared.md. GLB remains a local delivery under the existing
 ImportSource/*/*.glb ignore rule; manifest/thumbnail/job/review state are committed.
 No self-approval, import or game/editor activity. Await Dylan before further
 shield work; actual game use additionally waits for GO.
+
+Dylan subsequently wrote "The shield is fine from this angle, we'll just go
+with it." Approval is now granted, and GO is also granted. Import/attachment
+and game-camera inspection are the remaining steps. Historical pending-approval
+metadata in the generation commit records the state at delivery, not a new gate.
+
+## Inherited rows 1 and 5
+
+- 1: ac33908, GameMode/VillageFlow and JamLines (with Jokes source), implements
+  the five reality-show intro captions and twenty once-per-session pickups.
+  ShowCaption takes clip duration +0.4s when available. Read source and inherited
+  handoff; code was included in the successful editor compiles above. Pending:
+  import 25 named WAVs to /Game/Audio/VO/, caption/voice sync and skip review.
+- 5: 7bc1f8b, JamVillageQuests, VillageFlow, JamScreens and VillageQuestTests,
+  implements per-giver relationship levels, scaling/multi-step jobs and encores.
+  Code is compiled. Pending: full tests and offline village verification;
+  inspect steps, payout, journal and level-up behavior in game.
+
+## Post-GO evidence
+
+- Backend: Luna read backend README/pytest.ini and ran
+  `.venv\\Scripts\\python.exe -m pytest -q` in backend. Exit 0: **148 passed in
+  2.18s**, including test_proposals.py. MemoryStore/FakeModel only; no live model
+  or deployment. No edits by the verifier. Primary owns all Unreal work.
+- Voice source audit after GO: all 25 JamLines captions exactly match the
+  generation manifest, all 25 WAVs are present, mono 48kHz, 3.437-10.217 seconds.
+  No mismatches or missing files. This checks source mapping/format/duration,
+  not subjective listening or imported Unreal SoundWave state.
+- Follow-up review found server merged pacify/feed after truncating the level
+  steps, unlike the client; it also lost the larger pacified cohort. Backend
+  650d97e merges first and preserves max count, with a regression. Luna reran
+  full pytest: **149 passed in 2.06s**, exit 0, still FakeModel only.
+- First full Unreal suite: 81 passed, 1 failed, EXIT CODE -1. GAS diagnostic
+  Jam.Gas.CooldownHudRead **passed** on the real PlayerState owner: Lecture
+  1.500/1.500, Line 4.000/4.000, Judgment 30.000/30.000, all ratios 1.000 and
+  decreasing after world time advances. No functional cooldown change made.
+- Looked at fixes2-cooldown-sample.png: sample Form A Line at 0.6 has a partial
+  grey/color radial sweep, narrowing the failure away from a universally broken
+  material. Added a further MID/icon-replacement diagnostic to existing HUD test;
+  not run yet. Root cause of reported live/package cooldown issue remains open.
+- The one failure was a stale GameplayFlow assertion requiring an empty queue
+  after recruitment. Row 1 intentionally queues RealityPickup_01 for the new
+  walk after Direct cleared intro captions. Test now checks no RealityIntro IDs
+  remain and that the walk pickup is retained; production queue was not changed.
+- Read-only Luna review proved both optional generators could run concurrently,
+  and a later branches callback replaced Branches wholesale, deleting a valid
+  proposed third route. Added symmetric pending guards; once proposing, turn
+  off further improvise for that offer. Authored choices remain enabled. New
+  headless UI checks cover the pending states; compile/runtime verification next.
+- The first rendered marker was excessively large beside Fenella, with the
+  hook off-screen (same sample screenshot). Reduced inactive/active scale to
+  0.60/0.85, kept active larger/moving, warmed the gold and made the tip pale/gold.
+  Recheck at game distance after compiling; no screenshot approval inferred.
+- **Engine handed to Dylan** after the first suite completed and he requested
+  a play command. Primary is doing source/backend work only until he closes it.
+  Do not build, import, run automation or launch another game during this handoff.
+- Dylan then confirmed the game was closed and said "Go ahead." Engine work
+  resumed. Editor compile succeeded (214.16s); import exited 0 with explicit
+  VO PASS count=25 and SHIELD PASS markers. All imported sound durations are
+  positive and under 30s. Shield imported at 93.73x28.82x190.18cm, one material;
+  runtime fits its height to 76cm on the knight's left hand.
+- Full no-build Jam suite after import: **82 passed, 0 failed**, shell exit 0,
+  `Saved/Automation/RunTests.log` ends `EXIT CODE: 0`. GameplayFlow passes;
+  MouseControls passes with `Cooldown MID retained through K02 icon load;
+  scalar 0.25`. Luna ran this once with exclusive engine ownership and returned it.
 
 ## Verify at GO
 
