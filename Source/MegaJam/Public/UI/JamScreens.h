@@ -52,6 +52,8 @@ enum class EJamMenuAction : uint8
 	QuestBranch1,
 	ImproviseQuest,
 	CancelQuestOffer,
+	QuestBranch2,     // Fixes2 #4: the player's plan (a third route)
+	ProposePlan,      // Fixes2 #4: open the text editor for a proposal
 };
 
 struct MEGAJAM_API FJamMenuOption

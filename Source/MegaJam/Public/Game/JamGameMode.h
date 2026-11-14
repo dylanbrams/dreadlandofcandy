@@ -62,6 +62,10 @@ public:
 	void ChooseVillageBranch(int32 Choice);
 	void RequestVillageBranches();
 	void CancelVillageOffer();
+	/** Fixes2 #4: the player's own plan for the offered job (QuestBranches.md, "Proposals"); the menu's text editor sends it. */
+	void RequestVillageProposal(const FString& Text);
+	/** Three ready-made plans for the offered job, for the gamepad editor's suggestion buttons. */
+	TArray<FString> ProposalSuggestions() const;
 
 	/** R4b: a nuisance asks to start a charge (shoot rolling, Dignity left, room among the chargers). */
 	bool RequestCharge(AJamNuisance* Nuisance, float HeroDistance);
@@ -92,6 +96,11 @@ private:
 	bool bAutoVillage = false;
 	void OfferVillageQuest(int32 Index);
 	void ResolveVillageBranches(int32 Serial, int32 Index, bool bOk, const FString& Body);
+	void ResolveVillageProposal(int32 Serial, int32 Index, bool bOk, const FString& Body);
+	int32 ProposalSerial = 0;
+	/** Spawn the active job's current step at its camp (Fixes2 #5: jobs have steps). */
+	void StartVillageStep();
+	int32 SpawnedVillageStep = INDEX_NONE;
 	FJamQuestOfferView QuestOffer;
 	int32 OfferedQuest = INDEX_NONE;
 	int32 BranchRequestSerial = 0;

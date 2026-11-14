@@ -416,17 +416,18 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 	AJamGameState* GS = GetJamGameState();
 	const int32 Side = VillageQuests.Active();
 	if (bVillageExploration && Side != INDEX_NONE && VillageQuests.State(Side) == EJamVillageQuestState::Active
-		&& VillageQuests.Offer(Side).Verb == EJamStageVerb::Interact)
+		&& VillageQuests.CurrentStep(Side).Verb == EJamStageVerb::Interact)
 	{
 		if (!InHero || InHero != Hero.Get() || !Target || !Nuisances.Contains(Target) || !Target->IsPacified()) { return false; }
 		if (FVector::Dist(InHero->GetActorLocation(), Target->GetActorLocation()) > 250.f + Target->ExtraReach() || !Target->Treat()) { return false; }
+		const EJamTargetKind Treated = VillageQuests.CurrentStep(Side).Target;
 		VillageQuests.Report(EJamStageVerb::Interact);
 		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Treat); }
 		UpdateVillageObjective();
 		if (VillageQuests.State(Side) == EJamVillageQuestState::Ready)
 		{
 			Direct(TEXT("Everyone treated! Return to the quest giver and collect your payment."));
-			SayOnce(VillageQuests.Offer(Side).Target == EJamTargetKind::Goblin ? TEXT("HeroPickup_04") : TEXT("HeroPickup_05"));
+			SayOnce(Treated == EJamTargetKind::Goblin ? TEXT("HeroPickup_04") : TEXT("HeroPickup_05"));
 		}
 		return true;
 	}

@@ -41,6 +41,10 @@ public:
 	void RequestQuestBranches(const FJamVillageQuestDef& Quest, const TArray<FJamVillageQuestDef>& Routes,
 		const TArray<FName>& Completed, const TArray<FString>& History, const FString& Motif, FOnBody OnDone);
 
+	/** POST /v1/director/quest/propose (Fixes2 #4, QuestBranches.md "Proposals"). Proposal already cleaned, at most 160 chars. */
+	void RequestQuestProposal(const FJamVillageQuestDef& Quest, int32 Level, const FString& Proposal,
+		const TArray<FName>& Completed, const TArray<FString>& History, const FString& Motif, FOnBody OnDone);
+
 private:
 	void Post(const FString& Path, const FString& Body, FOnBody OnDone);
 

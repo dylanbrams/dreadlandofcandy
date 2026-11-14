@@ -122,7 +122,6 @@ bool FJamVillageFlowTest::RunTest(const FString&)
 	{
 		const FJamVillageQuestDef& Quest = GM->VillageQuests.Offer(Index);
 		const int32 Giver = GM->VillageQuests.GiverIndex(Index);
-		TotalRewards += Quest.Reward;
 		Hero->SetActorLocation(GM->Villagers[Giver]->GetActorLocation() + FVector(90, 0, 96));
 		TestTrue(TEXT("talk offers quest routes"), GM->HandleVillageInteract(Hero));
 		TestTrue(TEXT("choice screen opens before accepting"), GM->QuestOffer.bVisible);
@@ -149,6 +148,10 @@ bool FJamVillageFlowTest::RunTest(const FString&)
             GM->ChooseVillageBranch(0);
         }
 		const int32 Before = PS->Sprinkles;
+		// Fixes2 #5: a giver's second job pays their Acquaintance bonus on top of the reward.
+		const int32 Promised = GM->VillageQuests.Payout(Index);
+		TestEqual(TEXT("payout is reward plus level bonus"), Promised, Quest.Reward + JamVillageQuests::LevelBonus(GM->VillageQuests.Level(Giver)));
+		TotalRewards += Promised;
 		TestTrue(TEXT("early talk is allowed"), GM->HandleVillageInteract(Hero));
 		TestEqual(TEXT("early talk grants no money"), PS->Sprinkles, Before);
 		if (Quest.Verb == EJamStageVerb::Collect)
@@ -185,9 +188,9 @@ bool FJamVillageFlowTest::RunTest(const FString&)
 		TestEqual(TEXT("objectives alone pay nothing"), PS->Sprinkles, Before);
 		Hero->SetActorLocation(GM->Villagers[Giver]->GetActorLocation() + FVector(90, 0, 96));
 		TestTrue(TEXT("turn in at giver"), GM->HandleVillageInteract(Hero));
-		TestEqual(TEXT("giver pays promised reward"), PS->Sprinkles, Before + Quest.Reward);
+		TestEqual(TEXT("giver pays promised reward"), PS->Sprinkles, Before + Promised);
 		TestFalse(TEXT("quest cannot be turned in again"), GM->VillageQuests.TurnIn(Index));
-        TestEqual(TEXT("repeated turn-in cannot duplicate reward"), PS->Sprinkles, Before + Quest.Reward);
+        TestEqual(TEXT("repeated turn-in cannot duplicate reward"), PS->Sprinkles, Before + Promised);
         const int32 Next = GM->VillageQuests.ForGiver(Quest.GiverLocation);
         TestEqual(TEXT("giver marker reflects follow-up availability"), GM->VillagerMarkers[Giver]->IsHidden(), Next == INDEX_NONE);
 	}
@@ -308,6 +311,149 @@ bool FJamQuestBranchesTest::RunTest(const FString&)
     FJamScreenView Sample;
     TestTrue(TEXT("branch UI can be previewed"), JamScreens::Sample(TEXT("questbranches"), Sample));
     TestTrue(TEXT("journal UI can be previewed"), JamScreens::Sample(TEXT("quests"), Sample));
+    return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamQuestLevelsTest, "Jam.World.Quests.RelationshipLevels", VillageTestFlags)
+bool FJamQuestLevelsTest::RunTest(const FString&)
+{
+    FJamVillageQuestLog Log;
+    TArray<EJamQuestEvent> Events;
+    Log.OnChanged.AddLambda([&](const FJamVillageQuestEvent& Event) { Events.Add(Event.Type); });
+    Log.Recruit(); Log.FinishMain();
+    const int32 Mayor = 0;
+    TestEqual(TEXT("everyone starts a stranger"), Log.Level(Mayor), 0);
+    TestEqual(TEXT("level names"), JamVillageQuests::LevelName(0), FString(TEXT("Stranger")));
+    TestEqual(TEXT("names cap at Bestie"), JamVillageQuests::LevelName(9), FString(TEXT("Bestie")));
+    TestEqual(TEXT("ten authored jobs plus five encores"), Log.Num(), 15);
+    TestEqual(TEXT("encores are not authored jobs"), Log.NumAuthored(), 10);
+
+    // A stranger's first job is exactly as authored.
+    const int32 FirstCount = Log.Offer(0).Count;
+    TestTrue(TEXT("accept first job"), Log.Accept(0));
+    TestEqual(TEXT("level 0 leaves the job alone"), Log.Offer(0).Count, FirstCount);
+    TestEqual(TEXT("one step"), Log.StepCount(0), 1);
+    for (int32 i = 0; i < FirstCount; ++i) { Log.Report(EJamStageVerb::Pacify); }
+    TestEqual(TEXT("stranger payout has no bonus"), Log.Payout(0), Log.Offer(0).Reward);
+    TestTrue(TEXT("turn in"), Log.TurnIn(0));
+    TestEqual(TEXT("one job: acquaintance"), Log.Level(Mayor), 1);
+    TestTrue(TEXT("level-up event"), Events.Contains(EJamQuestEvent::LevelUp));
+
+    // Acquaintance: one more target, and abandoning does not stack the bonus.
+    const int32 Second = Log.ForGiver(TEXT("GiverMayor"));
+    TestEqual(TEXT("mayor's follow-up"), Second, 5);
+    const int32 SecondCount = Log.Offer(Second).Count;
+    TestTrue(TEXT("accept follow-up"), Log.Accept(Second));
+    TestEqual(TEXT("acquaintance adds a target"), Log.Offer(Second).Count, FMath::Min(SecondCount + 1, 8));
+    TestTrue(TEXT("abandon"), Log.Abandon());
+    TestEqual(TEXT("abandon undoes the scaling"), Log.Offer(Second).Count, SecondCount);
+    TestTrue(TEXT("accept again"), Log.Accept(Second));
+    TestEqual(TEXT("scaling applies once"), Log.Offer(Second).Count, FMath::Min(SecondCount + 1, 8));
+    TestEqual(TEXT("acquaintance bonus paid"), Log.Payout(Second), Log.Offer(Second).Reward + 25);
+    for (int32 i = 0; i < Log.Offer(Second).Count; ++i) { Log.Report(EJamStageVerb::Interact); }
+    TestTrue(TEXT("turn in follow-up"), Log.TurnIn(Second));
+    TestEqual(TEXT("two jobs: friend"), Log.Level(Mayor), 2);
+
+    // Friend: the encore opens, in two steps, and does not count toward the ten.
+    const int32 Encore = Log.ForGiver(TEXT("GiverMayor"));
+    TestTrue(TEXT("giver offers an encore"), Log.Offer(Encore).bEncore);
+    TestEqual(TEXT("encore available"), Log.State(Encore), EJamVillageQuestState::Available);
+    TestEqual(TEXT("friend's encore has two steps"), Log.StepCount(Encore), 2);
+    const TArray<FJamQuestStep> Steps = JamVillageQuests::Steps(Log.Offer(Encore));
+    for (const FJamQuestStep& S : Steps)
+    {
+        const FJamLocation* Camp = JamWorld::Find(S.Destination);
+        TestTrue(TEXT("every step at a real camp"), Camp && Camp->Kind == EJamLocationKind::Camp);
+        TestTrue(TEXT("step count in range"), S.Count >= 1 && S.Count <= 8);
+    }
+    TestTrue(TEXT("steps differ"), Steps[0].Verb != Steps[1].Verb || Steps[0].Target != Steps[1].Target || Steps[0].Destination != Steps[1].Destination);
+    TestTrue(TEXT("accept encore"), Log.Accept(Encore));
+    TestEqual(TEXT("encore not rescaled on accept"), Log.StepCount(Encore), 2);
+    TestFalse(TEXT("second step's verb does nothing yet"), Steps[1].Verb != Steps[0].Verb && Log.Report(Steps[1].Verb));
+    for (int32 i = 0; i < Steps[0].Count; ++i) { TestTrue(TEXT("first step advances"), Log.Report(Steps[0].Verb)); }
+    TestEqual(TEXT("moved to step two"), Log.Step(), 1);
+    TestTrue(TEXT("step event"), Events.Contains(EJamQuestEvent::StepDone));
+    TestEqual(TEXT("still active between steps"), Log.State(Encore), EJamVillageQuestState::Active);
+    TestEqual(TEXT("current step is the second"), Log.CurrentStep(Encore).Destination, Steps[1].Destination);
+    for (int32 i = 0; i < Steps[1].Count; ++i) { TestTrue(TEXT("second step advances"), Log.Report(Steps[1].Verb)); }
+    TestEqual(TEXT("ready after the last step"), Log.State(Encore), EJamVillageQuestState::Ready);
+    TestEqual(TEXT("friend bonus"), Log.Payout(Encore), Log.Offer(Encore).Reward + 50);
+    TestTrue(TEXT("turn in encore"), Log.TurnIn(Encore));
+    TestEqual(TEXT("three jobs: bestie"), Log.Level(Mayor), 3);
+    TestEqual(TEXT("encores do not count toward the ten"), Log.Completed(), 2);
+    TestEqual(TEXT("encore comes back"), Log.State(Encore), EJamVillageQuestState::Available);
+    int32 Before = 0, After = 0;
+    for (const FJamQuestStep& S : Steps) { Before += S.Count; }
+    for (const FJamQuestStep& S : JamVillageQuests::Steps(Log.Offer(Encore))) { After += S.Count; }
+    TestTrue(TEXT("the next encore is bigger"), After > Before);
+    const FJamScreenView Journal = JamScreens::Quests(Log, FJamMenuSettings());
+    TestTrue(TEXT("journal shows the relationship"), Journal.Quotes[0].Contains(TEXT("Bestie")));
+    TestTrue(TEXT("journal still counts ten"), Journal.Kicker.Contains(TEXT("OF 10")));
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamQuestProposalTest, "Jam.World.Quests.Proposals", VillageTestFlags)
+bool FJamQuestProposalTest::RunTest(const FString&)
+{
+    const FString Good = TEXT(R"({"v":1,"source":"model","quest_id":"council_rats","label":"Snack diplomacy","pitch":"Calm the rats, then win them over with celery.","reaction":"Bribery! Wonderful.","steps":[{"verb":"gather","target":"celery","count":3,"destination":"CampMeadowEast"},{"verb":"feed","target":"rat","count":3,"destination":"CampMeadowWest"}]})");
+    FJamQuestPlan Plan;
+    TestTrue(TEXT("contract example parses"), JamVillageQuests::ReadProposal(Good, TEXT("council_rats"), 0, Plan));
+    TestEqual(TEXT("two steps"), Plan.Steps.Num(), 2);
+    TestEqual(TEXT("gather is collect"), Plan.Steps[0].Verb, EJamStageVerb::Collect);
+    TestEqual(TEXT("celery mesh"), Plan.Steps[0].PickupMesh, FString(TEXT("SM_Celery")));
+    TestEqual(TEXT("feed is interact on rats"), Plan.Steps[1].Verb, EJamStageVerb::Interact);
+    TestEqual(TEXT("reaction kept"), Plan.Reaction, FString(TEXT("Bribery! Wonderful.")));
+    TestEqual(TEXT("step text"), JamVillageQuests::StepText(Plan.Steps[1]), FString(TEXT("Feed 3 rats celery at Meadow West")));
+
+    TestFalse(TEXT("cache is fine, refused is not"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"model\""), TEXT("\"refused\"")), TEXT("council_rats"), 0, Plan));
+    TestTrue(TEXT("cache accepted"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"model\""), TEXT("\"cache\"")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("wrong quest"), JamVillageQuests::ReadProposal(Good, TEXT("actual_nuts"), 0, Plan));
+    TestFalse(TEXT("unknown verb"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"feed\""), TEXT("\"summon\"")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("feeding goblins is not a thing"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"target\":\"rat\""), TEXT("\"target\":\"goblin\"")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("new target types refused"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"celery\""), TEXT("\"dragon\"")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("gathering where nothing grows"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("CampMeadowEast"), TEXT("CampMeadowWest")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("village is not a camp"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("CampMeadowWest"), TEXT("Village")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("fractional count"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"count\":3,\"destination\":\"CampMeadowWest\""), TEXT("\"count\":2.5,\"destination\":\"CampMeadowWest\"")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("empty reaction"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("Bribery! Wonderful."), TEXT("<>")), TEXT("council_rats"), 0, Plan));
+    TestFalse(TEXT("not json"), JamVillageQuests::ReadProposal(TEXT("Let's stick to the script"), TEXT("council_rats"), 0, Plan));
+
+    TestTrue(TEXT("big counts clamp"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"count\":3"), TEXT("\"count\":50")), TEXT("council_rats"), 0, Plan));
+    TestEqual(TEXT("count clamped to 8"), Plan.Steps[0].Count, 8);
+    TestEqual(TEXT("total clamped to 12"), Plan.Steps[0].Count + Plan.Steps[1].Count, 12);
+
+    const FString Merge = TEXT(R"({"v":1,"source":"model","quest_id":"council_rats","label":"Calm then feed","pitch":"p","reaction":"r","steps":[{"verb":"pacify","target":"rat","count":3,"destination":"CampMeadowWest"},{"verb":"feed","target":"rat","count":2,"destination":"CampMeadowWest"}]})");
+    TestTrue(TEXT("merge parses"), JamVillageQuests::ReadProposal(Merge, TEXT("council_rats"), 0, Plan));
+    TestEqual(TEXT("pacify then feed merges"), Plan.Steps.Num(), 1);
+    TestEqual(TEXT("merged step feeds them all"), Plan.Steps[0].Count, 3);
+
+    const FString Three = TEXT(R"({"v":1,"source":"model","quest_id":"council_rats","label":"Big","pitch":"p","reaction":"r","steps":[{"verb":"pacify","target":"rat","count":2,"destination":"CampMeadowWest"},{"verb":"gather","target":"almond","count":2,"destination":"CampMeadowEast"},{"verb":"pacify","target":"bug","count":2,"destination":"CampOrchardNear"}]})");
+    TestTrue(TEXT("three-step plan parses"), JamVillageQuests::ReadProposal(Three, TEXT("council_rats"), 0, Plan));
+    TestEqual(TEXT("strangers get two steps"), Plan.Steps.Num(), 2);
+    TestTrue(TEXT("three-step plan parses for a friend"), JamVillageQuests::ReadProposal(Three, TEXT("council_rats"), 2, Plan));
+    TestEqual(TEXT("third camp dropped"), Plan.Steps.Num(), 2);
+
+    // Selecting a plan: the client's reward, no level scaling, history says proposal.
+    FJamVillageQuestLog Log; Log.Recruit(); Log.FinishMain();
+    TestTrue(TEXT("good plan"), JamVillageQuests::ReadProposal(Good, TEXT("council_rats"), 0, Plan));
+    FJamQuestBranch Branch; Branch.Route = TEXT("proposal"); Branch.Label = Plan.Label; Branch.Plan = Plan.Steps; Branch.Variation.Pitch = Plan.Pitch;
+    const int32 Expected = Log.PlanReward(0, Plan.Steps);
+    TestTrue(TEXT("select plan"), Log.SelectBranch(0, Branch));
+    TestEqual(TEXT("plan reward from the client formula"), Log.Offer(0).Reward, Expected);
+    TestTrue(TEXT("reward bounded"), Expected >= 50 && Expected <= 300);
+    TestTrue(TEXT("accept plan"), Log.Accept(0));
+    TestEqual(TEXT("plan steps kept"), Log.StepCount(0), 2);
+    for (int32 i = 0; i < 3; ++i) { Log.Report(EJamStageVerb::Collect); }
+    TestEqual(TEXT("plan's second step"), Log.CurrentStep(0).Verb, EJamStageVerb::Interact);
+    for (int32 i = 0; i < 3; ++i) { Log.Report(EJamStageVerb::Interact); }
+    TestTrue(TEXT("plan turns in"), Log.TurnIn(0));
+    TestTrue(TEXT("history records the proposal"), Log.CompletedRoutes().Contains(TEXT("council_rats:proposal")));
+    TestEqual(TEXT("a plan earns the relationship too"), Log.Level(0), 1);
+
+    FJamScreenView Sample;
+    TestTrue(TEXT("proposal UI can be previewed"), JamScreens::Sample(TEXT("questproposal"), Sample));
+    TestTrue(TEXT("plan is the third route"), Sample.Options.Num() >= 3 && Sample.Options[2].Action == EJamMenuAction::QuestBranch2);
+    FJamQuestOfferView Offer; Offer.bVisible = true; Offer.bCanPropose = true; Offer.Branches.SetNum(2);
+    const FJamScreenView Screen = JamScreens::QuestBranches(Offer, FJamMenuSettings());
+    TestTrue(TEXT("propose button when online"), Screen.Options.ContainsByPredicate([](const FJamMenuOption& O) { return O.Action == EJamMenuAction::ProposePlan && O.bEnabled; }));
     return true;
 }
 #endif

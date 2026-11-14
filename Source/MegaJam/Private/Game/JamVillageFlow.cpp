@@ -21,6 +21,49 @@ namespace JamVillageFlow
 {
 	constexpr float TalkRange = 300.f;
 	constexpr int32 FenellaTarget = -2;
+
+	/** "Pacify 3 rats at Meadow West, then gather 3 celery at Meadow East". */
+	FString PlanText(const TArray<FJamQuestStep>& Steps)
+	{
+		FString Out;
+		for (int32 i = 0; i < Steps.Num(); ++i)
+		{
+			FString Step = JamVillageQuests::StepText(Steps[i]);
+			if (i > 0 && !Step.IsEmpty()) { Out += TEXT(", then "); Step[0] = FChar::ToLower(Step[0]); }
+			Out += Step;
+		}
+		return Out;
+	}
+
+	// Docs/Design/Jokes.md, "Villagers: relationship levels".
+	FString LevelNote(int32 Level)
+	{
+		switch (FMath::Clamp(Level, 0, JamVillageQuests::MaxLevel))
+		{
+		case 0: return TEXT("Stranger. Finish a job for them to become Acquaintances.");
+		case 1: return TEXT("Acquaintance: one more target than usual, +25 sprinkles.");
+		case 2: return TEXT("Friend: their jobs come in two parts, +50 sprinkles.");
+		default: return TEXT("Bestie: bigger jobs across two camps, +75 sprinkles.");
+		}
+	}
+
+	FString LevelUpLine(const FString& Giver, int32 Level)
+	{
+		switch (FMath::Clamp(Level, 0, JamVillageQuests::MaxLevel))
+		{
+		case 1: return Giver + TEXT(" nods at you in the street now. You're Acquaintances. Their next job will be a little bigger.");
+		case 2: return Giver + TEXT(" has saved you a seat at the harvest supper. You're Friends. Their jobs now come in two parts.");
+		case 3: return Giver + TEXT(" made you a friendship bracelet out of liquorice. Besties. I've already sold the rights.");
+		default: return FString();
+		}
+	}
+
+	// Fenella when a proposal can't be used (any failure, refusal or timeout).
+	const TCHAR* const ScriptLines[] = {
+		TEXT("Fenella: Let's stick to the script, darling. The script is very good. I wrote it."),
+		TEXT("Fenella: Bold. Unfilmable, but bold. Pick one of mine."),
+		TEXT("Fenella: Legal says no. I am legal. Choose a route."),
+	};
 }
 
 void AJamGameMode::Direct(const FString& Text)
@@ -110,14 +153,14 @@ int32 AJamGameMode::VillageTarget(const AJamHero* InHero) const
 bool AJamGameMode::VillageInteractPrompt(const AJamHero* InHero, AActor*& Anchor, FString& Text) const
 {
 	const int32 ActiveQuest = VillageQuests.Active();
-	if (InHero && bVillageExploration && ActiveQuest != INDEX_NONE && VillageQuests.Offer(ActiveQuest).Verb == EJamStageVerb::Interact)
+	if (InHero && bVillageExploration && ActiveQuest != INDEX_NONE && VillageQuests.CurrentStep(ActiveQuest).Verb == EJamStageVerb::Interact)
 	{
 		AJamNuisance* N = InHero->FindInteractTarget();
 		if (N && Nuisances.Contains(N))
 		{
 			Anchor = N;
 			Text = InHero->IsUsingGamepad() ? TEXT("Hold (A)  ") : TEXT("Click / Hold [F]  ");
-			Text += VillageQuests.Offer(ActiveQuest).Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
+			Text += VillageQuests.CurrentStep(ActiveQuest).Target == EJamTargetKind::Goblin ? TEXT("Brush teeth") : TEXT("Feed celery");
 			return true;
 		}
 	}
@@ -139,9 +182,9 @@ bool AJamGameMode::VillageInteractPrompt(const AJamHero* InHero, AActor*& Anchor
 	}
 	const FJamVillageQuestDef& Quest = VillageQuests.Offer(Index);
 	const EJamVillageQuestState State = VillageQuests.State(Index);
-	Text = Key + TEXT("  ") + Quest.GiverName;
+	Text = Key + TEXT("  ") + Quest.GiverName + TEXT(" (") + JamVillageQuests::LevelName(VillageQuests.Level(Target)) + TEXT(")");
 	if (State == EJamVillageQuestState::Ready) { Text += TEXT(": claim reward"); }
-	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { Text += FString::Printf(TEXT(": %s (%d sprinkles)"), *Quest.Title, Quest.Reward); }
+	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { Text += FString::Printf(TEXT(": %s (%d sprinkles)"), *Quest.Title, VillageQuests.Payout(Index)); }
 	else { Text += TEXT(": talk"); }
 	return true;
 }
@@ -167,21 +210,28 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 	if (Index == INDEX_NONE) { Direct(JamVillageQuests::Givers()[Target].Name + TEXT(" says: Thanks again, hero. The village remembers. The invoice has been paid.")); return true; }
 	const FJamVillageQuestDef& Quest = VillageQuests.Offer(Index);
 	const EJamVillageQuestState State = VillageQuests.State(Index);
+	// Captured before TurnIn: an encore is rebuilt bigger the moment it is paid.
+	const int32 Payout = VillageQuests.Payout(Index);
+	const FString GiverName = Quest.GiverName, Title = Quest.Title;
+	const int32 LevelBefore = VillageQuests.Level(Target);
 	if (State == EJamVillageQuestState::Ready && VillageQuests.TurnIn(Index))
 	{
 		if (AJamPlayerState* PS = GetHeroState())
 		{
-			PS->Sprinkles += Quest.Reward;
+			PS->Sprinkles += Payout;
 			PS->EditProgression().AddXp(EJamXpSource::Quest);
 			ApplyHeroStats();
 		}
 		ClearStageActors();
 		UpdateVillageObjective();
 		JamSfx::Play(this, TEXT("Stage_Complete"));
-		Direct(FString::Printf(TEXT("%s thanks you! %d sprinkles and 40 XP. A real payment. I shall try not to take it personally."), *Quest.GiverName, Quest.Reward));
+		const int32 LevelNow = VillageQuests.Level(Target);
+		Direct(LevelNow > LevelBefore
+			? FString::Printf(TEXT("%d sprinkles and 40 XP. %s"), Payout, *JamVillageFlow::LevelUpLine(GiverName, LevelNow))
+			: FString::Printf(TEXT("%s thanks you! %d sprinkles and 40 XP. A real payment. I shall try not to take it personally."), *GiverName, Payout));
 		if (VillageQuests.Completed() == JamVillageQuests::All().Num()) { SayOnce(TEXT("ReturnPickup_02")); }
 		else if (VillageQuests.Completed() * 2 >= JamVillageQuests::All().Num()) { SayOnce(TEXT("HeroPickup_06")); }
-		UE_LOG(LogJam, Log, TEXT("JamQuest: turned in %s reward=%d completed=%d"), *Quest.Title, Quest.Reward, VillageQuests.Completed());
+		UE_LOG(LogJam, Log, TEXT("JamQuest: turned in %s reward=%d completed=%d level=%d"), *Title, Payout, VillageQuests.Completed(), LevelNow);
 	}
 	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { OfferVillageQuest(Index); }
 	else if (State == EJamVillageQuestState::Locked) { Direct(Quest.GiverName + TEXT(" has work for you after our three quests. First, follow my golden triangle.")); }
@@ -217,36 +267,48 @@ void AJamGameMode::AcceptVillageQuest(int32 Index)
 {
 	if (!VillageQuests.Accept(Index)) { return; }
 	const FJamVillageQuestDef& Quest = VillageQuests.Offer(Index);
-	const FJamLocation* Destination = JamWorld::Find(Quest.Destination);
+	StartVillageStep();
+	Direct(FString::Printf(TEXT("%s: %s Plan: %s. Reward: %d sprinkles and 40 XP. Follow the triangle, then return to me."),
+		*Quest.GiverName, *Quest.Request, *JamVillageFlow::PlanText(JamVillageQuests::Steps(Quest)), VillageQuests.Payout(Index)));
+	JamSfx::Play(this, TEXT("Quest_Accept"));
+	SayOnce(SaidOnce.Contains(TEXT("RealityPickup_04")) ? TEXT("RealityPickup_05") : TEXT("RealityPickup_04"));
+	UE_LOG(LogJam, Log, TEXT("JamQuest: accepted %s route=%s steps=%d level=%d"), *Quest.Title, *Quest.Route.ToString(),
+		VillageQuests.StepCount(Index), VillageQuests.LevelForQuest(Index));
+}
+
+void AJamGameMode::StartVillageStep()
+{
+	const int32 Active = VillageQuests.Active();
+	if (Active == INDEX_NONE) { return; }
+	SpawnedVillageStep = VillageQuests.Step();
+	const FJamQuestStep Step = VillageQuests.CurrentStep(Active);
+	const FJamLocation* Destination = JamWorld::Find(Step.Destination);
 	if (!Destination) { return; }
 	ClearStageActors();
 	FieldBounds = FBox2D(Destination->Position - FVector2D(650.f), Destination->Position + FVector2D(650.f));
 	GroundZ = TraceGround(Destination->Position);
-	if (Quest.Verb == EJamStageVerb::Collect)
+	if (Step.Verb == EJamStageVerb::Collect)
 	{
-		for (int32 i = 0; i < Quest.Count; ++i)
+		for (int32 i = 0; i < Step.Count; ++i)
 		{
-			const float Angle = UE_TWO_PI * i / Quest.Count;
+			const float Angle = UE_TWO_PI * i / Step.Count;
 			const FVector2D Spot = Destination->Position + FVector2D(FMath::Cos(Angle), FMath::Sin(Angle)) * 330.f;
 			const FTransform Transform(FVector(Spot, TraceGround(Spot) + 25.f));
 			AJamPickup* P = GetWorld()->SpawnActorDeferred<AJamPickup>(AJamPickup::StaticClass(), Transform);
-			if (P) { P->ArtMesh = Quest.PickupMesh; P->FinishSpawning(Transform); Pickups.Add(P); }
+			if (P) { P->ArtMesh = Step.PickupMesh; P->FinishSpawning(Transform); Pickups.Add(P); }
 		}
 	}
 	else
 	{
 		FJamStageDef Stage;
-		Stage.Target = Quest.Target;
-		Stage.Count = Quest.Count;
-		SpawnTargets(Stage, Quest.Count, false);
+		Stage.Target = Step.Target;
+		Stage.Count = Step.Count;
+		SpawnTargets(Stage, Step.Count, false);
 		// These are noisy constituents. Pacifying them is the errand; no film take or crop timer runs.
 		for (AJamNuisance* N : Nuisances) { if (N) { N->Attack.bAttacks = false; } }
 	}
 	UpdateVillageObjective();
-	Direct(FString::Printf(TEXT("%s: %s Target: %d. Reward: %d sprinkles and 40 XP. Follow the triangle, then return to me."), *Quest.GiverName, *Quest.Request, Quest.Count, Quest.Reward));
-	JamSfx::Play(this, TEXT("Quest_Accept"));
-	SayOnce(SaidOnce.Contains(TEXT("RealityPickup_04")) ? TEXT("RealityPickup_05") : TEXT("RealityPickup_04"));
-	UE_LOG(LogJam, Log, TEXT("JamQuest: accepted %s"), *Quest.Title);
+	UE_LOG(LogJam, Log, TEXT("JamQuest: step %d/%d %s"), SpawnedVillageStep + 1, VillageQuests.StepCount(Active), *JamVillageQuests::StepText(Step));
 }
 
 void AJamGameMode::UpdateVillageObjective()
@@ -264,14 +326,17 @@ void AJamGameMode::UpdateVillageObjective()
 	if (Active != INDEX_NONE)
 	{
 		const FJamVillageQuestDef& Quest = VillageQuests.Offer(Active);
+		const FJamQuestStep Step = VillageQuests.CurrentStep(Active);
+		const int32 StepCount = VillageQuests.StepCount(Active);
+		const FString StepTag = StepCount > 1 ? FString::Printf(TEXT("Step %d/%d: "), VillageQuests.Step() + 1, StepCount) : FString();
 		const bool bReady = VillageQuests.State(Active) == EJamVillageQuestState::Ready;
-		const FJamLocation* Location = JamWorld::Find(bReady ? Quest.GiverLocation : Quest.Destination);
+		const FJamLocation* Location = JamWorld::Find(bReady ? Quest.GiverLocation : Step.Destination);
 		if (!Location) { return; }
 		GS->CompassTarget = FVector(Location->Position, TraceGround(Location->Position) + 150.f);
 		GS->CompassLabel = bReady ? TEXT("RETURN TO ") + Quest.GiverName.ToUpper() : Quest.Title.ToUpper();
 		GS->Hint = bReady ? TEXT("Quest ready! Return to ") + Quest.GiverName + TEXT(" and talk to claim your reward.")
-			: FString::Printf(TEXT("%s: %s %d/%d. Follow the golden triangle; return to %s afterwards."), *Quest.Title,
-				*Quest.Objective, VillageQuests.Progress(), Quest.Count, *Quest.GiverName);
+			: FString::Printf(TEXT("%s: %s%s %d/%d. Follow the golden triangle; return to %s afterwards."), *Quest.Title,
+				*StepTag, *Step.Objective, VillageQuests.Progress(), Step.Count, *Quest.GiverName);
 		MarkQuest(Location->Position);
 		if (bReady && QuestMarker) { QuestMarker->SetActorHiddenInGame(true); } // giver already has a marker
 	}
@@ -280,7 +345,7 @@ void AJamGameMode::UpdateVillageObjective()
 		GS->CompassTarget = FVector(0, 0, TraceGround(FVector2D::ZeroVector) + 150.f);
 		GS->CompassLabel = TEXT("SUGARBOROUGH");
 		GS->Hint = VillageQuests.Completed() == JamVillageQuests::All().Num()
-			? TEXT("All village quests complete! Explore with Fenella, or talk to her in Sugarborough to watch the Premiere.")
+			? TEXT("All village quests complete! Villagers offer encores, or talk to Fenella in Sugarborough to watch the Premiere.")
 			: TEXT("Return to Sugarborough. Talk to a villager under a golden triangle. Pause > Quest Journal lists every quest.");
 		MarkQuest(FVector2D::ZeroVector);
 		if (Hero.IsValid() && FVector2D(Hero->GetActorLocation()).Size() < 1200.f && QuestMarker) { QuestMarker->SetActorHiddenInGame(true); }
@@ -295,7 +360,13 @@ void AJamGameMode::TickVillage(float DeltaSeconds)
 	if (bVillageExploration && VillageQuests.Active() != INDEX_NONE && VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Active)
 	{
 		const int32 Active = VillageQuests.Active();
-		if (VillageQuests.Offer(Active).Verb == EJamStageVerb::Collect)
+		// A step finished (reported from a pacify, a treat or a pickup): set up the next one here, outside those callbacks.
+		if (VillageQuests.Step() != SpawnedVillageStep)
+		{
+			StartVillageStep();
+			Direct(TEXT("Step complete! Next: ") + JamVillageQuests::StepText(VillageQuests.CurrentStep(Active)) + TEXT(". Follow the triangle."));
+		}
+		if (VillageQuests.CurrentStep(Active).Verb == EJamStageVerb::Collect)
 		{
 			for (int32 i = Pickups.Num() - 1; i >= 0; --i)
 			{
@@ -356,6 +427,14 @@ void AJamGameMode::TickAutoplayVillage(float DeltaSeconds)
 	if (!bVillageExploration) { Bot->RequestInteract(); return; }
 	if (QuestOffer.bVisible)
     {
+        FString AutoProposal;
+        if (FParse::Value(FCommandLine::Get(), TEXT("autopropose="), AutoProposal) && !AutoProposal.IsEmpty())
+        {
+            if (QuestOffer.bCanPropose) { RequestVillageProposal(AutoProposal); return; }
+            if (QuestOffer.bProposing) { return; }
+            const int32 Plan = QuestOffer.Branches.IndexOfByPredicate([](const FJamQuestBranch& B) { return !B.Plan.IsEmpty(); });
+            if (Plan != INDEX_NONE) { ChooseVillageBranch(Plan); return; }
+        }
         const bool bBranches = FParse::Param(FCommandLine::Get(), TEXT("autobranches"));
         if (bBranches && QuestOffer.bCanImprovise && !QuestOffer.bReading) { RequestVillageBranches(); return; }
         if (bBranches && QuestOffer.bReading) { return; }
@@ -391,8 +470,9 @@ void AJamGameMode::TickAutoplayVillage(float DeltaSeconds)
 			const float Distance = FVector::DistSquared2D(Actor->GetActorLocation(), Bot->GetActorLocation());
 			if (Distance < Best) { Best = Distance; Goal = Actor; }
 		};
-		if (VillageQuests.Offer(Active).Verb == EJamStageVerb::Collect) { for (AJamPickup* P : Pickups) { Consider(P); } }
-		else { for (AJamNuisance* N : Nuisances) { if (N && !N->IsTreated() && (!N->IsPacified() || VillageQuests.Offer(Active).Verb == EJamStageVerb::Interact)) { Consider(N); } } }
+		const EJamStageVerb Verb = VillageQuests.CurrentStep(Active).Verb;
+		if (Verb == EJamStageVerb::Collect) { for (AJamPickup* P : Pickups) { Consider(P); } }
+		else { for (AJamNuisance* N : Nuisances) { if (N && !N->IsTreated() && (!N->IsPacified() || Verb == EJamStageVerb::Interact)) { Consider(N); } } }
 	}
 	if (!Goal) { return; }
 	const FVector To = Goal->GetActorLocation() - Bot->GetActorLocation();
@@ -420,6 +500,7 @@ bool AJamGameMode::AbandonVillageQuest()
 void AJamGameMode::CancelVillageOffer()
 {
     ++BranchRequestSerial;
+    ++ProposalSerial;
     QuestOffer = FJamQuestOfferView();
     OfferedQuest = INDEX_NONE;
 }
@@ -431,8 +512,26 @@ void AJamGameMode::OfferVillageQuest(int32 Index)
     OfferedQuest = Index;
     const FJamVillageQuestDef& Current = VillageQuests.Offer(Index);
     QuestOffer.bVisible = true;
-    QuestOffer.BaseCount = JamVillageQuests::All()[Index].Count; QuestOffer.BaseReward = JamVillageQuests::All()[Index].Reward;
     QuestOffer.Title = Current.Title; QuestOffer.Giver = Current.GiverName; QuestOffer.Request = Current.Request;
+    QuestOffer.Level = VillageQuests.LevelForQuest(Index);
+    QuestOffer.LevelBonus = JamVillageQuests::LevelBonus(QuestOffer.Level);
+    QuestOffer.LevelNote = JamVillageFlow::LevelNote(QuestOffer.Level);
+    UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
+    const bool bOnline = Client && Client->IsOnline();
+    QuestOffer.bCanPropose = bOnline;
+    if (Current.bEncore)
+    {
+        // An encore has one route, already built for the relationship; the player can still propose their own.
+        QuestOffer.BaseCount = Current.Count; QuestOffer.BaseReward = Current.Reward;
+        FJamQuestBranch Branch;
+        Branch.Route = Current.Route; Branch.Label = TEXT("Take the encore");
+        Branch.Objective = JamVillageFlow::PlanText(JamVillageQuests::Steps(Current));
+        Branch.Variation.Count = Current.Count; Branch.Variation.Pitch = Current.Request; Branch.Reward = Current.Reward;
+        QuestOffer.Branches.Add(MoveTemp(Branch));
+        QuestOffer.Status = TEXT("An encore: bigger every time you finish one.");
+        return;
+    }
+    QuestOffer.BaseCount = JamVillageQuests::All()[Index].Count; QuestOffer.BaseReward = JamVillageQuests::All()[Index].Reward;
     const TArray<FJamVillageQuestDef> Recipes = JamVillageQuests::Routes(Index);
     for (const FJamVillageQuestDef& Recipe : Recipes)
     {
@@ -444,8 +543,7 @@ void AJamGameMode::OfferVillageQuest(int32 Index)
         Branch.Variation.Pitch = Recipe.Route == Current.Route ? Current.Request : Recipe.Request;
         QuestOffer.Branches.Add(MoveTemp(Branch));
     }
-    UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
-    QuestOffer.bCanImprovise = Client && Client->IsOnline();
+    QuestOffer.bCanImprovise = bOnline;
     QuestOffer.Status = TEXT("Choose how to help. Both approaches return to this villager for payment.");
     // Fenella pitches each villager's first job as television (VillagePickup_01.._05 in Givers() order), then the choice.
     SayOnce(*FString::Printf(TEXT("VillagePickup_%02d"), VillageQuests.GiverIndex(Index) + 1));
@@ -497,5 +595,75 @@ void AJamGameMode::ResolveVillageBranches(int32 Serial, int32 Index, bool bOk, c
     {
         QuestOffer.Status = TEXT("Fenella keeps the original plans. Both routes are ready to play.");
         UE_LOG(LogJam, Log, TEXT("JamQuest: authored branches retained quest=%d"), Index);
+    }
+}
+
+// ---- Player proposals (Fixes2 #4, Docs/Design/QuestBranches.md "Proposals") -------------------------------------
+
+void AJamGameMode::RequestVillageProposal(const FString& Text)
+{
+    if (!QuestOffer.bVisible || QuestOffer.bProposing || !QuestOffer.bCanPropose || OfferedQuest == INDEX_NONE) { return; }
+    FString Clean;
+    for (TCHAR C : Text) { if (C >= 32 && C != 127) { Clean.AppendChar(C); } }
+    Clean = Clean.Left(160).TrimStartAndEnd();
+    if (Clean.IsEmpty()) { return; }
+    UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
+    if (!Client || !Client->IsOnline()) { return; }
+    const int32 Index = OfferedQuest;
+    const int32 Serial = ++ProposalSerial;
+    QuestOffer.bProposing = true;
+    QuestOffer.bCanPropose = false;   // one proposal per offer
+    QuestOffer.Status = TEXT("Fenella is reading your plan. The routes above are still yours to pick.");
+    const AJamPlayerState* PS = GetHeroState();
+    TWeakObjectPtr<AJamGameMode> Weak(this);
+    Client->RequestQuestProposal(VillageQuests.Offer(Index), VillageQuests.LevelForQuest(Index), Clean, VillageQuests.CompletedIds(),
+        VillageQuests.CompletedRoutes(), PS ? PS->Motif : FString(), [Weak, Serial, Index](bool bOk, const FString& Body)
+    {
+        if (AJamGameMode* GM = Weak.Get()) { GM->ResolveVillageProposal(Serial, Index, bOk, Body); }
+    });
+    UE_LOG(LogJam, Log, TEXT("JamQuest: proposal sent quest=%d \"%s\""), Index, *Clean);
+}
+
+void AJamGameMode::ResolveVillageProposal(int32 Serial, int32 Index, bool bOk, const FString& Body)
+{
+    if (!GetJamGameState() || GetJamGameState()->Phase != EJamFilmPhase::Shooting) { return; }
+    if (ProposalSerial != Serial || OfferedQuest != Index || !QuestOffer.bVisible) { return; }
+    QuestOffer.bProposing = false;
+    FJamQuestPlan Plan;
+    if (bOk && JamVillageQuests::ReadProposal(Body, VillageQuests.Offer(Index).Id, VillageQuests.LevelForQuest(Index), Plan))
+    {
+        FJamQuestBranch Branch;
+        Branch.Route = TEXT("proposal");
+        Branch.Label = TEXT("Your plan: ") + Plan.Label;
+        Branch.Plan = Plan.Steps;
+        Branch.Objective = JamVillageFlow::PlanText(Plan.Steps);
+        Branch.Variation.Pitch = Plan.Pitch;
+        for (const FJamQuestStep& S : Plan.Steps) { Branch.Variation.Count += S.Count; }
+        Branch.Reward = VillageQuests.PlanReward(Index, Plan.Steps);
+        QuestOffer.Branches.Add(MoveTemp(Branch));
+        // On the screen itself: captions hide while a menu is open.
+        QuestOffer.Status = TEXT("Fenella: ") + Plan.Reaction;
+        UE_LOG(LogJam, Log, TEXT("JamQuest: proposal ready quest=%d steps=%d"), Index, Plan.Steps.Num());
+    }
+    else
+    {
+        QuestOffer.Status = JamVillageFlow::ScriptLines[FMath::RandHelper(int32(UE_ARRAY_COUNT(JamVillageFlow::ScriptLines)))];
+        UE_LOG(LogJam, Log, TEXT("JamQuest: proposal unusable quest=%d ok=%d; authored routes retained"), Index, bOk ? 1 : 0);
+    }
+}
+
+TArray<FString> AJamGameMode::ProposalSuggestions() const
+{
+    if (OfferedQuest == INDEX_NONE) { return {}; }
+    const FJamQuestStep First = JamVillageQuests::FirstStep(VillageQuests.Offer(OfferedQuest));
+    if (First.Verb == EJamStageVerb::Collect)
+    {
+        return { TEXT("Gather twice as much"), TEXT("Calm the locals first, then gather"), TEXT("Gather celery instead and share it") };
+    }
+    switch (First.Target)
+    {
+    case EJamTargetKind::Goblin: return { TEXT("Calm the goblins and brush their teeth"), TEXT("Bribe them with candy shards"), TEXT("Visit two goblin camps") };
+    case EJamTargetKind::Bug:    return { TEXT("Calm the bugs, then tidy up the candy shards"), TEXT("Lecture the bugs twice as hard"), TEXT("Gather candy shards to distract them") };
+    default:                     return { TEXT("Calm the rats, then feed them celery"), TEXT("Bribe them with celery"), TEXT("Lecture rats at two camps") };
     }
 }

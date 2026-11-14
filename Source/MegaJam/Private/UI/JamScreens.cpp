@@ -315,6 +315,32 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
         }
         Out = QuestBranches(Offer, S);
     }
+    else if (N == TEXT("questproposal"))
+    {
+        // Fixes2 #4/#5 preview: a Friend's job with the player's plan back from the server.
+        FJamQuestOfferView Offer; Offer.bVisible = true; Offer.bCanImprovise = false;
+        Offer.Title = TEXT("Brushing Up On Diplomacy"); Offer.Giver = TEXT("Dr. Molar");
+        Offer.Request = TEXT("The rats have agreed to a healthy snack. Pacify them, then feed them celery.");
+        Offer.Level = 2; Offer.LevelBonus = JamVillageQuests::LevelBonus(2); Offer.LevelNote = TEXT("Friend: their jobs come in two parts, +50 sprinkles.");
+        Offer.Status = TEXT("Fenella: Bribery! Wonderful. We'll call it a catering subplot.");
+        Offer.BaseCount = 4; Offer.BaseReward = 180;
+        for (const FJamVillageQuestDef& Recipe : JamVillageQuests::Routes(8))
+        {
+            FJamQuestBranch Branch; Branch.Route = Recipe.Route; Branch.Objective = Recipe.Objective;
+            Branch.Label = Recipe.Route == FName(TEXT("original")) ? TEXT("Take the original approach") : TEXT("Try the other approach");
+            Branch.Variation.Count = Recipe.Count; Branch.Variation.Pitch = Recipe.Request;
+            Offer.Branches.Add(Branch);
+        }
+        FJamQuestStep Feed, Celery;
+        JamVillageQuests::MakeStep(TEXT("gather"), TEXT("celery"), 4, TEXT("CampMeadowEast"), Celery);
+        JamVillageQuests::MakeStep(TEXT("feed"), TEXT("rat"), 4, TEXT("CampMeadowWest"), Feed);
+        FJamQuestBranch Plan; Plan.Route = TEXT("proposal"); Plan.Label = TEXT("Your plan: Snack diplomacy");
+        Plan.Plan = { Celery, Feed }; Plan.Variation.Count = 8; Plan.Reward = 300;
+        Plan.Objective = JamVillageQuests::StepText(Celery) + TEXT(", then ") + JamVillageQuests::StepText(Feed).ToLower();
+        Plan.Variation.Pitch = TEXT("Pick celery in the east meadow, then win the rats over with it.");
+        Offer.Branches.Add(Plan);
+        Out = QuestBranches(Offer, S);
+    }
     else if (N == TEXT("controls")) { Out = Controls(S); }
 	else if (N == TEXT("rating")) { Out = Rating(); }
 	else if (N == TEXT("title")) { Out = Title(S); }
@@ -386,7 +412,7 @@ FJamScreenView JamScreens::Quests(const FJamVillageQuestLog& Log, const FJamMenu
     FJamScreenView V;
     V.Screen = EJamScreen::QuestJournal;
     V.Title = TEXT("Quest Journal");
-    V.Kicker = FString::Printf(TEXT("SUGARBOROUGH  /  %d OF %d QUESTS COMPLETE"), Log.Completed(), Log.Num());
+    V.Kicker = FString::Printf(TEXT("SUGARBOROUGH  /  %d OF %d QUESTS COMPLETE"), Log.Completed(), Log.NumAuthored());
     V.bOpaque = false;
     const int32 Active = Log.Active();
     if (!Log.IsMainComplete())
@@ -397,24 +423,27 @@ FJamScreenView JamScreens::Quests(const FJamVillageQuestLog& Log, const FJamMenu
     else if (Active != INDEX_NONE)
     {
         const FJamVillageQuestDef& Q = Log.Offer(Active);
-        V.Subtitle = FString::Printf(TEXT("%s: %s %d/%d\n%d sprinkles + 40 XP; return to %s to claim."),
-            *Q.Title, *Q.Objective, Log.Progress(), Q.Count, Q.Reward, *Q.GiverName);
+        const FJamQuestStep Step = Log.CurrentStep(Active);
+        const FString StepTag = Log.StepCount(Active) > 1 ? FString::Printf(TEXT("Step %d/%d: "), Log.Step() + 1, Log.StepCount(Active)) : FString();
+        V.Subtitle = FString::Printf(TEXT("%s: %s%s %d/%d\n%d sprinkles + 40 XP; return to %s to claim."),
+            *Q.Title, *StepTag, *Step.Objective, Log.Progress(), Step.Count, Log.Payout(Active), *Q.GiverName);
     }
     else { V.Subtitle = TEXT("Talk to a marked villager to take a quest. Each giver has a follow-up."); }
-    for (const FJamVillageGiverDef& G : JamVillageQuests::Givers())
+    for (int32 g = 0; g < JamVillageQuests::Givers().Num(); ++g)
     {
+        const FJamVillageGiverDef& G = JamVillageQuests::Givers()[g];
         int32 Completed = 0, Total = 0;
         for (int32 i = 0; i < Log.Num(); ++i)
         {
-            if (Log.Offer(i).GiverLocation != G.Location) { continue; }
+            if (Log.Offer(i).GiverLocation != G.Location || Log.Offer(i).bEncore) { continue; }
             ++Total; if (Log.State(i) == EJamVillageQuestState::Complete) { ++Completed; }
         }
         const int32 Next = Log.ForGiver(G.Location);
         const FString Status = Next == INDEX_NONE ? TEXT("All work complete")
             : Log.State(Next) == EJamVillageQuestState::Locked ? TEXT("Unlocks after earlier quests")
             : Log.State(Next) == EJamVillageQuestState::Ready ? TEXT("RETURN FOR REWARD: ") + Log.Offer(Next).Title
-            : Log.Offer(Next).Title + FString::Printf(TEXT(" (%d sprinkles)"), Log.Offer(Next).Reward);
-        V.Quotes.Add(FString::Printf(TEXT("%s  %d/%d: %s"), *G.Name, Completed, Total, *Status));
+            : Log.Offer(Next).Title + FString::Printf(TEXT(" (%d sprinkles)"), Log.Payout(Next));
+        V.Quotes.Add(FString::Printf(TEXT("%s (%s)  %d/%d: %s"), *G.Name, *JamVillageQuests::LevelName(Log.Level(g)), Completed, Total, *Status));
     }
     V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
     if (Active != INDEX_NONE) { V.Options.Add(Opt(EJamMenuAction::AbandonQuest, TEXT("Set aside current quest"))); }
@@ -429,15 +458,28 @@ FJamScreenView JamScreens::QuestBranches(const FJamQuestOfferView& Offer, const 
     V.Kicker = Offer.Giver;
     V.Title = Offer.Title;
     V.Subtitle = Offer.Request.Left(160);
+    // Fixes2 #5: who they are to you, and what that does to the job.
+    V.Kicker = FString::Printf(TEXT("%s  /  %s"), *Offer.Giver, *JamVillageQuests::LevelName(Offer.Level).ToUpper());
+    if (!Offer.LevelNote.IsEmpty()) { V.Quotes.Add(Offer.LevelNote); }
+    const EJamMenuAction Actions[] = { EJamMenuAction::QuestBranch0, EJamMenuAction::QuestBranch1, EJamMenuAction::QuestBranch2 };
     V.bOpaque = false;
-    for (int32 i = 0; i < FMath::Min(2, Offer.Branches.Num()); ++i)
+    for (int32 i = 0; i < FMath::Min(3, Offer.Branches.Num()); ++i)
     {
         const FJamQuestBranch& Branch = Offer.Branches[i];
-        const int32 Reward = FMath::Clamp(FMath::RoundToInt(float(Offer.BaseReward) * Branch.Variation.Count / FMath::Max(1, Offer.BaseCount)), 50, 300);
-        V.Options.Add(Opt(i == 0 ? EJamMenuAction::QuestBranch0 : EJamMenuAction::QuestBranch1, *Branch.Label, FString::Printf(TEXT("%d sprinkles"), Reward)));
-        V.Quotes.Add(FString::Printf(TEXT("%d. %s: %d.  %s"), i + 1, *Branch.Objective, Branch.Variation.Count, *Branch.Variation.Pitch.Left(160)));
+        const bool bFixed = Branch.Reward > 0;   // plans and encores carry their own reward and steps
+        const int32 Reward = (bFixed ? Branch.Reward
+            : FMath::Clamp(FMath::RoundToInt(float(Offer.BaseReward) * Branch.Variation.Count / FMath::Max(1, Offer.BaseCount)), 50, 300)) + Offer.LevelBonus;
+        // Authored routes grow by one target from Acquaintance on (JamVillageQuests::Scale, applied on accepting).
+        const int32 Shown = bFixed ? Branch.Variation.Count : FMath::Min(Branch.Variation.Count + (Offer.Level >= 1 ? 1 : 0), 8);
+        V.Options.Add(Opt(Actions[i], *Branch.Label, FString::Printf(TEXT("%d sprinkles"), Reward)));
+        V.Quotes.Add(bFixed ? FString::Printf(TEXT("%d. %s.  %s"), i + 1, *Branch.Objective, *Branch.Variation.Pitch.Left(160))
+            : FString::Printf(TEXT("%d. %s: %d.  %s"), i + 1, *Branch.Objective, Shown, *Branch.Variation.Pitch.Left(160)));
     }
     if (Offer.bCanImprovise) { V.Options.Add(Opt(EJamMenuAction::ImproviseQuest, Offer.bReading ? TEXT("Fenella is thinking...") : TEXT("Ask Fenella to improvise"), FString(), !Offer.bReading)); }
+    if (Offer.bCanPropose || Offer.bProposing)
+    {
+        V.Options.Add(Opt(EJamMenuAction::ProposePlan, Offer.bProposing ? TEXT("Fenella is reading your plan...") : TEXT("Propose a plan"), FString(), !Offer.bProposing));
+    }
     V.Options.Add(Opt(EJamMenuAction::CancelQuestOffer, TEXT("Maybe later")));
     V.Caption = Offer.Status;
     V.Footer = MenuFooter(S);

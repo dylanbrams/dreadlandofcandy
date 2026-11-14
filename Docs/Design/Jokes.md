@@ -328,6 +328,39 @@ Nuisance replies (tiny bubbles): ok / sorry / fine. / ...mum? / i'll floss / he 
 
 The rock itself, when it rings: "Incoming rock." / "You have one new rock."
 
+### Villagers: relationship levels (Fixes2 #5)
+
+Each paid job raises the giver one level: Stranger, Acquaintance, Friend, Bestie.
+Runtime: `JamVillageFlow.cpp` (`LevelNote`, `LevelUpLine`).
+
+- Quest screen notes: "Stranger. Finish a job for them to become Acquaintances." /
+  "Acquaintance: one more target than usual, +25 sprinkles." / "Friend: their
+  jobs come in two parts, +50 sprinkles." / "Bestie: bigger jobs across two
+  camps, +75 sprinkles."
+- Level-up (Fenella's caption at the turn-in): "<Giver> nods at you in the street
+  now. You're Acquaintances. Their next job will be a little bigger." / "<Giver>
+  has saved you a seat at the harvest supper. You're Friends. Their jobs now come
+  in two parts." / "<Giver> made you a friendship bracelet out of liquorice.
+  Besties. I've already sold the rights."
+
+### Villagers: encores (Fixes2 #5)
+
+After both authored jobs, each giver offers a repeatable "Encore: <first job's
+title>", bigger every time. Runtime: `JamVillageQuests.cpp` (`GEncoreRequests`).
+
+- Mayor Bonbon: "The rats have re-formed the council. With subcommittees. Same job, more of it, and a second item on the agenda."
+- Baker Crumb: "Word got round about the cake. Now everyone wants one. I need more of everything, and fewer critics."
+- Gardener Sprig: "The garden is famous now. Tourists. Tourists bring pests. Pests bring friends."
+- Dr. Molar: "My patients have told their friends. Their friends have teeth. Many teeth. Bring a bigger brush."
+- Scout Taffy: "My survey was a hit. The sequel needs a bigger map and something worse on it."
+
+### Fenella on a player's proposal (Fixes2 #4)
+
+When a proposal can't be used (any failure, refusal or timeout), on the quest
+screen: "Let's stick to the script, darling. The script is very good. I wrote
+it." / "Bold. Unfilmable, but bold. Pick one of mine." / "Legal says no. I am
+legal. Choose a route." A usable plan shows the server's own `reaction` line.
+
 ## Signs and set dressing (street between sets)
 
 - SUGARBOROUGH. Population: Extras.

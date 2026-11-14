@@ -8,6 +8,7 @@
 #include "Serialization/JsonSerializer.h"
 #include "Misc/CommandLine.h"
 #include "Misc/Parse.h"
+#include "World/JamWorld.h"
 
 void UJamNoteClient::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -128,4 +129,76 @@ void UJamNoteClient::RequestQuestBranches(const FJamVillageQuestDef& Quest, cons
     }
     Obj->SetArrayField(TEXT("routes"), RouteValues);
     Post(TEXT("/v1/director/quest/branches"), ToJson(Obj), MoveTemp(OnDone));
+}
+
+void UJamNoteClient::RequestQuestProposal(const FJamVillageQuestDef& Quest, int32 Level, const FString& Proposal,
+    const TArray<FName>& Completed, const TArray<FString>& History, const FString& Motif, FOnBody OnDone)
+{
+    const TSharedRef<FJsonObject> Obj = MakeShared<FJsonObject>();
+    Obj->SetNumberField(TEXT("v"), 1);
+    Obj->SetStringField(TEXT("session_id"), SessionId);
+    Obj->SetStringField(TEXT("quest_id"), Quest.Id.ToString());
+    Obj->SetStringField(TEXT("giver"), Quest.GiverName);
+    Obj->SetStringField(TEXT("title"), Quest.Title);
+    Obj->SetStringField(TEXT("pitch"), Quest.Request);
+    Obj->SetStringField(TEXT("motif"), Motif);
+    Obj->SetNumberField(TEXT("level"), FMath::Clamp(Level, 0, JamVillageQuests::MaxLevel));
+    Obj->SetStringField(TEXT("proposal"), Proposal.Left(160));
+    TArray<FString> Ids;
+    for (FName Id : Completed) { Ids.Add(Id.ToString()); }
+    Obj->SetArrayField(TEXT("completed"), Strings(Ids));
+    Obj->SetArrayField(TEXT("history"), Strings(History));
+
+    const FJamQuestStep First = JamVillageQuests::FirstStep(Quest);
+    const TSharedRef<FJsonObject> Recipe = MakeShared<FJsonObject>();
+    Recipe->SetStringField(TEXT("verb"), JamVillageQuests::VerbName(First));
+    Recipe->SetStringField(TEXT("target"), JamVillageQuests::TargetName(First));
+    Recipe->SetNumberField(TEXT("count"), First.Count);
+    TArray<FString> Destinations;
+    for (FName Camp : Quest.Destinations) { Destinations.Add(Camp.ToString()); }
+    Recipe->SetArrayField(TEXT("destinations"), Strings(Destinations));
+    Obj->SetObjectField(TEXT("recipe"), Recipe);
+
+    // The closed sets, sent every time so the server prompt and validator match the client (contract v1).
+    const TSharedRef<FJsonObject> Vocabulary = MakeShared<FJsonObject>();
+    TArray<TSharedPtr<FJsonValue>> StepValues;
+    auto AddVerb = [&StepValues](const TCHAR* Verb, const TArray<FString>& Targets)
+    {
+        const TSharedRef<FJsonObject> V = MakeShared<FJsonObject>();
+        V->SetStringField(TEXT("verb"), Verb);
+        V->SetArrayField(TEXT("targets"), Strings(Targets));
+        StepValues.Add(MakeShared<FJsonValueObject>(V));
+    };
+    AddVerb(TEXT("pacify"), { TEXT("rat"), TEXT("goblin"), TEXT("bug") });
+    AddVerb(TEXT("feed"), { TEXT("rat") });
+    AddVerb(TEXT("brush"), { TEXT("goblin") });
+    AddVerb(TEXT("gather"), { TEXT("almond"), TEXT("celery"), TEXT("candy_shard") });
+    Vocabulary->SetArrayField(TEXT("steps"), StepValues);
+    TArray<TSharedPtr<FJsonValue>> CampValues;
+    for (const FJamLocation* Camp : JamWorld::OfKind(EJamLocationKind::Camp))
+    {
+        TArray<FString> Kinds;
+        for (EJamTargetKind K : Camp->Kinds)
+        {
+            switch (K)
+            {
+            case EJamTargetKind::Rat: Kinds.Add(TEXT("rat")); break;
+            case EJamTargetKind::Goblin: Kinds.Add(TEXT("goblin")); break;
+            case EJamTargetKind::Bug: Kinds.Add(TEXT("bug")); break;
+            case EJamTargetKind::Almond: Kinds.Add(TEXT("almond")); Kinds.Add(TEXT("celery")); Kinds.Add(TEXT("candy_shard")); break;
+            }
+        }
+        const TSharedRef<FJsonObject> C = MakeShared<FJsonObject>();
+        C->SetStringField(TEXT("id"), Camp->Id.ToString());
+        C->SetArrayField(TEXT("kinds"), Strings(Kinds));
+        CampValues.Add(MakeShared<FJsonValueObject>(C));
+    }
+    Vocabulary->SetArrayField(TEXT("camps"), CampValues);
+    const TSharedRef<FJsonObject> Limits = MakeShared<FJsonObject>();
+    Limits->SetNumberField(TEXT("max_steps"), 3);
+    Limits->SetNumberField(TEXT("max_count"), 8);
+    Limits->SetNumberField(TEXT("max_total"), 12);
+    Vocabulary->SetObjectField(TEXT("limits"), Limits);
+    Obj->SetObjectField(TEXT("vocabulary"), Vocabulary);
+    Post(TEXT("/v1/director/quest/propose"), ToJson(Obj), MoveTemp(OnDone));
 }
