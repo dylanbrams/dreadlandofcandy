@@ -87,6 +87,7 @@ private:
 	bool bLevelUpCharacter = false; // Returning from an automatic level-up resumes play.
 	bool bMenuGamepad = false;
 	int32 InputModeState = -1;                 // 0 game, 1 UI
+	double RefocusGameUntil = 0.0;             // Fixes3 #8: keep reclaiming viewport focus briefly after a menu closes
 	FString ScreenSampleName;
 
 	UPROPERTY(Transient)

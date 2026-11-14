@@ -30,8 +30,10 @@ $ErrorActionPreference = "Stop"
 . (Join-Path $PSScriptRoot "_project.ps1")
 $BuildDir = Join-Path $ProjectDir "Builds\Win64-$Config"
 
-$Exe = Get-ChildItem -Path $BuildDir -Filter "$ProjectName.exe" -Recurse -ErrorAction SilentlyContinue |
-       Sort-Object { $_.FullName.Length } | Select-Object -First 1
+# package.ps1 renames the root launcher to the game's title; prefer it over the inner target binary.
+$Exe = Get-ChildItem -Path $BuildDir -Filter "TheDreadLandOfCandy.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $Exe) { $Exe = Get-ChildItem -Path $BuildDir -Filter "$ProjectName.exe" -Recurse -ErrorAction SilentlyContinue |
+       Sort-Object { $_.FullName.Length } | Select-Object -First 1 }
 if (-not $Exe) { throw "No packaged $ProjectName.exe under $BuildDir. Run .\Scripts\package.ps1 -Config $Config first." }
 $BinDir = Join-Path $Exe.Directory.FullName "$ProjectName\Binaries\Win64"
 

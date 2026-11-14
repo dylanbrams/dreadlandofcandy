@@ -419,3 +419,5 @@ small footer text, and tightened class equipment offsets. Village review
 inspected; manual weapon poses, manual crossing and cooked delivery remain
 unverified. No deployment/upload. Final verification recorded in STATUS.
 
+
+- Nov 15: Fixes3 #8 (refocus viewport for 0.5 s after menus) and #15 (speed-scaled walk play rate); smoke/zip scripts prefer the renamed launcher. Build + 82 tests green; unverified live, not repackaged.

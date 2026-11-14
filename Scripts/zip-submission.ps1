@@ -19,8 +19,10 @@ $ErrorActionPreference = "Stop"
 foreach ($N in @($TeamName, $GameName)) { if ($N -notmatch '^[A-Za-z0-9-]+$') { throw "'$N': use letters, digits and dashes only (the underscore separates team and game)." } }
 
 $BuildDir = Join-Path $ProjectDir "Builds\Win64-$Config"
-$Exe = Get-ChildItem -Path $BuildDir -Filter "$ProjectName.exe" -Recurse -ErrorAction SilentlyContinue |
-       Sort-Object { $_.FullName.Length } | Select-Object -First 1
+# package.ps1 renames the root launcher to the game's title; prefer it over the inner target binary.
+$Exe = Get-ChildItem -Path $BuildDir -Filter "TheDreadLandOfCandy.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+if (-not $Exe) { $Exe = Get-ChildItem -Path $BuildDir -Filter "$ProjectName.exe" -Recurse -ErrorAction SilentlyContinue |
+       Sort-Object { $_.FullName.Length } | Select-Object -First 1 }
 if (-not $Exe) { throw "No packaged build in $BuildDir. Run .\Scripts\package.ps1 first." }
 if ($Config -ne "Development") { Write-Host "Warning: the jam asks for a Development build." -ForegroundColor Yellow }
 

@@ -1,3 +1,7 @@
+# STATUS - Nov 15: Fixes3 #8, #15 and script fixes
+
+Fixes3 #8: after a menu closes, the HUD keeps reclaiming game viewport focus for 0.5 s, so WASD should work after accepting a quest without a click. Fixes3 #15: the walk animation rate now follows ground speed (2.1x at base walk speed, clamped 1.2 to 3) to cut foot sliding. Smoke and zip scripts now pick the renamed TheDreadLandOfCandy.exe launcher. Editor build clean, 82 Jam tests pass. Neither fix has been seen live; no screenshot or repackage since. The Nov 15 ZIP predates these changes. #16 (escalating, losable quests) skipped: the village has no defeat path. Engine FREE.
+
 # STATUS - Nov 15: fresh packaged build
 
 Development package succeeded after renaming a unity-build helper collision in JamVillageQuests.cpp. Packaged Open film autoplay passed all three scenes; packaged village autoplay passed main=3 side=10. Corrected ZIP: Builds/ImaginaryComponent_TheDreadLandOfCandy.zip, 727.3 MiB; launcher and cooked content containers verified. No upload. The smoke and zip scripts select the wrong executable after the launcher rename; the package run used a temporary alias and verified the final archive after removing it. Manual play and upload remain. Engine FREE.

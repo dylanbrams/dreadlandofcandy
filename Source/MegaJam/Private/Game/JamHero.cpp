@@ -746,11 +746,17 @@ void AJamHero::TickRig()
 	// Holding interact: he scrubs (teeth) or feeds (celery); otherwise walk or stand.
 	FName Want = GetVelocity().Size2D() > 60.f ? FName(TEXT("Walk")) : FName(TEXT("Idle"));
 	if (BrushTarget.IsValid() && GetWorld()->GetTimeSeconds() < BrushUntil && RigAnims.Contains(TEXT("Scrub"))) { Want = TEXT("Scrub"); }
-	if (Want == RigPlaying) { return; }
+	// Fixes3 #15: the stride follows ground speed so the feet keep up instead of sliding.
+	const float WalkRate = FMath::Clamp(2.1f * GetVelocity().Size2D() / FMath::Max(1.f, JamHeroTuning::WalkSpeed), 1.2f, 3.f);
+	if (Want == RigPlaying)
+	{
+		if (Want == FName(TEXT("Walk"))) { ArtRig->SetPlayRate(WalkRate); }
+		return;
+	}
 	if (const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(Want))
 	{
 		ArtRig->PlayAnimation(*Found, true);
-		ArtRig->SetPlayRate(Want == FName(TEXT("Walk")) ? 1.5f : 1.f);
+		ArtRig->SetPlayRate(Want == FName(TEXT("Walk")) ? WalkRate : 1.f);
 		RigPlaying = Want;
 	}
 }

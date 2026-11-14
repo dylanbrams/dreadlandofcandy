@@ -157,6 +157,9 @@ void AJamHUD::Tick(float DeltaSeconds)
 			if (Widget->GetVisibility() != HudVis) { Widget->SetVisibility(HudVis); }
 		}
 		if (!bSample) { UpdateInputMode(bShown && ScreenView.Screen != EJamScreen::Rating ? 1 : (bEditor ? 2 : 0)); }
+		// A collapsed screen can take keyboard focus back for a frame or two after it closes, leaving
+		// mouse look working but WASD dead until a click. Reassert viewport focus for half a second.
+		if (!bSample && InputModeState == 0 && GetWorld()->GetRealTimeSeconds() < RefocusGameUntil) { UWidgetBlueprintLibrary::SetFocusToGameViewport(); }
 	}
 	if (Widget) { Widget->ApplyView(View, GetWorld()->GetRealTimeSeconds()); }
 }
@@ -514,6 +517,7 @@ void AJamHUD::UpdateInputMode(int32 Want)
         PlayerOwner->SetInputMode(Mode);
 		// UIOnly leaves keyboard focus on the closed menu until the viewport is clicked.
 		UWidgetBlueprintLibrary::SetFocusToGameViewport();
+		RefocusGameUntil = GetWorld()->GetRealTimeSeconds() + 0.5;
 	}
 	// Keep HUD controls reachable in both modes. Open camera uses Mouse 2 drag, Q/E and wheel zoom.
 	PlayerOwner->bShowMouseCursor = true;
