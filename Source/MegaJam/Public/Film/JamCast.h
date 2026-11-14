@@ -19,6 +19,7 @@ struct MEGAJAM_API FJamClassDef
 	TArray<FString> SkillIcons;
     TArray<FString> SkillAnimations;
     FName WeaponHand = TEXT("hand_r");
+    FRotator WeaponGrip = FRotator(0.f, 0.f, -90.f);
     FVector BackOffset = FVector(-34.f, 22.f, 58.f);
     FVector BackAxis = FVector(0.f, -0.65f, -0.76f);
     float BackTwist = 0.f;

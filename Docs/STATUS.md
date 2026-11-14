@@ -1,60 +1,55 @@
-# STATUS — GAME, Nov 14: batch 0 green
+# STATUS - GAME, Nov 14: batch 1 verified; batch 2 next
 
 Read CLAUDE.md and Docs/Design/RELEASE_PLAN.md (Nov 14 section).
-Previous detailed STATUS and Dylan's complete numbered wishlist:
-Docs/Archive/STATUS-before-batch0-2026-11-14.md.
+Dylan: finish existing batches before packaging. Do not package or upload yet.
+Original wishlist/history: Docs/Archive/STATUS-before-batch0-2026-11-14.md.
 
 ## Next task
 
-Batch 1 BLOCKERs: 5 compass target label overlap; 15b Open HUD absent during
-travel; 13 golden rain/grey screen (investigate BudgetOut world-material gag);
-17 archer bow grip. Item 11 was included in the overnight work and is now verified
-by scene finishability tests and the Open autoplay run; manual direction entry
-still needs Dylan's play. Do not repeat batch 0 or start quest-giver expansion.
+Batch 2 SHIPs: Q/E camera, right-drag, wheel zoom, F use, R ultimate,
+middle mouse signature; read-only controls card in Options and Pause;
+numeric XP (disable, brush, quest bonus), about 1.6 levels across three sets.
+Character-sheet spending and automatic opening were finished in batch 0.
+Quest givers and outer quests stay cut. No Backlot tests or fixes.
 
-## Batch 0 result
+## Batch 1
 
-- Verified and checkpointed overnight mouse/HUD, character-sheet and pose work.
-- Items 2/12/16: clickable skills, prompts, note choices, wrap continue and pause;
-  cursor stays visible; empty HUD space forwards gameplay input; GameAndUI mode.
-  Slate hit-path test passes. Runtime mouse evidence/limits are in DEVLOG.
-  Physical swapped-button mapping and first click after refocus need Dylan's play.
-- Item 7: character sheet offers basic/signature ranks, disables ultimate spending;
-  opens on level-up with points (except autoplay). Rule/menu tests pass.
-- Item 14: squash/recoil anchors mesh feet, scaled ground offsets corrected;
-  calm settle/breathing replaces sinking. GroundedPose test passes.
-- Item 11: first scene now always offers the note prompt before its second stage.
-- Existing overnight Open-default source/config change retained and packaged;
-  no-flag packaged launch explicitly verified on L_Sugarborough. Backlot: -backlot.
-- Camera remains middle-mouse drag until batch 2 controls revision.
-- Editor and Development game builds pass; all 69 Jam tests pass.
-- Screenshots inspected; no-flag Open packaged headless smoke passes.
-- Dylan (Nov 14): no further Backlot tests. Open is the release gate.
+- Item 5: compass target label now 34 design pixels below the strip;
+  removed the duplicate line of navigation/camera text underneath.
+- Item 15b: travel now builds the skill/XP HUD independently of the shoot;
+  previous scene objectives/wraps stay hidden. Travel skills and character
+  sheet remain mouse reachable (extended Slate hit-path test).
+- Item 13: found the global grey checker replacement and desaturation in
+  BudgetOut, not a rain-specific post-process. Open now preserves world and
+  gear materials/grade; cardboard enemies, voice and budget effects remain.
+- Item 17: archer grip turns 180 degrees about the bow's long axis in the
+  left hand, without changing its upright alignment or back carry.
+- Item 11 already finished in batch 0; do not repeat it.
+- Editor and Development game builds and all 69 Jam tests pass.
+- Inspected batch1-travel.png, batch1-archer.png, batch1-budget.png under
+  Saved/Screenshots/WindowsEditor. Budget-out world remains coloured.
+- Saved/Batch1-Editor-Open.log: PASS mode=open main=3 side=0;
+  PASS scenes=3 first=1 takes=4 notes=3/0 ending=directors_cut flees=3
+  lines=11 skills=12 hits=1 dignityfails=0 time=107.1.
+- No package, ZIP refresh, upload or push (Dylan's instruction).
 
-## Tester build 1 handoff (no upload performed)
+## Earlier verified work
 
-ZIP: Builds/ImaginaryComponent_TheDreadLandOfCandy.zip
-Size: 721,385,002 bytes (721.4 MB); rebuilt Nov 14 after batch 0.
-Includes class presentations/back carries/brushing plus overnight input fixes.
-Evidence: Saved/Batch0-Package.log, Saved/Automation/RunTests.log,
-Saved/R7Mouse/Packaged-Open.log. Visible smoke ended via viewport-close event;
-the headless Open rerun supplies the valid autoplay result.
+Batch 0: clickable HUD/notes/prompts/wrap/pause, persistent cursor,
+GameAndUI input, level-up character sheet and skill spending, grounded enemy
+poses. Open is the no-flag default on L_Sugarborough; -backlot retained.
+Manual swapped-button/refocus input, typed directions and cast approval
+still need Dylan's play. Backend redeploy is Dylan's task.
 
-```
-JamAutoplay: PASS mode=open main=3 side=0
-JamAutoplay: PASS scenes=3 first=1 takes=4 notes=3/0 ending=directors_cut flees=7 lines=11 skills=12 hits=1 dignityfails=0 time=104.7
-```
+## Existing tester ZIP (batch 0, stale relative to source)
 
-Itch session: follow Marketing/Itch/LUNA_UPLOAD_HANDOFF.md; Dylan's explicit go
-is required for this push. No git push or itch upload by GAME.
+Builds/ImaginaryComponent_TheDreadLandOfCandy.zip: 721,385,002 bytes.
+Batch 0 no-flag Open packaged smoke passed (Saved/R7Mouse/Packaged-Open.log).
+Batch 1 is source/editor verified only until packaging is authorized again.
+Itch handoff: Marketing/Itch/LUNA_UPLOAD_HANDOFF.md; explicit go per push.
 
-## Remaining scope
+## Remaining
 
-Batch 2: Q/E camera, right-drag, wheel zoom, F use, R ult, middle skill 2;
-read-only controls card; numeric XP tuned to 1.6 levels across three quests.
-Quest NPCs/repeatable outer quests remain cut unless Dylan decides otherwise.
-Backend redeploy remains Dylan's task. Cast visual approval remains pending.
-R8: final declarations/credits/tools, package/smoke/zip and submission handoff.
-Known prior wishlist details and validation history remain in the archive above.
-
-Engine handoff: FREE after batch 0. Next session starts at project root.
+Finish batch 2; then tester-feedback blockers and R8 declarations/credits/tools.
+Final package, Open smoke and ZIP are deferred by Dylan; no git push or upload.
+Engine handoff: BUSY, GAME continuing into batch 2.

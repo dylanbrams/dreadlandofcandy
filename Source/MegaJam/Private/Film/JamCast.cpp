@@ -47,6 +47,8 @@ namespace
             D.PrimaryColor = Colour(TEXT("3C9D68"));
             D.SkillDamageColors = { Nutrition, Hygiene, Nutrition, Nutrition };
             D.WeaponHand = TEXT("hand_l");
+            // Turn about the bow's long axis so its limbs face forward without inverting it.
+            D.WeaponGrip = (FRotator(0.f, 0.f, -90.f).Quaternion() * FQuat(FVector::UpVector, PI)).Rotator();
             D.BackOffset = FVector(-35.f, 0.f, 25.f);
             D.BackAxis = FVector(0.f, -0.35f, 0.94f);
             D.BackTwist = 90.f;

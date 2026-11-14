@@ -1276,18 +1276,23 @@ void AJamGameMode::BudgetOut()
 	JamSfx::Play(this, TEXT("Budget_Empty"), 1.4f);
 	Say(EJamLineTrigger::BudgetOut);
 	NextHumAt = GetWorld()->GetTimeSeconds() + 6.f;
-	JamLook::BudgetOut(GetWorld());
-
-	// Every mesh in the world drops to the engine's grey checker, the one every unfinished game has.
-	UMaterialInterface* Grid = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"));
-	if (Grid)
+	// Open keeps its authored terrain and gear: replacing every material looked like a rendering failure.
+	// Preserve the abandoned Backlot path; the cardboard extras still sell the gag in Open.
+	if (!bOpenMode)
 	{
-		for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+		JamLook::BudgetOut(GetWorld());
+
+		// Every mesh in the world drops to the engine's grey checker, the one every unfinished game has.
+		UMaterialInterface* Grid = LoadObject<UMaterialInterface>(nullptr, TEXT("/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"));
+		if (Grid)
 		{
-			TInlineComponentArray<UStaticMeshComponent*> Meshes(*It);
-			for (UStaticMeshComponent* Mesh : Meshes)
+			for (TActorIterator<AActor> It(GetWorld()); It; ++It)
 			{
-				for (int32 i = 0; i < Mesh->GetNumMaterials(); ++i) { Mesh->SetMaterial(i, Grid); }
+				TInlineComponentArray<UStaticMeshComponent*> Meshes(*It);
+				for (UStaticMeshComponent* Mesh : Meshes)
+				{
+					for (int32 i = 0; i < Mesh->GetNumMaterials(); ++i) { Mesh->SetMaterial(i, Grid); }
+				}
 			}
 		}
 	}

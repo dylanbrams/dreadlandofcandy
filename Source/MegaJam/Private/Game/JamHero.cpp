@@ -712,7 +712,7 @@ void AJamHero::UpdateWeaponCarry()
     if (bDraw)
     {
         ArtSword->AttachToComponent(ArtRig, FAttachmentTransformRules::KeepWorldTransform, Def.WeaponHand);
-        ArtSword->SetRelativeRotation(FRotator(0.f, 0.f, -90.f));
+        ArtSword->SetRelativeRotation(Def.WeaponGrip);
         const FTransform Hand = ArtRig->GetSocketTransform(Def.WeaponHand);
         ArtSword->SetWorldLocation(Hand.GetLocation() + Hand.GetRotation().RotateVector(FVector(7.f, 0.f, 0.f)));
         ArtSword->SetWorldScale3D(EquippedWeaponScale);

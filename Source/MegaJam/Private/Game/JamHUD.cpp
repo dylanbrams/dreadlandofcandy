@@ -222,68 +222,74 @@ void AJamHUD::BuildView()
 {
 	View = FJamHudView();
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
-	if (!GS || GS->GetShoot().GetState() == EJamShootState::Idle) { return; }
+	if (!GS) { return; }
+	const bool bTravel = GS->bCompass && GS->Phase == EJamFilmPhase::Shooting;
+	if (!bTravel && GS->GetShoot().GetState() == EJamShootState::Idle) { return; }
+	View.bTravelVisible = bTravel;
 	const FJamShoot& Shoot = GS->GetShoot();
 	const EJamShootState State = Shoot.GetState();
 
-	View.bShootVisible = true;
-	View.SceneLabel = FString::Printf(TEXT("SCENE %d: %s"), GS->SceneNumber,
-		*(GS->SceneTitleOverride.IsEmpty() ? Shoot.GetScene().Title : GS->SceneTitleOverride).ToUpper());
-	View.Take = Shoot.GetTake();
-	View.bRolling = State == EJamShootState::Rolling;
-	View.FilmSeconds = GS->FilmSeconds;
-	View.Hint = GS->Hint;
-	if (const AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr)
+	if (!bTravel)
 	{
-		if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Middle-mouse drag: camera"); }
-	}
-
-	View.bDignityVisible = GS->bDignityVisible;
-	View.DignityFraction = GS->GetDignity().GetFraction();
-	View.DignityHit = GS->GetDignity().IsStaggered() ? 1.f : 0.f;
-
-	const FJamStageDef* Stage = Shoot.GetStage();
-	if (Stage && State != EJamShootState::Wrap)
-	{
-		View.ObjectiveId = FString::Printf(TEXT("%d:%d:%d"), GS->SceneNumber, Shoot.GetTake(), Shoot.GetStageIndex());
-		View.Direction = Stage->Objective;
-		View.Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
-		if (Stage->TimeLimit > 0.f)
+		View.bShootVisible = true;
+		View.SceneLabel = FString::Printf(TEXT("SCENE %d: %s"), GS->SceneNumber,
+			*(GS->SceneTitleOverride.IsEmpty() ? Shoot.GetScene().Title : GS->SceneTitleOverride).ToUpper());
+		View.Take = Shoot.GetTake();
+		View.bRolling = State == EJamShootState::Rolling;
+		View.FilmSeconds = GS->FilmSeconds;
+		View.Hint = GS->Hint;
+		if (const AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr)
 		{
-			const float Left = Shoot.GetTimeLeft();
-			View.bMeterVisible = true;
-			View.MeterFraction = Left / Stage->TimeLimit;
-			View.MeterLabel = FString::Printf(TEXT("%.0fs left"), FMath::CeilToFloat(Left));
-			View.bMeterDanger = Left <= 10.f;
+			if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Middle-mouse drag: camera"); }
 		}
-		else if (Stage->FailMeter > 0)
-		{
-			View.bMeterVisible = true;
-			View.MeterFraction = 1.f - float(Shoot.GetMeter()) / Stage->FailMeter;
-			View.MeterLabel = FString::Printf(TEXT("crops eaten %d/%d"), Shoot.GetMeter(), Stage->FailMeter);
-			View.bMeterDanger = Shoot.GetMeter() * 10 >= Stage->FailMeter * 6;
-		}
-	}
 
-	if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
-	// World bubbles, projected; gone when their speaker is.
-	const float Now = GetWorld()->GetTimeSeconds();
-	for (const AJamGameState::FWorldBubble& B : GS->Bubbles)
-	{
-		const AActor* Anchor = B.Anchor.Get();
-		FVector2D OnScreen;
-		if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset, OnScreen, false))
+		View.bDignityVisible = GS->bDignityVisible;
+		View.DignityFraction = GS->GetDignity().GetFraction();
+		View.DignityHit = GS->GetDignity().IsStaggered() ? 1.f : 0.f;
+
+		const FJamStageDef* Stage = Shoot.GetStage();
+		if (Stage && State != EJamShootState::Wrap)
 		{
-			View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
+			View.ObjectiveId = FString::Printf(TEXT("%d:%d:%d"), GS->SceneNumber, Shoot.GetTake(), Shoot.GetStageIndex());
+			View.Direction = Stage->Objective;
+			View.Objective = FString::Printf(TEXT("%s   %d/%d"), *Stage->Objective, Shoot.GetProgress(), Stage->Count);
+			if (Stage->TimeLimit > 0.f)
+			{
+				const float Left = Shoot.GetTimeLeft();
+				View.bMeterVisible = true;
+				View.MeterFraction = Left / Stage->TimeLimit;
+				View.MeterLabel = FString::Printf(TEXT("%.0fs left"), FMath::CeilToFloat(Left));
+				View.bMeterDanger = Left <= 10.f;
+			}
+			else if (Stage->FailMeter > 0)
+			{
+				View.bMeterVisible = true;
+				View.MeterFraction = 1.f - float(Shoot.GetMeter()) / Stage->FailMeter;
+				View.MeterLabel = FString::Printf(TEXT("crops eaten %d/%d"), Shoot.GetMeter(), Stage->FailMeter);
+				View.bMeterDanger = Shoot.GetMeter() * 10 >= Stage->FailMeter * 6;
+			}
 		}
-	}
-	View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
-	if (GS->IsWrapVisible())
-	{
-		View.Wrap = GS->Wrap;
-		View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? TEXT("Click to open the Premiere")
-			: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
-				? TEXT("Hold (A) to continue") : TEXT("Click or hold [E] to continue"));
+
+		if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+		// World bubbles, projected; gone when their speaker is.
+		const float Now = GetWorld()->GetTimeSeconds();
+		for (const AJamGameState::FWorldBubble& B : GS->Bubbles)
+		{
+			const AActor* Anchor = B.Anchor.Get();
+			FVector2D OnScreen;
+			if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset, OnScreen, false))
+			{
+				View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
+			}
+		}
+		View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
+		if (GS->IsWrapVisible())
+		{
+			View.Wrap = GS->Wrap;
+			View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? TEXT("Click to open the Premiere")
+				: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
+					? TEXT("Hold (A) to continue") : TEXT("Click or hold [E] to continue"));
+		}
 	}
 	// Skill bar and XP from the hero's progression; cooldowns from the ability system.
 	if (const AJamPlayerState* PS = PlayerOwner ? PlayerOwner->GetPlayerState<AJamPlayerState>() : nullptr)
@@ -293,7 +299,7 @@ void AJamHUD::BuildView()
 		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 2"), TEXT(""), TEXT("Q") };
 		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT(""), TEXT("LB") };
 		const FGameplayTag CooldownTags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Sigh, JamGameplayTags::Cooldown_Judgment };
-		const bool bWrap = GS->IsWrapVisible();
+		const bool bWrap = !bTravel && GS->IsWrapVisible();
 		UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
 		const AJamHero* CastHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
 		const FJamClassDef& CastDef = JamCast::Get(CastHero ? CastHero->GetCastIndex() : 0);
@@ -328,6 +334,14 @@ void AJamHUD::BuildView()
 				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 2 / Q"));
 		}
 	}
+	if (bTravel)
+	{
+		const AJamHero* TravelHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+		View.bGamepad = TravelHero && TravelHero->IsUsingGamepad();
+		if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
+		return;
+	}
+	const FJamStageDef* Stage = Shoot.GetStage();
 	View.NotesTaken = GS->RunNotesTaken;
 	View.NotesRefused = GS->RunNotesRefused;
 	View.bSulking = Shoot.IsSulking();
@@ -664,17 +678,9 @@ void AJamHUD::DrawCompass()
 	const float Scale = 1.3f * Px;
 	GetTextSize(Label, Tw, Th, Font, Scale);
 	const float Lx = FMath::Clamp(Mx - Tw * 0.5f, 8.f, W - Tw - 8.f);
-	DrawText(Label, FLinearColor::Black, Lx + 2.f * Px, StripY + 14.f * Px + 2.f * Px, Font, Scale);
-	DrawText(Label, Gold, Lx, StripY + 14.f * Px, Font, Scale);
-	if (!GS->Hint.IsEmpty())
-	{
-		const AJamHero* H = Cast<AJamHero>(Pawn);
-		const FString WalkHint = GS->Hint + (H && !H->IsUsingGamepad() ? TEXT("   Middle-mouse drag: camera") : TEXT(""));
-		float Hw = 0.f, Hh = 0.f;
-		GetTextSize(WalkHint, Hw, Hh, Font, Px);
-		DrawText(WalkHint, FLinearColor::Black, Cx - Hw * 0.5f + 2.f * Px, StripY + 14.f * Px + Th + 6.f * Px, Font, Px);
-		DrawText(WalkHint, FLinearColor::White, Cx - Hw * 0.5f, StripY + 12.f * Px + Th + 6.f * Px, Font, Px);
-	}
+	DrawText(Label, FLinearColor::Black, Lx + 2.f * Px, StripY + 34.f * Px + 2.f * Px, Font, Scale);
+	DrawText(Label, Gold, Lx, StripY + 34.f * Px, Font, Scale);
+
 }
 
 // ---- Sound effects the HUD sees (R1) ------------------------------------------------------------------------------

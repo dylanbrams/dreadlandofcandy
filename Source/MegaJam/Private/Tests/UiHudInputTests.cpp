@@ -72,6 +72,15 @@ bool FJamHudInputTest::RunTest(const FString&)
     const FVector2D Empty(1800.f, 500.f);
     const FPointerEvent WorldClick(0, Empty, Empty, TSet<FKey>{ EKeys::LeftMouseButton }, EKeys::LeftMouseButton, 0.f, FModifierKeysState());
     TestFalse(TEXT("empty space forwards gameplay click"), Hud->NativeOnMouseButtonDown(Geometry, WorldClick).IsEventHandled());
+    View.bShootVisible = false;
+    View.bTravelVisible = true;
+    View.bPromptVisible = false;
+    Hud->ApplyView(View, 11.f);
+    Paint();
+    Click(Hud->SkillTiles[0], EJamHudAction::Skill1, TEXT("travel basic tile"));
+    Click(Hud->SkillTiles[1], EJamHudAction::Skill2, TEXT("travel signature tile"));
+    Click(Hud->SkillTiles[2], EJamHudAction::Ultimate, TEXT("travel ultimate tile"));
+    Click(Hud->LevelText, EJamHudAction::Character, TEXT("travel character sheet"));
     JamHud::Sample(TEXT("cut"), View);
     Hud->ApplyView(View, 12.f);
     Paint();

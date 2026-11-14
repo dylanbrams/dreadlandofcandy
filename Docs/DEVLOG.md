@@ -308,3 +308,10 @@ Both targets build, all 69 Jam tests pass; refreshed Development package passes 
 Helpers initially assumed Backlot/default Template_Default; mouse timed out in Open travel, and packaged Template_Default failed because it is no longer cooked. Reran on the shipped map. Physical swapped-button mapping/refocus remains a manual check; see Saved/R7Mouse/current_mouse_result.json.
 Inspected Saved/Screenshots/WindowsEditor/r7_current_mouse.png and packaged captures; travel HUD and compass crowding remain batch 1.
 Rebuilt tester ZIP; no upload/push. Dylan now requests no further Backlot tests; Open is the release gate. Archived previous STATUS to preserve full wishlist; next: batch 1.
+
+
+## 2026-11-14 09:44 - GAME, batch 1 blockers
+Moved the compass label clear of its strip and restored the travel skill/XP HUD, including mouse hit paths.
+Traced the grey-screen report to BudgetOut's global material replacement/desaturation; Open keeps authored materials and colour while extras still become boxes. Turned the archer bow about its long axis in the left hand.
+Editor build, 69 Jam tests and Open autoplay pass (three scenes, 107.1 s); inspected Saved/Screenshots/WindowsEditor/batch1-budget.png and the travel/bow captures. Development game build also passes.
+Dylan deferred packaging to finish all existing batches first: the current ZIP remains batch 0. No push/upload. GAME continues into batch 2.

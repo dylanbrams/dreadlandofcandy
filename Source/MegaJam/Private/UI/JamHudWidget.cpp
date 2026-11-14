@@ -519,15 +519,15 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	for (UBorder* Tile : ChoiceTiles) { Control(Tile, View.bNotePrompt && !View.bReadingNote); }
 	WrapPanel->SetVisibility(View.Wrap.bVisible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	Control(WrapContinue, View.Wrap.bVisible && !View.Wrap.ContinueHint.IsEmpty());
-	SkillBar->SetVisibility(View.bShootVisible && !View.Skills.IsEmpty() ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
+	SkillBar->SetVisibility((View.bShootVisible || View.bTravelVisible) && !View.Skills.IsEmpty() ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	for (int32 i = 0; i < SkillTiles.Num(); ++i)
 	{
-		const bool bSlot = View.bShootVisible && View.Skills.IsValidIndex(i);
+		const bool bSlot = (View.bShootVisible || View.bTravelVisible) && View.Skills.IsValidIndex(i);
 		SkillTiles[i]->GetParent()->SetVisibility(bSlot ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 		Control(SkillTiles[i], bSlot);
 	}
-	Control(LevelText, View.bShootVisible);
-	Control(PointsText, View.bShootVisible && View.Points > 0);
+	Control(LevelText, View.bShootVisible || View.bTravelVisible);
+	Control(PointsText, (View.bShootVisible || View.bTravelVisible) && View.Points > 0);
 	Control(PromptPanel, View.bPromptVisible);
 	Control(PauseControl, true);
 	if (View.Wrap.bVisible)
@@ -910,7 +910,7 @@ void UJamHudWidget::BuildSkillBar()
 
 void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 {
-	const bool bBar = View.bShootVisible && View.Skills.Num() > 0;
+	const bool bBar = (View.bShootVisible || View.bTravelVisible) && View.Skills.Num() > 0;
 	Show(SkillBar, bBar);
 	if (!bBar) { return; }
 	SetTextIfChanged(LevelText, FString::Printf(TEXT("LV %d"), View.Level));
@@ -973,7 +973,7 @@ FReply UJamHudWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
         }
     }
     if (InputView.Wrap.bVisible && Under(WrapContinue)) { return Dispatch(EJamHudAction::Continue); }
-    if (InputView.bShootVisible)
+    if (InputView.bShootVisible || InputView.bTravelVisible)
     {
         for (int32 i = 0; i < SkillTiles.Num(); ++i)
         {

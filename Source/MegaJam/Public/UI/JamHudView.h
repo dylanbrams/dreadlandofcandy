@@ -51,6 +51,7 @@ struct MEGAJAM_API FJamHudBubble
 struct MEGAJAM_API FJamHudView
 {
 	bool bShootVisible = false;   // slate label, REC, objective
+	bool bTravelVisible = false;  // skills and progression between Open film sets
 
 	FString SceneLabel;           // "SCENE 1: THE RAT CATCHER"
 	int32 Take = 1;
