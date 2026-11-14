@@ -60,5 +60,6 @@ Itch handoff: Marketing/Itch/LUNA_UPLOAD_HANDOFF.md; explicit go per push.
 
 Physical swapped-button/refocus behaviour, right-drag/wheel feel, manual typed
 directions, cast visual approval and the reported golden-rain moment in play.
-Automated tests/captures do not establish those. Backend redeploy is Dylan's.
+Automated tests/captures do not establish those. BACKEND reports n2 deployed,
+pre-warmed and live-checked (46b75af); HTTPS from the game still needs verification.
 Engine handoff: FREE after this checkpoint.

@@ -65,6 +65,7 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | fal.ai (Hunyuan3D) | Generated environment, prop and particle meshes |
 | ElevenLabs | English Fenella dialogue, cast battle cries and sound effects |
 | ACE Studio | Music, with Dylan's own vocals on the theme song |
+| Anthropic Claude Haiku | Typed director notes and generated premiere text; backend deployed Nov 14 |
 | Unreal MCP + PCG and Niagara toolsets (engine plugins, Experimental) | Lets the agent drive the editor, build PCG graphs and Niagara systems |
 
 ## Generated during the jam
