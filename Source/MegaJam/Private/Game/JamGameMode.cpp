@@ -32,6 +32,7 @@
 #include "Misc/CommandLine.h"
 #include "Game/JamSfx.h"
 #include "Misc/FileHelper.h"
+#include "Sound/SoundBase.h"
 
 namespace JamShootPacing
 {
@@ -388,7 +389,11 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 			if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
 			VillageQuests.Report(EJamStageVerb::Pacify);
 			UpdateVillageObjective();
-			if (VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Ready) { Direct(TEXT("Objectives complete! Return to ") + VillageQuests.Offer(VillageQuests.Active()).GiverName + TEXT(" to collect your reward.")); }
+			if (VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Ready)
+			{
+				Direct(TEXT("Objectives complete! Return to ") + VillageQuests.Offer(VillageQuests.Active()).GiverName + TEXT(" to collect your reward."));
+				SayOnce(SaidOnce.Contains(TEXT("HeroPickup_01")) ? TEXT("HeroPickup_02") : TEXT("HeroPickup_01"));
+			}
 		}
 		return;
 	}
@@ -418,7 +423,11 @@ bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 		VillageQuests.Report(EJamStageVerb::Interact);
 		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Treat); }
 		UpdateVillageObjective();
-		if (VillageQuests.State(Side) == EJamVillageQuestState::Ready) { Direct(TEXT("Everyone treated! Return to the quest giver and collect your payment.")); }
+		if (VillageQuests.State(Side) == EJamVillageQuestState::Ready)
+		{
+			Direct(TEXT("Everyone treated! Return to the quest giver and collect your payment."));
+			SayOnce(VillageQuests.Offer(Side).Target == EJamTargetKind::Goblin ? TEXT("HeroPickup_04") : TEXT("HeroPickup_05"));
+		}
 		return true;
 	}
 	if (!GS || !GS->CanInteract()) { return false; }
@@ -978,13 +987,28 @@ void AJamGameMode::Say(EJamLineTrigger Trigger)
 	else if (!bBusy) { ShowCaption(*Line); }
 }
 
+void AJamGameMode::SayOnce(FName LineId)
+{
+	// Spent when shown (ShowCaption), not when queued: a Direct() that clears the queue leaves the line for next time.
+	if (SaidOnce.Contains(LineId) || CaptionQueue.Contains(LineId) || !JamLines::Find(LineId)) { return; }
+	CaptionQueue.Add(LineId);
+}
+
 void AJamGameMode::ShowCaption(const FJamLine& Line)
 {
 	AJamGameState* GS = GetJamGameState();
 	if (!GS) { return; }
-	const float Seconds = Line.Trigger == EJamLineTrigger::RealityIntro
-		? FMath::Clamp(2.f + Line.Text.Len() * 0.055f, 5.f, 12.f)
-		: JamFenellaTuning::CaptionSeconds(Line.Text);
+	const bool bLong = Line.Trigger == EJamLineTrigger::RealityIntro
+		|| (Line.Trigger >= EJamLineTrigger::RealityPickup && Line.Trigger <= EJamLineTrigger::ReturnPickup);
+	float Seconds = bLong ? FMath::Clamp(2.f + Line.Text.Len() * 0.055f, 5.f, 12.f) : JamFenellaTuning::CaptionSeconds(Line.Text);
+	// Keep the caption up for the whole recording (the HUD plays /Game/Audio/VO/VO_<LineId> while it shows).
+	const FString Clip = FString::Printf(TEXT("VO_%s"), *Line.Id.ToString());
+	if (const USoundBase* Voice = LoadObject<USoundBase>(nullptr, *FString::Printf(TEXT("/Game/Audio/VO/%s.%s"), *Clip, *Clip), nullptr, LOAD_NoWarn | LOAD_Quiet))
+	{
+		const float Duration = Voice->GetDuration();
+		if (Duration > 0.f && Duration < 30.f) { Seconds = FMath::Max(Seconds, Duration + 0.4f); }
+	}
+	SaidOnce.Add(Line.Id);
 	GS->CaptionLineId = Line.Id;
 	GS->CaptionText = Line.Text;
 	GS->CaptionUntil = GetWorld()->GetTimeSeconds() + Seconds;
@@ -1659,6 +1683,8 @@ void AJamGameMode::BeginWalkToSet(int32 Next)
 	MarkQuest(Centre);
 	Direct(FString::Printf(TEXT("%s Next, %s. I have marked the starting point with a golden triangle. Walk into the clearing and we will begin."),
 		Next == FirstSceneIndex ? TEXT("You are hired! I will stay with you.") : TEXT("Good work, hero!"), *SceneSign(Next)));
+	// The reality show keeps rolling between sets: one pickup per walk, in order.
+	SayOnce(*FString::Printf(TEXT("RealityPickup_%02d"), FMath::Clamp(Next - FirstSceneIndex, 0, 4) + 1));
 	TickOpenWalk();   // the biome's music from the first frame of the walk
 	if (Hero.IsValid()) { Hero->SetFollowFraming(false); }
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: walk to film set %d (%s)"), Next + 1, *SceneSign(Next));

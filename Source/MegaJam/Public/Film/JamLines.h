@@ -28,6 +28,11 @@ enum class EJamLineTrigger : uint8
 	BudgetOut,
 	Premiere,
 	Pause,
+	// Fenella, reality-show pickups (Nov 14): each line is queued by id, once per session, from the village flow
+	RealityPickup,  // walks to the three film sets, an abandoned errand
+	VillagePickup,  // _01.._05 the five givers' first offers (Givers() order), _06 the first quest choice
+	HeroPickup,     // a village errand's objectives done: _01/_02 pacify, _03 gather, _04 brush, _05 feed, _06 halfway
+	ReturnPickup,   // _01 back to the village after the film, _02 the last village errand paid
 	// Fenella, ambient triggers (gated by gap, cooldown and silence)
 	Idle,
 	Strayed,

@@ -88,6 +88,35 @@ namespace
 				TEXT("Walking off set? Your contract has thoughts about that."),
 				TEXT("Fine. Go. I'll film the rats. They're easier to light."),
 			} },
+			// vocals/Fenella_NewLines_2026-11-14.md (recorded: vocals/output/fenella/VO_<LineId>)
+			{ EJamLineTrigger::RealityPickup, {
+				TEXT("Just be yourself, darling. The version with a terrible secret and better posture."),
+				TEXT("Nothing here is scripted. I've written that down so everyone says it correctly."),
+				TEXT("We need a cliffhanger. This hill will have to do. Look uncertain near it."),
+				TEXT("Tell the camera how you feel. If it's fine, tell it how you nearly felt."),
+				TEXT("Nobody panic! Until I find the lens cap. Then absolutely everybody panic."),
+				TEXT("The villagers are being terribly reasonable. I'll see what I can do."),
+			} },
+			{ EJamLineTrigger::VillagePickup, {
+				TEXT("The mayor needs help. Give him your full attention. Three quarters of your face to camera."),
+				TEXT("The baker's in trouble. Finally, some stakes I can eat."),
+				TEXT("Sprig wants the garden saved. I want a tear rolling down a leaf. We can both win."),
+				TEXT("Doctor Molar has uncovered a cavity. Hold for the gasp. It's a very small reveal."),
+				TEXT("Taffy has a scouting report. I've asked for a shocking discovery on page two."),
+				TEXT("Pick the solution you believe in. Then explain why the other one betrayed you."),
+			} },
+			{ EJamLineTrigger::HeroPickup, {
+				TEXT("You solved it without an argument. Wonderful. Could you argue about how well it went?"),
+				TEXT("That's real kindness. Keep doing that. I'll move the camera."),
+				TEXT("A whole basket of supplies! Set it down like it contains your last hope. Mind the eggs."),
+				TEXT("Beautiful brushing. I saw my reflection in that tooth. Naturally, I kept the shot."),
+				TEXT("You fed them! Hold on the chewing. This is our quiet, expensive bit."),
+				TEXT("Another problem solved. At this rate we'll have to interview the problems' families."),
+			} },
+			{ EJamLineTrigger::ReturnPickup, {
+				TEXT("Back to the village! Everyone act as though we've been gone for years. Gary, put the kettle down."),
+				TEXT("What a journey. Friendship, courage, celery. I knew the celery would carry it."),
+			} },
 			{ EJamLineTrigger::Idle, {
 				TEXT("Take your time. Film is cheap. It isn't. Hurry up."),
 				TEXT("Is this a dramatic pause, or are you buffering?"),
@@ -169,7 +198,8 @@ namespace
 	const TCHAR* const GNames[] = {
 		TEXT("SceneStart"), TEXT("Level7Intro"), TEXT("RealityIntro"), TEXT("FailedTake"), TEXT("Take3"), TEXT("Take4"), TEXT("Take5"), TEXT("Take6"),
 		TEXT("CutPitch"), TEXT("NoteTaken"), TEXT("NoteRefused"), TEXT("ForcedRetake"), TEXT("NarrationCut"), TEXT("Wrap"),
-		TEXT("BudgetOut"), TEXT("Premiere"), TEXT("Pause"), TEXT("Idle"), TEXT("Strayed"), TEXT("LectureCast"), TEXT("Pacified"),
+		TEXT("BudgetOut"), TEXT("Premiere"), TEXT("Pause"),
+		TEXT("RealityPickup"), TEXT("VillagePickup"), TEXT("HeroPickup"), TEXT("ReturnPickup"), TEXT("Idle"), TEXT("Strayed"), TEXT("LectureCast"), TEXT("Pacified"),
 		TEXT("Interact"), TEXT("Sulking"), TEXT("Commentary"), TEXT("BubbleDefault"), TEXT("BubbleSadder"), TEXT("BubbleBudget"),
 		TEXT("NuisanceReply"), TEXT("ProductionNote"),
 	};
@@ -222,12 +252,13 @@ namespace JamLines
 
 	bool IsFenella(EJamLineTrigger Trigger) { return Trigger <= EJamLineTrigger::Commentary; }
 
-	bool IsStory(EJamLineTrigger Trigger) { return Trigger <= EJamLineTrigger::Pause; }
+	bool IsStory(EJamLineTrigger Trigger) { return Trigger <= EJamLineTrigger::ReturnPickup; }
 
 	bool IsOnce(EJamLineTrigger Trigger)
 	{
 		return Trigger == EJamLineTrigger::Level7Intro
 			|| Trigger == EJamLineTrigger::RealityIntro
+			|| (Trigger >= EJamLineTrigger::RealityPickup && Trigger <= EJamLineTrigger::ReturnPickup)
 			|| (Trigger >= EJamLineTrigger::Take3 && Trigger <= EJamLineTrigger::Take6);
 	}
 

@@ -128,6 +128,9 @@ private:
 
 	// Fenella (T11): the scheduler picks, the game state shows. Story lines queue; ambient lines only fill silence.
 	void Say(EJamLineTrigger Trigger);
+	/** Queue one authored line by id ("HeroPickup_03"), at most once per session (spent when shown). Direct() clears the queue: call it after. */
+	void SayOnce(FName LineId);
+	TSet<FName> SaidOnce;
 
 	// Typed notes (T12b).
 	void ResolveTypedNote(int32 Serial, const FString& Typed, bool bOk, const FString& Body);

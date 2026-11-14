@@ -179,6 +179,8 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 		UpdateVillageObjective();
 		JamSfx::Play(this, TEXT("Stage_Complete"));
 		Direct(FString::Printf(TEXT("%s thanks you! %d sprinkles and 40 XP. A real payment. I shall try not to take it personally."), *Quest.GiverName, Quest.Reward));
+		if (VillageQuests.Completed() == JamVillageQuests::All().Num()) { SayOnce(TEXT("ReturnPickup_02")); }
+		else if (VillageQuests.Completed() * 2 >= JamVillageQuests::All().Num()) { SayOnce(TEXT("HeroPickup_06")); }
 		UE_LOG(LogJam, Log, TEXT("JamQuest: turned in %s reward=%d completed=%d"), *Quest.Title, Quest.Reward, VillageQuests.Completed());
 	}
 	else if (State == EJamVillageQuestState::Available && VillageQuests.Active() == INDEX_NONE) { OfferVillageQuest(Index); }
@@ -207,6 +209,7 @@ void AJamGameMode::ReturnToVillage()
 	if (Faerie) { Faerie->SetFollow(Hero.Get()); Faerie->SetSulking(false); }
 	UpdateVillageObjective();
 	Direct(TEXT("Our film is finished! Back to Sugarborough: Our five villagers have work for you. I'll stay with you. Ask me in town when you'd like the Premiere."));
+	SayOnce(TEXT("ReturnPickup_01"));
 	UE_LOG(LogJam, Log, TEXT("JamQuest: return to village, follow-up quests unlocked"));
 }
 
@@ -242,6 +245,7 @@ void AJamGameMode::AcceptVillageQuest(int32 Index)
 	UpdateVillageObjective();
 	Direct(FString::Printf(TEXT("%s: %s Target: %d. Reward: %d sprinkles and 40 XP. Follow the triangle, then return to me."), *Quest.GiverName, *Quest.Request, Quest.Count, Quest.Reward));
 	JamSfx::Play(this, TEXT("Quest_Accept"));
+	SayOnce(SaidOnce.Contains(TEXT("RealityPickup_04")) ? TEXT("RealityPickup_05") : TEXT("RealityPickup_04"));
 	UE_LOG(LogJam, Log, TEXT("JamQuest: accepted %s"), *Quest.Title);
 }
 
@@ -302,7 +306,11 @@ void AJamGameMode::TickVillage(float DeltaSeconds)
 					VillageQuests.Report(EJamStageVerb::Collect);
 					if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Collect); }
 					UpdateVillageObjective();
-					if (VillageQuests.State(Active) == EJamVillageQuestState::Ready) { Direct(TEXT("That is everything. Return to the quest giver for your reward. Resist the urge to eat the evidence.")); }
+					if (VillageQuests.State(Active) == EJamVillageQuestState::Ready)
+					{
+						Direct(TEXT("That is everything. Return to the quest giver for your reward. Resist the urge to eat the evidence."));
+						SayOnce(TEXT("HeroPickup_03"));
+					}
 				}
 			}
 		}
@@ -405,6 +413,7 @@ bool AJamGameMode::AbandonVillageQuest()
     ClearStageActors();
     UpdateVillageObjective();
     Direct(TEXT("Errand set aside. Nothing paid, nothing owed. Talk to another villager, or take this job again when you are ready."));
+    SayOnce(TEXT("RealityPickup_06"));
     return true;
 }
 
@@ -438,6 +447,9 @@ void AJamGameMode::OfferVillageQuest(int32 Index)
     UJamNoteClient* Client = GetGameInstance() ? GetGameInstance()->GetSubsystem<UJamNoteClient>() : nullptr;
     QuestOffer.bCanImprovise = Client && Client->IsOnline();
     QuestOffer.Status = TEXT("Choose how to help. Both approaches return to this villager for payment.");
+    // Fenella pitches each villager's first job as television (VillagePickup_01.._05 in Givers() order), then the choice.
+    SayOnce(*FString::Printf(TEXT("VillagePickup_%02d"), VillageQuests.GiverIndex(Index) + 1));
+    SayOnce(TEXT("VillagePickup_06"));
 }
 
 void AJamGameMode::ChooseVillageBranch(int32 Choice)

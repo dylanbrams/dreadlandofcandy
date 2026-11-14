@@ -68,9 +68,22 @@ If only five ship: 1, 2, 3, 4, 5.
 Nov 14 additional recording candidates: the 20 lines in
 `vocals/Fenella_NewLines_2026-11-14.md` extend her reality-show premise,
 village direction and hero reactions. Dylan requested new lines and ElevenLabs
-production. These are additive candidates; the existing trigger pools remain
-unchanged. The same session also records the five exact `RealityIntro` lines
-above. Batch text: `vocals/fenella_new_lines_2026-11-14.json`.
+production. The existing trigger pools remain unchanged. The same session also
+records the five exact `RealityIntro` lines above. Batch text:
+`vocals/fenella_new_lines_2026-11-14.json`.
+
+Fixes2 (Nov 14): all 20 are in `JamLines.cpp` as four pools with the recorded
+ids, each queued once per session by `AJamGameMode::SayOnce`:
+
+- `RealityPickup_01..03`: the walks to film sets 1, 2, 3. `_04`/`_05`: the
+  first two village jobs accepted. `_06`: the first errand abandoned.
+- `VillagePickup_01..05`: the first offer from Mayor Bonbon, Baker Crumb,
+  Gardener Sprig, Dr. Molar, Scout Taffy. `_06`: after the first offer's pitch.
+- `HeroPickup_01`/`_02`: the first two pacify jobs done. `_03`: first gather
+  done. `_04`: first brushing done. `_05`: first feeding done. `_06`: the
+  turn-in that reaches half the village jobs.
+- `ReturnPickup_01`: back to the village after the film. `_02`: the last
+  village job paid.
 
 Ids are suggestions; one line per id.
 
