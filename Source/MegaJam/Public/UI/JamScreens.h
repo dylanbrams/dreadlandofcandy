@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Film/JamProgression.h"
+#include "World/JamVillageQuests.h"
 
 /** Where the film is: BUILD_SPEC 3 flow, Title -> the three scenes -> Premiere -> Credits -> Title. */
 enum class EJamFilmPhase : uint8 { Title, Shooting, Premiere, Credits };
@@ -19,6 +20,8 @@ enum class EJamScreen : uint8
 	Premiere,
 	Credits,
 	Controls,
+	QuestJournal,
+	QuestBranches,
 };
 
 /** What choosing a menu line does. */
@@ -43,6 +46,12 @@ enum class EJamMenuAction : uint8
 	RankSignature,
 	RankUltimate,
 	OpenControls,
+	OpenQuests,
+	AbandonQuest,
+	QuestBranch0,
+	QuestBranch1,
+	ImproviseQuest,
+	CancelQuestOffer,
 };
 
 struct MEGAJAM_API FJamMenuOption
@@ -98,6 +107,8 @@ struct MEGAJAM_API FJamMenuSettings
 
 namespace JamScreens
 {
+	MEGAJAM_API FJamScreenView Quests(const FJamVillageQuestLog& Log, const FJamMenuSettings& Settings);
+	MEGAJAM_API FJamScreenView QuestBranches(const FJamQuestOfferView& Offer, const FJamMenuSettings& Settings);
 	MEGAJAM_API FJamScreenView Rating();
 	MEGAJAM_API FJamScreenView Title(const FJamMenuSettings& S);
 	MEGAJAM_API FJamScreenView Options(const FJamMenuSettings& S);

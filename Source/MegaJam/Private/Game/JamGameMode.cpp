@@ -9,6 +9,7 @@
 #include "Game/JamArtReview.h"
 #include "Game/JamArt.h"
 #include "Game/JamFaerie.h"
+#include "Game/JamQuestMarker.h"
 #include "Game/JamGameState.h"
 #include "Game/JamHero.h"
 #include "Game/JamHUD.h"
@@ -30,6 +31,7 @@
 #include "GameFramework/WorldSettings.h"
 #include "Misc/CommandLine.h"
 #include "Game/JamSfx.h"
+#include "Misc/FileHelper.h"
 
 namespace JamShootPacing
 {
@@ -164,6 +166,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 
 	const TCHAR* Cmd = FCommandLine::Get();
 	bAutoplay = FParse::Param(Cmd, TEXT("autoplay"));
+	bAutoVillage = bAutoplay && FParse::Param(Cmd, TEXT("autovillage"));
 	bForceBudgetOut = FParse::Param(Cmd, TEXT("budgetout"));   // the beat as soon as the finale's last stage rolls
 	if (FParse::Param(Cmd, TEXT("forcefail")))
 	{
@@ -299,7 +302,7 @@ void AJamGameMode::SpawnTargets(const FJamStageDef& Stage, int32 Count, bool bPa
 		const FVector2D Spot = bFromFarEdge
 			? FVector2D(FieldBounds.Max.X - 150.f, FMath::Lerp(FieldBounds.Min.Y + 200.f, FieldBounds.Max.Y - 200.f, FMath::FRand()))
 			: SpotFor(FieldBounds, Already + i);
-		const FVector Loc(Spot, GroundZ + 70.f);
+		const FVector Loc(Spot, (bOpenMode ? TraceGround(Spot) : GroundZ) + 70.f);
 		AJamNuisance* N = GetWorld()->SpawnActorDeferred<AJamNuisance>(AJamNuisance::StaticClass(), FTransform(Loc),
 			nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!N) { continue; }
@@ -365,7 +368,7 @@ void AJamGameMode::SpawnPickups(int32 Count)
 	{
 		// Pickups sit between the nuisance rows, so they don't land under a sitting bug.
 		const FVector2D Spot = SpotFor(FieldBounds, i + 1) + FVector2D(175.f, 0.f);
-		if (AJamPickup* P = GetWorld()->SpawnActor<AJamPickup>(AJamPickup::StaticClass(), FTransform(FVector(Spot, GroundZ + 25.f))))
+		if (AJamPickup* P = GetWorld()->SpawnActor<AJamPickup>(AJamPickup::StaticClass(), FTransform(FVector(Spot, (bOpenMode ? TraceGround(Spot) : GroundZ) + 25.f))))
 		{
 			Pickups.Add(P);
 		}
@@ -377,6 +380,18 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 	AJamGameState* GS = GetJamGameState();
 	JamSfx::Play(this, TEXT("Pacify"));
 	const FJamStageDef* Stage = GS ? GS->Shoot.GetStage() : nullptr;
+	if (bVillageExploration)
+	{
+		const bool bOwned = Nuisances.Contains(Cast<AJamNuisance>(Pacified));
+		if (bOwned && VillageQuests.Active() != INDEX_NONE && VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Active)
+		{
+			if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
+			VillageQuests.Report(EJamStageVerb::Pacify);
+			UpdateVillageObjective();
+			if (VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Ready) { Direct(TEXT("Objectives complete! Return to ") + VillageQuests.Offer(VillageQuests.Active()).GiverName + TEXT(" to collect your reward.")); }
+		}
+		return;
+	}
 	if (GS && GS->Phase == EJamFilmPhase::Shooting && !bBetweenScenes && Stage && GS->Shoot.GetState() == EJamShootState::Rolling)
 	{
 		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Pacify); }
@@ -394,6 +409,18 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 bool AJamGameMode::HandleInteract(AJamHero* InHero, AJamNuisance* Target)
 {
 	AJamGameState* GS = GetJamGameState();
+	const int32 Side = VillageQuests.Active();
+	if (bVillageExploration && Side != INDEX_NONE && VillageQuests.State(Side) == EJamVillageQuestState::Active
+		&& VillageQuests.Offer(Side).Verb == EJamStageVerb::Interact)
+	{
+		if (!InHero || InHero != Hero.Get() || !Target || !Nuisances.Contains(Target) || !Target->IsPacified()) { return false; }
+		if (FVector::Dist(InHero->GetActorLocation(), Target->GetActorLocation()) > 250.f + Target->ExtraReach() || !Target->Treat()) { return false; }
+		VillageQuests.Report(EJamStageVerb::Interact);
+		if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().AddXp(EJamXpSource::Treat); }
+		UpdateVillageObjective();
+		if (VillageQuests.State(Side) == EJamVillageQuestState::Ready) { Direct(TEXT("Everyone treated! Return to the quest giver and collect your payment.")); }
+		return true;
+	}
 	if (!GS || !GS->CanInteract()) { return false; }
 	if (!InHero || !Target || !Target->IsPacified()) { return false; }
 	// The hero picked the target; check range again here, as a server would.
@@ -417,9 +444,14 @@ void AJamGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	SceneTime += DeltaSeconds;
-	if (bBetweenScenes) { TickBetweenScenes(); }
-	else { TickShoot(DeltaSeconds); }
-	TickBudget();
+	if (bRecruitmentPending || bVillageExploration) { TickVillage(DeltaSeconds); }
+	else
+	{
+		if (bBetweenScenes) { TickBetweenScenes(); }
+		else { TickShoot(DeltaSeconds); }
+		TickBudget();
+		if (bOpenMode) { TickVillage(DeltaSeconds); }
+	}
 	TickFenella(DeltaSeconds);
 	if (bAutoplay && Hero.IsValid())
 	{
@@ -433,6 +465,7 @@ void AJamGameMode::TickBetweenScenes()
 	const int32 Next = SceneIndex + 1;
 	const AJamHero* H = Hero.Get();
 	if (!H || Next < 0 || Next >= NumSets()) { return; }
+	if (GetJamGameState() && GetJamGameState()->IsWrapVisible()) { return; }
 	const FBox2D Set = SceneFloor(Next);
 	const FVector2D Here(H->GetActorLocation());
 	if (bOpenMode)
@@ -634,6 +667,7 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		}
 		ShowCard(EJamCardKind::Action, TEXT("ACTION!"), FString(), 1.2f);   // Fenella's caption carries the line
 		JamSfx::Play(this, TEXT("Clapper"));
+		if (bOpenMode && Stage) { Direct(TEXT("Hero, ") + Stage->Objective + TEXT(". Follow the objective above; I will film you.")); }
 		break;
 
 	case EJamShootEventType::Progress:
@@ -677,6 +711,12 @@ void AJamGameMode::HandleShootEvent(const FJamShootEvent& Event)
 		Say(EJamLineTrigger::Wrap);
 		if (bLast)
 		{
+			if (bOpenMode)
+			{
+				VillageQuests.FinishMain();
+				GS->bVillageReturnAvailable = true;
+				if (QuestMarker) { QuestMarker->SetActorHiddenInGame(true); }
+			}
 			FinishRun(true, FString());
 		}
 		else
@@ -733,12 +773,23 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 	}
 	const FJamShoot& Shoot = GS->GetShoot();
 
+	if (bRecruitmentPending && Faerie)
+	{
+		const FVector To = Faerie->GetActorLocation() - Bot->GetActorLocation();
+		if (SceneTime > JamAutoplayTuning::SceneTimeoutSeconds) { FinishRun(false, FString::Printf(TEXT("recruitment timeout hero=%s fenella=%s"), *Bot->GetActorLocation().ToString(), *Faerie->GetActorLocation().ToString())); return; }
+		if (To.Size2D() < 240.f) { Bot->RequestInteract(); }
+		else { AutoWalkTo(FVector2D(Faerie->GetActorLocation()), DeltaSeconds); }
+		return;
+	}
+
 	if (SceneTime > JamAutoplayTuning::SceneTimeoutSeconds)
 	{
 		FinishRun(false, FString::Printf(TEXT("timeout scene=%d between=%d stage=%d take=%d progress=%d"),
 			SceneIndex + 1, bBetweenScenes ? 1 : 0, Shoot.GetStageIndex(), Shoot.GetTake(), Shoot.GetProgress()));
 		return;
 	}
+
+	if (bBetweenScenes && GS->IsWrapVisible()) { Bot->RequestInteract(); }
 
 	// Between scenes: walk up the street onto the next set. Line up with the street (Y = 0) first, so the bot
 	// never pushes into the wall beside an opening.
@@ -747,18 +798,7 @@ void AJamGameMode::TickAutoplay(float DeltaSeconds)
 		// Open: head for the middle of the next set; if the terrain stops it, side-step for a moment.
 		AutoSpendPoints();
 		if (SceneIndex + 1 >= NumSets()) { return; }
-		const FVector2D Here(Bot->GetActorLocation());
-		FVector2D Dir = (SceneFloor(SceneIndex + 1).GetCenter() - Here).GetSafeNormal();
-		BotStuckFor = FVector2D::Distance(Here, BotLastPos) < 60.f * DeltaSeconds ? BotStuckFor + DeltaSeconds : 0.f;
-		BotLastPos = Here;
-		if (BotStuckFor > 0.6f) { BotSideStepFor = 1.0f; BotSideSign = -BotSideSign; BotStuckFor = 0.f; }
-		if (BotSideStepFor > 0.f)
-		{
-			BotSideStepFor -= DeltaSeconds;
-			Dir = (FVector2D(-Dir.Y, Dir.X) * BotSideSign + Dir * 0.25f).GetSafeNormal();
-		}
-		Bot->SetAimOverride(FVector(Dir, 0.f));
-		Bot->AddMovementInput(FVector(Dir, 0.f));
+		AutoWalkTo(SceneFloor(SceneIndex + 1).GetCenter(), DeltaSeconds);
 		return;
 	}
 	if (bBetweenScenes)
@@ -999,7 +1039,7 @@ void AJamGameMode::TickFenella(float DeltaSeconds)
 			if (D < BestDist) { BestDist = D; Best = N; }
 		}
 		Faerie->SetSubject(Best);
-		Faerie->SetSulking(GS->GetShoot().IsSulking());
+		Faerie->SetSulking(!bVillageExploration && GS->GetShoot().IsSulking());
 	}
 }
 
@@ -1129,7 +1169,12 @@ bool AJamGameMode::HandleDismissWrap(AJamHero* InHero)
 {
 	AJamGameState* GS = GetJamGameState();
 	if (!GS || !InHero || !GS->IsWrapVisible()) { return false; }
-	if (GS->WrapUntil < 0.f) { RequestPremiere(); return true; }   // the last wrap opens the Premiere
+	if (GS->WrapUntil < 0.f)
+	{
+		if (bOpenMode) { ReturnToVillage(); }
+		else { RequestPremiere(); }
+		return true;
+	}   // the last wrap opens the Premiere
 	GS->WrapUntil = GetWorld()->GetTimeSeconds();
 	return true;
 }
@@ -1151,7 +1196,12 @@ void AJamGameMode::RequestRollCamera()
 	if (!GS || (GS->Phase != EJamFilmPhase::Title && GS->GetShoot().GetState() != EJamShootState::Idle)) { return; }
 	SetPhase(EJamFilmPhase::Shooting);
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: roll camera"));
-	if (bOpenMode) { BeginWalkToSet(FirstSceneIndex); return; }   // R4: the first scene starts at its film set
+	if (bOpenMode)
+	{
+		if (!VillageQuests.IsRecruited()) { BeginRecruitment(); }
+		else { BeginWalkToSet(FirstSceneIndex); }
+		return;
+	}   // R4: the first scene starts at its film set
 	StartScene(FirstSceneIndex);
 }
 
@@ -1159,6 +1209,7 @@ void AJamGameMode::RequestPremiere()
 {
 	AJamGameState* GS = GetJamGameState();
 	if (!GS || GS->Phase != EJamFilmPhase::Shooting || !bLastWrapped) { return; }
+	CancelVillageOffer();
 	const AJamPlayerState* PS = GetHeroState();
 	GS->Premiere.bDirectorsCut = JamScreens::IsDirectorsCut(GS->RunNotesTaken, GS->RunNotesRefused);
 	GS->Premiere.FilmGross = FilmGross;
@@ -1183,6 +1234,11 @@ void AJamGameMode::RequestCredits()
 
 void AJamGameMode::RequestBackToTitle()
 {
+	if (bOpenMode && bVillageExploration && GetJamGameState() && GetJamGameState()->Phase == EJamFilmPhase::Credits && !bAutoplay)
+	{
+		ReturnToVillage();
+		return;
+	}
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: back to the title"));
 	if (bAutoplay)
 	{
@@ -1199,6 +1255,7 @@ void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
 	if (!GS || bAutoplayEndLogged) { return; }
 	AfterRunTime += DeltaSeconds;
 	AutoSpendPoints();
+	if (bAutoVillage && bOpenMode && bLastWrapped) { TickAutoplayVillage(DeltaSeconds); return; }
 	const float InPhase = GetWorld()->GetTimeSeconds() - GS->PhaseSince;
 	if (GS->Phase == EJamFilmPhase::Shooting && bLastWrapped && AfterRunTime > 3.f) { RequestPremiere(); }
 	else if (GS->Phase == EJamFilmPhase::Premiere && InPhase > 4.f) { RequestCredits(); }
@@ -1206,6 +1263,7 @@ void AJamGameMode::TickAutoplayAfterRun(float DeltaSeconds)
 	{
 		bAutoplayEndLogged = true;
 		RequestBackToTitle();
+		if (FParse::Param(FCommandLine::Get(), TEXT("quitafterrun"))) { FPlatformMisc::RequestExit(false, TEXT("Main autoplay complete")); }
 	}
 }
 
@@ -1475,6 +1533,17 @@ void AJamGameMode::ClearNoteCosmetics()
 void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
 {
 	if (AJamPlayerState* PS = GetHeroState()) { PS->EditProgression().EnableNumericXp(); }
+	int32 QuestSeed = 2026;
+	FParse::Value(Cmd, TEXT("questseed="), QuestSeed);
+	VillageQuests = FJamVillageQuestLog(QuestSeed);
+	FString OfferPath;
+	if (FParse::Value(Cmd, TEXT("questoffers="), OfferPath))
+	{
+		FString Json, Error;
+		if (!FFileHelper::LoadFileToString(Json, *OfferPath)) { UE_LOG(LogJam, Warning, TEXT("JamQuest: cannot read offer file %s; keeping seeded recipes"), *OfferPath); }
+		else if (!VillageQuests.ApplyOverridesJson(Json, Error)) { UE_LOG(LogJam, Warning, TEXT("JamQuest: invalid offer file: %s; keeping seeded recipes"), *Error); }
+		else { UE_LOG(LogJam, Log, TEXT("JamQuest: loaded bounded offer overrides from %s"), *OfferPath); }
+	}
 	// O1: the world from its table. On the template map, build the flat fallback; on TERRAIN's map, only find
 	// the ground under the village square (gameplay actors at the table's locations arrive with O4).
 	const FString MapPath = GetWorld()->GetOutermost()->GetName();
@@ -1506,9 +1575,11 @@ void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
 	Faerie = GetWorld()->SpawnActor<AJamFaerie>(AJamFaerie::StaticClass(), NewHero->GetActorTransform(), FaerieParams);
 	if (Faerie) { Faerie->SetFollow(NewHero); }
 
-	// R4: the follow camera, looking out of the village toward the first set.
-	const FVector2D FirstSet = SceneFloor(FirstSceneIndex).GetCenter();
-	NewHero->EnableFollowCamera(FMath::RadiansToDegrees(FMath::Atan2(FirstSet.Y - Start.Y, FirstSet.X - Start.X)));
+	// Face Sugarborough and Fenella at the square on arrival.
+	BuildVillage();
+	const float VillageYaw = FMath::RadiansToDegrees(FMath::Atan2(-Start.Y, -Start.X));
+	NewHero->SetActorRotation(FRotator(0.f, VillageYaw, 0.f));
+	NewHero->EnableFollowCamera(VillageYaw);
 	float CamYaw = 0.f, CamPitch = -14.f;
 	const bool bYaw = FParse::Value(Cmd, TEXT("camyaw="), CamYaw);
 	const bool bPitch = FParse::Value(Cmd, TEXT("campitch="), CamPitch);
@@ -1559,7 +1630,9 @@ float AJamGameMode::TraceGround(const FVector2D& At) const
 {
 	FHitResult Hit;
 	FCollisionQueryParams Params(TEXT("JamGround"), false, Hero.Get());
-	if (GetWorld()->LineTraceSingleByObjectType(Hit, FVector(At, 50000.f), FVector(At, -50000.f), FCollisionObjectQueryParams(ECC_WorldStatic), Params))
+	// Object queries also hit nonblocking volumes (the village's volume top is 1000 uu).
+	// Match the hero's initial blocking-ground trace so NPCs and markers stand on the terrain.
+	if (GetWorld()->LineTraceSingleByChannel(Hit, FVector(At, 50000.f), FVector(At, -50000.f), ECC_WorldStatic, Params))
 	{
 		return Hit.ImpactPoint.Z;
 	}
@@ -1575,12 +1648,15 @@ void AJamGameMode::BeginWalkToSet(int32 Next)
 	SceneTime = 0.f;
 	BotStuckFor = BotSideStepFor = 0.f;
 	GS->SceneNumber = Next + 1;
-	GS->Hint = FString::Printf(TEXT("Next shot: %s"), *SceneSign(Next));
+	GS->Hint = FString::Printf(TEXT("Fenella: follow the golden triangle to %s"), *SceneSign(Next));
 	const FVector2D Centre = SceneFloor(Next).GetCenter();
 	GS->bCompass = true;
 	GS->CompassTarget = FVector(Centre, TraceGround(Centre) + 150.f);
 	const TArray<FJamSceneDef> Scenes = JamScenes::All();
 	GS->CompassLabel = Scenes.IsValidIndex(Next) ? Scenes[Next].Title.ToUpper() : FString(TEXT("NEXT SET"));
+	MarkQuest(Centre);
+	Direct(FString::Printf(TEXT("%s Next, %s. I have marked the starting point with a golden triangle. Walk into the clearing and we will begin."),
+		Next == FirstSceneIndex ? TEXT("You are hired! I will stay with you.") : TEXT("Good work, hero!"), *SceneSign(Next)));
 	TickOpenWalk();   // the biome's music from the first frame of the walk
 	if (Hero.IsValid()) { Hero->SetFollowFraming(false); }
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: walk to film set %d (%s)"), Next + 1, *SceneSign(Next));

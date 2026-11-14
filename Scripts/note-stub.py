@@ -55,6 +55,14 @@ def premiere():
     }
 
 
+def quest_branches(req):
+    return {"v": 1, "source": "model", "quest_id": req["quest_id"], "branches": [
+        {"route": route["route"], "label": "A firm word" if route["verb"] == "pacify" else "Practical help",
+         "pitch": route["pitch"], "destination": route["destinations"][-1],
+         "count": max(route["min_count"], min(route["count"] + 1, route["max_count"]))}
+        for route in req["routes"]]}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", type=int, default=8011)
@@ -77,6 +85,8 @@ def main():
                 return
             if self.path.endswith("/note"):
                 body = note_form(req)
+            elif self.path.endswith("/quest/branches"):
+                body = quest_branches(req)
             elif self.path.endswith("/premiere"):
                 body = premiere()
             else:

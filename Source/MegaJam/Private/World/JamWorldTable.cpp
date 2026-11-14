@@ -81,6 +81,9 @@ namespace JamWorldTableRows   // named, not anonymous: the game target is a unit
 		L.Add(Loc(TEXT("Signpost"), EJamLocationKind::Landmark, EJamBiome::Village, Polar(60.f, 500.f), 100.f));
 		L.Add(Loc(TEXT("GiverMayor"), EJamLocationKind::Giver, EJamBiome::Village, Polar(180.f, 700.f), 150.f, 0.f));
 		L.Add(Loc(TEXT("GiverBaker"), EJamLocationKind::Giver, EJamBiome::Village, Polar(-60.f, 900.f), 150.f, 120.f));
+		L.Add(Loc(TEXT("GiverGardener"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(800.f, 400.f), 150.f, -150.f));
+		L.Add(Loc(TEXT("GiverDentist"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-800.f, -600.f), 150.f, 35.f));
+		L.Add(Loc(TEXT("GiverScout"), EJamLocationKind::Giver, EJamBiome::Village, FVector2D(-400.f, 1000.f), 150.f, -70.f));
 
 		// The film sets (the main questline). Half sides match the backlot sets: 1800, 1400 and 2000 square.
 		L.Add(Set(TEXT("SetField"),   EJamBiome::Meadow,  Polar(MeadowYaw, 6000.f),  900.f,  0));

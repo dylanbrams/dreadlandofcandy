@@ -7,6 +7,7 @@
 #include "UI/JamScreens.h"
 #include "Film/JamNagScheduler.h"
 #include "Film/JamNoteClamp.h"
+#include "World/JamVillageQuests.h"
 #include "JamGameMode.generated.h"
 
 class AJamHero;
@@ -52,6 +53,15 @@ public:
 
 	/** Interact while the wrap panel is up closes it (the last one opens the Premiere). True if it did. */
 	bool HandleDismissWrap(AJamHero* Hero);
+	bool HandleVillageInteract(AJamHero* Hero);
+	/** Same target and range rules used by both input and the HUD prompt. */
+	bool VillageInteractPrompt(const AJamHero* Hero, AActor*& Anchor, FString& Text) const;
+	const FJamVillageQuestLog& GetVillageQuests() const { return VillageQuests; }
+	bool AbandonVillageQuest();
+	const FJamQuestOfferView& GetQuestOffer() const { return QuestOffer; }
+	void ChooseVillageBranch(int32 Choice);
+	void RequestVillageBranches();
+	void CancelVillageOffer();
 
 	/** R4b: a nuisance asks to start a charge (shoot rolling, Dignity left, room among the chargers). */
 	bool RequestCharge(AJamNuisance* Nuisance, float HeroDistance);
@@ -72,6 +82,31 @@ public:
 	bool HandleTypedNote(AJamHero* Hero, const FString& Typed);
 
 private:
+	friend class FJamVillageFlowTest;
+	void BuildVillage();
+	void BeginRecruitment();
+	void ReturnToVillage();
+	void TickVillage(float DeltaSeconds);
+	void TickAutoplayVillage(float DeltaSeconds);
+	void AutoWalkTo(const FVector2D& Goal, float DeltaSeconds);
+	bool bAutoVillage = false;
+	void OfferVillageQuest(int32 Index);
+	void ResolveVillageBranches(int32 Serial, int32 Index, bool bOk, const FString& Body);
+	FJamQuestOfferView QuestOffer;
+	int32 OfferedQuest = INDEX_NONE;
+	int32 BranchRequestSerial = 0;
+	void UpdateVillageObjective();
+	void AcceptVillageQuest(int32 Index);
+	void Direct(const FString& Text);
+	int32 VillageTarget(const AJamHero* InHero) const;
+	void MarkQuest(const FVector2D& At, AActor* Anchor = nullptr, float Height = 350.f);
+	FJamVillageQuestLog VillageQuests;
+	bool bRecruitmentPending = false;
+	bool bVillageExploration = false;
+	UPROPERTY(Transient) TObjectPtr<class AJamQuestMarker> QuestMarker;
+	UPROPERTY(Transient) TArray<TObjectPtr<class AJamVillager>> Villagers;
+	UPROPERTY(Transient) TArray<TObjectPtr<class AJamQuestMarker>> VillagerMarkers;
+
 	AJamGameState* GetJamGameState() const;
 	void StartScene(int32 InSceneIndex);
 	void TickShoot(float DeltaSeconds);

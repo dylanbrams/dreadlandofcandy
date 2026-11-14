@@ -17,6 +17,7 @@ public:
 	virtual void BeginPlay() override;
 
 	FLinearColor Colour = FLinearColor(0.55f, 0.35f, 0.18f);   // almond brown
+	FString ArtMesh = TEXT("SM_Almond");
 
 private:
 	UPROPERTY(VisibleAnywhere)

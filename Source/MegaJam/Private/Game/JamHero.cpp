@@ -642,6 +642,7 @@ bool AJamHero::RequestInteract()
 	if (!GM) { return false; }
 	if (GM->HandleNoteAnswer(this, true)) { return true; }   // at the CUT! prompt, interact takes the note
 	if (GM->HandleDismissWrap(this)) { return true; }   // the wrap panel: interact closes it
+	if (GM->HandleVillageInteract(this)) { return true; }
 	AJamNuisance* Target = FindInteractTarget();
     if (Target && GM->HandleInteract(this, Target))
     {

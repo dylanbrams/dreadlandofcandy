@@ -283,14 +283,17 @@ void AJamHUD::BuildView()
 			}
 		}
 		View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
-		if (GS->IsWrapVisible())
-		{
-			View.Wrap = GS->Wrap;
-			View.Wrap.ContinueHint = GS->WrapUntil < 0.f ? TEXT("Click to open the Premiere")
-				: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
-					? TEXT("Hold (A) to continue") : TEXT("Click or hold [F] to continue"));
-		}
 	}
+	// Wraps remain readable while the compass already points to the next quest.
+	if (GS->IsWrapVisible())
+	{
+		View.Wrap = GS->Wrap;
+		View.Wrap.ContinueHint = GS->WrapUntil < 0.f
+			? (GS->bVillageReturnAvailable ? TEXT("FILM COMPLETE!  Return to the village  [F / A / Click]") : TEXT("ADVENTURE COMPLETE!  Watch the Premiere  [F / A / Click]"))
+			: (PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad()
+				? TEXT("Hold (A) to continue") : TEXT("Click or hold [F] to continue"));
+	}
+
 	// Skill bar and XP from the hero's progression; cooldowns from the ability system.
 	if (const AJamPlayerState* PS = PlayerOwner ? PlayerOwner->GetPlayerState<AJamPlayerState>() : nullptr)
 	{
@@ -344,6 +347,18 @@ void AJamHUD::BuildView()
 	{
 		const AJamHero* TravelHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
 		View.bGamepad = TravelHero && TravelHero->IsUsingGamepad();
+		View.Hint = GS->Hint;
+		if (!GS->VillagePrompt.IsEmpty() && GS->VillagePromptAnchor.IsValid())
+		{
+			FVector2D OnScreen;
+			if (UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, GS->VillagePromptAnchor->GetActorLocation() + FVector(0, 0, 140), OnScreen, false))
+			{
+				View.bPromptVisible = true;
+				View.Prompt = GS->VillagePrompt;
+				View.PromptPosition = OnScreen;
+				View.HoldFraction = TravelHero ? TravelHero->GetInteractHoldFraction() : 0.f;
+			}
+		}
 		if (GS->IsCaptionVisible()) { View.Caption = GS->CaptionText; }
 		return;
 	}
@@ -422,6 +437,13 @@ FJamScreenView AJamHUD::BuildScreen() const
 	const float InPhase = GetWorld()->GetTimeSeconds() - GS->PhaseSince;
 	FJamScreenView V;
 
+	if (const AJamGameMode* GM = AuthGameMode(); GS->Phase == EJamFilmPhase::Shooting && GM && GM->GetQuestOffer().bVisible)
+	{
+		FJamScreenView Choices = JamScreens::QuestBranches(GM->GetQuestOffer(), S);
+		Choices.Selected = FMath::Clamp(Selected, 0, Choices.Options.Num() - 1);
+		if (!Choices.Options[Choices.Selected].bEnabled) { Choices.Selected = JamScreens::Step(Choices.Options, Choices.Selected, 1); }
+		return Choices;
+	}
 	if (GS->Phase == EJamFilmPhase::Title)
 	{
 		if (InPhase < RatingSeconds) { return JamScreens::Rating(); }
@@ -441,7 +463,12 @@ FJamScreenView AJamHUD::BuildScreen() const
 	else if (GS->Phase == EJamFilmPhase::Credits)
 	{
 		V = JamScreens::Credits(GS->Premiere.bDirectorsCut, S);
+		if (GS->bVillageReturnAvailable) { V.Footer = TEXT("Click / F / (A): return to Sugarborough"); }
 		V.Scroll = InPhase / FMath::Max(1.f, V.Body.Num() * CreditSecondsPerLine);
+	}
+	if (SubScreen == EJamScreen::QuestJournal && bPaused)
+	{
+		if (const AJamGameMode* GM = AuthGameMode()) { V = JamScreens::Quests(GM->GetVillageQuests(), S); }
 	}
 	if (SubScreen == EJamScreen::Controls && (GS->Phase == EJamFilmPhase::Title || bPaused)) { V = JamScreens::Controls(S); V.bOpaque = !bPaused; }
 	if (V.Options.Num() > 0)
@@ -518,6 +545,12 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::RollCamera:  if (GM) { GM->RequestRollCamera(); } break;
 	case EJamMenuAction::OpenOptions:    ParentSelected = Selected; SubScreen = EJamScreen::Options; Selected = 0; break;
 	case EJamMenuAction::OpenControls: ControlsParent = SubScreen; ControlsParentSelected = Selected; SubScreen = EJamScreen::Controls; Selected = 0; break;
+	case EJamMenuAction::QuestBranch0: if (GM) { GM->ChooseVillageBranch(0); Selected = 0; } break;
+	case EJamMenuAction::QuestBranch1: if (GM) { GM->ChooseVillageBranch(1); Selected = 0; } break;
+	case EJamMenuAction::ImproviseQuest: if (GM) { GM->RequestVillageBranches(); Selected = 0; } break;
+	case EJamMenuAction::CancelQuestOffer: if (GM) { GM->CancelVillageOffer(); Selected = 0; } break;
+	case EJamMenuAction::AbandonQuest: if (GM && SubScreen == EJamScreen::QuestJournal) { GM->AbandonVillageQuest(); Selected = 0; } break;
+	case EJamMenuAction::OpenQuests: ParentSelected = Selected; SubScreen = EJamScreen::QuestJournal; Selected = 0; break;
 	case EJamMenuAction::CharacterSheet: ParentSelected = Selected; SubScreen = EJamScreen::Character; Selected = 0; break;
 	case EJamMenuAction::WalkOffSet:     ParentSelected = Selected; SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
 	case EJamMenuAction::Fine:
@@ -585,7 +618,8 @@ void AJamHUD::HandleMenu(EJamMenuInput Input, int32 Index)
 		break;
 	case EJamMenuInput::Back:
 		JamSfx::Play(this, TEXT("UI_Back"));
-		if (SubScreen != EJamScreen::None) { Activate(FJamMenuOption{ EJamMenuAction::Back }); }
+		if (GM && GM->GetQuestOffer().bVisible) { GM->CancelVillageOffer(); Selected = 0; }
+		else if (SubScreen != EJamScreen::None) { Activate(FJamMenuOption{ EJamMenuAction::Back }); }
 		else if (bPaused) { SetPaused(false); }
 		break;
 	}

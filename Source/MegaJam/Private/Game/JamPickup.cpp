@@ -25,11 +25,11 @@ void AJamPickup::BeginPlay()
 {
 	Super::BeginPlay();
 	// The generated almond on the floor (the root floats 25 uu up); the root loses its sphere and its squash.
-	if (JamArt::Load(TEXT("SM_Almond")))
+	if (JamArt::Load(ArtMesh))
 	{
 		Body->SetStaticMesh(nullptr);
 		Body->SetRelativeScale3D(FVector::OneVector);
-		JamArt::Apply(Art, TEXT("SM_Almond"), JamArt::Height(TEXT("SM_Almond")), -25.f);
+		JamArt::Apply(Art, ArtMesh, JamArt::Height(ArtMesh), -25.f);
 	}
 	if (UMaterialInstanceDynamic* M = Body->CreateAndSetMaterialInstanceDynamic(0))
 	{

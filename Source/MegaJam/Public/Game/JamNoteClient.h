@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/GameInstanceSubsystem.h"
+#include "World/JamVillageQuests.h"
 #include "JamNoteClient.generated.h"
 
 /**
@@ -37,6 +38,8 @@ public:
 		bool bDirectorsCut, FOnBody OnDone);
 
 	static constexpr float TimeoutSeconds = 6.f;
+	void RequestQuestBranches(const FJamVillageQuestDef& Quest, const TArray<FJamVillageQuestDef>& Routes,
+		const TArray<FName>& Completed, const TArray<FString>& History, const FString& Motif, FOnBody OnDone);
 
 private:
 	void Post(const FString& Path, const FString& Body, FOnBody OnDone);

@@ -124,6 +124,7 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> StatValues;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapLevel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> WrapContinue;
+	UPROPERTY(Transient) TObjectPtr<UBorder> WrapContinueButton;
 
 	UPROPERTY(Transient) TObjectPtr<UBorder> CaptionPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> CaptionText;

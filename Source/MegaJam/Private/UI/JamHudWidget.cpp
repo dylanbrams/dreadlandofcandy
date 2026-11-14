@@ -1,4 +1,5 @@
 #include "UI/JamHudWidget.h"
+#include "UI/JamComicBorder.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
 #include "Components/Image.h"
@@ -124,6 +125,8 @@ void UJamHudWidget::BuildTree()
 	// Interact prompt, placed over its target.
 	PromptPanel = MakePanel(PanelDark, 6.f, FMargin(14.f, 6.f));
 	PromptText = MakeText(22, FLinearColor::White, true);
+	PromptText->SetWrapTextAt(650.f);
+	PromptText->SetJustification(ETextJustify::Center);
 	{
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 		Box->AddChildToVerticalBox(PromptText);
@@ -215,6 +218,8 @@ void UJamHudWidget::BuildTree()
 
 		HintPanel = MakePanel(PanelDark, 8.f, FMargin(18.f, 8.f));
 		HintText = MakeText(24, Gold, true);
+		HintText->SetWrapTextAt(1200.f);
+		HintText->SetJustification(ETextJustify::Center);
 		HintPanel->SetContent(HintText);
 		UVerticalBoxSlot* HintSlot = Column->AddChildToVerticalBox(HintPanel);
 		HintSlot->SetHorizontalAlignment(HAlign_Center);
@@ -341,7 +346,8 @@ void UJamHudWidget::BuildTree()
 
 UBorder* UJamHudWidget::MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill)
 {
-	UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 8.f, FMargin(24.f, 16.f));
+	UBorder* Tile = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+	Tile->SetPadding(FMargin(24.f, 18.f));
 	Tile->SetBrush(Rounded(FLinearColor::White, 8.f, Accent, 2.f));
 	Tile->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
 	USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
@@ -460,6 +466,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	}
 
 	Show(HintPanel, !View.Hint.IsEmpty());
+	HintPanel->SetRenderTranslation(FVector2D(0.f, View.bTravelVisible ? 110.f : 0.f));
 	SetTextIfChanged(HintText, View.Hint);
 
 	// Interact prompt.
@@ -518,7 +525,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	NoteTiles->SetVisibility(View.bNotePrompt && !View.bReadingNote ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	for (UBorder* Tile : ChoiceTiles) { Control(Tile, View.bNotePrompt && !View.bReadingNote); }
 	WrapPanel->SetVisibility(View.Wrap.bVisible ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
-	Control(WrapContinue, View.Wrap.bVisible && !View.Wrap.ContinueHint.IsEmpty());
+	Control(WrapContinueButton, View.Wrap.bVisible && !View.Wrap.ContinueHint.IsEmpty());
 	SkillBar->SetVisibility((View.bShootVisible || View.bTravelVisible) && !View.Skills.IsEmpty() ? ESlateVisibility::SelfHitTestInvisible : ESlateVisibility::Collapsed);
 	for (int32 i = 0; i < SkillTiles.Num(); ++i)
 	{
@@ -749,8 +756,14 @@ void UJamHudWidget::BuildWrapPanel()
 	WrapLevel = MakeText(24, Gold, true);
 	Right->AddChildToVerticalBox(WrapLevel)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
 
-	WrapContinue = MakeText(18, Dim, true);
-	UVerticalBoxSlot* ContSlot = Box->AddChildToVerticalBox(WrapContinue);
+	WrapContinueButton = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+	WrapContinueButton->SetBrush(Rounded(FLinearColor::White, 0.f, Gold, 3.f));
+	WrapContinueButton->SetBrushColor(FLinearColor(0.22f, 0.12f, 0.015f));
+	WrapContinueButton->SetPadding(FMargin(36.f, 22.f));
+	WrapContinue = MakeText(26, Gold, true);
+	WrapContinue->SetJustification(ETextJustify::Center);
+	WrapContinueButton->SetContent(WrapContinue);
+	UVerticalBoxSlot* ContSlot = Box->AddChildToVerticalBox(WrapContinueButton);
 	ContSlot->SetHorizontalAlignment(HAlign_Center);
 	ContSlot->SetPadding(FMargin(0.f, 18.f, 0.f, 0.f));
 
@@ -820,7 +833,7 @@ void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
 	}
 	Show(WrapLevel, !Wrap.LevelLine.IsEmpty());
 	SetTextIfChanged(WrapLevel, Wrap.LevelLine);
-	Show(WrapContinue, !Wrap.ContinueHint.IsEmpty());
+	Show(WrapContinueButton, !Wrap.ContinueHint.IsEmpty());
 	SetTextIfChanged(WrapContinue, Wrap.ContinueHint);
 }
 
@@ -976,7 +989,7 @@ FReply UJamHudWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
             if (Under(ChoiceTiles[i])) { return Dispatch(static_cast<EJamHudAction>(static_cast<uint8>(EJamHudAction::TakeNote) + i)); }
         }
     }
-    if (InputView.Wrap.bVisible && Under(WrapContinue)) { return Dispatch(EJamHudAction::Continue); }
+    if (InputView.Wrap.bVisible && Under(WrapContinueButton)) { return Dispatch(EJamHudAction::Continue); }
     if (InputView.bShootVisible || InputView.bTravelVisible)
     {
         for (int32 i = 0; i < SkillTiles.Num(); ++i)

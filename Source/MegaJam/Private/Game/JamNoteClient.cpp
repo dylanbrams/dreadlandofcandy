@@ -93,3 +93,39 @@ void UJamNoteClient::Post(const FString& Path, const FString& Body, FOnBody OnDo
 		});
 	Request->ProcessRequest();
 }
+
+void UJamNoteClient::RequestQuestBranches(const FJamVillageQuestDef& Quest, const TArray<FJamVillageQuestDef>& Routes,
+    const TArray<FName>& Completed, const TArray<FString>& History, const FString& Motif, FOnBody OnDone)
+{
+    const TSharedRef<FJsonObject> Obj = MakeShared<FJsonObject>();
+    Obj->SetNumberField(TEXT("v"), 1);
+    Obj->SetStringField(TEXT("session_id"), SessionId);
+    Obj->SetStringField(TEXT("quest_id"), Quest.Id.ToString());
+    Obj->SetStringField(TEXT("giver"), Quest.GiverName);
+    Obj->SetStringField(TEXT("title"), Quest.Title);
+    Obj->SetStringField(TEXT("pitch"), Quest.Request);
+    Obj->SetStringField(TEXT("motif"), Motif);
+    TArray<FString> Ids;
+    for (FName Id : Completed) { Ids.Add(Id.ToString()); }
+    Obj->SetArrayField(TEXT("completed"), Strings(Ids));
+    Obj->SetArrayField(TEXT("history"), Strings(History));
+    TArray<TSharedPtr<FJsonValue>> RouteValues;
+    for (const FJamVillageQuestDef& Route : Routes)
+    {
+        const TSharedRef<FJsonObject> R = MakeShared<FJsonObject>();
+        R->SetStringField(TEXT("route"), Route.Route.ToString());
+        R->SetStringField(TEXT("verb"), Route.Verb == EJamStageVerb::Collect ? TEXT("collect") : Route.Verb == EJamStageVerb::Interact ? TEXT("interact") : TEXT("pacify"));
+        R->SetStringField(TEXT("target"), Route.Target == EJamTargetKind::Goblin ? TEXT("goblin") : Route.Target == EJamTargetKind::Bug ? TEXT("bug") : Route.Target == EJamTargetKind::Almond ? TEXT("almond") : TEXT("rat"));
+        R->SetStringField(TEXT("objective"), Route.Objective);
+        R->SetStringField(TEXT("pitch"), Route.Request);
+        R->SetNumberField(TEXT("count"), Route.Count);
+        R->SetNumberField(TEXT("min_count"), Route.MinCount);
+        R->SetNumberField(TEXT("max_count"), Route.MaxCount);
+        TArray<FString> Camps;
+        for (FName Camp : Route.Destinations) { Camps.Add(Camp.ToString()); }
+        R->SetArrayField(TEXT("destinations"), Strings(Camps));
+        RouteValues.Add(MakeShared<FJsonValueObject>(R));
+    }
+    Obj->SetArrayField(TEXT("routes"), RouteValues);
+    Post(TEXT("/v1/director/quest/branches"), ToJson(Obj), MoveTemp(OnDone));
+}

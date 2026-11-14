@@ -53,6 +53,10 @@ public:
 	FString Hint;
 	/** Open mode (R4): the compass points at the next film set while the hero walks there. */
 	bool bCompass = false;
+	/** Open-world final wrap returns to the village; the Premiere stays available via Fenella. */
+	bool bVillageReturnAvailable = false;
+	FString VillagePrompt;
+	TWeakObjectPtr<AActor> VillagePromptAnchor;
 	FVector CompassTarget = FVector::ZeroVector;
 	FString CompassLabel;
 	/** Open mode: the music cue of the biome the hero walks through (NAME_None = the street's). */

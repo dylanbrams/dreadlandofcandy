@@ -1,4 +1,5 @@
 #include "UI/JamScreenWidget.h"
+#include "UI/JamComicBorder.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
 #include "Components/CanvasPanel.h"
@@ -161,6 +162,7 @@ void UJamScreenWidget::BuildTree()
 	for (int32 i = 0; i < MaxQuotes; ++i)
 	{
 		UTextBlock* Q = MakeText(24, FLinearColor(0.9f, 0.85f, 1.f), false);
+		Q->SetWrapTextAt(1400.f);
 		QuotesBox->AddChildToVerticalBox(Q)->SetPadding(FMargin(0.f, 3.f));
 		QuoteTexts.Add(Q);
 	}
@@ -187,8 +189,8 @@ void UJamScreenWidget::BuildTree()
 	OptionsBox = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 	for (int32 i = 0; i < MaxOptions; ++i)
 	{
-		UBorder* Row = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-		Row->SetPadding(FMargin(26.f, 10.f));
+		UBorder* Row = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+		Row->SetPadding(FMargin(30.f, 16.f));
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 		Size->SetWidthOverride(620.f);
 		UHorizontalBox* H = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
@@ -306,7 +308,8 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 			OptionRows[i]->SetVisibility(bOpt ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 		}
 		if (!bOpt) { continue; }
-		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::Character ? 900.f : 620.f); }
+		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::QuestBranches ? 1000.f : View.Screen == EJamScreen::Character ? 900.f : 620.f); }
+		OptionLabels[i]->SetWrapTextAt(View.Screen == EJamScreen::QuestBranches ? 950.f : 0.f);
 		const FJamMenuOption& O = View.Options[i];
 		const bool bSel = i == View.Selected && O.bEnabled;
 		OptionRows[i]->SetBrush(ScreenRounded(bSel ? ScreenGold : FLinearColor(1.f, 1.f, 1.f, 0.15f), 8.f, bSel ? 3.f : 1.f));
@@ -343,7 +346,12 @@ FReply UJamScreenWidget::NativeOnKeyDown(const FGeometry& InGeometry, const FKey
 	else if (IsAny(K, { EKeys::S, EKeys::Down, EKeys::Gamepad_DPad_Down, EKeys::Gamepad_LeftStick_Down })) { Input = EJamMenuInput::Down; }
 	else if (IsAny(K, { EKeys::A, EKeys::Left, EKeys::Gamepad_DPad_Left, EKeys::Gamepad_LeftStick_Left })) { Input = EJamMenuInput::Left; }
 	else if (IsAny(K, { EKeys::D, EKeys::Right, EKeys::Gamepad_DPad_Right, EKeys::Gamepad_LeftStick_Right })) { Input = EJamMenuInput::Right; }
-	else if (IsAny(K, { EKeys::F, EKeys::Enter, EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom })) { Input = EJamMenuInput::Confirm; }
+	else if (IsAny(K, { EKeys::F, EKeys::Enter, EKeys::SpaceBar, EKeys::Gamepad_FaceButton_Bottom }))
+	{
+		// Holding F to talk must not auto-accept a newly opened quest choice.
+		if (InKeyEvent.IsRepeat()) { return FReply::Handled(); }
+		Input = EJamMenuInput::Confirm;
+	}
 	else if (IsAny(K, { EKeys::Escape, EKeys::Gamepad_FaceButton_Right, EKeys::Gamepad_Special_Right })) { Input = EJamMenuInput::Back; }
 	else { return Super::NativeOnKeyDown(InGeometry, InKeyEvent); }
 	OnMenuInput.ExecuteIfBound(Input, INDEX_NONE);
@@ -363,6 +371,7 @@ FReply UJamScreenWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FP
 
 FReply UJamScreenWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+	if (InMouseEvent.GetEffectingButton() != EKeys::LeftMouseButton) { return FReply::Handled(); }
 	OnDevice.ExecuteIfBound(false);
 	const int32 Index = OptionUnder(InMouseEvent.GetScreenSpacePosition());
 	// Clicking anywhere on a card without options (Premiere, Credits) moves on.

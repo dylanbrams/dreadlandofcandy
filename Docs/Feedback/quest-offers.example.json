@@ -1,0 +1,17 @@
+{
+  "v": 1,
+  "offers": [
+    {
+      "id": "celery_actually",
+      "count": 4,
+      "destination": "CampMeadowEast",
+      "pitch": "The village has ordered a fresh delivery. Gather celery in the meadow and return to Gardener Sprig."
+    },
+    {
+      "id": "open_wide",
+      "count": 3,
+      "destination": "CampMolarsNear",
+      "pitch": "A goblin delegation needs a clean start. Pacify them, then brush their teeth before returning to Dr. Molar."
+    }
+  ]
+}

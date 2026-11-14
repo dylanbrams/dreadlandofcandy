@@ -131,7 +131,7 @@ FJamScreenView JamScreens::Pause(const FJamMenuSettings& S)
 		Opt(EJamMenuAction::EffectsVolume, TEXT("Effects"), FString::Printf(TEXT("◀  %s  ▶"), *Pct(S.EffectsVolume))),
 		Opt(EJamMenuAction::OpenControls, TEXT("Controls")),
 		Opt(EJamMenuAction::Commentary, TEXT("Director's Commentary"), S.bCommentary ? TEXT("On") : TEXT("Off")),
-		Opt(EJamMenuAction::Locked, TEXT("Budget"), TEXT("Low (locked)"), false),
+		Opt(EJamMenuAction::OpenQuests, TEXT("Quest Journal")),
 		Opt(EJamMenuAction::CharacterSheet, TEXT("Character Sheet")),
 		Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
 	V.Caption = FirstLine(EJamLineTrigger::Pause, 0);
@@ -298,7 +298,24 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
 {
 	FJamMenuSettings S;
 	const FString N = Name.ToLower();
-	if (N == TEXT("controls")) { Out = Controls(S); }
+	if (N == TEXT("quests")) { FJamVillageQuestLog Log; Log.Recruit(); Log.FinishMain(); Log.Accept(2); Log.Report(EJamStageVerb::Collect); Out = Quests(Log, S); }
+	else if (N == TEXT("questbranches"))
+    {
+        FJamQuestOfferView Offer; Offer.bVisible = true; Offer.bCanImprovise = true;
+        Offer.Title = TEXT("A Quiet Constituency"); Offer.Giver = TEXT("Mayor Bonbon");
+        Offer.Request = TEXT("The rats are holding a public meeting. Choose how to help.");
+        Offer.Status = TEXT("Choose a route, or ask Fenella to improvise a new take.");
+        Offer.BaseCount = 3; Offer.BaseReward = 150;
+        for (const FJamVillageQuestDef& Recipe : JamVillageQuests::Routes(0))
+        {
+            FJamQuestBranch Branch; Branch.Route = Recipe.Route; Branch.Objective = Recipe.Objective;
+            Branch.Label = Recipe.Route == FName(TEXT("original")) ? TEXT("A firm word") : TEXT("A healthy snack");
+            Branch.Variation.Count = Recipe.Count; Branch.Variation.Pitch = Recipe.Request;
+            Offer.Branches.Add(Branch);
+        }
+        Out = QuestBranches(Offer, S);
+    }
+    else if (N == TEXT("controls")) { Out = Controls(S); }
 	else if (N == TEXT("rating")) { Out = Rating(); }
 	else if (N == TEXT("title")) { Out = Title(S); }
 	else if (N == TEXT("options")) { Out = Options(S); Out.Selected = 1; }
@@ -362,4 +379,67 @@ FJamScreenView JamScreens::Character(const FJamProgression& Prog, const FJamMenu
     V.Footer = MenuFooter(S);
 	V.bOpaque = true;
 	return V;
+}
+
+FJamScreenView JamScreens::Quests(const FJamVillageQuestLog& Log, const FJamMenuSettings& S)
+{
+    FJamScreenView V;
+    V.Screen = EJamScreen::QuestJournal;
+    V.Title = TEXT("Quest Journal");
+    V.Kicker = FString::Printf(TEXT("SUGARBOROUGH  /  %d OF %d QUESTS COMPLETE"), Log.Completed(), Log.Num());
+    V.bOpaque = false;
+    const int32 Active = Log.Active();
+    if (!Log.IsMainComplete())
+    {
+        V.Subtitle = Log.IsRecruited() ? TEXT("Finish Fenella's three quests to unlock village work.")
+            : TEXT("Meet Fenella under the golden triangle in Sugarborough to begin.");
+    }
+    else if (Active != INDEX_NONE)
+    {
+        const FJamVillageQuestDef& Q = Log.Offer(Active);
+        V.Subtitle = FString::Printf(TEXT("%s: %s %d/%d\n%d sprinkles + 40 XP; return to %s to claim."),
+            *Q.Title, *Q.Objective, Log.Progress(), Q.Count, Q.Reward, *Q.GiverName);
+    }
+    else { V.Subtitle = TEXT("Talk to a marked villager to take a quest. Each giver has a follow-up."); }
+    for (const FJamVillageGiverDef& G : JamVillageQuests::Givers())
+    {
+        int32 Completed = 0, Total = 0;
+        for (int32 i = 0; i < Log.Num(); ++i)
+        {
+            if (Log.Offer(i).GiverLocation != G.Location) { continue; }
+            ++Total; if (Log.State(i) == EJamVillageQuestState::Complete) { ++Completed; }
+        }
+        const int32 Next = Log.ForGiver(G.Location);
+        const FString Status = Next == INDEX_NONE ? TEXT("All work complete")
+            : Log.State(Next) == EJamVillageQuestState::Locked ? TEXT("Unlocks after earlier quests")
+            : Log.State(Next) == EJamVillageQuestState::Ready ? TEXT("RETURN FOR REWARD: ") + Log.Offer(Next).Title
+            : Log.Offer(Next).Title + FString::Printf(TEXT(" (%d sprinkles)"), Log.Offer(Next).Reward);
+        V.Quotes.Add(FString::Printf(TEXT("%s  %d/%d: %s"), *G.Name, Completed, Total, *Status));
+    }
+    V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
+    if (Active != INDEX_NONE) { V.Options.Add(Opt(EJamMenuAction::AbandonQuest, TEXT("Set aside current quest"))); }
+    V.Footer = MenuFooter(S);
+    return V;
+}
+
+FJamScreenView JamScreens::QuestBranches(const FJamQuestOfferView& Offer, const FJamMenuSettings& S)
+{
+    FJamScreenView V;
+    V.Screen = EJamScreen::QuestBranches;
+    V.Kicker = Offer.Giver;
+    V.Title = Offer.Title;
+    V.Subtitle = Offer.Request.Left(160);
+    V.bOpaque = false;
+    for (int32 i = 0; i < FMath::Min(2, Offer.Branches.Num()); ++i)
+    {
+        const FJamQuestBranch& Branch = Offer.Branches[i];
+        const int32 Reward = FMath::Clamp(FMath::RoundToInt(float(Offer.BaseReward) * Branch.Variation.Count / FMath::Max(1, Offer.BaseCount)), 50, 300);
+        V.Options.Add(Opt(i == 0 ? EJamMenuAction::QuestBranch0 : EJamMenuAction::QuestBranch1, *Branch.Label, FString::Printf(TEXT("%d sprinkles"), Reward)));
+        V.Quotes.Add(FString::Printf(TEXT("%d. %s: %d.  %s"), i + 1, *Branch.Objective, Branch.Variation.Count, *Branch.Variation.Pitch.Left(160)));
+    }
+    if (Offer.bCanImprovise) { V.Options.Add(Opt(EJamMenuAction::ImproviseQuest, Offer.bReading ? TEXT("Fenella is thinking...") : TEXT("Ask Fenella to improvise"), FString(), !Offer.bReading)); }
+    V.Options.Add(Opt(EJamMenuAction::CancelQuestOffer, TEXT("Maybe later")));
+    V.Caption = Offer.Status;
+    V.Footer = MenuFooter(S);
+    return V;
 }

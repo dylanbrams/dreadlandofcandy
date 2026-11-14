@@ -41,6 +41,7 @@ protected:
 	virtual FReply NativeOnFocusReceived(const FGeometry& InGeometry, const FFocusEvent& InFocusEvent) override;
 
 private:
+	friend class FJamQuestScreenInputTest;
 	void BuildTree();
 	UTextBlock* MakeText(int32 Size, const FLinearColor& Colour, bool bBold);
 	UBorder* MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding);
