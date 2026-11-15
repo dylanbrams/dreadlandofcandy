@@ -51,6 +51,7 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Ambience;
 	int32 SeenLevel = 0;
+	int32 SeenEncore = -1;
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Voice;
 	FName VoiceLine;

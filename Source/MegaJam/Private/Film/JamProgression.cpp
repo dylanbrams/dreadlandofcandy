@@ -195,7 +195,8 @@ int32 FJamProgression::AddXp(EJamXpSource Source)
 	if (bNumericXp)
 	{
 		const int32 Before = Xp;
-		Xp = FMath::Min(JamProgression::XpForLevel(JamProgression::MaxLevel), Xp + JamProgression::XpValue(Source, true));
+		// Fixes3 #26: no cap; XP past the top level is encore EXP.
+		Xp += JamProgression::XpValue(Source, true);
 		while (Level < JamProgression::MaxLevel && Xp >= JamProgression::XpForLevel(Level + 1)) { GrantLevels(Level + 1); }
 		return Xp - Before;
 	}
@@ -226,8 +227,21 @@ int32 FJamProgression::CompleteQuest(int32 SceneIndex)
 	return Level - Before;
 }
 
+int32 FJamProgression::GetEncoreLevel() const
+{
+	if (!bNumericXp || Level < JamProgression::MaxLevel) { return 0; }
+	return FMath::Max(0, Xp - JamProgression::XpForLevel(JamProgression::MaxLevel)) / JamProgression::EncoreXpPerLevel;
+}
+
+int32 FJamProgression::GetEncoreXp() const
+{
+	if (!bNumericXp || Level < JamProgression::MaxLevel) { return 0; }
+	return FMath::Max(0, Xp - JamProgression::XpForLevel(JamProgression::MaxLevel)) % JamProgression::EncoreXpPerLevel;
+}
+
 float FJamProgression::GetLevelProgress() const
 {
+	if (bNumericXp && Level >= JamProgression::MaxLevel) { return (float)GetEncoreXp() / JamProgression::EncoreXpPerLevel; }
 	if (Level >= JamProgression::MaxLevel) { return 1.f; }
 	const int32 Lo = JamProgression::XpForLevel(Level);
 	const int32 Hi = JamProgression::XpForLevel(Level + 1);
@@ -274,7 +288,7 @@ FJamStatBlock FJamProgression::GetStats() const
 {
 	const FJamSkillRank Lecture = JamProgression::RankData(EJamSkill::Lecture, Ranks[(int32)EJamSkill::Lecture]);
 	// Everything-loot (the napkin) is counted once by each stat's multiplier below.
-	const float PowerMult = LootMultiplier(Loot, EJamLootStat::Everything);
+	const float PowerMult = LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel());
 	const float CooldownMult = FMath::Max(0.1f, LootMultiplier(Loot, EJamLootStat::LectureCooldown));
 
 	FJamStatBlock S;
@@ -290,7 +304,7 @@ FJamSkillRank FJamProgression::GetSkillNumbers(EJamSkill Skill) const
 	FJamSkillRank R = JamProgression::RankData(Skill, Ranks[(int32)Skill]);
 	const FJamStatBlock S = GetStats();
 	const float RadiusMult = LootMultiplier(Loot, EJamLootStat::LectureRadius);
-	R.Damage *= LootMultiplier(Loot, EJamLootStat::Everything);
+	R.Damage *= LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel());
 	R.Radius *= RadiusMult;
 	R.Length *= RadiusMult;
 	R.Cooldown /= S.CooldownRecovery;

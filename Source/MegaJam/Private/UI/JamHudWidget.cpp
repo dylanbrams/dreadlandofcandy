@@ -954,10 +954,10 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 	const bool bBar = (View.bShootVisible || View.bTravelVisible) && View.Skills.Num() > 0;
 	Show(SkillBar, bBar);
 	if (!bBar) { return; }
-	SetTextIfChanged(LevelText, FString::Printf(TEXT("LV %d"), View.Level));
+	SetTextIfChanged(LevelText, View.EncoreLevel > 0 ? FString::Printf(TEXT("LV %d  ENCORE %d"), View.Level, View.EncoreLevel) : FString::Printf(TEXT("LV %d"), View.Level));
 	XpBar->SetPercent(FMath::Clamp(View.Xp, 0.f, 1.f));
 	Show(XpText, View.XpNeeded > 0);
-	SetTextIfChanged(XpText, FString::Printf(TEXT("XP %d / %d"), View.XpEarned, View.XpNeeded));
+	SetTextIfChanged(XpText, FString::Printf(TEXT("%s %d / %d"), View.bEncoreXp ? TEXT("ENCORE EXP") : TEXT("XP"), View.XpEarned, View.XpNeeded));
 	Show(PointsText, View.Points > 0);
 	SetTextIfChanged(PointsText, FString::Printf(TEXT("+%d point%s"), View.Points, View.Points == 1 ? TEXT("") : TEXT("s")));
 	const bool bPulse = FMath::Fmod(RealSeconds, 0.8f) < 0.4f;

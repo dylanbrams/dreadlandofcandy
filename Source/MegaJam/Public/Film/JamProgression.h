@@ -69,6 +69,9 @@ namespace JamProgression
 {
 	constexpr int32 StartLevel = 7;
 	constexpr int32 MaxLevel = 10;
+	/** Fixes3 #26: past MaxLevel XP keeps counting as encore EXP; each EncoreXpPerLevel is an encore level (+5% power). */
+	constexpr int32 EncoreXpPerLevel = 200;
+	constexpr float EncorePowerPerLevel = 0.05f;
 
 	/** XP at which the given level (8 to 10) is reached; 0 for the start level. */
 	MEGAJAM_API int32 XpForLevel(int32 Level);
@@ -100,6 +103,10 @@ public:
 
 	int32 GetLevel() const { return Level; }
 	int32 GetXp() const { return Xp; }
+	/** Encore levels earned past MaxLevel (numeric XP only). */
+	int32 GetEncoreLevel() const;
+	/** Encore EXP into the current encore level (0 to EncoreXpPerLevel - 1). */
+	int32 GetEncoreXp() const;
 	/** Open earns levels directly from XP; the legacy card progression remains for Backlot. */
 	void EnableNumericXp() { bNumericXp = true; }
 	bool IsNumericXp() const { return bNumericXp; }

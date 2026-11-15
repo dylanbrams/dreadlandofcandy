@@ -47,9 +47,19 @@ bool FJamNumericXpTest::RunTest(const FString&)
     Grind.EnableNumericXp();
     for (int32 i = 0; i < 1000; ++i) { Grind.AddXp(EJamXpSource::Pacify); }
     TestEqual(TEXT("XP awards cross thresholds without cards"), Grind.GetLevel(), 10);
-    TestEqual(TEXT("XP capped at max level"), Grind.GetXp(), JamProgression::XpForLevel(10));
+    TestEqual(TEXT("level capped at ten"), Grind.GetLevel(), JamProgression::MaxLevel);
     TestEqual(TEXT("points match levels"), Grind.GetPoints(), 3);
     TestEqual(TEXT("ultimate remains rank one"), Grind.GetRank(EJamSkill::LastJudgment), 1);
+    // Fixes3 #26: XP past level 10 is encore EXP and earns encore levels (+5% power each).
+    TestEqual(TEXT("XP keeps counting"), Grind.GetXp(), 2000);
+    const int32 Past = 2000 - JamProgression::XpForLevel(10);
+    TestEqual(TEXT("encore levels"), Grind.GetEncoreLevel(), Past / JamProgression::EncoreXpPerLevel);
+    TestEqual(TEXT("encore EXP into the level"), Grind.GetEncoreXp(), Past % JamProgression::EncoreXpPerLevel);
+    TestEqual(TEXT("bar shows encore progress"), Grind.GetLevelProgress(), float(Past % JamProgression::EncoreXpPerLevel) / JamProgression::EncoreXpPerLevel);
+    FJamProgression Fresh;
+    Fresh.EnableNumericXp();
+    TestEqual(TEXT("no encore before level ten"), Fresh.GetEncoreLevel(), 0);
+    TestTrue(TEXT("encore levels add power"), Grind.GetStats().LecturePower > Fresh.GetStats().LecturePower * 1.2f);
     return true;
 }
 #endif

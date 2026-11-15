@@ -102,6 +102,9 @@ struct MEGAJAM_API FJamHudView
 	float Xp = 0.f;
 	int32 XpEarned = 0;
 	int32 XpNeeded = 0;
+	/** Fixes3 #26: encore levels past the top level; >0 shows "ENCORE n" and encore EXP. */
+	int32 EncoreLevel = 0;
+	bool bEncoreXp = false;
 	int32 Points = 0;
 
 	/** The wrap panel; replaces the card while up. */

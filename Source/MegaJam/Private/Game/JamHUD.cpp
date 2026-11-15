@@ -350,9 +350,11 @@ void AJamHUD::BuildView()
 		View.Xp = Prog.GetLevelProgress();
 		if (Prog.IsNumericXp())
 		{
-			View.XpEarned = Prog.GetXp() - JamProgression::XpForLevel(Prog.GetLevel());
-			View.XpNeeded = Prog.GetLevel() < JamProgression::MaxLevel
-				? JamProgression::XpForLevel(Prog.GetLevel() + 1) - JamProgression::XpForLevel(Prog.GetLevel()) : 0;
+			View.bEncoreXp = Prog.GetLevel() >= JamProgression::MaxLevel;
+			View.EncoreLevel = Prog.GetEncoreLevel();
+			View.XpEarned = View.bEncoreXp ? Prog.GetEncoreXp() : Prog.GetXp() - JamProgression::XpForLevel(Prog.GetLevel());
+			View.XpNeeded = View.bEncoreXp ? JamProgression::EncoreXpPerLevel
+				: JamProgression::XpForLevel(Prog.GetLevel() + 1) - JamProgression::XpForLevel(Prog.GetLevel());
 		}
 		View.Points = Prog.GetPoints();
 		if (bWrap && View.Points > 0)
@@ -794,6 +796,18 @@ void AJamHUD::TickEffects()
             }
         }
 		SeenLevel = Level;
+		// Fixes3 #26: an encore level gets the fanfare but no menu (there is nothing to spend).
+		const int32 Encore = PS->GetProgression().GetEncoreLevel();
+		if (SeenEncore >= 0 && Encore > SeenEncore)
+		{
+			JamSfx::Play(this, TEXT("LevelUp"), 0.3f);
+			if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>())
+			{
+				GM->Direct(FString::Printf(TEXT("ENCORE LEVEL %d! +%d%% power. The audience demands more, and so, regrettably, do I."),
+					Encore, FMath::RoundToInt(100.f * JamProgression::EncorePowerPerLevel * Encore)));
+			}
+		}
+		SeenEncore = Encore;
 	}
 	const bool bWant = GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut;   // the money going takes the extras with it
 	if (bWant && !Ambience) { Ambience = JamSfx::StartLoop(this, TEXT("Backlot_Ambience_Loop")); }

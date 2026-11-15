@@ -92,6 +92,9 @@ public:
 	 */
 	bool HandleTypedNote(AJamHero* Hero, const FString& Typed);
 
+	/** Fenella's director line on the HUD (public for the encore-level fanfare). */
+	void Direct(const FString& Text);
+
 private:
 	friend class FJamVillageFlowTest;
 	void BuildVillage();
@@ -113,7 +116,6 @@ private:
 	int32 BranchRequestSerial = 0;
 	void UpdateVillageObjective();
 	void AcceptVillageQuest(int32 Index);
-	void Direct(const FString& Text);
 	int32 VillageTarget(const AJamHero* InHero) const;
 	void MarkQuest(const FVector2D& At, AActor* Anchor = nullptr, float Height = 350.f);
 	FJamVillageQuestLog VillageQuests;
