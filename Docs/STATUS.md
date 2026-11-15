@@ -50,6 +50,9 @@ Barbarian: Niagara presets fire (log: NS_B01/B02/B03), stills look fine; "poorly
 Seen once in barbarian autoplay: a white mesh (likely a Molar Hills tooth landmark) fills the camera briefly on the
 walk to Fort Toothache; camera probe does not hit it.
 
+Not in the ZIP yet: 26 encore EXP (`247af6f`): past level 10 XP keeps counting, every 200 is an encore level
+(+5% power, LevelUp sound + Fenella line, no menu); HUD shows "LV 10  ENCORE n" and "ENCORE EXP x / 200". Tested; not seen live.
+
 Open: 12 archer voice recordings themselves (mapping is right; may need regenerating — paid generation, Dylan) ·
 13 cobblestone path (terrain/texture work, Dylan's texture credits) · 17 barbarian rig (asset).
 

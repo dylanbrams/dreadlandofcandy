@@ -452,3 +452,4 @@ Saved/Screenshots/WindowsEditor/candy-{chocolate,village}.png. Runtime review lo
 have no persisted material compile failures; apply-time missing-input warnings
 occur while rebuilding graphs. No packaging or upload in this task. Packaged
 delivery, manual traversal and gameplay performance remain unverified.
+- Nov 15 (Claude): Fixes3 #26 encore EXP and encore levels past level 10 (+5% power each, HUD + fanfare). 82 tests green; not in the ZIP, not seen live.
