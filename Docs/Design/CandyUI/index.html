@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Candy UI — design samples</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff3d6;color:#40234f;font:18px/1.5 system-ui,sans-serif}main{max-width:1450px;margin:auto;padding:32px}h1{font-size:clamp(28px,4vw,48px);line-height:1.1;margin:8px 0 16px}p{max-width:850px}nav{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}button,a{font:inherit;color:inherit}button{padding:14px 22px;border:3px solid #40234f;border-radius:20px;background:#4cd6c0;box-shadow:0 5px #40234f;cursor:pointer;font-weight:800}button[aria-pressed=true]{background:#ffd65a}button:focus-visible,a:focus-visible{outline:4px solid #f65b91;outline-offset:6px}button:active{transform:translateY(3px);box-shadow:0 2px #40234f}.tag{font-weight:800;letter-spacing:.1em;font-size:13px}figure{margin:28px 0;padding:12px;background:#fff;border:3px solid #40234f;border-radius:24px;box-shadow:7px 7px #40234f}img{display:block;width:100%;height:auto;border-radius:12px}figcaption{padding:12px;font-weight:700}[hidden]{display:none!important}.note{background:#fffaf0;padding:18px 24px;border-left:6px solid #f65b91;border-radius:8px}footer{margin:32px 0}
+</style>
+<main>
+<div class="tag">THE DREAD LAND OF CANDY · DESIGN EXPLORATION</div>
+<h1>A sweeter UI for Sugarborough</h1>
+<p>Two cartoony candy directions for the existing game. Compare the pause menu, gameplay HUD and reusable controls. <strong>A is the recommended starting point.</strong></p>
+<p class="note">Concept illustrations, not engine screenshots. Some labels and details are simplified. The implementation plan preserves the game's current actions, stats and controls. No game or engine was launched.</p>
+<nav aria-label="Choose concept">
+<button type="button" data-view="a" aria-pressed="true">A · Frosted Stickerbook</button>
+<button type="button" data-view="b" aria-pressed="false">B · Candy Arcade</button>
+<button type="button" data-view="all" aria-pressed="false">Show both</button>
+</nav>
+<section id="a" aria-label="Frosted Stickerbook">
+<h2>A · Frosted Stickerbook</h2><p>Marshmallow cards, strawberry and mint accents, thick plum outlines and a butter-yellow focus ring. Softer storybook charm that suits the gingerbread world.</p>
+<figure><a href="frosted-stickerbook.png"><img src="frosted-stickerbook.png" alt="Frosted Stickerbook UI concept board showing candy pause menu, gameplay HUD and component samples"></a><figcaption>A · Recommended — open the image to inspect at full size.</figcaption></figure>
+</section>
+<section id="b" aria-label="Candy Arcade" hidden>
+<h2>B · Candy Arcade</h2><p>Raspberry jelly buttons, bright cyan trim and lemon selection accents. Punchier comic shapes, with quiet cream surfaces for reading.</p>
+<figure><a href="candy-arcade.png"><img src="candy-arcade.png" alt="Candy Arcade UI concept board showing bright gummy pause menu, gameplay HUD and component samples"></a><figcaption>B · More energetic — open the image to inspect at full size.</figcaption></figure>
+</section>
+<footer><a href="README.md">Implementation handoff, design tokens and verification plan</a><p>Prepared for review only. Choosing a direction can include mixing parts: for example, A's panels with B's jelly buttons.</p></footer>
+</main>
+<script>
+document.querySelectorAll('button[data-view]').forEach(button=>button.addEventListener('click',()=>{const choice=button.dataset.view;document.querySelectorAll('button[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));['a','b'].forEach(id=>document.getElementById(id).hidden=choice!=='all'&&choice!==id);}));
+</script>
+</html>

@@ -360,3 +360,11 @@ textures into `/Game/World/Expansion`. Original supplied sources preserved.
 Bridge models supplied by Dylan and cleaned by Terra are staged separately in
 `Assets/DylanGenerationFoliageThree`; provenance and variants in its manifest.
 Its Clean Bridge126 is imported for the river crossing with the source texture.
+
+## 2026-11-15: Candy UI concept samples
+
+Two original UI direction boards generated during the jam using OpenAI Codex's
+built-in image generation: Frosted Stickerbook and Candy Arcade. Review-only
+PNGs in `Docs/Design/CandyUI/`, with a local comparison page and implementation
+handoff. Not imported into Unreal or included in gameplay; backgrounds and
+portraits are illustrative concept references. No external reference artwork.
