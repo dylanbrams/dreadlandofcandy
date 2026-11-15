@@ -42,6 +42,22 @@ Alternates: 13-24-31 9.0-13.9 "Elden Ring with a Sweet Shop" (for D3); 12-18-42 
 | 1:20 | D8 CAM | silence |
 | 1:24 | Title card, *Made for the 2026 Epic AI MegaJam* | `victory_take1` tail |
 
+## Flythrough picks (`GameFootage/LandOfCandyFlythrough.mp4`, from 5 s contact sheets; verify edges at full speed)
+
+| From | Shot | Use |
+| --- | --- | --- |
+| 2:35 | Wide over the blue candy-pine forest | Opener under A01 "In a land of unspeakable sweetness" |
+| 2:45-2:52 | Village from a rise, then closer | Village establishing |
+| 0:08-0:13 | Road between the cupcake house and barn | Into the village |
+| 0:33-0:45 | Yellow brick road through the candy forest | Under announcer lines |
+| 1:18-1:25 | Candy-cane trees, red canopy | Montage |
+| 2:00-2:05 | Village square, fountain | Before the quest beat |
+| 2:10 | Mint pines, castle gate | Spare |
+| 3:45-3:52 | Road straight ahead | Spare transition |
+
+Avoid: 0:25, 1:45, 2:30 (camera inside foliage, blurred). The chocolate river only passes by briefly around 0:55-1:00
+and is blurry, so the river shot comes from a gameplay capture.
+
 ## Footage still needed
 
 - Gameplay from the packaged build (`capture.ps1`): waiting for Dylan to free the engine. Planned runs: knight, archer,
