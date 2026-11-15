@@ -1055,31 +1055,63 @@ void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
 	const int32 CastIndex = InHero->GetCastIndex();
 	const bool bUltimate = Skill == EJamSkill::LastJudgment;
 	const int32 Count = bUltimate ? 8 : (Skill == EJamSkill::Lecture ? 3 : 5);
-	static const TCHAR* Manners[] = { TEXT("Manners_en"), TEXT("Manners_de"), TEXT("Manners_fr"), TEXT("Manners_ja") };
-	static const TCHAR* Brush[] = { TEXT("Brush_en"), TEXT("Brush_es"), TEXT("Brush_ko"), TEXT("Brush_zh") };
-	static const TCHAR* Vitamins[] = { TEXT("Vitamins_en"), TEXT("Vitamins_de"), TEXT("Vitamins_fr"), TEXT("Vitamins_pt") };
-	static const TCHAR* Variants[] = { TEXT(""), TEXT("_Angular1"), TEXT("_Angular2") };
-	const TCHAR* const* Pool = CastIndex == 0 ? Manners : (CastIndex == 3 ? Vitamins : Brush);
+	// Every card art per language for one word: the first set (plain + two angular) and the expansion shards
+	// (Scripts/import_comic_cards.py; "es-419" imports as "es_419").
+	struct FCardLanguage { FString Lang; TArray<FString> Names; };
+	auto BuildPool = [](const TCHAR* Word, TArray<const TCHAR*> FirstSet)
+	{
+		static const TCHAR* Shards[] = { TEXT("de"), TEXT("en"), TEXT("es_419"), TEXT("es_ES"), TEXT("fr"), TEXT("ja"), TEXT("ko"), TEXT("pl"),
+			TEXT("pt_BR"), TEXT("ru"), TEXT("th"), TEXT("tr"), TEXT("uk"), TEXT("zh_CN"), TEXT("zh_TW") };
+		TArray<FCardLanguage> Pool;
+		auto Entry = [&Pool](const FString& Lang) -> FCardLanguage&
+		{
+			FCardLanguage* Found = Pool.FindByPredicate([&](const FCardLanguage& L) { return L.Lang == Lang; });
+			if (Found) { return *Found; }
+			return Pool.Add_GetRef(FCardLanguage{ Lang, {} });
+		};
+		for (const TCHAR* Lang : FirstSet)
+		{
+			static const TCHAR* Variants[] = { TEXT(""), TEXT("_Angular1"), TEXT("_Angular2") };
+			for (const TCHAR* Variant : Variants) { Entry(Lang).Names.Add(FString::Printf(TEXT("%s_%s%s"), Word, Lang, Variant)); }
+		}
+		for (const TCHAR* Lang : Shards)
+		{
+			for (int32 n = 1; n <= 3; ++n) { Entry(Lang).Names.Add(FString::Printf(TEXT("%s_%s_%d_Shard"), Word, Lang, n)); }
+		}
+		return Pool;
+	};
+	static const TArray<FCardLanguage> Manners = BuildPool(TEXT("Manners"), { TEXT("en"), TEXT("de"), TEXT("fr"), TEXT("ja") });
+	static const TArray<FCardLanguage> Brush = BuildPool(TEXT("Brush"), { TEXT("en"), TEXT("es"), TEXT("ko"), TEXT("zh") });
+	static const TArray<FCardLanguage> Vitamins = BuildPool(TEXT("Vitamins"), { TEXT("en"), TEXT("de"), TEXT("fr"), TEXT("pt") });
+	const TArray<FCardLanguage>& Pool = CastIndex == 0 ? Manners : (CastIndex == 3 ? Vitamins : Brush);
+	// A different language on every card of a burst.
+	TArray<int32> Languages;
+	for (int32 i = 0; i < Pool.Num(); ++i) { Languages.Add(i); }
+	for (int32 i = Languages.Num() - 1; i > 0; --i) { Languages.Swap(i, FMath::RandRange(0, i)); }
+	// One headline card (two on the ultimate) big, the rest much smaller.
+	const int32 BigA = FMath::RandRange(0, Count - 1);
+	const int32 BigB = bUltimate ? (BigA + Count / 2) % Count : INDEX_NONE;
 	const float BaseYaw = InHero->GetActorRotation().Yaw;
-	const int32 First = FMath::RandRange(0, 3);
-	const int32 FirstVariant = FMath::RandRange(0, 2);
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	for (int32 i = 0; i < Count; ++i)
 	{
-		// Languages cycle so no two neighbours match; the art variant steps once per full cycle.
-		const FString Name = FString(Pool[(First + i) % 4]) + Variants[(FirstVariant + i / 4) % 3];
+		const FCardLanguage& Language = Pool[Languages[i % Languages.Num()]];
+		const FString& Name = Language.Names[FMath::RandRange(0, Language.Names.Num() - 1)];
+		const bool bBig = i == BigA || i == BigB;
 		const float Yaw = bUltimate ? BaseYaw + 360.f * i / Count + FMath::FRandRange(-12.f, 12.f)
 			: BaseYaw + (i - (Count - 1) * 0.5f) * (Count > 3 ? 26.f : 34.f) + FMath::FRandRange(-8.f, 8.f);
 		const FVector Dir = FRotator(0.f, Yaw, 0.f).Vector();
 		UTexture2D* Texture = LoadObject<UTexture2D>(nullptr, *FString::Printf(TEXT("/Game/Art/UI/ComicCards/T_Comic_%s.T_Comic_%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
 		if (!Texture) { continue; }
-		const FVector From = InHero->GetActorLocation() + Dir * 80.f + FVector(0.f, 0.f, 90.f + 35.f * (i % 2));
+		const FVector From = InHero->GetActorLocation() + Dir * 80.f + FVector(0.f, 0.f, 90.f + 35.f * (i % 2) + (bBig ? 40.f : 0.f));
 		AJamComicCard* Card = GetWorld()->SpawnActor<AJamComicCard>(AJamComicCard::StaticClass(), From, FRotator::ZeroRotator, Params);
 		if (!Card) { continue; }
-		// Velocity is the total travel (the flight eases out): roughly 3-5 m out, a little up.
-		const FVector Travel = Dir * FMath::FRandRange(300.f, 480.f) + FVector(0.f, 0.f, FMath::FRandRange(60.f, 160.f));
-		Card->Launch(Texture, Travel * 2.2f, 0.05f * i, 1.3f, bUltimate ? 260.f : 220.f);
+		// Velocity is the total travel (the flight eases out): roughly 3-5 m out, a little up. Small cards fly further.
+		const FVector Travel = Dir * FMath::FRandRange(300.f, 480.f) * (bBig ? 0.8f : 1.1f) + FVector(0.f, 0.f, FMath::FRandRange(60.f, 160.f));
+		const float Size = bBig ? (bUltimate ? 320.f : 290.f) : FMath::FRandRange(95.f, 135.f);
+		// Big cards land first and stay a little longer.
+		Card->Launch(Texture, Travel * 2.2f, bBig ? 0.f : 0.05f * (i + 1), bBig ? 1.5f : 1.2f, Size);
 	}
 }
 

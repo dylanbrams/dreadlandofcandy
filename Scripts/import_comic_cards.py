@@ -1,4 +1,5 @@
-"""Fixes5 #1: import the multilingual comic action cards (12 + 24 angular) as world effect textures (with mips).
+"""Fixes5 #1: import the multilingual comic action cards (12 + 24 angular + 135 expansion shards) as world effect
+textures (with mips). Expansion names swap '-' for '_' (es-419 -> es_419) to keep asset names plain.
 Run through Unreal's Python commandlet:
   UnrealEditor-Cmd.exe <uproject> -run=pythonscript -script=Scripts/import_comic_cards.py -unattended -nullrhi
 """
@@ -9,10 +10,11 @@ root = Path(unreal.Paths.project_dir()).resolve()
 destination = "/Game/Art/UI/ComicCards"
 sources = sorted((root / "Assets/Incoming/2D/ComicCards").glob("T_Comic_*.png"))
 sources += sorted((root / "Assets/Incoming/2D/ComicCards/Angular").glob("T_Comic_*.png"))
-assert len(sources) == 36, f"expected 36 comic cards, found {len(sources)}"
+sources += sorted((root / "Assets/Incoming/2D/ComicCards/Expansion").glob("T_Comic_*.png"))
+assert len(sources) == 171, f"expected 171 comic cards, found {len(sources)}"
 tools = unreal.AssetToolsHelpers.get_asset_tools()
 for source in sources:
-    name = source.stem
+    name = source.stem.replace("-", "_")
     task = unreal.AssetImportTask()
     for key, value in {
         "filename": str(source), "destination_path": destination,
