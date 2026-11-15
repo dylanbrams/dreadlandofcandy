@@ -375,4 +375,16 @@ original dark fantasy UI boards generated with the same built-in tool:
 `Docs/Design/CandyUI/black-sugar-frostbound.png`. Pepper-mint enamel, worn metal
 and gumdrop-jewel treatments; design review only, not imported into gameplay.
 
+Black Sugar implementation sources: Cinzel Medium and Cormorant Garamond
+Medium/SemiBold staged under `Content/UI/Fonts`, instantiated from official
+Google Fonts variable files using fontTools. Both complete SIL OFL 1.1 licence
+texts retained beside the files; source links, weights and hashes documented
+in `Docs/Design/CandyUI/FONTS.md`. One original transparent skill-frame PNG
+generated using OpenAI Codex's built-in image generation, with peppermint
+enamel, worn pewter and a violet gumdrop stone:
+`Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarSkillFrame.png`. No external
+reference art. Import and runtime verification pending the engine handoff.
+
 - Nov 15: fal PATINA generated 15 seamless candy ground PBR sets (75 maps), plus Unreal procedural hot chocolate, marshmallow and steam materials; sources and selected variants in Docs/Devlog/CandyPBR.
+
+- Nov 15: three fal-generated marshmallow mesh variants, cleaned in Blender for the hot chocolate river; provenance in Docs/Devlog/Marshmallows.

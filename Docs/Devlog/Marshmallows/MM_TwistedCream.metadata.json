@@ -1,0 +1,10 @@
+{
+  "name": "MM_TwistedCream",
+  "request_id": "01a1de07-5547-7a00-86ba-54320e9a3c63",
+  "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5547-7a00-86ba-54320e9a3c63/status",
+  "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5547-7a00-86ba-54320e9a3c63",
+  "seed": null,
+  "prompt": "A single small realistic cream-white marshmallow with a gentle uneven twist along its short axis, soft pillow-like cylindrical body with rounded ends, subtly pinched waist and organic asymmetry, fine matte powdered sugar dusting, believable soft confection texture, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+  "pbr": true,
+  "result_size_bytes": 37557264
+}

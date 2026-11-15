@@ -168,9 +168,11 @@ def build_marshmallow_material(mat):
     )
     # Apply to scaled sphere/capsule geometry for actual volume, not a painted surface mask.
     connect_property(expression(mat, u.MaterialExpressionConstant3Vector, constant=(.97, .91, .78)), "", u.MaterialProperty.MP_BASE_COLOR)
-    connect_property(scalar(mat, .28), "", u.MaterialProperty.MP_ROUGHNESS)
+    connect_property(scalar(mat, .62), "", u.MaterialProperty.MP_ROUGHNESS)
     connect_property(scalar(mat, .32), "", u.MaterialProperty.MP_SPECULAR)
-    world_position = expression(mat, u.MaterialExpressionWorldPosition)
+    # Move each whole object rigidly; per-vertex wrapping could split a mallow
+    # when it reaches the loop boundary.
+    world_position = expression(mat, u.MaterialExpressionObjectPositionWS)
     time = expression(mat, u.MaterialExpressionTime)
     drift = custom_expression(
         mat,

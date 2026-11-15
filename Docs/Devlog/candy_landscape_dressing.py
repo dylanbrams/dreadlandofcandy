@@ -233,6 +233,8 @@ def spawn_mesh_instances(label, mesh, transforms, material=None):
             component.set_material(0, material)
         component.set_collision_profile_name("NoCollision")
         component.set_collision_enabled(u.CollisionEnabled.NO_COLLISION)
+        if label == 'River_Marshmallows':
+            component.set_editor_property('bounds_scale',1000.)
         actor.set_actor_scale3d(u.Vector(sx, sy, sz))
         spawned.append(actor)
     return spawned
@@ -288,6 +290,19 @@ def main():
     spawned.extend(
         spawn_mesh_instances("River_Marshmallows", marshmallow_mesh, marshmallows, marshmallow_material)
     )
+    # Preserve the generated marshmallow upgrade when rebuilding all scenery.
+    variants=[u.load_asset('/Game/World/CandyPBR/Marshmallows/SM_Marshmallow_%02d'%i) for i in range(1,4)]
+    if all(variants):
+        mallows=[a for a in spawned if '_River_Marshmallows_' in a.get_actor_label()]
+        for index,actor in enumerate(mallows):
+            mesh=variants[index%len(variants)]
+            b=mesh.get_bounding_box();d=b.max-b.min
+            height=48+(index%4)*4;width=65+(index%3)*8
+            scale=u.Vector(width/d.x,width/d.y,height/d.z)
+            actor.static_mesh_component.set_static_mesh(mesh)
+            actor.set_actor_scale3d(scale)
+            p=actor.get_actor_location();p.z=-65+height*.2-(b.min.z+b.max.z)*.5*scale.z
+            actor.set_actor_location(p,False,False)
 
     expected = sum(len(items) for items in grove.values()) + len(mountains) + len(steam) + len(marshmallows)
     if len(spawned) != expected:

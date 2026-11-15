@@ -1,0 +1,48 @@
+{
+  "target_triangle_budget": 4800,
+  "target_longest_dimension_m": 0.22,
+  "assets": [
+    {
+      "name": "MM_CreamClassic",
+      "fbx": "MM_CreamClassic_clean.fbx",
+      "triangles": 4800,
+      "dimensions_m": [
+        0.22,
+        0.19995,
+        0.21985
+      ],
+      "disconnected_components_removed": 0,
+      "loose_vertices_removed": 0,
+      "source_objects_joined": 1,
+      "source_triangle_count": 500000
+    },
+    {
+      "name": "MM_TwistedCream",
+      "fbx": "MM_TwistedCream_clean.fbx",
+      "triangles": 4800,
+      "dimensions_m": [
+        0.22,
+        0.20282,
+        0.21997
+      ],
+      "disconnected_components_removed": 0,
+      "loose_vertices_removed": 0,
+      "source_objects_joined": 1,
+      "source_triangle_count": 500000
+    },
+    {
+      "name": "MM_SquashedCream",
+      "fbx": "MM_SquashedCream_clean.fbx",
+      "triangles": 4800,
+      "dimensions_m": [
+        0.19922,
+        0.19771,
+        0.22
+      ],
+      "disconnected_components_removed": 0,
+      "loose_vertices_removed": 0,
+      "source_objects_joined": 1,
+      "source_triangle_count": 500000
+    }
+  ]
+}

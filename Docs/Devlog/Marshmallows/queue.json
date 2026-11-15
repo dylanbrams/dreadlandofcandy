@@ -1,0 +1,32 @@
+[
+  {
+    "name": "MM_CreamClassic",
+    "request_id": "01a1de01-fa90-7ad0-8296-54bd519fd189",
+    "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de01-fa90-7ad0-8296-54bd519fd189/status",
+    "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de01-fa90-7ad0-8296-54bd519fd189",
+    "seed": null,
+    "prompt": "A single small realistic plain cream-white cylindrical marshmallow, squat pillow shape with softly rounded corners and a slightly domed top, gently squashed under its own weight, subtle natural asymmetry and shallow wrinkles, fine matte powdered sugar surface, soft studio diffuse lighting, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+    "pbr": true,
+    "result_size_bytes": 34181280
+  },
+  {
+    "name": "MM_TwistedCream",
+    "request_id": "01a1de07-5547-7a00-86ba-54320e9a3c63",
+    "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5547-7a00-86ba-54320e9a3c63/status",
+    "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5547-7a00-86ba-54320e9a3c63",
+    "seed": null,
+    "prompt": "A single small realistic cream-white marshmallow with a gentle uneven twist along its short axis, soft pillow-like cylindrical body with rounded ends, subtly pinched waist and organic asymmetry, fine matte powdered sugar dusting, believable soft confection texture, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+    "pbr": true,
+    "result_size_bytes": 37557264
+  },
+  {
+    "name": "MM_SquashedCream",
+    "request_id": "01a1de07-5736-7cd1-995e-86195be89e61",
+    "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5736-7cd1-995e-86195be89e61/status",
+    "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5736-7cd1-995e-86195be89e61",
+    "seed": null,
+    "prompt": "A single small realistic cream-white marshmallow, noticeably squat and softly flattened, plump oval pillow cylinder with naturally lopsided sides, pillowy bulges and shallow compression dents, rounded edges, very subtle matte powdered sugar surface, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+    "pbr": true,
+    "result_size_bytes": 34052264
+  }
+]

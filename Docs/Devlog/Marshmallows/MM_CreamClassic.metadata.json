@@ -1,0 +1,10 @@
+{
+  "name": "MM_CreamClassic",
+  "request_id": "01a1de01-fa90-7ad0-8296-54bd519fd189",
+  "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de01-fa90-7ad0-8296-54bd519fd189/status",
+  "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de01-fa90-7ad0-8296-54bd519fd189",
+  "seed": null,
+  "prompt": "A single small realistic plain cream-white cylindrical marshmallow, squat pillow shape with softly rounded corners and a slightly domed top, gently squashed under its own weight, subtle natural asymmetry and shallow wrinkles, fine matte powdered sugar surface, soft studio diffuse lighting, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+  "pbr": true,
+  "result_size_bytes": 34181280
+}

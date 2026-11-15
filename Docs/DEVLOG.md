@@ -453,3 +453,16 @@ have no persisted material compile failures; apply-time missing-input warnings
 occur while rebuilding graphs. No packaging or upload in this task. Packaged
 delivery, manual traversal and gameplay performance remain unverified.
 - Nov 15 (Claude): Fixes3 #26 encore EXP and encore levels past level 10 (+5% power each, HUD + fanfare). 82 tests green; not in the ZIP, not seen live.
+
+
+### Nov 15: generated drifting marshmallows
+
+Replaced the river's 13 cylinder placeholders with three fal-generated,
+Blender-cleaned marshmallow variants. Material flow remains +Y at 45 cm/s,
+following the sinuous river centerline, with slight bobbing and endpoint wrap.
+Whole-object offsets avoid splitting a mesh at the wrap; expanded bounds keep
+the animated meshes visible away from their original actor positions. Finish
+is matte cream. Sources and cleanup report: Docs/Devlog/Marshmallows.
+Timed runtime screenshots: marshmallow-flow-8.png and marshmallow-flow-18.png.
+This task changes no C++ and does no packaging. Other worker source edits made
+after the previous green build/82 tests are outside this asset verification.

@@ -1,0 +1,10 @@
+{
+  "name": "MM_SquashedCream",
+  "request_id": "01a1de07-5736-7cd1-995e-86195be89e61",
+  "status_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5736-7cd1-995e-86195be89e61/status",
+  "response_url": "https://queue.fal.run/fal-ai/hunyuan-3d/requests/01a1de07-5736-7cd1-995e-86195be89e61",
+  "seed": null,
+  "prompt": "A single small realistic cream-white marshmallow, noticeably squat and softly flattened, plump oval pillow cylinder with naturally lopsided sides, pillowy bulges and shallow compression dents, rounded edges, very subtle matte powdered sugar surface, isolated 3D product asset, full object visible, no props, no plate, no ground plane, no text, no face, no cartoon styling",
+  "pbr": true,
+  "result_size_bytes": 34052264
+}
