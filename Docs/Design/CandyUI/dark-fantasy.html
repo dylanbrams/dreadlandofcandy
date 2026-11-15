@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Dread Land of Candy — dark UI concepts</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#151313;color:#e8dfca;font:18px/1.6 system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:32px}h1,h2{font-family:Georgia,serif;font-weight:400}h1{font-size:clamp(32px,4vw,54px);line-height:1.15;margin:12px 0}p{max-width:900px}.eyebrow{color:#c1aa7d;font-size:13px;letter-spacing:.17em}nav{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}button{font:inherit;background:#241e1b;color:#e8dfca;padding:12px 20px;border:1px solid #796645;cursor:pointer}button[aria-pressed=true]{border-color:#e8dfca;background:#41372a}button:focus-visible,a:focus-visible{outline:3px solid #9bc2b7;outline-offset:5px}a{color:#d4bd8f}figure{margin:24px 0;border:1px solid #6c5c42;padding:8px;background:#0e0c0c}img{display:block;width:100%;height:auto}figcaption{padding:10px;color:#c2b8a4;font-size:15px}.note{border-left:2px solid #963b42;padding-left:18px;color:#bfb5a7}[hidden]{display:none!important}footer{margin:36px 0}
+</style>
+<main>
+<div class="eyebrow">THE DREAD LAND OF CANDY · REVISED UI EXPLORATION</div>
+<h1>Peppermint, under a darker sky.</h1>
+<p>Brooding fantasy interfaces: worn metal, quiet typography, peppermint enamel and gumdrops set like ancient jewels.</p>
+<p class="note">Concept artwork, not engine captures. Illustrative scenery establishes mood; this is a UI proposal. No engine or game launched, and no live interface changed.</p>
+<nav aria-label="Choose dark candy direction"><button data-view="c" aria-pressed="true">C · Saccharine Reliquary</button><button data-view="d" aria-pressed="false">D · Black Sugar / Frostbound</button><button data-view="all" aria-pressed="false">Compare both</button></nav>
+<section id="c"><h2>C · Saccharine Reliquary</h2><p>Warm tarnished brass and black cocoa, with chipped peppermint inlay and garnet gumdrop stones. The more ornate direction; recommended starting point.</p><figure><a href="saccharine-reliquary.png"><img src="saccharine-reliquary.png" alt="Dark candy fantasy UI concept with tarnished brass, peppermint enamel and sugar-crusted jewels; pause menu, HUD and component examples"></a><figcaption>Concept C · Open image for full-size inspection.</figcaption></figure></section>
+<section id="d" hidden><h2>D · Black Sugar / Frostbound</h2><p>Cold pewter, liquorice black and crystalline gumdrops. Restrained etched lines and moonlit mint selection.</p><figure><a href="black-sugar-frostbound.png"><img src="black-sugar-frostbound.png" alt="Cold dark fantasy candy UI concept with blackened silver, peppermint inlays and crystalline jewels; pause menu, HUD and components"></a><figcaption>Concept D · Open image for full-size inspection.</figcaption></figure></section>
+<footer><a href="DARK_FANTASY.md">Revised design and implementation handoff</a> · <a href="index.html">Earlier bright samples (rejected)</a></footer>
+</main><script>document.querySelectorAll('button[data-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.view;document.querySelectorAll('button[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));['c','d'].forEach(id=>document.getElementById(id).hidden=view!=='all'&&view!==id)}));</script>
+</html>

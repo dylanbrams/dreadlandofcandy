@@ -368,3 +368,11 @@ built-in image generation: Frosted Stickerbook and Candy Arcade. Review-only
 PNGs in `Docs/Design/CandyUI/`, with a local comparison page and implementation
 handoff. Not imported into Unreal or included in gameplay; backgrounds and
 portraits are illustrative concept references. No external reference artwork.
+
+Follow-up: Dylan rejected the bright samples as too kiddie. Two additional
+original dark fantasy UI boards generated with the same built-in tool:
+`Docs/Design/CandyUI/saccharine-reliquary.png` and
+`Docs/Design/CandyUI/black-sugar-frostbound.png`. Pepper-mint enamel, worn metal
+and gumdrop-jewel treatments; design review only, not imported into gameplay.
+
+- Nov 15: fal PATINA generated 15 seamless candy ground PBR sets (75 maps), plus Unreal procedural hot chocolate, marshmallow and steam materials; sources and selected variants in Docs/Devlog/CandyPBR.

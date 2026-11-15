@@ -2,7 +2,11 @@
 
 Design preparation only, requested by Dylan. No engine, game, build, or automation was launched. No runtime files were changed. Open `index.html` locally to compare the two generated concept boards.
 
-## Directions
+## Current direction: dark fantasy
+
+Dylan rejected A/B as too kiddie. The current exploration is **C — Saccharine Reliquary** and **D — Black Sugar / Frostbound**. See `dark-fantasy.html` and `DARK_FANTASY.md`. A/B remain archived comparisons; their cheerful palette, typography and motion proposals are superseded. The source integration seams and preservation requirements below still apply. The earlier recommendation below is historical.
+
+## Earlier directions (rejected)
 
 **A — Frosted Stickerbook (recommended):** marshmallow panels, plum outlines, strawberry and mint buttons, butter-yellow selection, wafer shadows. Friendly, readable, and closest to the existing gingerbread village. Candy decoration belongs around panel edges; keep text surfaces quiet.
 
