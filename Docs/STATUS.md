@@ -18,8 +18,14 @@ Done, editor build + Jam tests green, seen in autoplay screenshots (`Saved/Scree
 - #3 Resolve bars over every unpacified nuisance within 2600 uu (`AJamHUD::DrawResolveBars`, canvas).
 Not packaged; packaged cook of the cards unverified (smoke test).
 
-**Split off for Dylan (after a clear):**
-- #4 more quest types and more direction options: design + content (quest log step kinds, Jokes.md lines, autoplay).
+**#4 more quest types / directions (done, 86/86 Jam tests green, partly seen in autoplay):** every authored job has a
+third route (`ThirdRoute` in `JamVillageQuests.cpp`, lines in Jokes.md "Villagers: third routes", text only). New step
+kind Visit (walk to a place; signpost, Dr. Molar, Baker Crumb, orchard and meadow sets) and modifiers Rush (clock per
+camp from arrival, x1.5), Gentle (they fight back, one hit restarts the step, x1.3), Crowd (double count, x1.75).
+Camps Riverbank and Mint Grove now used. Offer screen takes 4 routes (`QuestBranch3`); backend improvise keeps the
+third. Autoplay `-autobranch=2` plays third routes: Crowd, Visit, Rush (no timeout) and Crowd seen paying out over 4
+jobs; run stopped when the bot snagged on an edge heading to Mint Grove. Gentle not seen live (autoplay ignores Gentle
+hits). Not packaged.
 - Seen in a 70 s autoplay shot: camera inside a giant teal candy prop on the way to The Almond Affair.
 
 ## Fixes4 #1-8 (Nov 15, `Docs/Feedback/Fixes4.txt`)

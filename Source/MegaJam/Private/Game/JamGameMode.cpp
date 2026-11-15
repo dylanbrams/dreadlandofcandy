@@ -1283,6 +1283,12 @@ bool AJamGameMode::HandleNuisanceHit(AJamNuisance* Nuisance)
 	++HitsTaken;
 	JamSfx::Play(this, TEXT("Hero_Hit"));
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: %s hit the hero, dignity %.0f"), *Nuisance->GetName(), GS->Dignity.GetValue());
+	// Fixes5 #4: on a Gentle job any hit starts the step over (the unattended run only logs it, so it can finish).
+	if (bVillage && VillageQuests.Active() != INDEX_NONE && VillageQuests.Offer(VillageQuests.Active()).Modifier == EJamQuestModifier::Gentle)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamQuest: gentle job hit%s"), bAutoplay ? TEXT(" (autoplay carries on)") : TEXT(", step restarts"));
+		if (!bAutoplay) { VillageDefeat(TEXT("Ow. That was a hit, and Gentle means gentle. The appointment starts over.")); return true; }
+	}
 	if (bBroke && bVillage) { VillageDefeat(); return true; }
 	if (bBroke)
 	{

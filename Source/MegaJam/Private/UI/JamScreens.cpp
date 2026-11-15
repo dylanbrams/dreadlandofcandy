@@ -311,6 +311,7 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
         {
             FJamQuestBranch Branch; Branch.Route = Recipe.Route; Branch.Objective = Recipe.Objective;
             Branch.Label = Recipe.Route == FName(TEXT("original")) ? TEXT("A firm word") : TEXT("A healthy snack");
+            if (!Recipe.RouteLabel.IsEmpty()) { Branch.Label = Recipe.RouteLabel; Branch.Reward = Recipe.Reward; }
             Branch.Variation.Count = Recipe.Count; Branch.Variation.Pitch = Recipe.Request;
             Offer.Branches.Add(Branch);
         }
@@ -329,6 +330,7 @@ bool JamScreens::Sample(const FString& Name, FJamScreenView& Out)
         {
             FJamQuestBranch Branch; Branch.Route = Recipe.Route; Branch.Objective = Recipe.Objective;
             Branch.Label = Recipe.Route == FName(TEXT("original")) ? TEXT("Take the original approach") : TEXT("Try the other approach");
+            if (!Recipe.RouteLabel.IsEmpty()) { Branch.Label = Recipe.RouteLabel; Branch.Reward = Recipe.Reward; }
             Branch.Variation.Count = Recipe.Count; Branch.Variation.Pitch = Recipe.Request;
             Offer.Branches.Add(Branch);
         }
@@ -462,9 +464,9 @@ FJamScreenView JamScreens::QuestBranches(const FJamQuestOfferView& Offer, const 
     // Fixes2 #5: who they are to you, and what that does to the job.
     V.Kicker = FString::Printf(TEXT("%s  /  %s"), *Offer.Giver, *JamVillageQuests::LevelName(Offer.Level).ToUpper());
     if (!Offer.LevelNote.IsEmpty()) { V.Quotes.Add(Offer.LevelNote); }
-    const EJamMenuAction Actions[] = { EJamMenuAction::QuestBranch0, EJamMenuAction::QuestBranch1, EJamMenuAction::QuestBranch2 };
+    const EJamMenuAction Actions[] = { EJamMenuAction::QuestBranch0, EJamMenuAction::QuestBranch1, EJamMenuAction::QuestBranch2, EJamMenuAction::QuestBranch3 };
     V.bOpaque = false;
-    for (int32 i = 0; i < FMath::Min(3, Offer.Branches.Num()); ++i)
+    for (int32 i = 0; i < FMath::Min(int32(UE_ARRAY_COUNT(Actions)), Offer.Branches.Num()); ++i)
     {
         const FJamQuestBranch& Branch = Offer.Branches[i];
         const bool bFixed = Branch.Reward > 0;   // plans and encores carry their own reward and steps

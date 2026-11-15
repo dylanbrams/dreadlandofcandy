@@ -334,7 +334,12 @@ void AJamGameMode::StartVillageStep()
 	GroundZ = TraceGround(Destination->Position);
 	// Collect steps are always safe; never inherit the previous errand's danger.
 	VillageDanger = 0;
-	if (Step.Verb == EJamStageVerb::Collect)
+	RushLeft = -1.f;
+	if (Step.Verb == EJamStageVerb::Visit)
+	{
+		// Fixes5 #4: nothing to spawn; walking into VisitRadius finishes the step (TickVillageStep).
+	}
+	else if (Step.Verb == EJamStageVerb::Collect)
 	{
 		for (int32 i = 0; i < Step.Count; ++i)
 		{
@@ -355,6 +360,8 @@ void AJamGameMode::StartVillageStep()
 		// Fixes3 #16: first errands are safe. Repeat errands (relationship level 2+) fight back, harder each level,
 		// and can knock the hero flat (VillageDefeat restarts the step).
 		VillageDanger = FMath::Max(0, VillageQuests.LevelForQuest(Active) - 1);
+		// Fixes5 #4: a Gentle job is only a test if they can hit you.
+		if (VillageQuests.Offer(Active).Modifier == EJamQuestModifier::Gentle) { VillageDanger = FMath::Max(VillageDanger, 1); }
 		for (AJamNuisance* N : Nuisances)
 		{
 			if (!N) { continue; }
@@ -403,9 +410,17 @@ void AJamGameMode::UpdateVillageObjective()
 		if (!Location) { return; }
 		GS->CompassTarget = FVector(Location->Position, TraceGround(Location->Position) + 150.f);
 		GS->CompassLabel = bReady ? TEXT("RETURN TO ") + Quest.GiverName.ToUpper() : Quest.Title.ToUpper();
+		FString Twist;
+		if (!bReady && Quest.Modifier == EJamQuestModifier::Rush && Step.Verb != EJamStageVerb::Visit)
+		{
+			Twist = RushLeft >= 0.f ? FString::Printf(TEXT(" RUSH: %d s left!"), FMath::CeilToInt(RushLeft)) : TEXT(" RUSH: the clock starts at the camp.");
+		}
+		else if (!bReady && Quest.Modifier == EJamQuestModifier::Gentle && Step.Verb != EJamStageVerb::Visit) { Twist = TEXT(" GENTLE: one hit and the step starts over."); }
 		GS->Hint = bReady ? TEXT("Quest ready! Return to ") + Quest.GiverName + TEXT(" and talk to claim your reward.")
-			: FString::Printf(TEXT("%s: %s%s %d/%d. Follow the candy cane; return to %s afterwards."), *Quest.Title,
-				*StepTag, *Step.Objective, VillageQuests.Progress(), Step.Count, *Quest.GiverName);
+			: Step.Verb == EJamStageVerb::Visit
+				? FString::Printf(TEXT("%s: %s%s. Follow the candy cane."), *Quest.Title, *StepTag, *Step.Task)
+				: FString::Printf(TEXT("%s: %s%s %d/%d.%s Follow the candy cane; return to %s afterwards."), *Quest.Title,
+					*StepTag, *Step.Objective, VillageQuests.Progress(), Step.Count, *Twist, *Quest.GiverName);
 		MarkQuest(Location->Position);
 		if (bReady && QuestMarker) { QuestMarker->SetActorHiddenInGame(true); } // giver already has a marker
 	}
@@ -426,11 +441,11 @@ bool AJamGameMode::VillageCombat() const
 	return bVillageExploration && VillageDanger > 0 && VillageQuests.Active() != INDEX_NONE;
 }
 
-void AJamGameMode::VillageDefeat()
+void AJamGameMode::VillageDefeat(const TCHAR* Line)
 {
 	// Knocked flat on a dangerous errand: the step starts over with full Dignity (deferred, since a nuisance's
 	// own tick reports the hit and the restart destroys it).
-	Direct(TEXT("Knocked flat! Dignity: none. The errand starts over. Fenella is pretending she didn't film that."));
+	Direct(Line ? Line : TEXT("Knocked flat! Dignity: none. The errand starts over. Fenella is pretending she didn't film that."));
 	JamSfx::Play(this, TEXT("Cut_Horn"));
 	GetWorldTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this, [this]()
 	{
@@ -458,8 +473,11 @@ void AJamGameMode::TickVillage(float DeltaSeconds)
 		if (VillageQuests.Step() != SpawnedVillageStep)
 		{
 			StartVillageStep();
-			Direct(TEXT("Step complete! Next: ") + JamVillageQuests::StepText(VillageQuests.CurrentStep(Active)) + TEXT(". Follow the candy cane."));
+			Direct((NextStepIntro.IsEmpty() ? FString(TEXT("Step complete!")) : NextStepIntro) + TEXT(" Next: ")
+				+ JamVillageQuests::StepText(VillageQuests.CurrentStep(Active)) + TEXT(". Follow the candy cane."));
+			NextStepIntro.Reset();
 		}
+		TickVillageStep(DeltaSeconds);
 		if (VillageQuests.CurrentStep(Active).Verb == EJamStageVerb::Collect)
 		{
 			for (int32 i = Pickups.Num() - 1; i >= 0; --i)
@@ -488,6 +506,50 @@ void AJamGameMode::TickVillage(float DeltaSeconds)
 	GS->VillagePrompt.Reset();
 	GS->VillagePromptAnchor.Reset();
 	if (VillageInteractPrompt(Hero.Get(), Anchor, GS->VillagePrompt)) { GS->VillagePromptAnchor = Anchor; }
+}
+
+void AJamGameMode::TickVillageStep(float DeltaSeconds)
+{
+	const int32 Active = VillageQuests.Active();
+	if (Active == INDEX_NONE || !Hero.IsValid() || VillageQuests.State(Active) != EJamVillageQuestState::Active) { return; }
+	const FJamQuestStep Step = VillageQuests.CurrentStep(Active);
+	const FJamLocation* Destination = JamWorld::Find(Step.Destination);
+	if (!Destination) { return; }
+	const float Distance = FVector2D::Distance(FVector2D(Hero->GetActorLocation()), Destination->Position);
+	// Fixes5 #4: a visit finishes on arrival.
+	if (Step.Verb == EJamStageVerb::Visit)
+	{
+		if (Distance > JamVillageQuests::VisitRadius(Step.Destination) || !VillageQuests.Report(EJamStageVerb::Visit)) { return; }
+		JamSfx::Play(this, TEXT("Quest_Accept"));
+		UE_LOG(LogJam, Log, TEXT("JamQuest: visited %s"), *Step.Destination.ToString());
+		if (VillageQuests.State(Active) == EJamVillageQuestState::Ready) { Direct(Step.Arrival + TEXT(" Return to ") + VillageQuests.Offer(Active).GiverName + TEXT(".")); }
+		else { NextStepIntro = Step.Arrival; }
+		UpdateVillageObjective();
+		return;
+	}
+	// Fixes5 #4: a Rush step's clock starts on reaching the camp; time out and the step starts over, clock and all.
+	if (VillageQuests.Offer(Active).Modifier != EJamQuestModifier::Rush) { return; }
+	const int32 Shown = FMath::CeilToInt(RushLeft);
+	if (RushLeft < 0.f)
+	{
+		if (Distance > 1500.f) { return; }
+		RushLeft = JamVillageQuests::RushSeconds(Step);
+		Direct(FString::Printf(TEXT("Rush! %d seconds, starting now. I have a stopwatch and no mercy."), FMath::CeilToInt(RushLeft)));
+		UpdateVillageObjective();
+		return;
+	}
+	RushLeft -= DeltaSeconds;
+	if (RushLeft <= 0.f)
+	{
+		UE_LOG(LogJam, Log, TEXT("JamQuest: rush timed out, step %d restarts"), VillageQuests.Step() + 1);
+		JamSfx::Play(this, TEXT("Cut_Horn"));
+		VillageQuests.RestartStep();
+		StartVillageStep();
+		RushLeft = JamVillageQuests::RushSeconds(Step);
+		Direct(FString::Printf(TEXT("Time! Back to one. The clock restarts: %d seconds. Speed is a choice, hero."), FMath::CeilToInt(RushLeft)));
+		UpdateVillageObjective();
+	}
+	else if (FMath::CeilToInt(RushLeft) != Shown) { UpdateVillageObjective(); }
 }
 
 void AJamGameMode::AutoWalkTo(const FVector2D& Goal, float DeltaSeconds)
@@ -532,7 +594,9 @@ void AJamGameMode::TickAutoplayVillage(float DeltaSeconds)
         const bool bBranches = FParse::Param(FCommandLine::Get(), TEXT("autobranches"));
         if (bBranches && QuestOffer.bCanImprovise && !QuestOffer.bReading) { RequestVillageBranches(); return; }
         if (bBranches && QuestOffer.bReading) { return; }
-        ChooseVillageBranch(bBranches ? 1 : 0);
+        int32 Route = bBranches ? 1 : 0;
+        FParse::Value(FCommandLine::Get(), TEXT("autobranch="), Route);   // Fixes5 #4: -autobranch=2 plays the third routes
+        ChooseVillageBranch(FMath::Clamp(Route, 0, QuestOffer.Branches.Num() - 1));
         return;
     }
 	if (VillageQuests.Completed() == JamVillageQuests::All().Num())
@@ -566,6 +630,11 @@ void AJamGameMode::TickAutoplayVillage(float DeltaSeconds)
 			if (Distance < Best) { Best = Distance; Goal = Actor; }
 		};
 		const EJamStageVerb Verb = VillageQuests.CurrentStep(Active).Verb;
+		if (Verb == EJamStageVerb::Visit)
+		{
+			if (const FJamLocation* L = JamWorld::Find(VillageQuests.CurrentStep(Active).Destination)) { AutoWalkTo(L->Position, DeltaSeconds); }
+			return;
+		}
 		if (Verb == EJamStageVerb::Collect) { for (AJamPickup* P : Pickups) { Consider(P); } }
 		else { for (AJamNuisance* N : Nuisances) { if (N && !N->IsTreated() && (!N->IsPacified() || Verb == EJamStageVerb::Interact)) { Consider(N); } } }
 	}
@@ -631,6 +700,17 @@ void AJamGameMode::OfferVillageQuest(int32 Index)
     for (const FJamVillageQuestDef& Recipe : Recipes)
     {
         FJamQuestBranch Branch;
+        if (!Recipe.RouteLabel.IsEmpty())
+        {
+            // Fixes5 #4: the third route is offered exactly as it will play at this level, twist and pay included.
+            const FJamVillageQuestDef Ready = JamVillageQuests::Prepare(Recipe, QuestOffer.Level);
+            const FString Rule = JamVillageQuests::ModifierRule(Recipe.Modifier);
+            Branch.Route = Recipe.Route; Branch.Label = Recipe.RouteLabel;
+            Branch.Objective = (Rule.IsEmpty() ? FString() : Rule + TEXT(". ")) + JamVillageFlow::PlanText(JamVillageQuests::Steps(Ready));
+            Branch.Variation.Pitch = Recipe.Request; Branch.Reward = Ready.Reward;
+            QuestOffer.Branches.Add(MoveTemp(Branch));
+            continue;
+        }
         Branch.Route = Recipe.Route; Branch.Objective = Recipe.Objective;
         Branch.Label = Recipe.Route == FName(TEXT("original")) ? TEXT("Take the original approach") : TEXT("Try the other approach");
         Branch.Variation.Count = FMath::Clamp(Current.Count, Recipe.MinCount, Recipe.MaxCount);
@@ -639,7 +719,7 @@ void AJamGameMode::OfferVillageQuest(int32 Index)
         QuestOffer.Branches.Add(MoveTemp(Branch));
     }
     QuestOffer.bCanImprovise = bOnline;
-    QuestOffer.Status = TEXT("Choose how to help. Both approaches return to this villager for payment.");
+    QuestOffer.Status = TEXT("Choose how to help. Every approach returns to this villager for payment.");
     // Fenella pitches each villager's first job as television (VillagePickup_01.._05 in Givers() order), then the choice.
     SayOnce(*FString::Printf(TEXT("VillagePickup_%02d"), VillageQuests.GiverIndex(Index) + 1));
     SayOnce(TEXT("VillagePickup_06"));
@@ -682,13 +762,17 @@ void AJamGameMode::ResolveVillageBranches(int32 Serial, int32 Index, bool bOk, c
     TArray<FJamQuestBranch> Branches;
     if (bOk && JamVillageQuests::ReadBranches(Body, Index, Branches))
     {
+        // Fenella rewrites the first two routes; the authored third (Fixes5 #4) stays on the menu.
+        const TArray<FJamQuestBranch> Kept = QuestOffer.Branches.FilterByPredicate([](const FJamQuestBranch& B)
+            { return B.Plan.IsEmpty() && B.Route != FName(TEXT("original")) && B.Route != FName(TEXT("alternative")); });
         QuestOffer.Branches = MoveTemp(Branches);
+        QuestOffer.Branches.Append(Kept);
         QuestOffer.Status = TEXT("Fenella has two new approaches. Your choice decides the task and destination.");
         UE_LOG(LogJam, Log, TEXT("JamQuest: backend branches ready quest=%d"), Index);
     }
     else
     {
-        QuestOffer.Status = TEXT("Fenella keeps the original plans. Both routes are ready to play.");
+        QuestOffer.Status = TEXT("Fenella keeps the original plans. Every route is ready to play.");
         UE_LOG(LogJam, Log, TEXT("JamQuest: authored branches retained quest=%d"), Index);
     }
 }

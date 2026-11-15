@@ -127,7 +127,14 @@ private:
 	/** Fixes3 #16: 0 = errands are safe; 1+ = post-completion errands where nuisances hit back, harder each level. */
 	int32 VillageDanger = 0;
 	bool VillageCombat() const;
-	void VillageDefeat();
+	/** The step starts over (knocked flat; Fixes5 #4: a Gentle hit). Line replaces Fenella's default. */
+	void VillageDefeat(const TCHAR* Line = nullptr);
+	/** Fixes5 #4: seconds left on a Rush step's clock; below 0 = not started (it starts on reaching the camp). */
+	float RushLeft = -1.f;
+	/** Fixes5 #4: what Fenella says before "Next: ..." when a step finishes (a visit's arrival line). */
+	FString NextStepIntro;
+	/** Fixes5 #4: visit arrivals and the Rush clock, during an active step. */
+	void TickVillageStep(float DeltaSeconds);
 	UPROPERTY(Transient) TObjectPtr<class AJamQuestMarker> QuestMarker;
 	UPROPERTY(Transient) TArray<TObjectPtr<class AJamVillager>> Villagers;
 	UPROPERTY(Transient) TArray<TObjectPtr<class AJamQuestMarker>> VillagerMarkers;

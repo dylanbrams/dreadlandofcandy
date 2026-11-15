@@ -11,6 +11,7 @@ enum class EJamStageVerb : uint8
 	Pacify,     // bring targets' Resolve to zero
 	Interact,   // treat targets (feed, brush) with E
 	Collect,    // pick things up
+	Visit,      // village errands only (Fixes5 #4): walk to a place
 };
 
 enum class EJamTargetKind : uint8

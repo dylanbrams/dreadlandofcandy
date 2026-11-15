@@ -137,7 +137,7 @@ bool FJamVillageFlowTest::RunTest(const FString&)
             GM->ResolveVillageBranches(Stale, Index, false, FString());
             TestTrue(TEXT("stale response cannot dismiss a new offer"), GM->QuestOffer.bVisible);
             GM->ResolveVillageBranches(GM->BranchRequestSerial, Index, false, FString());
-            TestEqual(TEXT("failed backend keeps both authored routes"), GM->QuestOffer.Branches.Num(), 2);
+            TestEqual(TEXT("failed backend keeps all three authored routes"), GM->QuestOffer.Branches.Num(), 3);
         }
 		GM->ChooseVillageBranch(0);
 		TestEqual(TEXT("accepted correct quest"), GM->VillageQuests.Active(), Index);
@@ -493,4 +493,82 @@ bool FJamQuestProposalTest::RunTest(const FString&)
     TestTrue(TEXT("authored routes remain usable during proposal"), Proposing.Options[0].bEnabled && Proposing.Options[1].bEnabled);
     return true;
 }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJamQuestThirdRoutesTest, "Jam.World.Quests.ThirdRoutes", VillageTestFlags)
+bool FJamQuestThirdRoutesTest::RunTest(const FString&)
+{
+    // Fixes5 #4: every job has a third authored route; its steps are playable where they point.
+    TSet<FName> Camps;
+    TSet<EJamQuestModifier> Modifiers;
+    int32 Visits = 0;
+    for (int32 i = 0; i < JamVillageQuests::All().Num(); ++i)
+    {
+        const TArray<FJamVillageQuestDef> Routes = JamVillageQuests::Routes(i);
+        if (!TestEqual(TEXT("three routes per job"), Routes.Num(), 3)) { continue; }
+        const FJamVillageQuestDef& Third = Routes[2];
+        TestFalse(TEXT("third route has a label"), Third.RouteLabel.IsEmpty());
+        TestFalse(TEXT("third route has its own pitch"), Third.Request == JamVillageQuests::All()[i].Request);
+        Modifiers.Add(Third.Modifier);
+        for (const FJamQuestStep& Step : JamVillageQuests::Steps(Third))
+        {
+            const FJamLocation* L = JamWorld::Find(Step.Destination);
+            if (!TestNotNull(*FString::Printf(TEXT("route %d step destination exists"), i), L)) { continue; }
+            if (Step.Verb == EJamStageVerb::Visit)
+            {
+                ++Visits;
+                TestFalse(TEXT("visit has a task"), Step.Task.IsEmpty());
+                TestFalse(TEXT("visit has an arrival line"), Step.Arrival.IsEmpty());
+                TestEqual(TEXT("visit text is its task"), JamVillageQuests::StepText(Step), Step.Task);
+                continue;
+            }
+            Camps.Add(Step.Destination);
+            TestEqual(TEXT("work happens at a camp"), L->Kind, EJamLocationKind::Camp);
+            TestTrue(TEXT("camp has what the step needs"), L->Kinds.Contains(Step.Verb == EJamStageVerb::Collect ? EJamTargetKind::Almond : Step.Target));
+        }
+    }
+    TestTrue(TEXT("the riverbank is used"), Camps.Contains(TEXT("CampRiverbank")));
+    TestTrue(TEXT("mint grove is used"), Camps.Contains(TEXT("CampMintGrove")));
+    TestTrue(TEXT("visits are used"), Visits >= 3);
+    TestTrue(TEXT("every modifier is used"), Modifiers.Contains(EJamQuestModifier::Rush) && Modifiers.Contains(EJamQuestModifier::Gentle) && Modifiers.Contains(EJamQuestModifier::Crowd));
+
+    // Modifiers: crowd doubles (not visits), every twist pays more, rush clocks only timed work.
+    FJamVillageQuestDef Crowd = JamVillageQuests::Routes(0)[2];
+    TestEqual(TEXT("council route is a crowd"), Crowd.Modifier, EJamQuestModifier::Crowd);
+    const FJamVillageQuestDef CrowdReady = JamVillageQuests::Prepare(Crowd, 0);
+    TestEqual(TEXT("crowd doubles the count"), CrowdReady.Count, Crowd.Count * 2);
+    TestTrue(TEXT("crowd pays more"), CrowdReady.Reward > Crowd.Reward);
+    TestTrue(TEXT("rush and gentle pay more"), JamVillageQuests::ModifierRewardScale(EJamQuestModifier::Rush) > 1.f && JamVillageQuests::ModifierRewardScale(EJamQuestModifier::Gentle) > 1.f);
+    TestEqual(TEXT("no modifier, no change"), JamVillageQuests::ModifierRewardScale(EJamQuestModifier::None), 1.f);
+    const FJamQuestStep Visit = JamVillageQuests::MakeVisit(TEXT("Signpost"), TEXT("Read the signpost"), TEXT("Signpost read"), TEXT("It says hello."));
+    TestEqual(TEXT("visits are untimed"), JamVillageQuests::RushSeconds(Visit), 0.f);
+    TestTrue(TEXT("work is timed"), JamVillageQuests::RushSeconds(JamVillageQuests::FirstStep(JamVillageQuests::All()[0])) > 10.f);
+    FJamVillageQuestDef VisitCrowd = JamVillageQuests::Routes(2)[2]; VisitCrowd.Modifier = EJamQuestModifier::Crowd;
+    TestEqual(TEXT("crowd never doubles a visit"), JamVillageQuests::Prepare(VisitCrowd, 3).Count, 1);
+
+    // A visit route plays through the log: select, accept, arrive, gather, turn in.
+    FJamVillageQuestLog Log; Log.Recruit(); Log.FinishMain();
+    FJamQuestBranch Branch; Branch.Route = TEXT("errand");
+    TestTrue(TEXT("third route selectable"), Log.SelectBranch(2, Branch));
+    TestTrue(TEXT("third route accepted"), Log.Accept(2));
+    TestEqual(TEXT("starts with the visit"), Log.CurrentStep(2).Verb, EJamStageVerb::Visit);
+    TestFalse(TEXT("gathering cannot skip the visit"), Log.Report(EJamStageVerb::Collect));
+    TestTrue(TEXT("arrival counts"), Log.Report(EJamStageVerb::Visit));
+    TestEqual(TEXT("then gather"), Log.CurrentStep(2).Verb, EJamStageVerb::Collect);
+    TestEqual(TEXT("at mint grove"), Log.CurrentStep(2).Destination, FName(TEXT("CampMintGrove")));
+    for (int32 i = 0; i < Log.CurrentStep(2).Count; ++i) { Log.Report(EJamStageVerb::Collect); }
+    TestTrue(TEXT("third route pays"), Log.TurnIn(2));
+    TestTrue(TEXT("history records the third route"), Log.CompletedRoutes().Contains(TEXT("celery_actually:errand")));
+
+    // The backend may only rewrite the first two routes.
+    const FString Third = TEXT(R"({"v":1,"source":"model","quest_id":"council_rats","branches":[{"route":"original","label":"A","pitch":"B","destination":"CampMeadowWest","count":3},{"route":"crowd","label":"C","pitch":"D","destination":"CampRiverbank","count":3}]})");
+    TArray<FJamQuestBranch> Parsed;
+    TestFalse(TEXT("backend cannot rewrite the authored third route"), JamVillageQuests::ReadBranches(Third, 0, Parsed));
+
+    // Four routes (three authored and a plan) all get menu actions.
+    FJamQuestOfferView Offer; Offer.bVisible = true;
+    for (int32 i = 0; i < 4; ++i) { FJamQuestBranch B; B.Route = *FString::Printf(TEXT("r%d"), i); B.Label = TEXT("Route"); B.Reward = 100; Offer.Branches.Add(B); }
+    const FJamScreenView Screen = JamScreens::QuestBranches(Offer, FJamMenuSettings());
+    TestTrue(TEXT("fourth route has a menu action"), Screen.Options.Num() >= 4 && Screen.Options[3].Action == EJamMenuAction::QuestBranch3);
+    return true;
+}
+
 #endif

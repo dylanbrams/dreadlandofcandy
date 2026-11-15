@@ -8,6 +8,10 @@ enum class EJamQuestEvent : uint8 { Recruited, MainComplete, Accepted, Progress,
 
 struct FJamVillageGiverDef { FName Location; FString Name; };
 
+/** Fixes5 #4: a job-wide twist on a route. Rush: a clock per step from arrival. Gentle: any hit restarts the step.
+ *  Crowd: twice the targets. Each pays more (ModifierRewardScale). */
+enum class EJamQuestModifier : uint8 { None, Rush, Gentle, Crowd };
+
 /**
  * One objective of a village job (Fixes2 #4, #5). Authored jobs have one; relationship levels and player plans add
  * more. Interact = feed (rats) or brush (goblins), and includes pacifying first. Collect = gather pickups (PickupMesh).
@@ -20,6 +24,9 @@ struct FJamQuestStep
     FName Destination;
     FString PickupMesh = TEXT("SM_Almond");
     FString Objective = TEXT("Rats pacified");
+    /** Visit steps (Fixes5 #4): the instruction ("Fetch the call sheet from the orchard set") and Fenella's line on arrival. */
+    FString Task;
+    FString Arrival;
 };
 
 struct FJamVillageQuestDef
@@ -37,6 +44,9 @@ struct FJamVillageQuestDef
     EJamTargetKind Target = EJamTargetKind::Rat;
     FString PickupMesh = TEXT("SM_Almond");
     FString Objective = TEXT("Rats pacified");
+    /** The first step's visit text (FJamQuestStep::Task, Arrival). */
+    FString Task;
+    FString Arrival;
     TArray<FName> Destinations;
     int32 MinCount = 1;
     int32 MaxCount = 8;
@@ -45,6 +55,9 @@ struct FJamVillageQuestDef
     TArray<FJamQuestStep> Extra;
     /** A giver's repeatable job after their two authored ones; never counts toward Completed(). */
     bool bEncore = false;
+    /** Fixes5 #4: the third authored route's twist and its menu label. */
+    EJamQuestModifier Modifier = EJamQuestModifier::None;
+    FString RouteLabel;
 };
 
 /** A player's proposal as the backend rewrote it, validated and clamped (QuestBranches.md, "Proposals"). */
@@ -125,6 +138,20 @@ namespace JamVillageQuests
     MEGAJAM_API int32 LevelBonus(int32 Level);
     /** What the level does to a job: level 1 one more target, 2 an extra step, 3 another target and a second camp. */
     MEGAJAM_API FJamVillageQuestDef Scale(const FJamVillageQuestDef& Quest, int32 Level);
+    /** Fixes5 #4: what a giver's level and the route's modifier make of a job (Scale, then the modifier). */
+    MEGAJAM_API FJamVillageQuestDef Prepare(const FJamVillageQuestDef& Quest, int32 Level);
+    MEGAJAM_API FJamVillageQuestDef ApplyModifier(const FJamVillageQuestDef& Quest);
+    MEGAJAM_API float ModifierRewardScale(EJamQuestModifier Modifier);
+    /** "Rush", "Gentle", "Crowd"; empty for None. */
+    MEGAJAM_API FString ModifierName(EJamQuestModifier Modifier);
+    /** One-line rule for the offer screen. */
+    MEGAJAM_API FString ModifierRule(EJamQuestModifier Modifier);
+    /** Rush clock for a step, started on arrival; 0 = untimed (visits). */
+    MEGAJAM_API float RushSeconds(const FJamQuestStep& Step);
+    /** A visit step: walk to Destination (any location). */
+    MEGAJAM_API FJamQuestStep MakeVisit(FName Destination, const TCHAR* Task, const TCHAR* Objective, const TCHAR* Arrival);
+    /** Distance (uu) at which a visit counts as arrived. */
+    MEGAJAM_API float VisitRadius(FName Destination);
     /** A giver's repeatable encore after Jobs paid jobs (built at least at Friend); bigger every time. */
     MEGAJAM_API FJamVillageQuestDef Encore(int32 GiverIndex, int32 Jobs);
     /** Validate and clamp a /quest/propose reply (contract v1). False = authored routes only. */

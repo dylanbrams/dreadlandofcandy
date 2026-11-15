@@ -358,6 +358,32 @@ title>", bigger every time. Runtime: `JamVillageQuests.cpp` (`GEncoreRequests`).
 - Dr. Molar: "My patients have told their friends. Their friends have teeth. Many teeth. Bring a bigger brush."
 - Scout Taffy: "My survey was a hit. The sequel needs a bigger map and something worse on it."
 
+### Villagers: third routes (Fixes5 #4)
+
+Text only, no voice. Every authored job offers a third route, using a visit step
+(walk somewhere) and/or a twist: Rush (a clock per camp), Gentle (one hit
+restarts the step), Crowd (twice as many). Runtime: `JamVillageQuests.cpp`
+(`ThirdRoute`), `JamVillageFlow.cpp` (Fenella's Rush and Gentle lines).
+
+- A Quiet Constituency / "Crowd: the full council": "Forget the meeting. The whole rat council is sitting at the riverbank, with minutes and a gavel. Pacify all of them."
+- Contains Actual Nuts / "Rush: the oven is already on": "I panicked and lit the oven. Bring almonds from the riverbank before the cake bakes without them."
+- Celery, Actually / "Ask around: the celery moved": "The celery has relocated. Nobody saw it go. Check the signpost; it knows everything and says very little."
+  - At the signpost: "The signpost says MINT GROVE. Underneath, smaller: no celery was harmed in the making of this sign."
+- Open Wide, Shut Up / "Gentle: bedside manner": "These are nervous patients. Brush them without taking a single hit. If one lands, the appointment starts over."
+- Uncredited Extras / "Rush: they're due on set": "Fetch the call sheet from the orchard set, then round up the bugs. They are due on set. They are always due on set."
+  - At the set: "Call sheet found. Every bug is listed as Bug. The bugs are insulted, and also, technically, Bug."
+- A More Representative Goblin / "Properly: the ceremonial brush": "An inauguration needs the ceremonial toothbrush. Dr. Molar has it. Collect it, then brush the representatives."
+  - At Dr. Molar: "Dr. Molar hands over the ceremonial toothbrush. It has a ribbon. It has never touched a tooth."
+- The Cake Has Teeth / "Crowd: a three-tier cake": "Make it three tiers. Three tiers need a great many teeth. Gather every candy shard the far orchard has."
+- Crop Circles Are Rude / "Gentle: mind the crops": "Pacify them without getting hit. Every stumble flattens a crop, and then I have to read the message."
+- Brushing Up On Diplomacy / "Rush: the canapes are wilting": "Baker Crumb has a celery platter ready. Collect it and get it to the rats at Mint Grove before it wilts."
+  - At Baker Crumb: "Baker Crumb hands over the platter. The celery is arranged in a smile. It is already starting to droop."
+- Nuts About The Horizon / "Survey: plant a flag first": "Plant my survey flag at the meadow film set, then gather almonds at the riverbank. A map needs a flag and a snack."
+  - At the meadow set: "Flag planted. The film crew are already using it as a light stand. Scout Taffy will call that a collaboration."
+- Fenella, Rush starts: "Rush! N seconds, starting now. I have a stopwatch and no mercy."
+- Fenella, Rush runs out: "Time! Back to one. The clock restarts: N seconds. Speed is a choice, hero."
+- Fenella, Gentle hit: "Ow. That was a hit, and Gentle means gentle. The appointment starts over."
+
 ### Fenella on a player's proposal (Fixes2 #4)
 
 When a proposal can't be used (any failure, refusal or timeout), on the quest

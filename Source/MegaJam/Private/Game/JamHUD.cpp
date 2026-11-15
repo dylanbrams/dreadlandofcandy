@@ -612,6 +612,7 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::QuestBranch0: if (GM) { GM->ChooseVillageBranch(0); Selected = 0; } break;
 	case EJamMenuAction::QuestBranch1: if (GM) { GM->ChooseVillageBranch(1); Selected = 0; } break;
 	case EJamMenuAction::QuestBranch2: if (GM) { GM->ChooseVillageBranch(2); Selected = 0; } break;
+	case EJamMenuAction::QuestBranch3: if (GM) { GM->ChooseVillageBranch(3); Selected = 0; } break;
 	case EJamMenuAction::ProposePlan:
 		if (GM && NoteEditor && GM->GetQuestOffer().bVisible && GM->GetQuestOffer().bCanPropose)
 		{

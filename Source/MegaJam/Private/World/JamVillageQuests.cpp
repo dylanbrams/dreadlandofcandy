@@ -178,7 +178,7 @@ bool FJamVillageQuestLog::Accept(int32 Index)
     if (ActiveIndex != INDEX_NONE || State(Index) != EJamVillageQuestState::Available) { return false; }
     AcceptedFrom = Offers[Index];
     // The giver's level shapes the job (Fixes2 #5); a player's plan is taken as written.
-    if (Offers[Index].Route != FName(TEXT("proposal"))) { Offers[Index] = JamVillageQuests::Scale(Offers[Index], LevelForQuest(Index)); }
+    if (Offers[Index].Route != FName(TEXT("proposal"))) { Offers[Index] = JamVillageQuests::Prepare(Offers[Index], LevelForQuest(Index)); }
     ActiveIndex = Index; Done = 0; StepIndex = 0; Emit(EJamQuestEvent::Accepted, Index); return true;
 }
 bool FJamVillageQuestLog::Report(EJamStageVerb Verb)
@@ -271,6 +271,113 @@ bool FJamVillageQuestLog::ApplyOverridesJson(const FString& Json, FString& Error
     return true;
 }
 
+namespace
+{
+    void SetFirstStep(FJamVillageQuestDef& Q, const FJamQuestStep& S)
+    {
+        Q.Verb = S.Verb; Q.Target = S.Target; Q.Count = S.Count; Q.Destination = S.Destination;
+        Q.PickupMesh = S.PickupMesh; Q.Objective = S.Objective; Q.Task = S.Task; Q.Arrival = S.Arrival;
+    }
+
+    FJamQuestStep GatherStep(const TCHAR* Mesh, const TCHAR* Objective, int32 Count, const TCHAR* Camp)
+    {
+        FJamQuestStep S; S.Verb = EJamStageVerb::Collect; S.Target = EJamTargetKind::Almond; S.PickupMesh = Mesh;
+        S.Objective = Objective; S.Count = Count; S.Destination = Camp; return S;
+    }
+    FJamQuestStep FightStep(EJamStageVerb Verb, EJamTargetKind Target, const TCHAR* Objective, int32 Count, const TCHAR* Camp)
+    {
+        FJamQuestStep S; S.Verb = Verb; S.Target = Target; S.Objective = Objective; S.Count = Count; S.Destination = Camp; return S;
+    }
+
+    /**
+     * Fixes5 #4: every authored job's third route (Docs/Design/Jokes.md, "Villagers: third routes"). Uses the visit
+     * step, the Rush / Gentle / Crowd modifiers and the two camps no other job used (Riverbank, Mint Grove).
+     */
+    bool ThirdRoute(int32 Index, FJamVillageQuestDef& Out)
+    {
+        if (!JamVillageQuests::All().IsValidIndex(Index)) { return false; }
+        using V = EJamStageVerb; using K = EJamTargetKind; using M = EJamQuestModifier;
+        FJamVillageQuestDef Q = JamVillageQuests::All()[Index];
+        Q.Extra.Reset();
+        TArray<FJamQuestStep> Steps;
+        auto Set = [&](const TCHAR* Route, const TCHAR* Label, M Modifier, int32 Reward, const TCHAR* Request)
+        {
+            Q.Route = Route; Q.RouteLabel = Label; Q.Modifier = Modifier; Q.Reward = Reward; Q.Request = Request;
+        };
+        switch (Index)
+        {
+        case 0:   // council_rats
+            Set(TEXT("crowd"), TEXT("Crowd: the full council"), M::Crowd, 150,
+                TEXT("Forget the meeting. The whole rat council is sitting at the riverbank, with minutes and a gavel. Pacify all of them."));
+            Steps = { FightStep(V::Pacify, K::Rat, TEXT("Councillors pacified"), 4, TEXT("CampRiverbank")) };
+            break;
+        case 1:   // actual_nuts
+            Set(TEXT("rush"), TEXT("Rush: the oven is already on"), M::Rush, 120,
+                TEXT("I panicked and lit the oven. Bring almonds from the riverbank before the cake bakes without them."));
+            Steps = { GatherStep(TEXT("SM_Almond"), TEXT("Almonds gathered"), 5, TEXT("CampRiverbank")) };
+            break;
+        case 2:   // celery_actually
+            Set(TEXT("errand"), TEXT("Ask around: the celery moved"), M::None, 150,
+                TEXT("The celery has relocated. Nobody saw it go. Check the signpost; it knows everything and says very little."));
+            Steps = { JamVillageQuests::MakeVisit(TEXT("Signpost"), TEXT("Read the signpost in the square"), TEXT("Signpost read"),
+                          TEXT("The signpost says MINT GROVE. Underneath, smaller: no celery was harmed in the making of this sign.")),
+                      GatherStep(TEXT("SM_Celery"), TEXT("Celery gathered"), 4, TEXT("CampMintGrove")) };
+            break;
+        case 3:   // open_wide
+            Set(TEXT("gentle"), TEXT("Gentle: bedside manner"), M::Gentle, 180,
+                TEXT("These are nervous patients. Brush them without taking a single hit. If one lands, the appointment starts over."));
+            Steps = { FightStep(V::Interact, K::Goblin, TEXT("Goblins brushed gently"), 3, TEXT("CampMolarsNear")) };
+            break;
+        case 4:   // uncredited_extras
+            Set(TEXT("rush"), TEXT("Rush: they're due on set"), M::Rush, 170,
+                TEXT("Fetch the call sheet from the orchard set, then round up the bugs. They are due on set. They are always due on set."));
+            Steps = { JamVillageQuests::MakeVisit(TEXT("SetOrchard"), TEXT("Fetch the call sheet from the orchard set"), TEXT("Call sheet fetched"),
+                          TEXT("Call sheet found. Every bug is listed as Bug. The bugs are insulted, and also, technically, Bug.")),
+                      FightStep(V::Pacify, K::Bug, TEXT("Extras wrangled"), 4, TEXT("CampOrchardNear")) };
+            break;
+        case 5:   // goblin_representative
+            Set(TEXT("errand"), TEXT("Properly: the ceremonial brush"), M::None, 210,
+                TEXT("An inauguration needs the ceremonial toothbrush. Dr. Molar has it. Collect it, then brush the representatives."));
+            Steps = { JamVillageQuests::MakeVisit(TEXT("GiverDentist"), TEXT("Collect the ceremonial toothbrush from Dr. Molar"), TEXT("Ceremonial brush collected"),
+                          TEXT("Dr. Molar hands over the ceremonial toothbrush. It has a ribbon. It has never touched a tooth.")),
+                      FightStep(V::Interact, K::Goblin, TEXT("Representatives brushed"), 3, TEXT("CampMolarsNear")) };
+            break;
+        case 6:   // cake_has_teeth
+            Set(TEXT("crowd"), TEXT("Crowd: a three-tier cake"), M::Crowd, 160,
+                TEXT("Make it three tiers. Three tiers need a great many teeth. Gather every candy shard the far orchard has."));
+            Steps = { GatherStep(TEXT("SM_LollyShard"), TEXT("Candy shards gathered"), 5, TEXT("CampOrchardFar")) };
+            break;
+        case 7:   // crop_circles
+            Set(TEXT("gentle"), TEXT("Gentle: mind the crops"), M::Gentle, 190,
+                TEXT("Pacify them without getting hit. Every stumble flattens a crop, and then I have to read the message."));
+            Steps = { FightStep(V::Pacify, K::Bug, TEXT("Bugs pacified gently"), 5, TEXT("CampOrchardGrove")) };
+            break;
+        case 8:   // brush_diplomacy
+            Set(TEXT("rush"), TEXT("Rush: the canapes are wilting"), M::Rush, 190,
+                TEXT("Baker Crumb has a celery platter ready. Collect it and get it to the rats at Mint Grove before it wilts."));
+            Steps = { JamVillageQuests::MakeVisit(TEXT("GiverBaker"), TEXT("Collect the celery platter from Baker Crumb"), TEXT("Platter collected"),
+                          TEXT("Baker Crumb hands over the platter. The celery is arranged in a smile. It is already starting to droop.")),
+                      FightStep(V::Interact, K::Rat, TEXT("Rats fed canapes"), 4, TEXT("CampMintGrove")) };
+            break;
+        case 9:   // nuts_horizon
+            Set(TEXT("errand"), TEXT("Survey: plant a flag first"), M::None, 210,
+                TEXT("Plant my survey flag at the meadow film set, then gather almonds at the riverbank. A map needs a flag and a snack."));
+            Steps = { JamVillageQuests::MakeVisit(TEXT("SetField"), TEXT("Plant the survey flag at the meadow set"), TEXT("Flag planted"),
+                          TEXT("Flag planted. The film crew are already using it as a light stand. Scout Taffy will call that a collaboration.")),
+                      GatherStep(TEXT("SM_Almond"), TEXT("Almonds gathered"), 6, TEXT("CampRiverbank")) };
+            break;
+        default: return false;
+        }
+        SetFirstStep(Q, Steps[0]);
+        for (int32 i = 1; i < Steps.Num(); ++i) { Q.Extra.Add(Steps[i]); }
+        // Offered as written: a visit has no count to vary and its destination is not a camp.
+        Q.Destinations = { Q.Destination };
+        Q.MinCount = Q.MaxCount = Q.Count;
+        Out = MoveTemp(Q);
+        return true;
+    }
+}
+
 TArray<FJamVillageQuestDef> JamVillageQuests::Routes(int32 Index)
 {
     if (!All().IsValidIndex(Index)) { return {}; }
@@ -305,7 +412,10 @@ TArray<FJamVillageQuestDef> JamVillageQuests::Routes(int32 Index)
                 : TEXT("Give them practical help instead. Pacify the rats, then feed them celery before reporting back.");
     }
     Alternative.Destination = Alternative.Destinations[0];
-    return { Base, Alternative };
+    TArray<FJamVillageQuestDef> Out = { Base, Alternative };
+    FJamVillageQuestDef Third;
+    if (ThirdRoute(Index, Third)) { Out.Add(MoveTemp(Third)); }
+    return Out;
 }
 
 bool FJamVillageQuestLog::SelectBranch(int32 Index, const FJamQuestBranch& Branch)
@@ -365,7 +475,9 @@ bool JamVillageQuests::ReadBranches(const FString& Json, int32 Index, TArray<FJa
             || !FMath::IsFinite(Count) || Count < 1 || Count > MAX_int32 || FMath::FloorToDouble(Count) != Count) { return false; }
         const FName RouteId(*Route), Camp(*Destination);
         const FJamVillageQuestDef* Recipe = Recipes.FindByPredicate([&](const FJamVillageQuestDef& Q) { return Q.Route == RouteId; });
-        if (!Recipe || Seen.Contains(RouteId) || !Recipe->Destinations.Contains(Camp)) { return false; }
+        // The backend rewrites only the two original routes; the third (Fixes5 #4) is authored and stays as written.
+        if (!Recipe || (RouteId != FName(TEXT("original")) && RouteId != FName(TEXT("alternative")))
+            || Seen.Contains(RouteId) || !Recipe->Destinations.Contains(Camp)) { return false; }
         Label = Clean(Label, 40); Pitch = Clean(Pitch, 240);
         if (Label.IsEmpty() || Pitch.IsEmpty()) { return false; }
         FJamQuestBranch Branch;
@@ -421,6 +533,8 @@ namespace
                 : Step.PickupMesh == TEXT("SM_LollyShard") ? TEXT("Candy shards gathered") : TEXT("Almonds gathered");
         case EJamStageVerb::Interact:
             return Step.Target == EJamTargetKind::Goblin ? TEXT("Goblins brushed") : TEXT("Rats fed celery");
+        case EJamStageVerb::Visit:
+            return Step.Objective;
         default:
             return Step.Target == EJamTargetKind::Goblin ? TEXT("Goblins pacified")
                 : Step.Target == EJamTargetKind::Bug ? TEXT("Bugs pacified") : TEXT("Rats pacified");
@@ -449,11 +563,7 @@ namespace
         return Avoid;
     }
 
-    void SetFirst(FJamVillageQuestDef& Q, const FJamQuestStep& S)
-    {
-        Q.Verb = S.Verb; Q.Target = S.Target; Q.Count = S.Count; Q.Destination = S.Destination;
-        Q.PickupMesh = S.PickupMesh; Q.Objective = S.Objective;
-    }
+    void SetFirst(FJamVillageQuestDef& Q, const FJamQuestStep& S) { SetFirstStep(Q, S); }
 
     /** The extra step a job gains at Friend: something different to do, as close to the first as the world allows. */
     FJamQuestStep Complement(const FJamQuestStep& First)
@@ -502,7 +612,7 @@ FJamQuestStep JamVillageQuests::FirstStep(const FJamVillageQuestDef& Q)
 {
     FJamQuestStep S;
     S.Verb = Q.Verb; S.Target = Q.Target; S.Count = Q.Count; S.Destination = Q.Destination;
-    S.PickupMesh = Q.PickupMesh; S.Objective = Q.Objective;
+    S.PickupMesh = Q.PickupMesh; S.Objective = Q.Objective; S.Task = Q.Task; S.Arrival = Q.Arrival;
     return S;
 }
 
@@ -516,6 +626,7 @@ TArray<FJamQuestStep> JamVillageQuests::Steps(const FJamVillageQuestDef& Q)
 FString JamVillageQuests::VerbName(const FJamQuestStep& Step)
 {
     if (Step.Verb == EJamStageVerb::Collect) { return TEXT("gather"); }
+    if (Step.Verb == EJamStageVerb::Visit) { return TEXT("visit"); }
     if (Step.Verb == EJamStageVerb::Interact) { return Step.Target == EJamTargetKind::Goblin ? TEXT("brush") : TEXT("feed"); }
     return TEXT("pacify");
 }
@@ -564,6 +675,8 @@ FString JamVillageQuests::StepText(const FJamQuestStep& S)
     const FString Where = CampLabel(S.Destination);
     switch (S.Verb)
     {
+    case EJamStageVerb::Visit:
+        return S.Task.IsEmpty() ? FString::Printf(TEXT("Go to %s"), *Where) : S.Task;
     case EJamStageVerb::Collect:
         return FString::Printf(TEXT("Gather %d %s at %s"), S.Count,
             S.PickupMesh == TEXT("SM_Celery") ? TEXT("celery") : S.PickupMesh == TEXT("SM_LollyShard") ? TEXT("candy shards") : TEXT("almonds"), *Where);
@@ -584,7 +697,7 @@ FJamVillageQuestDef JamVillageQuests::Scale(const FJamVillageQuestDef& Quest, in
 {
     FJamVillageQuestDef Q = Quest;
     Level = FMath::Clamp(Level, 0, MaxLevel);
-    if (Level <= 0 || !Q.Extra.IsEmpty()) { return Q; }   // plans and already-built encores stay as they are
+    if (Level <= 0 || !Q.Extra.IsEmpty() || Q.Verb == EJamStageVerb::Visit) { return Q; }   // plans, encores and multi-step routes stay as they are
     Q.Count = FMath::Min(Q.Count + 1, 8);
     if (Level >= 2)
     {
@@ -746,4 +859,86 @@ bool FJamVillageQuestLog::SelectPlan(int32 Index, const FJamQuestPlan& Plan)
     const FString Pitch = CleanVillageText(Plan.Pitch, 240);
     if (!Pitch.IsEmpty()) { Q.Request = Pitch; }
     return true;
+}
+
+// ---- Modifiers and visits (Fixes5 #4) ------------------------------------------------------------------------------
+
+float JamVillageQuests::ModifierRewardScale(EJamQuestModifier Modifier)
+{
+    switch (Modifier)
+    {
+    case EJamQuestModifier::Rush: return 1.5f;
+    case EJamQuestModifier::Gentle: return 1.3f;
+    case EJamQuestModifier::Crowd: return 1.75f;
+    default: return 1.f;
+    }
+}
+
+FString JamVillageQuests::ModifierName(EJamQuestModifier Modifier)
+{
+    switch (Modifier)
+    {
+    case EJamQuestModifier::Rush: return TEXT("Rush");
+    case EJamQuestModifier::Gentle: return TEXT("Gentle");
+    case EJamQuestModifier::Crowd: return TEXT("Crowd");
+    default: return FString();
+    }
+}
+
+FString JamVillageQuests::ModifierRule(EJamQuestModifier Modifier)
+{
+    switch (Modifier)
+    {
+    case EJamQuestModifier::Rush: return TEXT("RUSH: a clock starts when you reach each camp; run out and the step starts over. x1.5 pay");
+    case EJamQuestModifier::Gentle: return TEXT("GENTLE: they fight back, and one hit restarts the step. x1.3 pay");
+    case EJamQuestModifier::Crowd: return TEXT("CROWD: twice as many. x1.75 pay");
+    default: return FString();
+    }
+}
+
+FJamVillageQuestDef JamVillageQuests::ApplyModifier(const FJamVillageQuestDef& Quest)
+{
+    FJamVillageQuestDef Q = Quest;
+    if (Q.Modifier == EJamQuestModifier::Crowd)
+    {
+        if (Q.Verb != EJamStageVerb::Visit) { Q.Count = FMath::Min(Q.Count * 2, 10); }
+        for (FJamQuestStep& S : Q.Extra) { if (S.Verb != EJamStageVerb::Visit) { S.Count = FMath::Min(S.Count * 2, 10); } }
+    }
+    Q.Reward = FMath::Clamp(FMath::RoundToInt(float(Q.Reward) * ModifierRewardScale(Q.Modifier)), 50, 400);
+    return Q;
+}
+
+FJamVillageQuestDef JamVillageQuests::Prepare(const FJamVillageQuestDef& Quest, int32 Level)
+{
+    return ApplyModifier(Scale(Quest, Level));
+}
+
+float JamVillageQuests::RushSeconds(const FJamQuestStep& Step)
+{
+    switch (Step.Verb)
+    {
+    case EJamStageVerb::Visit: return 0.f;
+    case EJamStageVerb::Collect: return 15.f + 4.f * Step.Count;
+    default: return 25.f + 9.f * Step.Count;
+    }
+}
+
+FJamQuestStep JamVillageQuests::MakeVisit(FName Destination, const TCHAR* Task, const TCHAR* Objective, const TCHAR* Arrival)
+{
+    FJamQuestStep S;
+    S.Verb = EJamStageVerb::Visit; S.Count = 1; S.Destination = Destination;
+    S.Task = Task; S.Objective = Objective; S.Arrival = Arrival;
+    return S;
+}
+
+float JamVillageQuests::VisitRadius(FName Destination)
+{
+    const FJamLocation* L = JamWorld::Find(Destination);
+    if (!L) { return 300.f; }
+    switch (L->Kind)
+    {
+    case EJamLocationKind::FilmSet: return 800.f;
+    case EJamLocationKind::Camp: return 500.f;
+    default: return 280.f;
+    }
 }
