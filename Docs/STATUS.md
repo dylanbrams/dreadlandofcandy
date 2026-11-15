@@ -33,12 +33,23 @@ Done after the last package (not in the ZIP yet): 3 per-class hit shapes (`Gas/J
 (`VillageDanger`, `VillageDefeat`); autoplay damage x0.25. Village autoplay (420 s cap) turned in 8/10 with 1 hit taken;
 not run to completion. 18 staff already attaches to hand_r on every mage cast (log), likely fixed by 3c6fdc0.
 
-Open: 10b random quest count per villager · 12 archer voice recordings themselves
-(mapping is right; may need regenerating) · 13 cobblestone path · 17 barbarian rig.
+Nov 15 morning (Claude): 10b done — each giver has 2 authored jobs plus 2-4 seeded encores, then only their
+afterglow (`FJamVillageQuestLog::EncoresLeft`, tested). Code review of ec25d5e~5..HEAD: seven fixes in `e92d51f`
+(town errands treatable while Fenella's town prompt is up, Collect steps never inherit danger, defeat resets step
+progress, hit words no longer erase nuisance replies, Fenella's creature filter matches whole words, bugs give up
+unreachable food after 6 s and only target food inside their set, attack particles sized to the class hit shape).
+Not fixed (style): launcher name hardcoded in three scripts, magic 26000 east edge, per-class timing tables.
+Barbarian: Niagara presets fire (log: NS_B01/B02/B03), stills look fine; "poorly rigged" needs Dylan's eye in motion.
+Seen once in barbarian autoplay: a white mesh (likely a Molar Hills tooth landmark) fills the camera briefly on the
+walk to Fort Toothache; camera probe does not hit it.
+
+Open: 12 archer voice recordings themselves (mapping is right; may need regenerating — paid generation, Dylan) ·
+13 cobblestone path (terrain/texture work, Dylan's texture credits) · 17 barbarian rig (asset).
 
 ## Next
 
-0. Repackage (package -> smoke -> zip) to ship #3 and #16; run village autoplay to completion (`-autoplay -autovillage`).
+0. Repackage (package -> smoke -> zip) to ship #3, #16, 10b and the review fixes; run village autoplay to completion
+   (`-autoplay -autovillage`).
 
 1. Dylan playtests the fresh package: attack FX feel (flour density, arrow orientation, peppermint giants), bubbles,
    bugs munching, villager props, WASD after quest accept, walk speed.
