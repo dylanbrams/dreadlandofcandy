@@ -79,7 +79,17 @@ FJamVillageQuestLog::FJamVillageQuestLog(int32 Seed) : Offers(JamVillageQuests::
     }
     // Fixes2 #5: each giver's repeatable encore, unlocked by their second authored job.
     GiverJobs.SetNumZeroed(JamVillageQuests::Givers().Num());
-    for (int32 g = 0; g < JamVillageQuests::Givers().Num(); ++g) { Offers.Add(JamVillageQuests::Encore(g, 2)); }
+    for (int32 g = 0; g < JamVillageQuests::Givers().Num(); ++g)
+    {
+        Offers.Add(JamVillageQuests::Encore(g, 2));
+        // Fixes3 #10b: each villager has a different amount of work: 2 authored jobs plus 2-4 encores.
+        EncoreQuota.Add(Random.RandRange(2, 4));
+    }
+}
+
+int32 FJamVillageQuestLog::EncoresLeft(int32 GiverIndex) const
+{
+    return EncoreQuota.IsValidIndex(GiverIndex) ? EncoreQuota[GiverIndex] : 0;
 }
 
 bool FJamVillageQuestLog::ApplyVariation(int32 Index, const FJamQuestVariation& Variation)
@@ -129,7 +139,7 @@ bool FJamVillageQuestLog::FinishMain()
 EJamVillageQuestState FJamVillageQuestLog::State(int32 Index) const
 {
     if (!Offers.IsValidIndex(Index) || !bMainComplete) { return EJamVillageQuestState::Locked; }
-    if (Finished.Contains(Index)) { return EJamVillageQuestState::Complete; }
+    if (Finished.Contains(Index) || Retired.Contains(Index)) { return EJamVillageQuestState::Complete; }
     if (ActiveIndex == Index)
     {
         const bool bLast = StepIndex >= StepCount(Index) - 1;
@@ -145,7 +155,7 @@ EJamVillageQuestState FJamVillageQuestLog::State(int32 Index) const
 int32 FJamVillageQuestLog::ForGiver(FName Location) const
 {
     if (ActiveIndex != INDEX_NONE && Offers[ActiveIndex].GiverLocation == Location) { return ActiveIndex; }
-    for (int32 i = 0; i < Offers.Num(); ++i) { if (Offers[i].GiverLocation == Location && !Finished.Contains(i)) { return i; } }
+    for (int32 i = 0; i < Offers.Num(); ++i) { if (Offers[i].GiverLocation == Location && !Finished.Contains(i) && !Retired.Contains(i)) { return i; } }
     return INDEX_NONE;
 }
 int32 FJamVillageQuestLog::GiverIndex(int32 Index) const
@@ -186,7 +196,12 @@ bool FJamVillageQuestLog::TurnIn(int32 Index)
     if (Level(Giver) > Before) { Emit(EJamQuestEvent::LevelUp, Index); }
     Emit(EJamQuestEvent::TurnedIn, Index);
     // An encore comes back bigger: the next one is built for the new relationship.
-    if (Offers[Index].bEncore) { Offers[Index] = JamVillageQuests::Encore(Giver, Jobs(Giver)); }
+    if (Offers[Index].bEncore)
+    {
+        if (EncoreQuota.IsValidIndex(Giver)) { EncoreQuota[Giver] = FMath::Max(0, EncoreQuota[Giver] - 1); }
+        if (EncoresLeft(Giver) > 0) { Offers[Index] = JamVillageQuests::Encore(Giver, Jobs(Giver)); }
+        else { Retired.Add(Index); }
+    }
     ActiveIndex = INDEX_NONE; Done = 0; StepIndex = 0; return true;
 }
 

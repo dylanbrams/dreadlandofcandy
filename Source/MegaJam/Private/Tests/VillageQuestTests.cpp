@@ -390,6 +390,29 @@ bool FJamQuestLevelsTest::RunTest(const FString&)
     const FJamScreenView Journal = JamScreens::Quests(Log, FJamMenuSettings());
     TestTrue(TEXT("journal shows the relationship"), Journal.Quotes[0].Contains(TEXT("Bestie")));
     TestTrue(TEXT("journal still counts ten"), Journal.Kicker.Contains(TEXT("OF 10")));
+
+    // Fixes3 #10b: the mayor runs out of encores after her quota, then has nothing left to offer.
+    TestTrue(TEXT("one encore paid, more left or none"), Log.EncoresLeft(Mayor) >= 1 && Log.EncoresLeft(Mayor) <= 3);
+    int32 Guard = 0;
+    while (Log.ForGiver(TEXT("GiverMayor")) != INDEX_NONE && ++Guard < 10)
+    {
+        const int32 Next = Log.ForGiver(TEXT("GiverMayor"));
+        TestTrue(TEXT("accept next encore"), Log.Accept(Next));
+        for (const FJamQuestStep& S : JamVillageQuests::Steps(Log.Offer(Next)))
+        {
+            for (int32 i = 0; i < S.Count; ++i) { Log.Report(S.Verb); }
+        }
+        TestTrue(TEXT("turn in next encore"), Log.TurnIn(Next));
+    }
+    TestTrue(TEXT("encores run out"), Guard < 10);
+    TestEqual(TEXT("no encores left"), Log.EncoresLeft(Mayor), 0);
+    TestEqual(TEXT("retired encore reads complete"), Log.State(Encore), EJamVillageQuestState::Complete);
+    TestTrue(TEXT("between 4 and 6 jobs in total"), Log.Jobs(Mayor) >= 4 && Log.Jobs(Mayor) <= 6);
+    // Quotas vary between villagers for the default seed.
+    TSet<int32> Quotas;
+    const FJamVillageQuestLog Fresh;
+    for (int32 g = 0; g < JamVillageQuests::Givers().Num(); ++g) { Quotas.Add(Fresh.EncoresLeft(g)); }
+    TestTrue(TEXT("villagers differ in how much work they have"), Quotas.Num() > 1);
     return true;
 }
 

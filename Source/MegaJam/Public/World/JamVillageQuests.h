@@ -176,6 +176,8 @@ public:
     int32 Jobs(int32 GiverIndex) const;
     /** What turning this job in pays: its reward plus the giver's level bonus. */
     int32 Payout(int32 Index) const;
+    /** Fixes3 #10b: encores a giver still has (2-4 each, seeded); at 0 they are done and give their afterglow. */
+    int32 EncoresLeft(int32 GiverIndex) const;
     /** Authored jobs only (10); encores are extra. */
     int32 NumAuthored() const { return JamVillageQuests::All().Num(); }
     /** Start a player plan instead of a recipe route. */
@@ -193,5 +195,7 @@ private:
     int32 StepIndex = 0;
     TSet<int32> Finished;
     TArray<int32> GiverJobs;
+    TArray<int32> EncoreQuota;   // per giver, encores left
+    TSet<int32> Retired;         // encores whose giver has run out of work
     FJamVillageQuestDef AcceptedFrom;
 };
