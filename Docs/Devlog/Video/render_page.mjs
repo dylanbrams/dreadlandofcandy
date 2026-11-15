@@ -18,7 +18,11 @@ const [url, out, secondsArg] = args;
 if (!url || !out || !secondsArg) { console.error('usage: node render_page.mjs <url> <out.mp4> <seconds> [--fps 30] [--w 1920] [--h 1080] [--keys "t:Key,..."]'); process.exit(2); }
 const seconds = +secondsArg, fps = +opt('fps', 30), W = +opt('w', 1920), H = +opt('h', 1080);
 const keys = (opt('keys', '') || '').split(',').filter(Boolean).map(s => { const [t, k] = s.split(':'); return { t: +t, key: k }; });
-const EDGE = process.env.EDGE || 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+import { existsSync } from 'node:fs';
+process.on('unhandledRejection', e => { console.error('render failed:', e && e.message || e); process.exit(1); });
+// Chrome first: headless Edge on this machine answers Page.captureScreenshot with "Unable to capture screenshot".
+const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+const EDGE = process.env.EDGE || (existsSync(CHROME) ? CHROME : 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe');
 const port = 9300 + Math.floor(Math.random() * 500);
 
 const profile = mkdtempSync(join(tmpdir(), 'render-edge-'));
@@ -73,7 +77,7 @@ for (let f = 0; f < frames; f++) {
     await send('Input.dispatchKeyEvent', { type: 'keyDown', key: keyText, code, windowsVirtualKeyCode: key === 'Space' ? 32 : keyText.toUpperCase().charCodeAt(0) });
     await send('Input.dispatchKeyEvent', { type: 'keyUp', key: keyText, code, windowsVirtualKeyCode: key === 'Space' ? 32 : keyText.toUpperCase().charCodeAt(0) });
   }
-  const shot = await send('Page.captureScreenshot', { format: 'png', fromSurface: true, captureBeyondViewport: false });
+  const shot = await send('Page.captureScreenshot', { format: 'png', fromSurface: false, captureBeyondViewport: false });
   if (!ff.stdin.write(Buffer.from(shot.data, 'base64'))) await new Promise(r => ff.stdin.once('drain', r));
   const advanced = once('Emulation.virtualTimeBudgetExpired');
   await send('Emulation.setVirtualTimePolicy', { policy: 'advance', budget: step });

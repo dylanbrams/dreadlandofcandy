@@ -133,6 +133,7 @@ GF = "../GameFootage/"
 FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"   # Dylan's own; never scanned for toasts -> mask always
 BROLL = [
     ("molar-hills pan", [("tour-high.mp4", 45, 65), ("knight-run.mp4", 30, 40)], "ok"),
+    ("over molar-hills", [("tour-high.mp4", 45, 65)], "ok"),
     ("attack word cards, then non-english", [("knight-run.mp4", 10, 20), ("village-improvise.mp4", 83, 92)], "ok (Turkish card, village-improvise 1:23)"),
     ("knight placards", [("knight-run.mp4", 10, 20)], "ok (pacify counter 1/3-3/3; no Resolve bar visible)"),
     ("improvise", [("village-improvise.mp4", 120, 130)], "ok"),
@@ -232,4 +233,5 @@ def main():
     print("B-roll missing/unconfirmed:", "; ".join(miss))
     print("CAM >8s:", "; ".join(camrun_flags))
 
-main()
+if __name__ == "__main__":
+    main()

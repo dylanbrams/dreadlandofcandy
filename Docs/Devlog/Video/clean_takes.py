@@ -109,4 +109,5 @@ def main():
     for n in names:
         render(n, *PICKS[n])
 
-main()
+if __name__ == "__main__":
+    main()

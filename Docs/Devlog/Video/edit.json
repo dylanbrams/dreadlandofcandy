@@ -149,7 +149,17 @@
     "dur": 15.4,
     "frame": "B",
     "visual": "slide: MMO list over molar-hills",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/tour-high.mp4",
+       "i": 45,
+       "o": 65
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -426,13 +436,7 @@
       {
        "src": "../GameFootage/typed-note.mp4",
        "i": 20,
-       "o": 35,
-       "mask_bottom_right": [
-        [
-         24.5,
-         24.5
-        ]
-       ]
+       "o": 35
       },
       {
        "src": "../GameFootage/budget-out.mp4",

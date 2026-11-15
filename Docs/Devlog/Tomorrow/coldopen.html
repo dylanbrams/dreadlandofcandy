@@ -35,6 +35,8 @@ body.gpt{background:var(--gpt-bg)}
 .card small{display:block;font-size:.45em;color:var(--dim);margin-top:1em;letter-spacing:.15em;text-transform:uppercase}
 .caret{display:inline-block;width:.55em;height:1em;vertical-align:-.12em;background:currentColor;animation:blink 1s steps(1) infinite;margin-left:.05em}
 @keyframes blink{50%{opacity:0}}
+#note{position:fixed;right:2.2vw;bottom:2.4vh;max-width:36vw;text-align:right;font:italic clamp(14px,1.5vw,26px)/1.35 Georgia,serif;color:var(--dim)}
+.star{color:#f2c14e;margin-left:.35em;font-style:normal}
 #hint{position:fixed;left:16px;bottom:12px;font:13px system-ui,sans-serif;color:#777;transition:opacity .4s}
 body.rec #hint{opacity:0}
 </style>
@@ -44,18 +46,18 @@ body.rec #hint{opacity:0}
 <div id="hint">Space/→ next · ← back · R restart · A auto-play · M mute · H hide hint · Z zoom</div>
 <script>
 // Each beat: who ('claude' | 'gpt' | 'doc' | 'card'), user prompt, response.
-// The first three exchanges are Dylan's own wording (Docs/DEVLOG.md "Dylan notes on video").
+// The first three exchanges are Dylan's own wording (Docs/DEVLOG.md "Dylan notes on video"); Claude's later replies were rewritten by Claude (Dylan's go-ahead, Nov 15).
 const beats = [
-  {who:'claude', user:'Build me an MMO in 4 days, please.', resp:"That's completely unrealistic. Don't waste my time, we'll build something rational."},
+  {who:'claude', user:'Build me an MMO in 4 days, please.', resp:"That's completely unrealistic. Let's build something rational. Like a spreadsheet."},
   {who:'gpt', user:'Build me an MMO in 4 days, please.', resp:"That's completely unrealistic, maybe we can build a design doc for one in 4 days."},
   {who:'doc'},
-  {who:'claude', user:"Here's a design doc and schedule for an MMO, let's build it.", resp:'Yeah, uh.... How about some of it. Want a closed arena battle?'},
+  {who:'claude', user:"Here's a design doc and schedule for an MMO, let's build it.", resp:'Forty thousand tokens. Wonderful. How about one room and a goblin?'},
   {who:'card', text:'Then I scaled it back up.'},
   {who:'claude', user:'Put the arena in an open world.', resp:'...Fine.'},
-  {who:'claude', user:'Four playable classes.', resp:'...Fine.'},
+  {who:'claude', user:'Four playable classes.', resp:'Also fine.'},
   {who:'claude', user:'Bring back the village quest givers.', resp:'We cut those.'},
-  {who:'claude', user:'Uncut them.', resp:'Five villagers. Ten linked jobs.'},
-  {who:'claude', user:'Now a river. Hot chocolate. With marshmallows.', resp:'Of course.'},
+  {who:'claude', user:'Uncut them.', resp:'Five villagers. Ten linked jobs. I'd like it noted that I said no.', note:'Claude was encouraged to include and paraphrase his own reticience here.'},
+  {who:'claude', user:'Now a river. Hot chocolate. With marshmallows.', resp:'Of course there are marshmallows.'},
   {who:'card', text:'Repeat for four days.', small:'The Dread Land of Candy · a devlog'}
 ];
 const stage=document.getElementById('stage');
@@ -91,8 +93,12 @@ function type(el,text,msPerChar,withClicks,done){
   })();
 }
 
+function showNote(r,text){
+  const s=document.createElement('span'); s.className='star'; s.textContent='★'; r.appendChild(s);
+  const n=document.createElement('div'); n.id='note'; n.textContent='★ '+text; document.body.appendChild(n);
+}
 function render(){
-  clearTimers();
+  clearTimers(); const old=document.getElementById('note'); if(old) old.remove();
   const b=beats[i];
   document.body.classList.toggle('gpt', b.who==='gpt');
   stage.innerHTML='';
@@ -118,7 +124,9 @@ function render(){
   const u=document.createElement('div'); u.className='user';
   const r=document.createElement('div'); r.className='resp'; r.style.visibility='hidden';
   pane.append(label,u,r);
-  type(u,b.user,70,true,()=>later(()=>{r.style.visibility='visible'; type(r,b.resp,28,false,()=>{if(auto) later(next,2600)})},900));
+  const sp=(i>=5&&q.has('fast'))?(+q.get('fast')||0.5):1; // ?fast=0.5 speeds up the rapid-fire beats 6-10
+  const rd=q.has('resp')?(+q.get('resp')||1):1;          // ?resp=0.5 shortens the pause before each reply
+  type(u,b.user,70*sp,true,()=>later(()=>{r.style.visibility='visible'; console.log('EVT resp '+i); type(r,b.resp,28*sp,false,()=>{if(b.note) showNote(r,b.note); if(auto) later(next,2600)})},900*sp*rd));
 }
 function next(){ if(i<beats.length-1){i++;render()} }
 function prev(){ if(i>0){i--;render()} }
