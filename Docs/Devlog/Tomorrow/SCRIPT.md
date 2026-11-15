@@ -17,7 +17,8 @@ Read naturally; slide prompts are cues. Each section is a **take** you can recor
 | 8 Sunday morning | `music/village_take2.mp3`; `music/feeding-candy_take1.mp3` under the marshmallows | The candy world gets a coat of paint |
 | 8b "The river is terrible" | `music/boss-battle_take1.mp3` | A bug list scored as a boss fight |
 | 9 Why do this | `music/emotional-revelation_take1.mp3` | The sincere bit |
-| 10 Ending | `music/victory_take1.mp3` under the last words, then `music/theme-song.mp3` over the end credits | Bookends the video with the song |
+| 10 Theme song | No bed while you explain, then `music/theme-song.mp3` alone at full volume | You tell how it was made, then let it play |
+| 11 Ending | `music/victory_take1.mp3` under the last words, then credits | |
 
 ## 1. Cold open — an unreasonable idea
 
@@ -158,8 +159,24 @@ That's the real limitation of AI here. It's hard to get multiple points of view,
 
 [Optional, about quest length. There's solid research that people value what they put effort into, the "IKEA effect" (Norton, Mochon and Ariely, 2011), and it only held when people finished the thing. I found no study that measures attachment to longer quests in games, so say it as your hunch, backed by that research, not as a games finding. Something like: "People value what they work for, as long as they get to finish it. That's why the villagers keep coming back with more jobs."]
 
-## 10. Ending — to be written
+## 10. The theme song
+
+*Bed: none, or `music/inn_take1.mp3` very low. Talk straight to camera. This one is personal, and it may be complicated for some listeners, so don't play it for laughs.*
+
+The game has a theme song, and I want to be upfront about how it was made, because I know this one will be complicated for some people.
+
+It started with "Big Rock Candy Mountain," Harry McClintock's recording from nearly a hundred years ago. I downloaded it from the Internet Archive. I took the lyrics and had OpenAI rewrite them for this game. Then I fixed the phrasing on several lines myself and went back to ChatGPT for help with more rewrites.
+
+Then I had the original recording cleaned up and the backing track separated from his vocals. I sang and whistled seven or eight takes over it, and had my singing voice thickened, because I don't like my timbre in that range.
+
+I'm not happy with it. It's what I could do during a jam.
+
+And I honestly don't know whether it's a fair tribute or whether I'm trampling on Harry McClintock's legacy. I don't think he'd mind. He was a hobo singer who wrote a song about a candy paradise, and here's a game set in one. I hope he wouldn't mind.
+
+[Then roll `music/theme-song.mp3` at full volume with no voice. Caption: "Original: 'Big Rock Candy Mountain', Harry McClintock, 1928. Lyrics rewritten with AI and by hand. Vocals and whistling: Dylan Brams."]
+
+## 11. Ending — to be written
 
 [Fill in after the remaining work: the final build, the jam submission, what survived, what broke, and how you feel about it. Add the itch.io link when it's live.]
 
-[End credits: roll `music/theme-song.mp3` at full volume with no voice. Optional lead-in line: "And yes, the game has a theme song. I made it in ACE Studio, riffing on Big Rock Candy Mountain. Here it is."]
+[End credits: bring `music/theme-song.mp3` back under the credits, or use `music/credits_take1.mp3` if the song already played in full in section 10.]
