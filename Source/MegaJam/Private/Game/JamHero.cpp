@@ -23,6 +23,7 @@
 #include "EngineUtils.h"
 #include "InputTriggers.h"
 #include "Gas/JamAbilitySystemComponent.h"
+#include "Gas/JamClassShape.h"
 #include "MegaJam.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -350,6 +351,29 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	return bActivated;
 }
 
+AJamSkillFx* AJamHero::SpawnClassShapeFx(EJamSkill Skill, const FJamSkillRank& N, const FVector& Floor, const FVector& Fwd,
+	const FLinearColor& Colour, float Seconds) const
+{
+	// The same shape the ability hits with (Fixes3 #3), so the flash never lies about the area.
+	FJamAoePatternParams P;
+	if (Skill == EJamSkill::Lecture)
+	{
+		P.Shape = EJamAoeShape::Cone;
+		P.Radius = N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange;
+		P.ConeHalfAngleDeg = JamHeroTuning::LectureHalfAngleDeg;
+		P.Width = 100.f;
+	}
+	else if (Skill == EJamSkill::FormALine) { P.Shape = EJamAoeShape::Line; P.Radius = N.Length; P.Width = N.Width * 0.5f; }
+	else { P.Shape = EJamAoeShape::Circle; P.Radius = N.Radius; }
+	JamClassShape::Adjust(CastIndex, Skill, P);
+	switch (P.Shape)
+	{
+	case EJamAoeShape::Cone: return AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Fan, Floor, Fwd, P.Radius, P.ConeHalfAngleDeg, Colour, Seconds);
+	case EJamAoeShape::Line: return AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Strip, Floor, Fwd, P.Radius, P.Width, Colour, Seconds);
+	default:                 return AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, P.Radius, 0.f, Colour, Seconds);
+	}
+}
+
 void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 {
 	// The flash on the ground (T19); the debug shapes stay as the fallback when the FX material is missing.
@@ -363,12 +387,11 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 	case EJamSkill::Lecture:
 		const_cast<AJamHero*>(this)->SwordUpAt = GetWorld()->GetTimeSeconds();
 		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("SwordRaise"));
-		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Fan, Floor, Fwd, N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange,
-			JamHeroTuning::LectureHalfAngleDeg, FLinearColor(1.f, 0.32f, 0.05f), 0.45f);
+		Fx = SpawnClassShapeFx(Skill, N, Floor, Fwd, FLinearColor(1.f, 0.32f, 0.05f), 0.45f);
 		break;
 	case EJamSkill::FormALine:
 		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("FormALine"));
-		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Strip, Floor, Fwd, N.Length, N.Width * 0.5f, FLinearColor(0.3f, 0.85f, 1.f), 0.5f);
+		Fx = SpawnClassShapeFx(Skill, N, Floor, Fwd, FLinearColor(0.3f, 0.85f, 1.f), 0.5f);
 		break;
 	case EJamSkill::DisappointedSigh:
 		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("Sigh"));
@@ -376,7 +399,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 		break;
 	default:
 		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("LastJudgment"));
-		Fx = AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Disc, Floor, Fwd, N.Radius, 0.f, FLinearColor(1.f, 0.15f, 0.1f), 1.0f);
+		Fx = SpawnClassShapeFx(Skill, N, Floor, Fwd, FLinearColor(1.f, 0.15f, 0.1f), 1.0f);
 		break;
 	}
 	if (Fx) { return; }

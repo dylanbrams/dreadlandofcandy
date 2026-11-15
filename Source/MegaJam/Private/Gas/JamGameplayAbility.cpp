@@ -1,5 +1,6 @@
 #include "Gas/JamGameplayAbility.h"
 #include "Gas/JamAoePatternLibrary.h"
+#include "Gas/JamClassShape.h"
 #include "Gas/JamGameplayEffects.h"
 #include "Gas/JamGameplayTags.h"
 #include "Game/JamPlayerState.h"
@@ -108,6 +109,12 @@ UJamGA_LectureCone::UJamGA_LectureCone()
 
 namespace
 {
+	int32 OwnerCast(const UGameplayAbility* Ability)
+	{
+		const AJamHero* Hero = Cast<AJamHero>(Ability->GetAvatarActorFromActorInfo());
+		return Hero ? Hero->GetCastIndex() : 0;   // the test rig casts as the knight
+	}
+
 	const FJamProgression* OwnerProgression(const UGameplayAbility* Ability)
 	{
 		const AJamPlayerState* PS = Cast<AJamPlayerState>(Ability->GetOwningActorFromActorInfo());
@@ -123,6 +130,7 @@ FJamAoePatternParams UJamGA_LectureCone::ResolveParams() const
 		const float Radius = Prog->GetSkillNumbers(EJamSkill::Lecture).Radius;
 		if (Radius > 0.f) { Params.Radius = Radius; }
 	}
+	JamClassShape::Adjust(OwnerCast(this), EJamSkill::Lecture, Params);
 	return Params;
 }
 
@@ -186,6 +194,7 @@ FJamAoePatternParams UJamGA_Skill::ResolveParams() const
 		P.Shape = EJamAoeShape::Circle;   // the Sigh and the Judgment ring the hero
 		P.Radius = N.Radius;
 	}
+	JamClassShape::Adjust(OwnerCast(this), Skill, P);
 	return P;
 }
 

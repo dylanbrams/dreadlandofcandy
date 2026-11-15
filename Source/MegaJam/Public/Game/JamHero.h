@@ -129,6 +129,7 @@ private:
 	void OnSkill2(const FInputActionValue& Value);
 	void OnSkill3(const FInputActionValue& Value);
 	void OnSkill4(const FInputActionValue& Value);
+	class AJamSkillFx* SpawnClassShapeFx(EJamSkill Skill, const struct FJamSkillRank& N, const FVector& Floor, const FVector& Fwd, const FLinearColor& Colour, float Seconds) const;
 	void DrawSkillShape(EJamSkill Skill, const struct FJamSkillRank& Numbers) const;
 	void OnInteractReleased(const FInputActionValue& Value);
 	void UpdateFacing();
