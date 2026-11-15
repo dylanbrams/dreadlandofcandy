@@ -433,3 +433,7 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
 - Nov 15 ~02:30: comic HUD panels/bubbles, villager props + chef hat, bugs eat planted crops, Fenella creature-word filter, attack light flashes. 82 tests; packaged + smoke PASS + zip 737.7 MB. Not playtested.
 - Nov 15 ~03:15: #3 per-class hit shapes; #16 dangerous repeat errands with village defeat/restart. 82 tests; village autoplay 8/10 in 420 s cap. Not packaged.
 - Nov 15 ~05:30 (Claude): Fixes3 10b random encore count per giver (2-4) then afterglow; code review of the Fixes2/Fixes3 range, seven gameplay fixes (town interact, stale danger, defeat progress reset, reply bubbles kept, whole-word Fenella filter, bug food give-up, class-sized particles). 82 tests green. Barbarian FX confirmed firing in log; rig not judged.
+
+## Nov 15 ~08:30 JST (Claude, GAME)
+Repackaged with #3, #16, 10b and review fixes: smoke PASS (0 errors), ZIP 737.7 MB. Full village autoplay PASS (3 main, 10 side).
+Archer bow draws to hand_l on every skill (#12 carry part). Engine handed to Codex for terrain + cobblestone path (#13).

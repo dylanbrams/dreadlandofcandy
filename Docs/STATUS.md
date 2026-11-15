@@ -4,12 +4,19 @@ Keep this page short: current state, what is unverified, what is next. Session h
 `Docs/DEVLOG.md`; the old long-form STATUS is in `Docs/Status/STATUS-archive-to-Nov15.md` (read a
 section there only when a task needs it).
 
-## Where things stand (Nov 15, ~01:45)
+## Where things stand (Nov 15, ~08:30 JST / Nov 14 15:30 PST)
 
 - Deadline: **Nov 15, 5:59 PM PST**. Submission ZIP: `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip`
   (package -> smoke -> zip scripts all find the renamed `TheDreadLandOfCandy.exe`). No upload without Dylan.
-- Editor build clean, 82 Jam tests pass. Packaged, smoked (PASS) and zipped with everything below
-  (737.7 MB, logs `Saved/pkg-nov15b.log`, `Saved/smoke-nov15b.log`). Not yet playtested by Dylan in that build.
+- Editor build clean, 82 Jam tests pass. Packaged, smoked (PASS, 0 errors) and zipped with everything below,
+  including #3, #16, 10b and the review fixes (737.7 MB, logs `Saved/pkg-nov15c.log`, `Saved/smoke-nov15c.log`,
+  `Saved/zip-nov15c.log`). Not yet playtested by Dylan in that build.
+- Village autoplay run to the end (editor -game, `-autoplay -autovillage`): `JamVillageAutoplay: PASS main=3 side=10`.
+  Pass the two flags as one `-Extra "-autoplay -autovillage"` string; an array is joined with a comma and ignored.
+- #12 bow: class review log shows the archer's bow on `hand_l` for every skill (mage/knight `hand_r`). `-classreview`
+  screenshots need `-notitle` too, or they capture the title screen.
+- Codex (TERRAIN) has the engine to redo the terrain and the cobblestone village path (#13). Also asked: make the
+  Molar Hills landmarks block the Camera channel (white tooth fills the camera near Fort Toothache).
 - Map: Riverlands expansion plus the generated candy foliage mix (see archive, Nov 14/15 terrain entries).
 - Attack FX are generated: edit recipes in `Scripts/build_niagara_attacks.py`, run `Scripts/build_attack_fx.ps1`
   (its last step fails on stale review screenshots unless run with `-Review`; everything before it is the real check).
@@ -48,8 +55,7 @@ Open: 12 archer voice recordings themselves (mapping is right; may need regenera
 
 ## Next
 
-0. Repackage (package -> smoke -> zip) to ship #3, #16, 10b and the review fixes; run village autoplay to completion
-   (`-autoplay -autovillage`).
+0. After Codex's terrain commit: repackage, smoke, zip again (GAME waits for the engine).
 
 1. Dylan playtests the fresh package: attack FX feel (flour density, arrow orientation, peppermint giants), bubbles,
    bugs munching, villager props, WASD after quest accept, walk speed.
