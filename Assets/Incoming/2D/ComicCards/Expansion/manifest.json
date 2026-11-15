@@ -1,0 +1,4327 @@
+{
+  "cards": [
+    {
+      "id": "Manners_en_1_Shard",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "MANNERS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_en_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        300,
+        451,
+        723,
+        572
+      ],
+      "sha256": "2b83866d6f34924d9b0b77f65a7a32e98883afe2c235d2e6d2f25bbe80bba259",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en_1_Shard"
+    },
+    {
+      "id": "Manners_en_2_Shard",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "BE POLITE!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_en_2_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        331,
+        463,
+        684,
+        555
+      ],
+      "sha256": "d99cfe581be09309eee6d6858fad52d39a9c24e348045de12aa96a3f57f51619",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en_2_Shard"
+    },
+    {
+      "id": "Manners_en_3_Shard",
+      "meaning": "manners",
+      "locale": "en",
+      "text": "RESPECT!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_en_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        351,
+        477,
+        675,
+        562
+      ],
+      "sha256": "11097dc463aec18505b481cddedae633df5d3cb8c0dc5a7952a8b8e5d60cf8ba",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_en_3_Shard"
+    },
+    {
+      "id": "Brush_en_1_Shard",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "BRUSH!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_en_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        345,
+        460,
+        658,
+        571
+      ],
+      "sha256": "411f85da88681f573cf0aa872f9011f7a9f4f82ec70aae84bafa2e8e94f9aaa9",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en_1_Shard"
+    },
+    {
+      "id": "Brush_en_2_Shard",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "FLOSS!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_en_2_Shard.png",
+      "font_size": 136,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        314,
+        444,
+        669,
+        574
+      ],
+      "sha256": "49f16040f529a87c4d0c92685fba99037a2ea609cb67c33795948ee183ec5344",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en_2_Shard"
+    },
+    {
+      "id": "Brush_en_3_Shard",
+      "meaning": "brush",
+      "locale": "en",
+      "text": "CLEAN TEETH!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_en_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        343,
+        486,
+        713,
+        559
+      ],
+      "sha256": "da73aaacd671f28602e9d6e77ffc37f6774a4b5123a0c429aa7f9708effd85a6",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_en_3_Shard"
+    },
+    {
+      "id": "Vitamins_en_1_Shard",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "VITAMINS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_en_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        300,
+        450,
+        724,
+        572
+      ],
+      "sha256": "a5a35f7c6dc19ea92614e5171d6e75ea5c1e536b79b2c2389823bdd410a0d584",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en_1_Shard"
+    },
+    {
+      "id": "Vitamins_en_2_Shard",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "EAT WELL!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_en_2_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        342,
+        463,
+        675,
+        554
+      ],
+      "sha256": "37bbdeb07fc07a651e0e11bcf39f75ab7877dbd38479c6f9052253054653168d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en_2_Shard"
+    },
+    {
+      "id": "Vitamins_en_3_Shard",
+      "meaning": "vitamins",
+      "locale": "en",
+      "text": "GET STRONG!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_en_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        332,
+        483,
+        695,
+        557
+      ],
+      "sha256": "b457447027796de195ac38241e99080be919bc9151fd7012ceaa0824e73d26f4",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_en_3_Shard"
+    },
+    {
+      "id": "Manners_zh-CN_1_Shard",
+      "meaning": "manners",
+      "locale": "zh-CN",
+      "text": "礼貌！",
+      "font": "msyhbd.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-CN_1_Shard.png",
+      "font_size": 120,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        329,
+        439,
+        615,
+        573
+      ],
+      "sha256": "0e3cd0a7fb528c1ba10d6d10efb07c08af723080dba6873782759766a4d265da",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-CN_1_Shard"
+    },
+    {
+      "id": "Manners_zh-CN_2_Shard",
+      "meaning": "manners",
+      "locale": "zh-CN",
+      "text": "客气点！",
+      "font": "msyhbd.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-CN_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        300,
+        454,
+        651,
+        571
+      ],
+      "sha256": "703d682747c2e8ef890915cde5fded30ca6ffe3747560a87e27652062a208fcb",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-CN_2_Shard"
+    },
+    {
+      "id": "Manners_zh-CN_3_Shard",
+      "meaning": "manners",
+      "locale": "zh-CN",
+      "text": "尊重！",
+      "font": "msyhbd.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-CN_3_Shard.png",
+      "font_size": 136,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        307,
+        446,
+        628,
+        586
+      ],
+      "sha256": "c8728471d0ddddbec4a1775fb71281d650fa7c2ead75aea0ceeca798fadcda7c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-CN_3_Shard"
+    },
+    {
+      "id": "Brush_zh-CN_1_Shard",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "刷牙！",
+      "font": "msyhbd.ttc",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-CN_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        343,
+        453,
+        593,
+        565
+      ],
+      "sha256": "cbf7f2996a9ad055d6ec5f32bc1c972a86b9893d52ecde69d111b6b6f9536bd5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-CN_1_Shard"
+    },
+    {
+      "id": "Brush_zh-CN_2_Shard",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "用牙线！",
+      "font": "msyhbd.ttc",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-CN_2_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        317,
+        462,
+        613,
+        563
+      ],
+      "sha256": "3d024af613075b6b4b949027521d2ecce966faa08dd2c18af7af043b921398e9",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-CN_2_Shard"
+    },
+    {
+      "id": "Brush_zh-CN_3_Shard",
+      "meaning": "brush",
+      "locale": "zh-CN",
+      "text": "清洁牙齿！",
+      "font": "msyhbd.ttc",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-CN_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        347,
+        482,
+        662,
+        563
+      ],
+      "sha256": "5bba8cb02ff0092a98a9f0196d04f7a6e81cc4c7c9cfb57ba5338a7ce03dd6d2",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-CN_3_Shard"
+    },
+    {
+      "id": "Vitamins_zh-CN_1_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-CN",
+      "text": "维生素！",
+      "font": "msyhbd.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-CN_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        331,
+        453,
+        632,
+        563
+      ],
+      "sha256": "719b78499cde6a2b74486db53b1f11539995b54e95e11102b718220d485dca7e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-CN_1_Shard"
+    },
+    {
+      "id": "Vitamins_zh-CN_2_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-CN",
+      "text": "好好吃饭！",
+      "font": "msyhbd.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-CN_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        326,
+        468,
+        642,
+        554
+      ],
+      "sha256": "0bec7e5c13952be16088b726263b7950b8886b72cca615c3b3965c5b8392e811",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-CN_2_Shard"
+    },
+    {
+      "id": "Vitamins_zh-CN_3_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-CN",
+      "text": "强壮起来！",
+      "font": "msyhbd.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-CN_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        332,
+        479,
+        647,
+        558
+      ],
+      "sha256": "b4d1e7c7ee1aad79f34219a19a7cd4291a4940ecda22c28e8d74d6a63d95dc3b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-CN_3_Shard"
+    },
+    {
+      "id": "Manners_ru_1_Shard",
+      "meaning": "manners",
+      "locale": "ru",
+      "text": "МАНЕРЫ!",
+      "font": "arialbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ru_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        297,
+        460,
+        722,
+        562
+      ],
+      "sha256": "b41a737c934139f8d7f2db0f74563e102d07c45a944dbb2584ee3a13df709fd7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ru_1_Shard"
+    },
+    {
+      "id": "Manners_ru_2_Shard",
+      "meaning": "manners",
+      "locale": "ru",
+      "text": "БУДЬ ВЕЖЛИВ!",
+      "font": "arialbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ru_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        354,
+        481,
+        661,
+        533
+      ],
+      "sha256": "aad95828bc30db617833cb8cf1624563126936d1d4e3e1b8fa2c4452de260d6b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ru_2_Shard"
+    },
+    {
+      "id": "Manners_ru_3_Shard",
+      "meaning": "manners",
+      "locale": "ru",
+      "text": "УВАЖЕНИЕ!",
+      "font": "arialbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ru_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        295,
+        484,
+        726,
+        555
+      ],
+      "sha256": "ce02ca17e01b816f0d0dcd43b8b493fc4479da579eee998ad4f30e5fdf5e48db",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ru_3_Shard"
+    },
+    {
+      "id": "Brush_ru_1_Shard",
+      "meaning": "brush",
+      "locale": "ru",
+      "text": "ЧИСТИ ЗУБЫ!",
+      "font": "arialbd.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ru_1_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        309,
+        476,
+        694,
+        553
+      ],
+      "sha256": "b6b85fd6db8d490c76f381bfaec830703ecd67038555c0398b5d7adc5e4c5f30",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ru_1_Shard"
+    },
+    {
+      "id": "Brush_ru_2_Shard",
+      "meaning": "brush",
+      "locale": "ru",
+      "text": "ЗУБНАЯ НИТЬ!",
+      "font": "arialbd.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ru_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        340,
+        485,
+        639,
+        533
+      ],
+      "sha256": "f9c74efeac4ff072851ba16e4f9662d837d7ec66cda6fd93f672bfc259d94c8e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ru_2_Shard"
+    },
+    {
+      "id": "Brush_ru_3_Shard",
+      "meaning": "brush",
+      "locale": "ru",
+      "text": "ЧИСТЫЕ ЗУБЫ!",
+      "font": "arialbd.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ru_3_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        370,
+        501,
+        684,
+        544
+      ],
+      "sha256": "ffc1218813bb2d881aa36f08d1461122a2a939f737b4996d248579097a18db9c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ru_3_Shard"
+    },
+    {
+      "id": "Vitamins_ru_1_Shard",
+      "meaning": "vitamins",
+      "locale": "ru",
+      "text": "ВИТАМИНЫ!",
+      "font": "arialbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ru_1_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        335,
+        475,
+        684,
+        549
+      ],
+      "sha256": "6ccb93238127b36fca5d9759a54ad0bce562ce7080cfc1105695b94ec99def10",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ru_1_Shard"
+    },
+    {
+      "id": "Vitamins_ru_2_Shard",
+      "meaning": "vitamins",
+      "locale": "ru",
+      "text": "ЕШЬ ПРАВИЛЬНО!",
+      "font": "arialbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ru_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        321,
+        482,
+        694,
+        534
+      ],
+      "sha256": "8b7065fdb4c4a8a1f8194136b302251c2ab3605fdd55e601fb2a07b0d1c74e30",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ru_2_Shard"
+    },
+    {
+      "id": "Vitamins_ru_3_Shard",
+      "meaning": "vitamins",
+      "locale": "ru",
+      "text": "СТАНЬ СИЛЬНЕЕ!",
+      "font": "arialbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ru_3_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        334,
+        497,
+        690,
+        542
+      ],
+      "sha256": "193c8e9fec26fba913869884f0680b588df23673549e1914b7da56965266e4dd",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ru_3_Shard"
+    },
+    {
+      "id": "Manners_pt-BR_1_Shard",
+      "meaning": "manners",
+      "locale": "pt-BR",
+      "text": "MODOS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pt-BR_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        345,
+        455,
+        676,
+        569
+      ],
+      "sha256": "e3a3a298221606707bb36a40daac72037597d8fe62ef90d334e8f14f1ad41d12",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pt-BR_1_Shard"
+    },
+    {
+      "id": "Manners_pt-BR_2_Shard",
+      "meaning": "manners",
+      "locale": "pt-BR",
+      "text": "SEJA GENTIL!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pt-BR_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        332,
+        470,
+        683,
+        548
+      ],
+      "sha256": "2d3c22f2a18f555ac9c389f4f1f8b265b3dc797aae13b7d04b0732941a48d3c0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pt-BR_2_Shard"
+    },
+    {
+      "id": "Manners_pt-BR_3_Shard",
+      "meaning": "manners",
+      "locale": "pt-BR",
+      "text": "RESPEITO!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pt-BR_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        339,
+        477,
+        688,
+        561
+      ],
+      "sha256": "6e8b06ccbccb4098ccfeeffd059de2859c907d18901520fe7f8add556b730518",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pt-BR_3_Shard"
+    },
+    {
+      "id": "Brush_pt-BR_1_Shard",
+      "meaning": "brush",
+      "locale": "pt-BR",
+      "text": "ESCOVE!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pt-BR_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        358,
+        467,
+        648,
+        564
+      ],
+      "sha256": "6e44d2245e1a01321ca092207ce58e721d6bf39d7d1c7d4945986a07ac616245",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pt-BR_1_Shard"
+    },
+    {
+      "id": "Brush_pt-BR_2_Shard",
+      "meaning": "brush",
+      "locale": "pt-BR",
+      "text": "FIO DENTAL!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pt-BR_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        328,
+        471,
+        653,
+        549
+      ],
+      "sha256": "c52e998d0d4e24a39a84af859dcf5164e28630e9ede27086fb86124e8fb6d75c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pt-BR_2_Shard"
+    },
+    {
+      "id": "Brush_pt-BR_3_Shard",
+      "meaning": "brush",
+      "locale": "pt-BR",
+      "text": "DENTES LIMPOS!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pt-BR_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        350,
+        493,
+        705,
+        554
+      ],
+      "sha256": "b2e63b6680816bf1a979be0b601dec9e685f31a04af9f860d123a79fea9fda3b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pt-BR_3_Shard"
+    },
+    {
+      "id": "Vitamins_pt-BR_1_Shard",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "VITAMINAS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pt-BR_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        310,
+        458,
+        715,
+        566
+      ],
+      "sha256": "aef10ec5fdc965dd930c07bd412ccb65d645ca40244d5d4e129e9e373583b863",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt-BR_1_Shard"
+    },
+    {
+      "id": "Vitamins_pt-BR_2_Shard",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "COMA BEM!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pt-BR_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        347,
+        470,
+        668,
+        547
+      ],
+      "sha256": "8ed6241fc942f54b8d6cc8e98bf379b411f6f5a264325add6642865a0c30bf5f",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt-BR_2_Shard"
+    },
+    {
+      "id": "Vitamins_pt-BR_3_Shard",
+      "meaning": "vitamins",
+      "locale": "pt-BR",
+      "text": "FIQUE FORTE!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pt-BR_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        333,
+        480,
+        694,
+        554
+      ],
+      "sha256": "713b6545416f178e0483c371e5dc052f0728502d46a3b800c7931e286e50f1e0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pt-BR_3_Shard"
+    },
+    {
+      "id": "Manners_es-ES_1_Shard",
+      "meaning": "manners",
+      "locale": "es-ES",
+      "text": "¡MODALES!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-ES_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        323,
+        458,
+        696,
+        561
+      ],
+      "sha256": "0bb07b60b96c84c60dc37cbb4629ed4683f7d4892bc20f97c954ce71494ee407",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-ES_1_Shard"
+    },
+    {
+      "id": "Manners_es-ES_2_Shard",
+      "meaning": "manners",
+      "locale": "es-ES",
+      "text": "¡SÉ AMABLE!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-ES_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        337,
+        473,
+        678,
+        558
+      ],
+      "sha256": "a3a2dfe1039114bae99c6522f170ef9eddc7d76a9757b587b4b72914ec52c4fe",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-ES_2_Shard"
+    },
+    {
+      "id": "Manners_es-ES_3_Shard",
+      "meaning": "manners",
+      "locale": "es-ES",
+      "text": "¡RESPETO!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-ES_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        338,
+        474,
+        686,
+        558
+      ],
+      "sha256": "15af1921cf6cac1770f31901179d3a9f4c2a121bd2f4b4e152d983c8339fbaf5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-ES_3_Shard"
+    },
+    {
+      "id": "Brush_es-ES_1_Shard",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡CEPÍLLATE!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-ES_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        339,
+        474,
+        663,
+        561
+      ],
+      "sha256": "527b7806745faf095229ac0463013713d142b66b33d959afadbe152722de79d5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-ES_1_Shard"
+    },
+    {
+      "id": "Brush_es-ES_2_Shard",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡HILO DENTAL!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-ES_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        342,
+        475,
+        640,
+        544
+      ],
+      "sha256": "06aa9d382a27ebf73139515a3c54e423f50f518e12902b97e6f32165b80fd0b5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-ES_2_Shard"
+    },
+    {
+      "id": "Brush_es-ES_3_Shard",
+      "meaning": "brush",
+      "locale": "es-ES",
+      "text": "¡DIENTES\nLIMPIOS!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-ES_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        371,
+        435,
+        682,
+        613
+      ],
+      "sha256": "e2d07c6dce06f1c7e7bbb559960ff54041416409fd7469c3e13e7f556f88c0c0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-ES_3_Shard"
+    },
+    {
+      "id": "Vitamins_es-ES_1_Shard",
+      "meaning": "vitamins",
+      "locale": "es-ES",
+      "text": "¡VITAMINAS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-ES_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        294,
+        454,
+        727,
+        563
+      ],
+      "sha256": "2e229a64f8f281680e0d0d8dc7de4c9b471a980f2b559d850f29f7b3eb68abd7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-ES_1_Shard"
+    },
+    {
+      "id": "Vitamins_es-ES_2_Shard",
+      "meaning": "vitamins",
+      "locale": "es-ES",
+      "text": "¡COME BIEN!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-ES_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        336,
+        466,
+        679,
+        552
+      ],
+      "sha256": "8c992e714b6403cbb8959d6ec1e215e3d45467fc3164f2663c02e745233538ab",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-ES_2_Shard"
+    },
+    {
+      "id": "Vitamins_es-ES_3_Shard",
+      "meaning": "vitamins",
+      "locale": "es-ES",
+      "text": "¡PONTE FUERTE!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-ES_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        296,
+        480,
+        729,
+        555
+      ],
+      "sha256": "f1dddd5e376fa9593880c9a10f3577169aab21d132299d72d706bfaf23566b4d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-ES_3_Shard"
+    },
+    {
+      "id": "Manners_de_1_Shard",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "MANIEREN!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_de_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        289,
+        451,
+        732,
+        574
+      ],
+      "sha256": "e5638180e2aaf5833c81d84fe9a61bf57fbd3eed5f5580b1e7177b15a56dd354",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de_1_Shard"
+    },
+    {
+      "id": "Manners_de_2_Shard",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "SEI HÖFLICH!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_de_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        329,
+        472,
+        687,
+        553
+      ],
+      "sha256": "3e3c4ee62af57a16af78e45ce42548a39600e6c356caf3ec55fc8c0a001d6502",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de_2_Shard"
+    },
+    {
+      "id": "Manners_de_3_Shard",
+      "meaning": "manners",
+      "locale": "de",
+      "text": "RESPEKT!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_de_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        352,
+        477,
+        674,
+        562
+      ],
+      "sha256": "c95274f4dc6de748ce305274d0c288995b01c2abe061558b2de4bceeff57684e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_de_3_Shard"
+    },
+    {
+      "id": "Brush_de_1_Shard",
+      "meaning": "brush",
+      "locale": "de",
+      "text": "ZÄHNE PUTZEN!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_de_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        290,
+        464,
+        710,
+        568
+      ],
+      "sha256": "5780eaea03195fa73b8b7e288e51b8acd4177f1a429832ffb55d4d4a0d96fe32",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_de_1_Shard"
+    },
+    {
+      "id": "Brush_de_2_Shard",
+      "meaning": "brush",
+      "locale": "de",
+      "text": "ZAHNSEIDE!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_de_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        327,
+        471,
+        652,
+        548
+      ],
+      "sha256": "e75f42d6450225dca4941db64e29f81a4057f9fe34d0054b40fae7e19724434b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_de_2_Shard"
+    },
+    {
+      "id": "Brush_de_3_Shard",
+      "meaning": "brush",
+      "locale": "de",
+      "text": "SAUBERE ZÄHNE!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_de_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        348,
+        496,
+        707,
+        558
+      ],
+      "sha256": "e96245605b1f94c0daa03ede16a3bc05b9dbe6af6dbbf728e2f91c02da1c2144",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_de_3_Shard"
+    },
+    {
+      "id": "Vitamins_de_1_Shard",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "VITAMINE!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_de_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        306,
+        451,
+        720,
+        573
+      ],
+      "sha256": "8d9bb774105c3c6d4d212dbda1e90443347137ed8618fdb6c92f1bbbeebc587f",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de_1_Shard"
+    },
+    {
+      "id": "Vitamins_de_2_Shard",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "ISS GUT!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_de_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        335,
+        457,
+        681,
+        561
+      ],
+      "sha256": "eb40c05758145ff0da85083e2e8e65e50cff5c8a2430540e166a8b5d21ad387d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de_2_Shard"
+    },
+    {
+      "id": "Vitamins_de_3_Shard",
+      "meaning": "vitamins",
+      "locale": "de",
+      "text": "WERDE STARK!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_de_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        306,
+        482,
+        719,
+        557
+      ],
+      "sha256": "c9127053f322600fb5587ee02954f877233dd4766aa968bbe152843956b8314b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_de_3_Shard"
+    },
+    {
+      "id": "Manners_ja_1_Shard",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "礼儀！",
+      "font": "YuGothB.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ja_1_Shard.png",
+      "font_size": 120,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        333,
+        442,
+        644,
+        574
+      ],
+      "sha256": "770e3f3e1a17c357345989c28fe6312dfb1aed545a24dd5cfdd34088ed16b6dd",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja_1_Shard"
+    },
+    {
+      "id": "Manners_ja_2_Shard",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "丁寧に！",
+      "font": "YuGothB.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ja_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        303,
+        456,
+        675,
+        566
+      ],
+      "sha256": "ca0c4a7be81b3b9841eb143b72e6ededfdcb0cb84c5c3ebe80af4f922f9f583e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja_2_Shard"
+    },
+    {
+      "id": "Manners_ja_3_Shard",
+      "meaning": "manners",
+      "locale": "ja",
+      "text": "敬意！",
+      "font": "YuGothB.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ja_3_Shard.png",
+      "font_size": 136,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        310,
+        450,
+        664,
+        583
+      ],
+      "sha256": "6640a37a0ceecaf2dea9b630550155ae6cb5ac9dd7faa1edb197e1ed52e37642",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ja_3_Shard"
+    },
+    {
+      "id": "Brush_ja_1_Shard",
+      "meaning": "brush",
+      "locale": "ja",
+      "text": "歯磨き！",
+      "font": "YuGothB.ttc",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ja_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        361,
+        469,
+        619,
+        556
+      ],
+      "sha256": "d8dee607bc5d4e7eaa1565c0a9fa2c2565e1bb30033e56e132e42b33c1f52f0c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ja_1_Shard"
+    },
+    {
+      "id": "Brush_ja_2_Shard",
+      "meaning": "brush",
+      "locale": "ja",
+      "text": "フロス！",
+      "font": "YuGothB.ttc",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ja_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        294,
+        456,
+        658,
+        562
+      ],
+      "sha256": "724e7e317c0122d63970f1b54f18379b73a283aa67cc6896a49e9800fd8ec042",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ja_2_Shard"
+    },
+    {
+      "id": "Brush_ja_3_Shard",
+      "meaning": "brush",
+      "locale": "ja",
+      "text": "歯をきれいに！",
+      "font": "YuGothB.ttc",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ja_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        334,
+        490,
+        703,
+        555
+      ],
+      "sha256": "c75cd2516b6fb9d62f804f4492fd16f99bc485132954b20607326275810514a4",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ja_3_Shard"
+    },
+    {
+      "id": "Vitamins_ja_1_Shard",
+      "meaning": "vitamins",
+      "locale": "ja",
+      "text": "ビタミン！",
+      "font": "YuGothB.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ja_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        308,
+        461,
+        695,
+        567
+      ],
+      "sha256": "b4544a9ff3ffdcb4f30c065624ca2504361fcec62c454f5fb14d77762356a4bb",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ja_1_Shard"
+    },
+    {
+      "id": "Vitamins_ja_2_Shard",
+      "meaning": "vitamins",
+      "locale": "ja",
+      "text": "しっかり食べて！",
+      "font": "YuGothB.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ja_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        356,
+        483,
+        654,
+        534
+      ],
+      "sha256": "a6c75bafa8c14e09c3f0b021875701c3f6ae48f07f4c083abb7b83e04cac231d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ja_2_Shard"
+    },
+    {
+      "id": "Vitamins_ja_3_Shard",
+      "meaning": "vitamins",
+      "locale": "ja",
+      "text": "強くなれ！",
+      "font": "YuGothB.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ja_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        334,
+        481,
+        666,
+        558
+      ],
+      "sha256": "fce1cca9409a624eb3a183bd74f38d0876895e26eb725417c6242652757e38a1",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ja_3_Shard"
+    },
+    {
+      "id": "Manners_fr_1_Shard",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "LES BONNES\nMANIÈRES !",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_fr_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        347,
+        428,
+        680,
+        595
+      ],
+      "sha256": "fed521fee95049a8353ff1e9c29f51603a5657d2c9a3868be5ac070b9618397a",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr_1_Shard"
+    },
+    {
+      "id": "Manners_fr_2_Shard",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "SOIS POLI !",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_fr_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        355,
+        471,
+        660,
+        547
+      ],
+      "sha256": "6a7b4a88a191b0169360ec41f327654dc9ca8e2c1b91da4caa74901fdf2cfbb2",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr_2_Shard"
+    },
+    {
+      "id": "Manners_fr_3_Shard",
+      "meaning": "manners",
+      "locale": "fr",
+      "text": "RESPECT !",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_fr_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        343,
+        477,
+        683,
+        561
+      ],
+      "sha256": "56dc8a972e77737f10f09121bdab225ceb7eb968e82375fd7d76e53c0c33c281",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_fr_3_Shard"
+    },
+    {
+      "id": "Brush_fr_1_Shard",
+      "meaning": "brush",
+      "locale": "fr",
+      "text": "BROSSE TES\nDENTS !",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_fr_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        300,
+        413,
+        710,
+        609
+      ],
+      "sha256": "6aa8740d535346b9b71eba3b8037894952187df59140c21871d8f408fc34636b",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_fr_1_Shard"
+    },
+    {
+      "id": "Brush_fr_2_Shard",
+      "meaning": "brush",
+      "locale": "fr",
+      "text": "FIL DENTAIRE !",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_fr_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        339,
+        477,
+        642,
+        540
+      ],
+      "sha256": "728a18349c2ee7069e690c97482039230915243ca58301c7642052d1d0c5a40e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_fr_2_Shard"
+    },
+    {
+      "id": "Brush_fr_3_Shard",
+      "meaning": "brush",
+      "locale": "fr",
+      "text": "DENTS PROPRES !",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_fr_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        340,
+        494,
+        716,
+        554
+      ],
+      "sha256": "083053e43e3140e55ee26fb7bc98d421b7aae3aa2b6d88733a2a66cb396ecf7f",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_fr_3_Shard"
+    },
+    {
+      "id": "Vitamins_fr_1_Shard",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "VITAMINES !",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_fr_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        306,
+        457,
+        718,
+        566
+      ],
+      "sha256": "0b1f95198b6297cb5064131d546ed421d9b899e0738f7026da615174badcb757",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr_1_Shard"
+    },
+    {
+      "id": "Vitamins_fr_2_Shard",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "MANGE BIEN !",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_fr_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        362,
+        477,
+        652,
+        541
+      ],
+      "sha256": "3d3beb69089202ffe3f487a705953bd56b2f07ef781e678ebb969da471045368",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr_2_Shard"
+    },
+    {
+      "id": "Vitamins_fr_3_Shard",
+      "meaning": "vitamins",
+      "locale": "fr",
+      "text": "DEVIENS FORT !",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_fr_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        303,
+        482,
+        724,
+        558
+      ],
+      "sha256": "fd70e028a004c84a78adb7681c6aae3f8a2d0339015d9afe003edd5d23380c55",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_fr_3_Shard"
+    },
+    {
+      "id": "Manners_pl_1_Shard",
+      "meaning": "manners",
+      "locale": "pl",
+      "text": "MANIERY!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pl_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        315,
+        452,
+        708,
+        572
+      ],
+      "sha256": "57168bcc8b6f93fd1c7c73b0c5170da8bdf758566e07e18efeab9ede7186a6e5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pl_1_Shard"
+    },
+    {
+      "id": "Manners_pl_2_Shard",
+      "meaning": "manners",
+      "locale": "pl",
+      "text": "BĄDŹ UPRZEJMY!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pl_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        328,
+        476,
+        687,
+        548
+      ],
+      "sha256": "132a97842d1a2bcf4ca994cc3b7e31db2db3461936a32d9022b8b6ee1bafe641",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pl_2_Shard"
+    },
+    {
+      "id": "Manners_pl_3_Shard",
+      "meaning": "manners",
+      "locale": "pl",
+      "text": "SZACUNEK!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_pl_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        323,
+        475,
+        703,
+        563
+      ],
+      "sha256": "558ca258a5226ec6ae2ad5c056875a011113a1c40074bba2315dc44efa866354",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_pl_3_Shard"
+    },
+    {
+      "id": "Brush_pl_1_Shard",
+      "meaning": "brush",
+      "locale": "pl",
+      "text": "MYJ ZĘBY!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pl_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        306,
+        448,
+        701,
+        570
+      ],
+      "sha256": "6843f4901fde385c2f971722331858c59ce1e3f3b53830fc71489b164f3a8593",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pl_1_Shard"
+    },
+    {
+      "id": "Brush_pl_2_Shard",
+      "meaning": "brush",
+      "locale": "pl",
+      "text": "NIĆ\nDENTYSTYCZNA!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pl_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        318,
+        447,
+        667,
+        578
+      ],
+      "sha256": "61f9b5b35c946e5c2aba4d54d6d60d19edc2c568739ae71a6de55f0f50a7df2a",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pl_2_Shard"
+    },
+    {
+      "id": "Brush_pl_3_Shard",
+      "meaning": "brush",
+      "locale": "pl",
+      "text": "CZYSTE ZĘBY!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_pl_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        344,
+        481,
+        712,
+        562
+      ],
+      "sha256": "c70d410bff2b5befe79b8ecb3372b09732f7368b1543f501a82fd341154994c4",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_pl_3_Shard"
+    },
+    {
+      "id": "Vitamins_pl_1_Shard",
+      "meaning": "vitamins",
+      "locale": "pl",
+      "text": "WITAMINY!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pl_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        322,
+        459,
+        704,
+        565
+      ],
+      "sha256": "53ab19c5dbfff3cbaf4b001c2c0446bacb896f06a46752263dc9de4a2f29de20",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pl_1_Shard"
+    },
+    {
+      "id": "Vitamins_pl_2_Shard",
+      "meaning": "vitamins",
+      "locale": "pl",
+      "text": "JEDZ ZDROWO!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pl_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        352,
+        477,
+        664,
+        541
+      ],
+      "sha256": "4253a59521eb961d7c92f5b9057cfbbff8282e894b3190bdbaa1f9a9f6e2a173",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pl_2_Shard"
+    },
+    {
+      "id": "Vitamins_pl_3_Shard",
+      "meaning": "vitamins",
+      "locale": "pl",
+      "text": "ROŚNIJ W SIŁĘ!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_pl_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        304,
+        474,
+        723,
+        567
+      ],
+      "sha256": "4679328556fde607a9af77c7d30d845fafb34921ad2fcfa39649a4ebf1b96fff",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_pl_3_Shard"
+    },
+    {
+      "id": "Manners_ko_1_Shard",
+      "meaning": "manners",
+      "locale": "ko",
+      "text": "예의!",
+      "font": "malgunbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ko_1_Shard.png",
+      "font_size": 184,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        310,
+        417,
+        715,
+        611
+      ],
+      "sha256": "2b340d2e69be94990c95302167b0f03cedf2eaa4a3845b142f7074cb45023efa",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ko_1_Shard"
+    },
+    {
+      "id": "Manners_ko_2_Shard",
+      "meaning": "manners",
+      "locale": "ko",
+      "text": "친절하게!",
+      "font": "malgunbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ko_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        355,
+        467,
+        661,
+        550
+      ],
+      "sha256": "771a3a53b68aae9b4abc9a4ada49d6ccff623377c0acf3047f2f6c5974302789",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ko_2_Shard"
+    },
+    {
+      "id": "Manners_ko_3_Shard",
+      "meaning": "manners",
+      "locale": "ko",
+      "text": "존중!",
+      "font": "malgunbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_ko_3_Shard.png",
+      "font_size": 152,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        343,
+        445,
+        678,
+        593
+      ],
+      "sha256": "ba0d99f96d2dbcbdb849fd778de546ee7c1a68603bce0e688e9cd1725417a70d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_ko_3_Shard"
+    },
+    {
+      "id": "Brush_ko_1_Shard",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "양치해!",
+      "font": "malgunbd.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ko_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        337,
+        455,
+        669,
+        577
+      ],
+      "sha256": "ae36eb66154cbc4f2a44a4b792ae7b09b6ab321bc6cf2187ccc2c7f05f1420d2",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko_1_Shard"
+    },
+    {
+      "id": "Brush_ko_2_Shard",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "치실!",
+      "font": "malgunbd.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ko_2_Shard.png",
+      "font_size": 168,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        307,
+        423,
+        677,
+        594
+      ],
+      "sha256": "951960b5e26803ee75a9038a1308deb2db7f2ef3b62080fdbfa48a6ff2f0e7f7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko_2_Shard"
+    },
+    {
+      "id": "Brush_ko_3_Shard",
+      "meaning": "brush",
+      "locale": "ko",
+      "text": "깨끗한 치아!",
+      "font": "malgunbd.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_ko_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        323,
+        483,
+        728,
+        565
+      ],
+      "sha256": "413d9e5dddb21740397196fcb1be89a9f9c3f28539b3729e60d04721da992290",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_ko_3_Shard"
+    },
+    {
+      "id": "Vitamins_ko_1_Shard",
+      "meaning": "vitamins",
+      "locale": "ko",
+      "text": "비타민!",
+      "font": "malgunbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ko_1_Shard.png",
+      "font_size": 136,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        296,
+        435,
+        729,
+        587
+      ],
+      "sha256": "e8ec352ec50d0bf16e06b57d5b22bd3958108bb7c5a4b9001fe8d469ac01c24f",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ko_1_Shard"
+    },
+    {
+      "id": "Vitamins_ko_2_Shard",
+      "meaning": "vitamins",
+      "locale": "ko",
+      "text": "잘 먹어!",
+      "font": "malgunbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ko_2_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        348,
+        460,
+        665,
+        559
+      ],
+      "sha256": "82b43eff3fc01eb712e97d73db00241a376299981184be22bfd26b889d343ed4",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ko_2_Shard"
+    },
+    {
+      "id": "Vitamins_ko_3_Shard",
+      "meaning": "vitamins",
+      "locale": "ko",
+      "text": "강해져라!",
+      "font": "malgunbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_ko_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        326,
+        471,
+        698,
+        568
+      ],
+      "sha256": "109365a4efa6102a1b96c6db67619d25acee5c1d4d81455e4c43d377b0d02982",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_ko_3_Shard"
+    },
+    {
+      "id": "Manners_tr_1_Shard",
+      "meaning": "manners",
+      "locale": "tr",
+      "text": "TERBİYE!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_tr_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        334,
+        462,
+        691,
+        577
+      ],
+      "sha256": "d20e1726d45a80921e3b35abd2bc7ed4428da370a6007228d97ab124fb76afa3",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_tr_1_Shard"
+    },
+    {
+      "id": "Manners_tr_2_Shard",
+      "meaning": "manners",
+      "locale": "tr",
+      "text": "KİBAR OL!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_tr_2_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        341,
+        469,
+        676,
+        559
+      ],
+      "sha256": "1a28a2e5627258fc8e6896acc66831c50960fb6642c96acd6a2bfda812248127",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_tr_2_Shard"
+    },
+    {
+      "id": "Manners_tr_3_Shard",
+      "meaning": "manners",
+      "locale": "tr",
+      "text": "SAYGI!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_tr_3_Shard.png",
+      "font_size": 120,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        360,
+        464,
+        667,
+        574
+      ],
+      "sha256": "e386bec4d872a6d6a077096d59298a6d896850ce8056513f822f199e0295d208",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_tr_3_Shard"
+    },
+    {
+      "id": "Brush_tr_1_Shard",
+      "meaning": "brush",
+      "locale": "tr",
+      "text": "DİŞLERİNİ\nFIRÇALA!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_tr_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        337,
+        407,
+        674,
+        611
+      ],
+      "sha256": "da7d981f611faed0d1d09dda998e6bd3ac47eb6fc63d372f93b5e18da7976612",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_tr_1_Shard"
+    },
+    {
+      "id": "Brush_tr_2_Shard",
+      "meaning": "brush",
+      "locale": "tr",
+      "text": "DİŞ İPİ!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_tr_2_Shard.png",
+      "font_size": 120,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        318,
+        434,
+        663,
+        582
+      ],
+      "sha256": "852ed1579d59aba727aca14de9280041ec087282d9b6a9d148902206ae36dfbb",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_tr_2_Shard"
+    },
+    {
+      "id": "Brush_tr_3_Shard",
+      "meaning": "brush",
+      "locale": "tr",
+      "text": "TEMİZ DİŞLER!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_tr_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        331,
+        478,
+        724,
+        567
+      ],
+      "sha256": "ce3ab5b90b7268193bc485c5edd8d39ebac6c5ea65b773caf2318ad1deb01e5a",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_tr_3_Shard"
+    },
+    {
+      "id": "Vitamins_tr_1_Shard",
+      "meaning": "vitamins",
+      "locale": "tr",
+      "text": "VİTAMİNLER!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_tr_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        297,
+        455,
+        727,
+        574
+      ],
+      "sha256": "948dc4b6133a3c97b063d0e1156090490ce86a5ee736640759f90cccc587c75d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_tr_1_Shard"
+    },
+    {
+      "id": "Vitamins_tr_2_Shard",
+      "meaning": "vitamins",
+      "locale": "tr",
+      "text": "İYİ BESLEN!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_tr_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        351,
+        475,
+        663,
+        552
+      ],
+      "sha256": "9bf1d696483957637ee9a9b332cc7aac6075a3e5369e2fa0bde4efaeb7bef841",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_tr_2_Shard"
+    },
+    {
+      "id": "Vitamins_tr_3_Shard",
+      "meaning": "vitamins",
+      "locale": "tr",
+      "text": "GÜÇLEN!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_tr_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        370,
+        465,
+        657,
+        569
+      ],
+      "sha256": "fe8f59ec011d737c23fc46be0d69f8d749c23108f8849798f8787bd8c13978bf",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_tr_3_Shard"
+    },
+    {
+      "id": "Manners_zh-TW_1_Shard",
+      "meaning": "manners",
+      "locale": "zh-TW",
+      "text": "禮貌！",
+      "font": "msjhbd.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-TW_1_Shard.png",
+      "font_size": 120,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        335,
+        442,
+        643,
+        571
+      ],
+      "sha256": "d63541f07a4ac049a6cb1a472f30200f03249e6548befd3a0ee061cfec4345d5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-TW_1_Shard"
+    },
+    {
+      "id": "Manners_zh-TW_2_Shard",
+      "meaning": "manners",
+      "locale": "zh-TW",
+      "text": "客氣點！",
+      "font": "msjhbd.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-TW_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        306,
+        457,
+        675,
+        566
+      ],
+      "sha256": "9df5697ce031c85c6646f13555b970ead85ff25d99514dae4f7075549a558c78",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-TW_2_Shard"
+    },
+    {
+      "id": "Manners_zh-TW_3_Shard",
+      "meaning": "manners",
+      "locale": "zh-TW",
+      "text": "尊重！",
+      "font": "msjhbd.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_zh-TW_3_Shard.png",
+      "font_size": 136,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        315,
+        452,
+        661,
+        581
+      ],
+      "sha256": "01df1ad5c6b5256c324d8c7289359e1ca7466daf9fa1d628849857100635d283",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_zh-TW_3_Shard"
+    },
+    {
+      "id": "Brush_zh-TW_1_Shard",
+      "meaning": "brush",
+      "locale": "zh-TW",
+      "text": "刷牙！",
+      "font": "msjhbd.ttc",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-TW_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        347,
+        456,
+        618,
+        566
+      ],
+      "sha256": "780277c652917008f6eb0a6f7a03c8a84862e35ff28aa28970b5eab475e05487",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-TW_1_Shard"
+    },
+    {
+      "id": "Brush_zh-TW_2_Shard",
+      "meaning": "brush",
+      "locale": "zh-TW",
+      "text": "用牙線！",
+      "font": "msjhbd.ttc",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-TW_2_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        290,
+        458,
+        658,
+        567
+      ],
+      "sha256": "18ad8d64d05e4a76f36ea8e350d72b53350bba5f39633330975d480e3cbf9523",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-TW_2_Shard"
+    },
+    {
+      "id": "Brush_zh-TW_3_Shard",
+      "meaning": "brush",
+      "locale": "zh-TW",
+      "text": "清潔牙齒！",
+      "font": "msjhbd.ttc",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_zh-TW_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        349,
+        484,
+        678,
+        560
+      ],
+      "sha256": "48917b031d1a20a3868c25b72f24b551ffe0ffc74c83127e2487a05d2809c5e7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_zh-TW_3_Shard"
+    },
+    {
+      "id": "Vitamins_zh-TW_1_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-TW",
+      "text": "維生素！",
+      "font": "msjhbd.ttc",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-TW_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        335,
+        456,
+        653,
+        560
+      ],
+      "sha256": "3c58fb1778ccbcdb595e92991d0ed106c010779356874766293ef883592665a8",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-TW_1_Shard"
+    },
+    {
+      "id": "Vitamins_zh-TW_2_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-TW",
+      "text": "好好吃飯！",
+      "font": "msjhbd.ttc",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-TW_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        330,
+        471,
+        660,
+        551
+      ],
+      "sha256": "3832c55189d0dfe38844e1c108e4812cb504733bc87c9d4e6f1ebb66df444ddf",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-TW_2_Shard"
+    },
+    {
+      "id": "Vitamins_zh-TW_3_Shard",
+      "meaning": "vitamins",
+      "locale": "zh-TW",
+      "text": "強壯起來！",
+      "font": "msjhbd.ttc",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_zh-TW_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        336,
+        481,
+        664,
+        556
+      ],
+      "sha256": "d01bc622b8076e43b41a53f366fef13ec27bee55848de557e6bbc7b037c74251",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_zh-TW_3_Shard"
+    },
+    {
+      "id": "Manners_th_1_Shard",
+      "meaning": "manners",
+      "locale": "th",
+      "text": "มารยาท!",
+      "font": "tahomabd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_th_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        302,
+        472,
+        715,
+        568
+      ],
+      "sha256": "092c5e9f7df314941b7090e7725760c8009887a54e46313faa267362acbf79e5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_th_1_Shard"
+    },
+    {
+      "id": "Manners_th_2_Shard",
+      "meaning": "manners",
+      "locale": "th",
+      "text": "สุภาพหน่อย!",
+      "font": "tahomabd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_th_2_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        350,
+        476,
+        665,
+        546
+      ],
+      "sha256": "633e8d3f778e2cba7e44a4589e078cbd6b97ab6a62bdb524c462b9e226008fef",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_th_2_Shard"
+    },
+    {
+      "id": "Manners_th_3_Shard",
+      "meaning": "manners",
+      "locale": "th",
+      "text": "เคารพ!",
+      "font": "tahomabd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_th_3_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        350,
+        483,
+        676,
+        564
+      ],
+      "sha256": "4c75dbab5a8d5d877a46da5186a9845e1ed199c4d9b5316d6f98ec450ecfa807",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_th_3_Shard"
+    },
+    {
+      "id": "Brush_th_1_Shard",
+      "meaning": "brush",
+      "locale": "th",
+      "text": "แปรงฟัน!",
+      "font": "tahomabd.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_th_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        320,
+        469,
+        683,
+        568
+      ],
+      "sha256": "2ce82f708f4750a34d97539ff5b3785f75791a2815ecec9632a7c9d1fb75162f",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_th_1_Shard"
+    },
+    {
+      "id": "Brush_th_2_Shard",
+      "meaning": "brush",
+      "locale": "th",
+      "text": "ไหมขัดฟัน!",
+      "font": "tahomabd.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_th_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        303,
+        473,
+        674,
+        549
+      ],
+      "sha256": "d753dd79e30809453432cf657d5c7fffddcd8016a1c86f56acc258e8dff7c601",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_th_2_Shard"
+    },
+    {
+      "id": "Brush_th_3_Shard",
+      "meaning": "brush",
+      "locale": "th",
+      "text": "ฟันสะอาด!",
+      "font": "tahomabd.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_th_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        354,
+        487,
+        697,
+        560
+      ],
+      "sha256": "74cdbfa7140cd22a79fba6882270d9fcb87b5ad9b8047ca2e82e05a911c4ff96",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_th_3_Shard"
+    },
+    {
+      "id": "Vitamins_th_1_Shard",
+      "meaning": "vitamins",
+      "locale": "th",
+      "text": "วิตามิน!",
+      "font": "tahomabd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_th_1_Shard.png",
+      "font_size": 104,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        332,
+        456,
+        685,
+        568
+      ],
+      "sha256": "48d0a69d5b568ce40fc216be2b3f7e226792631f1c98f7794e9440e8c507b594",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_th_1_Shard"
+    },
+    {
+      "id": "Vitamins_th_2_Shard",
+      "meaning": "vitamins",
+      "locale": "th",
+      "text": "กินดี!",
+      "font": "tahomabd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_th_2_Shard.png",
+      "font_size": 152,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        334,
+        438,
+        682,
+        581
+      ],
+      "sha256": "4640335aa90b53a92457cd1474d788e43a909272312f0cbb2775470a6b22bc6e",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_th_2_Shard"
+    },
+    {
+      "id": "Vitamins_th_3_Shard",
+      "meaning": "vitamins",
+      "locale": "th",
+      "text": "แข็งแรงขึ้น!",
+      "font": "tahomabd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_th_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        283,
+        477,
+        741,
+        572
+      ],
+      "sha256": "48266385535a51f19e4dc5f685515657a8a3cb0967fb6445f3a9d7705cd4552c",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_th_3_Shard"
+    },
+    {
+      "id": "Manners_uk_1_Shard",
+      "meaning": "manners",
+      "locale": "uk",
+      "text": "МАНЕРИ!",
+      "font": "arialbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_uk_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        307,
+        461,
+        711,
+        561
+      ],
+      "sha256": "54dfee583c062cc58575e3a887280330ec3617c078cf921fa1a6b8d32c6ed9fa",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_uk_1_Shard"
+    },
+    {
+      "id": "Manners_uk_2_Shard",
+      "meaning": "manners",
+      "locale": "uk",
+      "text": "БУДЬ ЧЕМНИМ!",
+      "font": "arialbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_uk_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        353,
+        481,
+        662,
+        533
+      ],
+      "sha256": "ff337a487c87a08bec9c6dbd90022cf5f309820f0f3a60196d5df7970cea9ee6",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_uk_2_Shard"
+    },
+    {
+      "id": "Manners_uk_3_Shard",
+      "meaning": "manners",
+      "locale": "uk",
+      "text": "ПОВАГА!",
+      "font": "arialbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_uk_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        320,
+        480,
+        703,
+        560
+      ],
+      "sha256": "c3a7ac699e851e1fd36d20c7eec3bb6d2b02c9f88f1d565b48c139588b5a1bc0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_uk_3_Shard"
+    },
+    {
+      "id": "Brush_uk_1_Shard",
+      "meaning": "brush",
+      "locale": "uk",
+      "text": "ЧИСТЬ ЗУБИ!",
+      "font": "arialbd.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_uk_1_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        316,
+        478,
+        686,
+        552
+      ],
+      "sha256": "d37107693b630b93bdb976423c23620fd33224960a493a0379c6489d916eef37",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_uk_1_Shard"
+    },
+    {
+      "id": "Brush_uk_2_Shard",
+      "meaning": "brush",
+      "locale": "uk",
+      "text": "ЗУБНА НИТКА!",
+      "font": "arialbd.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_uk_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        342,
+        485,
+        636,
+        533
+      ],
+      "sha256": "395057d24bda0a3e9efa3dab44f14d7d54109df4130d8f7f6479a5a6cecbe598",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_uk_2_Shard"
+    },
+    {
+      "id": "Brush_uk_3_Shard",
+      "meaning": "brush",
+      "locale": "uk",
+      "text": "ЧИСТІ ЗУБИ!",
+      "font": "arialbd.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_uk_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        353,
+        495,
+        700,
+        552
+      ],
+      "sha256": "5dbcb2e4da9f0b746b895a19335005f79ba40fbb1ed75307671edcac1b150bbd",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_uk_3_Shard"
+    },
+    {
+      "id": "Vitamins_uk_1_Shard",
+      "meaning": "vitamins",
+      "locale": "uk",
+      "text": "ВІТАМІНИ!",
+      "font": "arialbd.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_uk_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        326,
+        469,
+        693,
+        556
+      ],
+      "sha256": "f92c9fefb9877bb4481015211b8a90d4bd7c773d8f6266ba4d132f42212a7a1d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_uk_1_Shard"
+    },
+    {
+      "id": "Vitamins_uk_2_Shard",
+      "meaning": "vitamins",
+      "locale": "uk",
+      "text": "ЇЖ ЗДОРОВО!",
+      "font": "arialbd.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_uk_2_Shard.png",
+      "font_size": 40,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        368,
+        485,
+        643,
+        533
+      ],
+      "sha256": "50b2509cae32d071ab54998158d78dc2abd15c5e33420b91c0c848e0e291c616",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_uk_2_Shard"
+    },
+    {
+      "id": "Vitamins_uk_3_Shard",
+      "meaning": "vitamins",
+      "locale": "uk",
+      "text": "СТАВАЙ\nСИЛЬНІШИМ!",
+      "font": "arialbd.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_uk_3_Shard.png",
+      "font_size": 56,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        323,
+        465,
+        698,
+        582
+      ],
+      "sha256": "e24d128a958531f8f72bcafc1b9d6a5665ee9c2a2da6f7ec5adc3bf3c28e1e0d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_uk_3_Shard"
+    },
+    {
+      "id": "Manners_es-419_1_Shard",
+      "meaning": "manners",
+      "locale": "es-419",
+      "text": "¡MODALES!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-419_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        323,
+        458,
+        696,
+        561
+      ],
+      "sha256": "0bb07b60b96c84c60dc37cbb4629ed4683f7d4892bc20f97c954ce71494ee407",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-419_1_Shard"
+    },
+    {
+      "id": "Manners_es-419_2_Shard",
+      "meaning": "manners",
+      "locale": "es-419",
+      "text": "¡SÉ AMABLE!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-419_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        337,
+        473,
+        678,
+        558
+      ],
+      "sha256": "a3a2dfe1039114bae99c6522f170ef9eddc7d76a9757b587b4b72914ec52c4fe",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-419_2_Shard"
+    },
+    {
+      "id": "Manners_es-419_3_Shard",
+      "meaning": "manners",
+      "locale": "es-419",
+      "text": "¡RESPETO!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#3866BB",
+      "fill": "#FFF3D8",
+      "ink": "#17121C",
+      "file": "T_Comic_Manners_es-419_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        338,
+        474,
+        686,
+        558
+      ],
+      "sha256": "15af1921cf6cac1770f31901179d3a9f4c2a121bd2f4b4e152d983c8339fbaf5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Manners_es-419_3_Shard"
+    },
+    {
+      "id": "Brush_es-419_1_Shard",
+      "meaning": "brush",
+      "locale": "es-419",
+      "text": "¡CEPÍLLATE!",
+      "font": "impact.ttf",
+      "template": 3,
+      "angle": -5,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-419_1_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        104,
+        152,
+        896,
+        882
+      ],
+      "text_bounds": [
+        339,
+        474,
+        663,
+        561
+      ],
+      "sha256": "527b7806745faf095229ac0463013713d142b66b33d959afadbe152722de79d5",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-419_1_Shard"
+    },
+    {
+      "id": "Brush_es-419_2_Shard",
+      "meaning": "brush",
+      "locale": "es-419",
+      "text": "¡USA HILO\nDENTAL!",
+      "font": "impact.ttf",
+      "template": 4,
+      "angle": 3,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-419_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        87,
+        121,
+        885,
+        894
+      ],
+      "text_bounds": [
+        352,
+        433,
+        624,
+        586
+      ],
+      "sha256": "0f373f8c4cd2f84f8f0ccfb7de3cfc3f713e0c2d0e6d1aff4cd41711d0a4217d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-419_2_Shard"
+    },
+    {
+      "id": "Brush_es-419_3_Shard",
+      "meaning": "brush",
+      "locale": "es-419",
+      "text": "¡DIENTES\nLIMPIOS!",
+      "font": "impact.ttf",
+      "template": 5,
+      "angle": -2,
+      "outline": "#168B92",
+      "fill": "#E9FFF4",
+      "ink": "#17121C",
+      "file": "T_Comic_Brush_es-419_3_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        142,
+        142,
+        919,
+        908
+      ],
+      "text_bounds": [
+        371,
+        435,
+        682,
+        613
+      ],
+      "sha256": "e2d07c6dce06f1c7e7bbb559960ff54041416409fd7469c3e13e7f556f88c0c0",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Brush_es-419_3_Shard"
+    },
+    {
+      "id": "Vitamins_es-419_1_Shard",
+      "meaning": "vitamins",
+      "locale": "es-419",
+      "text": "¡VITAMINAS!",
+      "font": "impact.ttf",
+      "template": 0,
+      "angle": -5,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-419_1_Shard.png",
+      "font_size": 88,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        79,
+        149,
+        939,
+        875
+      ],
+      "text_bounds": [
+        294,
+        454,
+        727,
+        563
+      ],
+      "sha256": "2e229a64f8f281680e0d0d8dc7de4c9b471a980f2b559d850f29f7b3eb68abd7",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-419_1_Shard"
+    },
+    {
+      "id": "Vitamins_es-419_2_Shard",
+      "meaning": "vitamins",
+      "locale": "es-419",
+      "text": "¡COME BIEN!",
+      "font": "impact.ttf",
+      "template": 1,
+      "angle": 3,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-419_2_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        113,
+        146,
+        900,
+        870
+      ],
+      "text_bounds": [
+        336,
+        466,
+        679,
+        552
+      ],
+      "sha256": "8c992e714b6403cbb8959d6ec1e215e3d45467fc3164f2663c02e745233538ab",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-419_2_Shard"
+    },
+    {
+      "id": "Vitamins_es-419_3_Shard",
+      "meaning": "vitamins",
+      "locale": "es-419",
+      "text": "¡PONTE FUERTE!",
+      "font": "impact.ttf",
+      "template": 2,
+      "angle": -2,
+      "outline": "#D54629",
+      "fill": "#FFF5CD",
+      "ink": "#17121C",
+      "file": "T_Comic_Vitamins_es-419_3_Shard.png",
+      "font_size": 72,
+      "pixels": [
+        1024,
+        1024
+      ],
+      "alpha_bounds": [
+        76,
+        161,
+        949,
+        881
+      ],
+      "text_bounds": [
+        296,
+        480,
+        729,
+        555
+      ],
+      "sha256": "f1dddd5e376fa9593880c9a10f3577169aab21d132299d72d706bfaf23566b4d",
+      "suggested_unreal_path": "/Game/FX/Attacks/Textures/T_Comic_Vitamins_es-419_3_Shard"
+    }
+  ],
+  "translation_review": "Thematic adaptations; native review pending",
+  "geometry": "Straight polygon segments at every border; no central panel",
+  "status": "Source PNGs only; not imported"
+}
