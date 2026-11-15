@@ -4,6 +4,15 @@ Keep this page short: current state, what is unverified, what is next. Session h
 `Docs/DEVLOG.md`; the old long-form STATUS is in `Docs/Status/STATUS-archive-to-Nov15.md` (read a
 section there only when a task needs it).
 
+## Fixes4 #1-8 (Nov 15, `Docs/Feedback/Fixes4.txt`)
+
+Done, committed (8a4ece6, 0c33a50), editor build + 85/85 Jam tests green, **not yet seen live**: title Controls line,
+Left Shift = signature, start level 1 with ranks 1/1/1 (XP to 10 = 1080, Lecture max 6, Line max 5, +8% power and
+~10% less damage taken per level, village Resolve/damage scale with total jobs), flashes ~1/5 brightness, barbarian ult
+loops + spins 4 turns with a bigger 4.2 s flour cloud (FX regenerated), knight attacks throw flying text placards.
+Packaged to `Builds/Win64-Development` (log `Saved/pkg-fixes4.log`); no smoke or zip yet. Items 9-10 (river, bridge,
+path brush, house on path, tree in road) go to the TERRAIN thread.
+
 ## Black Sugar UI (Nov 15, after terrain handoff)
 
 Implemented the selected dark candy UI. Editor build passes, all 82 Jam tests pass.

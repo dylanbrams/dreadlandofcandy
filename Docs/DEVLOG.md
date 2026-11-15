@@ -468,3 +468,6 @@ This task changes no C++ and does no packaging. Other worker source edits made
 after the previous green build/82 tests are outside this asset verification.
 
 Nov 15 - Black Sugar UI: implemented dark candy menus/HUD/compass, OFL fonts, peppermint/gumdrop artwork and readable cooldown badges. Editor build and all 82 Jam tests pass. Reviewed initial six screens and final pause1080/HUD720; fixed pause clipping and cooldown overlap. Engine released. No new package/upload; broader review deferred to conserve usage. See Docs/Design/CandyUI/IMPLEMENTATION.md.
+
+## Nov 15 - Fixes4 #1-8 (Claude)
+Title Controls line, Shift signature, level-1 progression with level power/toughness and job-scaled village threat (subagent), flashes dimmed ~5x, barbarian cyclone spin + longer cloud, knight text placards. 85/85 tests. Packaged, not smoked or zipped. Terrain items 9-10 handed to a separate thread.
