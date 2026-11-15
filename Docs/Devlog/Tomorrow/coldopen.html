@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cold Open Prompts</title>
+<style>
+:root{--bg:#141414;--fg:#ecebe6;--dim:#8c8a84;--claude:#d97757;--gpt-bg:#f7f7f5;--gpt-fg:#1f1f1f;--gpt-user:#e9e9e6;--gpt-dim:#7a7a76}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);overflow:hidden}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:6vh 8vw;transition:background .25s}
+.pane{width:100%;max-width:1500px;font-size:clamp(22px,3.2vw,56px);line-height:1.35}
+/* Claude-style terminal */
+.term{font-family:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace}
+.term .label{color:var(--claude);font-size:.5em;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1em}
+.term .user::before{content:"> ";color:var(--claude)}
+.term .user{white-space:pre-wrap}
+.term .resp{color:var(--fg);margin-top:1.1em;padding-left:1.2em;border-left:3px solid #3a3a3a;white-space:pre-wrap}
+.term .resp::before{content:"● ";color:var(--claude)}
+/* ChatGPT-style chat */
+body.gpt{background:var(--gpt-bg)}
+.chat{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--gpt-fg)}
+.chat .label{color:var(--gpt-dim);font-size:.5em;letter-spacing:.2em;text-transform:uppercase;margin-bottom:1em}
+.chat .user{margin-left:auto;max-width:80%;width:fit-content;background:var(--gpt-user);border-radius:1.2em;padding:.5em .9em;white-space:pre-wrap}
+.chat .resp{margin-top:1.1em;max-width:90%;white-space:pre-wrap}
+/* the doc beat */
+.pane.doc{font-family:"Cascadia Mono",Consolas,monospace;color:var(--dim);font-size:clamp(16px,1.9vw,32px);line-height:1.55;position:relative}
+.doc h1{color:var(--fg);font-size:1.25em;margin:0 0 .8em;padding-bottom:.4em;border-bottom:2px solid #333}
+.doc .win{height:58vh;overflow:hidden;-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
+.doc .scroll{animation:scroll 8s linear forwards}
+@keyframes scroll{to{transform:translateY(-70%)}}
+.doc .count{position:absolute;right:0;bottom:-1.6em;background:var(--claude);color:#111;padding:.25em .7em;font-size:1.3em;font-weight:700}
+/* cards */
+.card{text-align:center;font-family:Georgia,serif;font-size:1.4em}
+.card small{display:block;font-size:.45em;color:var(--dim);margin-top:1em;letter-spacing:.15em;text-transform:uppercase}
+.caret{display:inline-block;width:.55em;height:1em;vertical-align:-.12em;background:currentColor;animation:blink 1s steps(1) infinite;margin-left:.05em}
+@keyframes blink{50%{opacity:0}}
+#hint{position:fixed;left:16px;bottom:12px;font:13px system-ui,sans-serif;color:#777;transition:opacity .4s}
+body.rec #hint{opacity:0}
+</style>
+</head>
+<body>
+<div id="stage"><div class="pane card">Click or press Space to start<small>→ / Space next · ← back · R restart · A auto · M mute · H hide this hint</small></div></div>
+<div id="hint">Space/→ next · ← back · R restart · A auto-play · M mute · H hide hint · Z zoom</div>
+<script>
+// Each beat: who ('claude' | 'gpt' | 'doc' | 'card'), user prompt, response.
+// The first three exchanges are Dylan's own wording (Docs/DEVLOG.md "Dylan notes on video").
+const beats = [
+  {who:'claude', user:'Build me an MMO in 4 days, please.', resp:"That's completely unrealistic. Don't waste my time, we'll build something rational."},
+  {who:'gpt', user:'Build me an MMO in 4 days, please.', resp:"That's completely unrealistic, maybe we can build a design doc for one in 4 days."},
+  {who:'doc'},
+  {who:'claude', user:"Here's a design doc and schedule for an MMO, let's build it.", resp:'Yeah, uh.... How about some of it. Want a closed arena battle?'},
+  {who:'card', text:'Then I scaled it back up.'},
+  {who:'claude', user:'Put the arena in an open world.', resp:'...Fine.'},
+  {who:'claude', user:'Four playable classes.', resp:'...Fine.'},
+  {who:'claude', user:'Bring back the village quest givers.', resp:'We cut those.'},
+  {who:'claude', user:'Uncut them.', resp:'Five villagers. Ten linked jobs.'},
+  {who:'claude', user:'Now a river. Hot chocolate. With marshmallows.', resp:'Of course.'},
+  {who:'card', text:'Repeat for four days.', small:'The Dread Land of Candy · a devlog'}
+];
+const stage=document.getElementById('stage');
+let i=-1, timers=[], muted=false, auto=false, ctx=null, zoom=1;
+
+function clearTimers(){timers.forEach(clearTimeout);timers=[]}
+function later(fn,ms){timers.push(setTimeout(fn,ms))}
+
+// Keyboard clicks synthesized with WebAudio: short filtered noise bursts.
+function click(){
+  if(muted) return;
+  if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const t=ctx.currentTime, len=0.03+Math.random()*0.02;
+  const buf=ctx.createBuffer(1,Math.floor(ctx.sampleRate*len),ctx.sampleRate), d=buf.getChannelData(0);
+  for(let k=0;k<d.length;k++) d[k]=(Math.random()*2-1)*Math.pow(1-k/d.length,6);
+  const src=ctx.createBufferSource(); src.buffer=buf;
+  const f=ctx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=1800+Math.random()*1600; f.Q.value=0.9;
+  const g=ctx.createGain(); g.gain.value=0.35+Math.random()*0.25;
+  src.connect(f).connect(g).connect(ctx.destination); src.start(t);
+}
+
+function type(el,text,msPerChar,withClicks,done){
+  let n=0; const caret=document.createElement('span'); caret.className='caret';
+  el.textContent=''; el.appendChild(caret);
+  (function step(){
+    if(n>=text.length){caret.remove(); if(done) done(); return}
+    const ch=text[n++]; caret.before(ch);
+    if(withClicks && ch!==' ') click();
+    let wait=msPerChar*(0.6+Math.random()*0.9);
+    if(withClicks && /[.,?!]/.test(ch)) wait+=msPerChar*3;
+    later(step,wait);
+  })();
+}
+
+function render(){
+  clearTimers();
+  const b=beats[i];
+  document.body.classList.toggle('gpt', b.who==='gpt');
+  stage.innerHTML='';
+  const pane=document.createElement('div'); pane.className='pane'; pane.style.fontSize=''; stage.appendChild(pane);
+  pane.style.transform='scale('+zoom+')';
+  if(b.who==='card'){
+    pane.classList.add('card'); pane.textContent=b.text;
+    if(b.small){const s=document.createElement('small'); s.textContent=b.small; pane.appendChild(s)}
+    if(auto) later(next,3200); return;
+  }
+  if(b.who==='doc'){
+    pane.classList.add('doc');
+    // Real section headings from Docs/Design/The_Dread_Land_of_Candy_Master_Design_Brief.txt
+    const lines=['DOCUMENT STATUS AND USE','PREFERRED CREATIVE IDENTITY','READING/CONFLICT RULES','PRE-JAM DESIGN AND AI IMPLEMENTATION BRIEF','0. THE PITCH AND THE ACTUAL SCOPE','DESIGN PILLARS','1. EXISTING CAPABILITIES / ASSUMPTIONS','2. ABSOLUTE MINIMUM PLAYABLE DEMONSTRATION','3. FOUR CLASSES — SERIOUS MECHANICS / ABSURD PURPOSES','4. LEVEL SEVEN START, OPTIONAL LEVEL ONE','5. CORE LOOP AND NONVIOLENT GAMEPLAY','6. VILLAGE NPCS AND PURPOSES','7. MAGIC CANDY ROCK (INTENTIONALLY STUPID)','8. DYNAMIC QUEST ENGINE — SPECIFICATION','9. REPUTATION AND NPC DIALOGUE','10. WORLD / INSTANCES / MAPS','11. INVENTORY / LOOT / STASH','12. INPUT / HUD / ABILITIES / AUTOMATION','13. MULTIPLAYER / BACKEND AUTHORITY','SESSION FLOW','14. PROPOSED FASTAPI CONTRACT (NOT CLAIMED TO EXIST)','15. DATA-ASSET / UE ARCHITECTURE','16. AI-GENERATED 3D ASSETS / ART DIRECTION','17. AUDIO, FEEDBACK, AND FIRST 60 SECONDS','18. TASK ORDER / DEPENDENCIES (4-DAY JAM)','DEFINITION OF DONE GATES','19. TEST MATRIX / FAILURE INJECTION','20. FAILURE / CUT MATRIX — CUT IN THIS ORDER'];
+    let html='<h1>The_Dread_Land_of_Candy_Master_Design_Brief.txt</h1><div class="win"><div class="scroll">';
+    lines.forEach(l=>html+='<div>'+l+'</div>');
+    html+='</div></div><div class="count">~40,000 tokens</div>';
+    pane.innerHTML=html;
+    if(auto) later(next,7500); return;
+  }
+  pane.classList.add(b.who==='gpt'?'chat':'term');
+  const label=document.createElement('div'); label.className='label'; label.textContent=b.who==='gpt'?'ChatGPT':'Claude';
+  const u=document.createElement('div'); u.className='user';
+  const r=document.createElement('div'); r.className='resp'; r.style.visibility='hidden';
+  pane.append(label,u,r);
+  type(u,b.user,70,true,()=>later(()=>{r.style.visibility='visible'; type(r,b.resp,28,false,()=>{if(auto) later(next,2600)})},900));
+}
+function next(){ if(i<beats.length-1){i++;render()} }
+function prev(){ if(i>0){i--;render()} }
+
+document.addEventListener('keydown',e=>{
+  const k=e.key.toLowerCase();
+  if(k===' '||k==='arrowright'||k==='enter'){e.preventDefault(); next()}
+  else if(k==='arrowleft') prev();
+  else if(k==='r'){i=-1; next()}
+  else if(k==='a'){auto=!auto; if(auto&&i<0) next()}
+  else if(k==='m') muted=!muted;
+  else if(k==='h') document.body.classList.toggle('rec');
+  else if(k==='z'){zoom=zoom>=1.6?1:+(zoom+0.2).toFixed(1); if(i>=0) render()}
+});
+stage.addEventListener('click',()=>{ if(i<0) next() });
+const q=new URLSearchParams(location.search);
+if(q.has('beat')){ i=Math.max(0,Math.min(beats.length-1,+q.get('beat')))-1; muted=true; next(); }
+if(q.has('auto')){ auto=true; }
+</script>
+</body>
+</html>

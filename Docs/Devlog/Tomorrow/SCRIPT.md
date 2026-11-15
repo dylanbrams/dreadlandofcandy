@@ -1,12 +1,13 @@
 # The Dread Land of Candy — devlog script, recording draft
 
-Read naturally; slide prompts are cues. Each section is a **take** you can record on its own: it opens with a music bed and ends on a clean beat, so the takes can be cut together in any order. Sections 1–6 come from ChatGPT's Nov 15 01:45 draft, lightly tightened. Section 7 covers the long night, and sections 8 and 8b reconstruct Sunday morning, 05:00–11:00 project time, from git and `Docs/DEVLOG.md`. The ending is still open. About 9–11 minutes in all.
+Read naturally; slide prompts are cues. Section 0 is a screen recording of `coldopen.html` with your voice over it. Each other section is a **take** you can record on its own: it opens with a music bed and ends on a clean beat, so the takes can be cut together in any order. Sections 1–6 come from ChatGPT's Nov 15 01:45 draft, lightly tightened. Section 7 covers the long night, and sections 8 and 8b reconstruct Sunday morning, 05:00–11:00 project time, from git and `Docs/DEVLOG.md`. The ending is still open. About 9–11 minutes in all.
 
 **Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. **Do not use `theme-song.mp3` anywhere; the theme song is cut from the game, the video and the trailer.** The one exception is the a cappella blooper in section 11.
 
 | Take | Bed | Why |
 | --- | --- | --- |
-| 1 Cold open | `music/title-theme_take1.mp3` | The title music, utterly sincere |
+| 0 Prompt screen | None: typing sounds and your voice only | Silence makes the typing land |
+| 1 Unreasonable idea | `music/title-theme_take1.mp3`, hitting on the first word after the prompt screen | The title music, utterly sincere |
 | 2 Premise | `music/village_take1.mp3` | Introduces the game |
 | 3 Collaboration | `music/setting-out_take1.mp3` | The journey begins |
 | 4 Day one | `music/quest-accepted_take1.mp3` | |
@@ -29,7 +30,8 @@ Rule of thumb: stay on CAM for no more than 6–8 seconds, then cut away for at 
 
 | Take | CAM | Cut away to (PIP or B-ROLL) |
 | --- | --- | --- |
-| 1 Cold open | First two sentences; "my sense of reasonable scope may be a little compromised" | B-ROLL: Molar Hills pan with the "older than them thar hills" caption under the whole MMO list |
+| 0 Prompt screen | None: screen only | The prompt screen full frame |
+| 1 Unreasonable idea | "That's pretty much the story of the last four days"; "my sense of reasonable scope may be a little compromised" | B-ROLL: Molar Hills pan with the "older than them thar hills" caption under the whole MMO list |
 | 2 Premise | "This is The Dread Land of Candy" | B-ROLL: Fenella, a CUT!, the budget-out boxes. PIP on "You're trying to get a usable take" |
 | 3 Setup | First sentence | B-ROLL: Gantt chart, then the checkpoint slides |
 | 4 Day one | None | B-ROLL throughout: first-hero and autoplay captures, early screenshots |
@@ -51,7 +53,27 @@ Rule of thumb: stay on CAM for no more than 6–8 seconds, then cut away for at 
 
 If the key comes out ragged (uneven light, hair edges), drop the PIP framing, shoot in front of something plain, and use straight cuts between CAM and B-ROLL instead.
 
-## 1. Cold open — an unreasonable idea
+## 0. Cold open — the prompt screen
+
+*Screen-record `coldopen.html` full screen (open it in a browser, press F11; Z zooms the text; H hides the key hint before you record). Press Space to advance each beat; the page synthesizes keyboard clicks while the prompts type. No music. If you'd rather use real typing sounds, press M to mute and record your keyboard separately.*
+
+**Your voice over it.** Say each prompt as it types, a little ahead of the text, flat and hopeful: "Build me an MMO in four days... please." Then let the response type out in silence; the reader gets the joke from the screen. On the ChatGPT beat, say the same prompt again, slightly more tired. Say nothing over the design-doc scroll. On "Here's a design doc and schedule for an MMO, let's build it," sound confident.
+
+| Beat | Screen | You say |
+| --- | --- | --- |
+| 1 | Claude: "Build me an MMO in 4 days, please." → "That's completely unrealistic. Don't waste my time, we'll build something rational." | "Build me an MMO in four days... please." |
+| 2 | ChatGPT: same prompt → "That's completely unrealistic, maybe we can build a design doc for one in 4 days." | The same line, more tired |
+| 3 | The real master brief's section headings scroll by; "~40,000 tokens" | Nothing |
+| 4 | Claude: "Here's a design doc and schedule for an MMO, let's build it." → "Yeah, uh.... How about some of it. Want a closed arena battle?" | The prompt, confidently |
+| 5 | Card: "Then I scaled it back up." | Nothing, or read the card |
+| 6–10 | Claude: open world, four classes, quest givers ("We cut those." / "Uncut them."), the hot chocolate river with marshmallows | Each prompt, faster and faster |
+| 11 | Card: "Repeat for four days." | Nothing. Hard cut to section 1 and the music hits |
+
+Beats 1, 2 and 4 are your own wording from the top of `Docs/DEVLOG.md`, which are comic exaggerations, as you intended. Beats 6–10 are true to the records: the arena moved into an open world, four classes, the quest givers were cut in the release plan and you restored them on Nov 14, and the river with marshmallows came on Nov 14–15. Edit the `beats` list at the top of the page's script to change any wording.
+
+## 1. An unreasonable idea
+
+[On CAM, straight after the cut:] That's pretty much the story of the last four days. I ask Claude for something huge. ChatGPT specs it out. Claude chops it down to size. Then I scale it back up.
 
 I wanted to make a game in a game jam. Somewhere along the way the conversation started sounding suspiciously like I wanted to make an MMO. In a few days. With AI collaborators.
 
