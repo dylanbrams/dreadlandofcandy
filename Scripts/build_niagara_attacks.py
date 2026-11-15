@@ -152,7 +152,8 @@ def emitter(system, name, recipe, duration):
         pos = f"float3(cos({angle})*User.Radius*0.75,sin({angle})*User.Radius*0.75,80.0+sin({phase}*1.7)*40.0)"
     elif kind == "dust":
         angle = f"{phase}+{age}*5.0"
-        pos = f"float3(cos({angle})*User.Radius*frac(Particles.FXIndex*0.618+0.2),sin({angle})*User.Radius*frac(Particles.FXIndex*0.618+0.2),30.0+frac(Particles.FXIndex*0.754+{age}*0.2)*200.0)"
+        reach = f"User.Radius*{recipe.get('reach', 1.0)}*frac(Particles.FXIndex*0.618+0.2)"
+        pos = f"float3(cos({angle})*{reach},sin({angle})*{reach},30.0+frac(Particles.FXIndex*0.754+{age}*0.2)*{recipe.get('height', 200.0)})"
     elif kind == "foam":
         # A finite burst distributed along a moving phase gives an inexpensive stream blockout.
         travel = f"frac(Particles.FXIndex*0.618+{age}*1.6)"
@@ -228,6 +229,8 @@ ARROW_VOLLEY = {"kind": "arrows", "mesh": "SM_FX_Celery", "cap": 48, "scale": 1.
 CELERY_SPRAY = dict(SUGAR, mesh="SM_FX_Celery", cap=14, scale=1.8, fan=160.0, arc=220.0)
 SUGAR_SPRAY = dict(SUGAR, cap=36, scale=1.6, fan=140.0, arc=180.0)
 FLOUR_CLOUD = dict(FLOUR, size=120, cap=40, density=2)  # 220/64/4 whited out the camera
+# Fixes4 #6: the cyclone's cloud is wider, taller and lingers (density stays low so it never whites out the camera).
+FLOUR_CYCLONE = dict(FLOUR, size=170, cap=56, density=2, reach=1.6, height=380.0)
 CARD_STORM = dict(CARDS, cap=40)
 CARD_RAIN = {"kind": "rain", "mesh": "SM_FX_Card", "cap": 120, "scale": 1.6, "spread": 1.0}
 PIN_STORM = dict(PINS, cap=48)
@@ -246,7 +249,7 @@ RECIPES = [
     ("NS_K02_SternInstruction", GOLD, 0.65, 16, [CONE, CARD_STORM]),
     ("NS_K03_GoodManners", GOLD, 3.5, 1, [DOME, RING, CARD_RAIN]),
     ("NS_B01_FuriousKneading", CREAM, 1.2, 12, [IMPACT, FLOUR_CLOUD]),
-    ("NS_B02_RollingPinCyclone", CREAM, 2.3, 8, [PIN_STORM, FLOUR_CLOUD]),
+    ("NS_B02_RollingPinCyclone", CREAM, 4.2, 8, [PIN_STORM, FLOUR_CYCLONE]),
     ("NS_B03_AggressiveEncouragement", WARM, 1.0, 20, [CONE, CARD_STORM, FLOUR_CLOUD]),
     ("NS_M01_SpoonfulOfSugar", (1, 0.93, 0.6, 1), 0.5, 36, [SUGAR_SPRAY, IMPACT]),
     ("NS_M02_PeppermintPopfall", (1, 1, 1, 1), 2.6, 220, [CANDY_SHOWER, CANDY_BIG, RING]),

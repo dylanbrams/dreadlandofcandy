@@ -5,13 +5,19 @@ namespace JamProgression
 {
 	int32 XpForLevel(int32 Level)
 	{
-		switch (Level)
-		{
-		case 8: return 100;
-		case 9: return 250;
-		case 10: return 450;
-		default: return 0;
-		}
+		static const int32 Curve[] = { 0, 0, 40, 100, 180, 280, 400, 540, 700, 880, 1080 };
+		if (Level < 2) { return 0; }
+		return Curve[FMath::Min(Level, MaxLevel)];
+	}
+
+	float LevelPowerMult(int32 Level)
+	{
+		return 1.f + 0.08f * (FMath::Max(1, Level) - 1);
+	}
+
+	float DignityDamageScale(int32 Level)
+	{
+		return 1.f / (1.f + 0.10f * (FMath::Max(1, Level) - 1));
 	}
 
 	int32 XpValue(EJamXpSource Source, bool bNumeric)
@@ -50,8 +56,8 @@ namespace JamProgression
 	{
 		switch (Skill)
 		{
-		case EJamSkill::Lecture: return 4;
-		case EJamSkill::FormALine: return 3;
+		case EJamSkill::Lecture: return 6;
+		case EJamSkill::FormALine: return 5;
 		case EJamSkill::DisappointedSigh: return 3;
 		default: return 1;
 		}
@@ -66,15 +72,15 @@ namespace JamProgression
 		{
 		case EJamSkill::Lecture:
 		{
-			const float Damage[] = { 60.f, 75.f, 90.f, 110.f };
-			const float Radius[] = { 800.f, 850.f, 900.f, 950.f };
+			const float Damage[] = { 60.f, 72.f, 84.f, 96.f, 110.f, 125.f };
+			const float Radius[] = { 800.f, 850.f, 900.f, 950.f, 1000.f, 1050.f };
 			R.Damage = Damage[I]; R.Radius = Radius[I]; R.Cooldown = 1.5f;
 			break;
 		}
 		case EJamSkill::FormALine:
 		{
-			const float Damage[] = { 25.f, 30.f, 35.f };
-			const float Stop[] = { 1.5f, 2.5f, 3.5f };
+			const float Damage[] = { 25.f, 30.f, 35.f, 40.f, 46.f };
+			const float Stop[] = { 1.5f, 2.0f, 2.5f, 3.0f, 4.0f };
 			R.Damage = Damage[I]; R.Length = 1200.f; R.Width = 150.f; R.StatusSeconds = Stop[I]; R.Cooldown = 4.f;
 			break;
 		}
@@ -176,8 +182,8 @@ int32 FJamProgression::GetSpent() const
 	{
 		const EJamSkill Skill = (EJamSkill)S;
 		if (Skill == EJamSkill::LastJudgment || Skill == EJamSkill::DisappointedSigh) { continue; }
-		// Starting ranks are a grant; only upgrades use points earned during the film.
-		Spent += Ranks[S] - 2;
+		// Starting ranks are a grant; only upgrades use points.
+		Spent += Ranks[S] - JamProgression::StartRank;
 	}
 	return Spent;
 }
@@ -288,7 +294,8 @@ FJamStatBlock FJamProgression::GetStats() const
 {
 	const FJamSkillRank Lecture = JamProgression::RankData(EJamSkill::Lecture, Ranks[(int32)EJamSkill::Lecture]);
 	// Everything-loot (the napkin) is counted once by each stat's multiplier below.
-	const float PowerMult = LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel());
+	const float PowerMult = LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel())
+		* JamProgression::LevelPowerMult(Level);
 	const float CooldownMult = FMath::Max(0.1f, LootMultiplier(Loot, EJamLootStat::LectureCooldown));
 
 	FJamStatBlock S;
@@ -304,7 +311,8 @@ FJamSkillRank FJamProgression::GetSkillNumbers(EJamSkill Skill) const
 	FJamSkillRank R = JamProgression::RankData(Skill, Ranks[(int32)Skill]);
 	const FJamStatBlock S = GetStats();
 	const float RadiusMult = LootMultiplier(Loot, EJamLootStat::LectureRadius);
-	R.Damage *= LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel());
+	R.Damage *= LootMultiplier(Loot, EJamLootStat::Everything) * (1.f + JamProgression::EncorePowerPerLevel * GetEncoreLevel())
+		* JamProgression::LevelPowerMult(Level);
 	R.Radius *= RadiusMult;
 	R.Length *= RadiusMult;
 	R.Cooldown /= S.CooldownRecovery;

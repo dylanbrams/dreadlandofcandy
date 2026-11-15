@@ -296,7 +296,7 @@ void AJamHUD::BuildView()
 		{
 			const AActor* Anchor = B.Anchor.Get();
 			FVector2D OnScreen;
-			if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset, OnScreen, false))
+			if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset + B.Drift * (Now - B.Born), OnScreen, false))
 			{
 				View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
 			}
@@ -318,7 +318,7 @@ void AJamHUD::BuildView()
 	{
 		const FJamProgression& Prog = PS->GetProgression();
 		const bool bPad = PlayerOwner && Cast<AJamHero>(PlayerOwner->GetPawn()) && Cast<AJamHero>(PlayerOwner->GetPawn())->IsUsingGamepad();
-		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 3"), TEXT(""), TEXT("R") };
+		static const TCHAR* KeysKb[] = { TEXT("Mouse 1"), TEXT("Mouse 3 / Shift"), TEXT(""), TEXT("R") };
 		static const TCHAR* KeysPad[] = { TEXT("RT"), TEXT("RB"), TEXT(""), TEXT("LB") };
 		const FGameplayTag CooldownTags[] = { JamGameplayTags::Cooldown_Lecture, JamGameplayTags::Cooldown_Line, JamGameplayTags::Cooldown_Sigh, JamGameplayTags::Cooldown_Judgment };
 		const bool bWrap = !bTravel && GS->IsWrapVisible();
@@ -368,7 +368,7 @@ void AJamHUD::BuildView()
 		if (bWrap && View.Points > 0)
 		{
 			View.Wrap.LevelLine = FString::Printf(TEXT("LEVEL %d!  %d skill point%s: press a skill's button (%s) to rank it up"),
-				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 3 / R"));
+				View.Level, View.Points, View.Points == 1 ? TEXT("") : TEXT("s"), bPad ? TEXT("RT / RB / LB") : TEXT("Mouse 1 / Mouse 3 or Shift / R"));
 		}
 	}
 	if (bTravel)

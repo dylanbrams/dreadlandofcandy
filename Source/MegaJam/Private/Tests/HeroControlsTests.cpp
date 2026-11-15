@@ -32,6 +32,7 @@ bool FJamHeroControlsTest::RunTest(const FString&)
     TestTrue(TEXT("wheel zoom mapping"), Bound(Hero->ZoomAction, EKeys::MouseWheelAxis));
     TestTrue(TEXT("F uses"), Bound(Hero->InteractAction, EKeys::F));
     TestTrue(TEXT("middle mouse signature"), Bound(Hero->SkillActions[0], EKeys::MiddleMouseButton));
+    TestTrue(TEXT("left shift signature (no middle button on a trackpad)"), Bound(Hero->SkillActions[0], EKeys::LeftShift));
     TestTrue(TEXT("R ultimate"), Bound(Hero->SkillActions[2], EKeys::R));
     TestTrue(TEXT("X refuses notes"), Bound(Hero->RefuseAction, EKeys::X));
     TestFalse(TEXT("camera drag does not cast signature"), Bound(Hero->SkillActions[0], EKeys::RightMouseButton));
@@ -69,6 +70,7 @@ bool FJamControlsCardTest::RunTest(const FString&)
     {
         return V.Options.ContainsByPredicate([](const FJamMenuOption& O) { return O.Action == EJamMenuAction::OpenControls && O.bEnabled; });
     };
+    TestTrue(TEXT("title links controls directly"), HasControls(JamScreens::Title(S)));
     TestTrue(TEXT("options links controls"), HasControls(JamScreens::Options(S)));
     TestTrue(TEXT("pause links controls"), HasControls(JamScreens::Pause(S)));
     for (bool Pad : { false, true })

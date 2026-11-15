@@ -55,6 +55,7 @@ FJamScreenView JamScreens::Title(const FJamMenuSettings& S)
 	const FJamClassDef& Cast = JamCast::Get(S.CastIndex);
 	V.Options = { Opt(EJamMenuAction::RollCamera, TEXT("Roll Camera")),
 		Opt(EJamMenuAction::Casting, TEXT("Casting"), FString::Printf(TEXT("◀  %s  ▶"), *Cast.Name)),
+		Opt(EJamMenuAction::OpenControls, TEXT("Controls")),
 		Opt(EJamMenuAction::OpenOptions, TEXT("Notes")), Opt(EJamMenuAction::WalkOffSet, TEXT("Walk Off Set")) };
 	V.Caption = FString::Printf(TEXT("%s. %s"), *Cast.Name, *Cast.Blurb);
 	V.Footer = FString::Printf(TEXT("%s     %s / %s recast"), *MenuFooter(S), S.bGamepad ? TEXT("D-pad left") : TEXT("A"), S.bGamepad ? TEXT("right") : TEXT("D"));
@@ -96,7 +97,7 @@ FJamScreenView JamScreens::Controls(const FJamMenuSettings& S)
 		: TArray<FString>{
 		TEXT("WASD / arrows: move    Q / E: turn camera"),
 		TEXT("Mouse 2 drag: camera    Mouse wheel: zoom"),
-		TEXT("Mouse 1 / Space: basic    Mouse 3: signature    R: ultimate"),
+		TEXT("Mouse 1 / Space: basic    Mouse 3 / Shift: signature    R: ultimate"),
 		TEXT("Hold F: use / take note    X: refuse    T: write directions"),
 		TEXT("Esc: pause    Click level / points: character sheet"),
 		TEXT("Click controls to use them    F / Enter: menu selection") };
@@ -384,8 +385,8 @@ FJamScreenView JamScreens::Character(const FJamProgression& Prog, const FJamMenu
 		{ TEXT("Radius"), FString::Printf(TEXT("%.0f uu"), St.Radius) },
 		{ TEXT("Cooldown Recovery"), FString::Printf(TEXT("%.2fx"), St.CooldownRecovery) },
 		{ TEXT("Move Speed"), FString::Printf(TEXT("%.0f uu/s"), St.MoveSpeed) } };
-	// Levels 1 to 6, already spent before the film, cannot be refunded.
-	V.Quotes.Add(TEXT("ALREADY SPENT, LEVELS 1 TO 6 (NON-REFUNDABLE):"));
+	// Fixes4 #3: the hero now starts at level 1; the joke passives came free with the costume.
+	V.Quotes.Add(TEXT("INCLUDED WITH THE COSTUME (NON-REFUNDABLE):"));
 	for (const FJamPassive& P : JamProgression::Passives())
 	{
 		V.Quotes.Add(FString::Printf(TEXT("%s (rank %d): %s"), *P.Name, P.Rank, *P.Tooltip));

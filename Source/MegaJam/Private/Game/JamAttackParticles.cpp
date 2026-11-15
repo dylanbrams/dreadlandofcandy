@@ -43,7 +43,9 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
     Fx->bSpawnedDuringTake = SpawnState && SpawnState->GetShoot().GetState() == EJamShootState::Rolling;
     Fx->bPresentationReview = FParse::Param(FCommandLine::Get(), TEXT("classreview")) || FParse::Value(FCommandLine::Get(), TEXT("castreview="), Fx->CastIndex);
     Fx->CastIndex = Index;
-    Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : 3.6f);
+    // Fixes4 #6: the barbarian's cyclone cloud lingers for 4.2 s, so its actor must outlive it.
+    const bool bLongCloud = Name == TEXT("NS_B02_RollingPinCyclone");
+    Fx->SetLifeSpan(Fx->bPresentationReview ? 40.f : bLongCloud ? 4.8f : 3.6f);
     // Fixes3 #2: each class's own system, every authored layer (up to three), at its authored prop cap.
     // Fixes3 #2: flashes. A bright light in the class colour pops at the cast and fades in a quarter second;
     // ultimates pop again when their big props land.
@@ -55,12 +57,16 @@ void AJamAttackParticles::Spawn(AJamHero* Hero, EJamSkill Skill, const FJamSkill
         Fx->AddInstanceComponent(Light);
         Light->SetRelativeLocation(FVector(Rank.Length > 0.f ? FMath::Min(Rank.Length * 0.4f, 500.f) : 150.f, 0.f, 180.f));
         Light->SetIntensityUnits(ELightUnits::Candelas);
-        Light->SetAttenuationRadius(FMath::Max(Rank.Radius, Rank.Length) + 900.f);
+        // Fixes4 #5-8: the flashes blinded the player. About a fifth of the old brightness, a tighter reach
+        // (the archer's tightest), and the ultimate's second pop no brighter than its first.
+        static const float ClassBright[] = { 0.9f, 0.8f, 0.7f, 0.75f };
+        static const float ClassReach[] = { 0.8f, 0.8f, 0.55f, 0.8f };
+        Light->SetAttenuationRadius(FMath::Max(Rank.Radius, Rank.Length) * ClassReach[Index] + 450.f);
         Light->SetLightColor(ClassFlash[Index]);
         Light->SetCastShadows(false);
         Light->RegisterComponent();
         Fx->Flash = Light;
-        Fx->FlashPeak = Skill == EJamSkill::LastJudgment ? 150000.f : 60000.f;   // daylight scene: it must beat the sun
+        Fx->FlashPeak = (Skill == EJamSkill::LastJudgment ? 26000.f : 12000.f) * ClassBright[Index];
         if (Skill == EJamSkill::LastJudgment) { Fx->SecondFlashAt = Index == 1 ? 2.0f : Index == 2 ? 1.1f : Index == 3 ? 1.3f : 0.4f; }
         Light->SetIntensity(Fx->FlashPeak);
     }
@@ -131,8 +137,8 @@ void AJamAttackParticles::Tick(float DeltaSeconds)
     if (Flash)
     {
         const float Age = GetWorld()->GetTimeSeconds() - Started;
-        float Glow = FMath::Exp(-Age * 9.f);
-        if (SecondFlashAt > 0.f && Age >= SecondFlashAt) { Glow = FMath::Max(Glow, 1.4f * FMath::Exp(-(Age - SecondFlashAt) * 7.f)); }
+        float Glow = FMath::Exp(-Age * 11.f);
+        if (SecondFlashAt > 0.f && Age >= SecondFlashAt) { Glow = FMath::Max(Glow, 0.8f * FMath::Exp(-(Age - SecondFlashAt) * 9.f)); }
         Flash->SetIntensity(FlashPeak * Glow);
     }
 }

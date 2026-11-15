@@ -5,15 +5,16 @@
 /**
  * Levels, points, skill ranks, stats and loot (BUILD_SPEC 3c). Headless; lives on the PlayerState.
  *
- * The hero starts at level 7; basic/signature ranks are 2 and the ultimate stays rank 1.
- * Open earns levels directly from numeric XP, one skill point per level. Quest bonuses are once-only.
+ * The hero starts at level 1 with basic, signature and ultimate all at rank 1 (the Sigh stays 0).
+ * One point per level (9 by level 10) buys ranks; each level also adds damage (LevelPowerMult) and toughness
+ * (DignityDamageScale). Open earns levels directly from numeric XP, one skill point per level. Quest bonuses are once-only.
  * Legacy Backlot holds ordinary XP below the next threshold and advances on its three cards.
  */
 
 enum class EJamSkill : uint8
 {
-	Lecture,          // slot 1, cone, owned at start, ranks 1 to 4
-	FormALine,        // slot 2, line, bought with a point, ranks 1 to 3
+	Lecture,          // slot 1, cone, owned at start, ranks 1 to 6
+	FormALine,        // slot 2, line, owned at start, ranks 1 to 5
 	DisappointedSigh, // slot 3, ring around the hero, bought with a point, ranks 1 to 3
 	LastJudgment,     // slot 4, big ring, free at level 10, rank 1
 	Count
@@ -67,14 +68,20 @@ struct MEGAJAM_API FJamPassive
 
 namespace JamProgression
 {
-	constexpr int32 StartLevel = 7;
+	constexpr int32 StartLevel = 1;
 	constexpr int32 MaxLevel = 10;
+	/** Rank of the basic, signature and ultimate skills at level 1. */
+	constexpr int32 StartRank = 1;
 	/** Fixes3 #26: past MaxLevel XP keeps counting as encore EXP; each EncoreXpPerLevel is an encore level (+5% power). */
 	constexpr int32 EncoreXpPerLevel = 200;
 	constexpr float EncorePowerPerLevel = 0.05f;
 
-	/** XP at which the given level (8 to 10) is reached; 0 for the start level. */
+	/** XP at which the given level (2 to 10) is reached; 0 for level 1. */
 	MEGAJAM_API int32 XpForLevel(int32 Level);
+	/** Damage multiplier from level: 1 + 0.08 * (Level - 1). */
+	MEGAJAM_API float LevelPowerMult(int32 Level);
+	/** Multiplier on damage the hero takes: 1 / (1 + 0.10 * (Level - 1)). */
+	MEGAJAM_API float DignityDamageScale(int32 Level);
 	MEGAJAM_API int32 XpValue(EJamXpSource Source, bool bNumeric = false);
 	MEGAJAM_API int32 MilestoneLevel(EJamMilestone Milestone);
 
@@ -84,7 +91,7 @@ namespace JamProgression
 	/** Numbers for a skill at a rank (1-based); rank 0 returns zeros. */
 	MEGAJAM_API FJamSkillRank RankData(EJamSkill Skill, int32 Rank);
 
-	/** The six points already spent (levels 1 to 6). */
+	/** Joke passives shown on the character sheet (flavour only; they cost no real points). */
 	MEGAJAM_API const TArray<FJamPassive>& Passives();
 	MEGAJAM_API int32 PassivePointsSpent();
 
@@ -116,7 +123,7 @@ public:
 	int32 GetPoints() const { return Points; }
 	int32 GetRank(EJamSkill Skill) const { return Ranks[(int32)Skill]; }
 	bool IsUnlocked(EJamSkill Skill) const { return Ranks[(int32)Skill] > 0; }
-	/** Points spent on skills, not counting the six passives. */
+	/** Points spent on skill ranks above the starting rank. */
 	int32 GetSpent() const;
 
 	/** Awards XP; Open levels immediately, legacy Backlot holds below its next card. Returns the XP actually added. */
@@ -147,6 +154,6 @@ private:
 	int32 Points = 0;
 	bool bNumericXp = false;
 	uint8 CompletedQuests = 0;
-	int32 Ranks[(int32)EJamSkill::Count] = { 2, 2, 0, 1 };
+	int32 Ranks[(int32)EJamSkill::Count] = { JamProgression::StartRank, JamProgression::StartRank, 0, JamProgression::StartRank };
 	TArray<int32> Loot;
 };

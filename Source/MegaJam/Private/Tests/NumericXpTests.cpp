@@ -35,9 +35,9 @@ bool FJamNumericXpTest::RunTest(const FString&)
             TestEqual(TEXT("quest bonus cannot repeat"), P.GetXp(), After);
         }
         TestEqual(TEXT("both authored routes earn 190 XP"), P.GetXp(), 190);
-        TestEqual(TEXT("one level earned"), P.GetLevel(), 8);
-        TestEqual(TEXT("sixty percent toward the next level"), P.GetLevelProgress(), 0.6f);
-        TestEqual(TEXT("one spendable point"), P.GetPoints(), 1);
+        TestEqual(TEXT("three levels earned"), P.GetLevel(), 4);
+        TestEqual(TEXT("ten percent toward the next level"), P.GetLevelProgress(), 0.1f);
+        TestEqual(TEXT("three spendable points"), P.GetPoints(), 3);
         TestEqual(TEXT("cards do not grant numeric levels"), P.ReachMilestone(EJamMilestone::Scene3FinalNote), 0);
         const int32 Before = P.GetXp();
         P.CompleteQuest(-1); P.CompleteQuest(3);
@@ -48,7 +48,7 @@ bool FJamNumericXpTest::RunTest(const FString&)
     for (int32 i = 0; i < 1000; ++i) { Grind.AddXp(EJamXpSource::Pacify); }
     TestEqual(TEXT("XP awards cross thresholds without cards"), Grind.GetLevel(), 10);
     TestEqual(TEXT("level capped at ten"), Grind.GetLevel(), JamProgression::MaxLevel);
-    TestEqual(TEXT("points match levels"), Grind.GetPoints(), 3);
+    TestEqual(TEXT("points match levels"), Grind.GetPoints(), 9);
     TestEqual(TEXT("ultimate remains rank one"), Grind.GetRank(EJamSkill::LastJudgment), 1);
     // Fixes3 #26: XP past level 10 is encore EXP and earns encore levels (+5% power each).
     TestEqual(TEXT("XP keeps counting"), Grind.GetXp(), 2000);

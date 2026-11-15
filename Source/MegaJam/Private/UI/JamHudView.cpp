@@ -34,7 +34,7 @@ namespace
 		V.Points = 1;
 		V.Skills = {
 			{ TEXT("Lecture"), TEXT("Mouse 1"), 2, 4, true, 0.f, true },
-			{ TEXT("Form A Line"), TEXT("Mouse 3"), 1, 3, true, 0.6f, true },
+			{ TEXT("Form A Line"), TEXT("Mouse 3 / Shift"), 1, 3, true, 0.6f, true },
 			{ TEXT("Good Manners"), TEXT("R"), 1, 1, true, 0.f, false } };
 		V.Skills[1].CooldownSeconds = 3.f;
 		const TCHAR* Icons[] = { TEXT("T_Skill_Lecture"), TEXT("T_Skill_FormALine"), TEXT("T_Skill_LastJudgment") };

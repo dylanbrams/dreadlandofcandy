@@ -158,7 +158,7 @@ bool FJamCharacterSpendingTest::RunTest(const FString&)
     TestFalse(TEXT("ultimate remains rank one"), Sheet.Options[2].bEnabled);
     TestEqual(TEXT("ultimate menu action"), Sheet.Options[2].Action, EJamMenuAction::RankUltimate);
     TestTrue(TEXT("choose signature"), Progression.SpendPoint(EJamSkill::FormALine));
-    TestEqual(TEXT("signature raised"), Progression.GetRank(EJamSkill::FormALine), 3);
+    TestEqual(TEXT("signature raised"), Progression.GetRank(EJamSkill::FormALine), 2);
     Sheet = JamScreens::Character(Progression, Settings);
     TestFalse(TEXT("maxed signature disabled"), Sheet.Options[1].bEnabled);
     TestFalse(TEXT("cannot spend ultimate"), Progression.SpendPoint(EJamSkill::LastJudgment));

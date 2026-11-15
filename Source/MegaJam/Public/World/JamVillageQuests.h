@@ -135,6 +135,10 @@ namespace JamVillageQuests
     MEGAJAM_API FString VerbName(const FJamQuestStep& Step);
     MEGAJAM_API FString TargetName(const FJamQuestStep& Step);
     MEGAJAM_API bool MakeStep(const FString& Verb, const FString& Target, int32 Count, FName Destination, FJamQuestStep& Out);
+    /** Monsters get tougher with village jobs paid in total: Resolve x(1 + 0.10 * jobs). */
+    MEGAJAM_API float ThreatScale(int32 TotalJobs);
+    /** Their attack damage grows further: x(1 + 0.06 * jobs), on top of ThreatScale's effect on Resolve. */
+    MEGAJAM_API float ThreatDamageScale(int32 TotalJobs);
 }
 
 /** Session quest rules. Rewards require objectives AND a return to the giver. Offers are stable once accepted. */
@@ -176,6 +180,13 @@ public:
     int32 LevelForQuest(int32 Index) const { return Level(GiverIndex(Index)); }
     /** Jobs paid by a giver, uncapped (encores keep counting). */
     int32 Jobs(int32 GiverIndex) const;
+    /** Jobs paid across every giver. */
+    int32 TotalJobs() const
+    {
+        int32 N = 0;
+        for (int32 i = 0; i < JamVillageQuests::Givers().Num(); ++i) { N += Jobs(i); }
+        return N;
+    }
     /** What turning this job in pays: its reward plus the giver's level bonus. */
     int32 Payout(int32 Index) const;
     /** Fixes3 #10b: encores a giver still has (2-4 each, seeded); at 0 they are done and give their afterglow. */

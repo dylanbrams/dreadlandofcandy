@@ -81,6 +81,9 @@ public:
 		FVector Offset = FVector(0.f, 0.f, 170.f);
 		float Until = 0.f;
 		bool bJagged = true;
+		/** Fixes4 #7: knight placards fly out from him; the offset grows by Drift (uu/s) since Born. */
+		FVector Drift = FVector::ZeroVector;
+		float Born = 0.f;
 	};
 	TArray<FWorldBubble> Bubbles;
 

@@ -7,6 +7,8 @@
 #include "Game/JamQuestMarker.h"
 #include "Game/JamPickup.h"
 #include "Game/JamNuisance.h"
+#include "AbilitySystemComponent.h"
+#include "Gas/JamResolveAttributeSet.h"
 #include "Game/JamPlayerState.h"
 #include "Game/JamNoteClient.h"
 #include "Engine/GameInstance.h"
@@ -356,10 +358,19 @@ void AJamGameMode::StartVillageStep()
 		for (AJamNuisance* N : Nuisances)
 		{
 			if (!N) { continue; }
+			// Monsters toughen with every village job paid. BeginPlay has already set Resolve, so scale the attributes now
+			// (Max first: PreAttributeChange clamps Resolve to it).
+			if (UAbilitySystemComponent* Asc = N->GetAbilitySystemComponent())
+			{
+				N->MaxResolveValue *= JamVillageQuests::ThreatScale(VillageQuests.TotalJobs());
+				Asc->SetNumericAttributeBase(UJamResolveAttributeSet::GetMaxResolveAttribute(), N->MaxResolveValue);
+				Asc->SetNumericAttributeBase(UJamResolveAttributeSet::GetResolveAttribute(), N->MaxResolveValue);
+			}
 			if (VillageDanger <= 0) { N->Attack.bAttacks = false; continue; }
 			N->Attack = JamAttack::For(EJamTargetKind::Goblin, false);
 			N->Attack.bAttacks = true;
 			N->Attack.Damage *= 1.f + 0.5f * (VillageDanger - 1);
+			N->Attack.Damage *= JamVillageQuests::ThreatDamageScale(VillageQuests.TotalJobs());
 			if (bAutoplay) { N->Attack.Damage *= 0.25f; }   // the unattended run must still finish
 			N->Attack.Cooldown = FMath::Max(1.2f, N->Attack.Cooldown - 0.4f * (VillageDanger - 1));
 		}

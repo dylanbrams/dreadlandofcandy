@@ -1040,6 +1040,38 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 		const AJamGameState* GS = GetJamGameState();
 		Bubble(GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
 	}
+	if (InHero && InHero->GetCastIndex() == 0) { SpawnKnightPlacards(InHero, Skill); }
+}
+
+void AJamGameMode::SpawnKnightPlacards(AJamHero* InHero, EJamSkill Skill)
+{
+	// Fixes4 #7 (attacks pipeline K02/K03): the knight's shouts throw formal placards out over the crowd.
+	AJamGameState* GS = GetJamGameState();
+	if (!GS || !InHero) { return; }
+	static const TCHAR* Words[] = { TEXT("EXCUSE ME!"), TEXT("ABSOLUTELY NOT!"), TEXT("TOO CLOSE!"), TEXT("MIND YOUR MANNERS!"),
+		TEXT("ELBOWS."), TEXT("INDOOR VOICE!"), TEXT("PER MY LAST LECTURE"), TEXT("WE'VE TALKED ABOUT THIS."), TEXT("I'M NOT ANGRY.") };
+	const float Now = GetWorld()->GetTimeSeconds();
+	const bool bRing = Skill == EJamSkill::LastJudgment;
+	const int32 Count = bRing ? 5 : 3;
+	const float BaseYaw = InHero->GetActorRotation().Yaw;
+	const int32 First = FMath::RandRange(0, UE_ARRAY_COUNT(Words) - 1);
+	GS->Bubbles.RemoveAll([Now](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid(); });
+	for (int32 i = 0; i < Count; ++i)
+	{
+		// A fan in front for the shouts, a full ring for the dome; each flies outward and up a little.
+		const float Yaw = bRing ? BaseYaw + 360.f * i / Count : BaseYaw + (i - (Count - 1) * 0.5f) * 28.f;
+		const FVector Dir = FRotator(0.f, Yaw, 0.f).Vector();
+		AJamGameState::FWorldBubble B;
+		B.LineId = TEXT("Placard");
+		B.Text = Words[(First + i) % UE_ARRAY_COUNT(Words)];
+		B.Anchor = InHero;
+		B.Offset = Dir * 120.f + FVector(0.f, 0.f, 150.f + 30.f * (i % 2));
+		B.Drift = Dir * 520.f + FVector(0.f, 0.f, 60.f);
+		B.Born = Now + 0.05f * i;
+		B.Until = Now + 1.3f;
+		B.bJagged = true;
+		GS->Bubbles.Add(B);
+	}
 }
 
 bool AJamGameMode::IsNotePromptUp() const
@@ -1203,7 +1235,10 @@ bool AJamGameMode::HandleNuisanceHit(AJamNuisance* Nuisance)
 	const bool bVillage = VillageCombat();
 	if (!Nuisance || !GS || !H || (GS->Shoot.GetState() != EJamShootState::Rolling && !bVillage) || !GS->Dignity.CanBeHit()) { return false; }
 	const FJamAttackTuning& A = Nuisance->Attack;
-	const bool bBroke = GS->Dignity.Hit(A.Damage, A.StaggerSeconds);
+	// Fixes4 #3: a higher-level hero shrugs more of it off.
+	const AJamPlayerState* HeroPS = GetHeroState();
+	const float Taken = A.Damage * (HeroPS ? JamProgression::DignityDamageScale(HeroPS->GetProgression().GetLevel()) : 1.f);
+	const bool bBroke = GS->Dignity.Hit(Taken, A.StaggerSeconds);
 	H->TakeHit(Nuisance->GetActorLocation(), A.Knockback, A.StaggerSeconds);
 	++HitsTaken;
 	JamSfx::Play(this, TEXT("Hero_Hit"));
@@ -1432,8 +1467,8 @@ void AJamGameMode::Bubble(EJamLineTrigger Pool, AActor* Anchor, const FVector& O
 	if (!GS || !Line || !Anchor) { return; }
 	const float Now = GetWorld()->GetTimeSeconds();
 	GS->Bubbles.RemoveAll([Now](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid(); });
-	// One bubble per speaker at a time: a new line replaces the old one.
-	GS->Bubbles.RemoveAll([Anchor](const AJamGameState::FWorldBubble& B) { return B.Anchor.Get() == Anchor; });
+	// One bubble per speaker at a time: a new line replaces the old one (flying placards keep flying).
+	GS->Bubbles.RemoveAll([Anchor](const AJamGameState::FWorldBubble& B) { return B.Anchor.Get() == Anchor && B.LineId != TEXT("Placard"); });
 	AJamGameState::FWorldBubble B;
 	B.LineId = Line->Id;
 	B.Text = Line->Text;

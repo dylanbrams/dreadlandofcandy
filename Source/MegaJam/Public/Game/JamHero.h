@@ -170,6 +170,10 @@ private:
 	TMap<FName, TObjectPtr<UAnimSequence>> RigAnims;
 	FName RigPlaying;
 	float RigOneShotUntil = -1.f;
+	/** Fixes4 #6: the barbarian's Rolling Pin Cyclone loops its clip and turns the whole rig several times. */
+	float SpinStartedAt = -1.f;
+	float SpinSeconds = 0.f;
+	float SpinTurns = 0.f;
 	int32 CastIndex = 0;
 	int32 CryCount = 0;
 	double LastCryAt = -100.0;
@@ -177,6 +181,7 @@ private:
 	void PlayCry(EJamSkill Skill, bool bAttack);
 	/** Plays a one-off (SwordRaise, Sigh) over the idle/walk choice until it ends. */
 	void PlayRigOneShot(FName Anim);
+	void StartCycloneSpin(float Seconds, float Turns);
 	void TickRig();
     void UpdateWeaponCarry(bool bForce = false);
     void UpdateShieldCarry();

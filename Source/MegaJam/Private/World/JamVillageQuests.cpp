@@ -14,6 +14,16 @@ const TArray<FJamVillageGiverDef>& JamVillageQuests::Givers()
     return G;
 }
 
+float JamVillageQuests::ThreatScale(int32 TotalJobs)
+{
+    return 1.f + 0.10f * FMath::Max(0, TotalJobs);
+}
+
+float JamVillageQuests::ThreatDamageScale(int32 TotalJobs)
+{
+    return 1.f + 0.06f * FMath::Max(0, TotalJobs);
+}
+
 const TArray<FJamVillageQuestDef>& JamVillageQuests::All()
 {
     static const TArray<FJamVillageQuestDef> Quests = []

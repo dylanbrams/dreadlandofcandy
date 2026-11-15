@@ -420,6 +420,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 		break;
 	default:
 		const_cast<AJamHero*>(this)->PlayRigOneShot(TEXT("LastJudgment"));
+		if (CastIndex == 3) { const_cast<AJamHero*>(this)->StartCycloneSpin(3.f, 4.f); }
 		Fx = SpawnClassShapeFx(Skill, N, Floor, Fwd, FLinearColor(1.f, 0.15f, 0.1f), 1.0f);
 		break;
 	}
@@ -516,8 +517,9 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(RefuseAction, EKeys::Gamepad_FaceButton_Right);
 	InputContext->MapKey(PauseAction, EKeys::Escape);
 	InputContext->MapKey(WriteAction, EKeys::T);
-	// Three active slots: Mouse 1 / Mouse 3 / R, RT / RB / LB.
+	// Three active slots: Mouse 1 / Mouse 3 (or Left Shift, for trackpads) / R, RT / RB / LB.
 	InputContext->MapKey(SkillActions[0], EKeys::MiddleMouseButton);
+	InputContext->MapKey(SkillActions[0], EKeys::LeftShift);
 	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
 	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_LeftShoulder);
 	InputContext->MapKey(SkillActions[2], EKeys::R);
@@ -775,6 +777,22 @@ void AJamHero::PlayRigOneShot(FName Anim)
 	RigOneShotUntil = GetWorld()->GetTimeSeconds() + FMath::Min((*Found)->GetPlayLength(), 1.6f);
 }
 
+void AJamHero::StartCycloneSpin(float Seconds, float Turns)
+{
+	const TObjectPtr<UAnimSequence>* Found = RigAnims.Find(TEXT("LastJudgment"));
+	if (!Found || !ArtRig->GetSkeletalMeshAsset()) { return; }
+	// The clip loops (about 0.9 s a pass) for the whole cyclone instead of one squeezed 1.6 s pass.
+	ArtRig->PlayAnimation(*Found, true);
+	ArtRig->SetPlayRate(FMath::Max(1.f, (*Found)->GetPlayLength() / 0.9f));
+	RigPlaying = TEXT("LastJudgment");
+	const float Now = GetWorld()->GetTimeSeconds();
+	RigOneShotUntil = Now + Seconds;
+	WeaponDrawUntil = Now + Seconds + 0.5f;
+	SpinStartedAt = Now;
+	SpinSeconds = Seconds;
+	SpinTurns = Turns;
+}
+
 void AJamHero::AddShake(float Amplitude, float Delay)
 {
 	PendingShakes.Add(FVector2D(GetWorld()->GetTimeSeconds() + Delay, Amplitude));
@@ -802,7 +820,14 @@ void AJamHero::TickRig()
 		// R4b: a hit tips him back for a moment, then he stands straight again, unmoved.
 		const float SinceHit = GetWorld()->GetTimeSeconds() - HitAt;
 		const float Tip = SinceHit < 0.45f ? FMath::Sin(PI * SinceHit / 0.45f) * 18.f : 0.f;
-		ArtRig->SetRelativeRotation(FQuat(FRotator(Tip, 0.f, 0.f)) * FQuat(FRotator(0.f, -90.f, 0.f)));
+		// Fixes4 #6: cyclone spin, eased in and out so it starts and lands facing forward.
+		float Spin = 0.f;
+		const float SpinAge = GetWorld()->GetTimeSeconds() - SpinStartedAt;
+		if (SpinStartedAt >= 0.f && SpinAge < SpinSeconds)
+		{
+			Spin = 360.f * SpinTurns * FMath::InterpEaseInOut(0.f, 1.f, FMath::Clamp(SpinAge / SpinSeconds, 0.f, 1.f), 2.f);
+		}
+		ArtRig->SetRelativeRotation(FQuat(FRotator(0.f, Spin, 0.f)) * FQuat(FRotator(Tip, 0.f, 0.f)) * FQuat(FRotator(0.f, -90.f, 0.f)));
 	}
 	if (!ArtRig->GetSkeletalMeshAsset() || GetWorld()->GetTimeSeconds() < RigOneShotUntil) { return; }
 	// Holding interact: he scrubs (teeth) or feeds (celery); otherwise walk or stand.

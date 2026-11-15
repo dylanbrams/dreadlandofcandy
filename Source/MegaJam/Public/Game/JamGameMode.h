@@ -74,6 +74,8 @@ public:
 
 	/** The hero cast a skill (cosmetic: Fenella may remark on the Lecture; autoplay counts casts). */
 	void NotifySkillCast(AJamHero* Hero, EJamSkill Skill);
+	/** Fixes4 #7: the knight's text placards flying out of each attack. */
+	void SpawnKnightPlacards(AJamHero* InHero, EJamSkill Skill);
 	/** Fixes3 #2: a jagged comic sound word over something an attack just hit, in the caster's class voice. */
 	void NotifyAttackHit(AJamHero* Caster, AActor* Victim);
 	/** Fixes3 #4: the candy crops planted with a bug stage's first wave; bugs eat them. */
