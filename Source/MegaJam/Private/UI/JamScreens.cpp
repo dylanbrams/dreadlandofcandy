@@ -259,7 +259,6 @@ TArray<FString> JamScreens::CreditLines(bool bDirectorsCut)
 		TEXT("Code, scripts and docs: Claude Code and OpenAI Codex"),
 		TEXT("Design briefs and generated 2D art: ChatGPT"),
 		TEXT("Music: Dylan, with ACE Studio"),
-		TEXT("Theme-song vocals: Dylan"),
 		TEXT("Character voices and sound effects: ElevenLabs"),
 		TEXT("Asset preparation: Blender, Python and FFmpeg"),
 		TEXT("3D models: Meshy, Hyper3D Rodin, fal.ai (Hunyuan3D)"),

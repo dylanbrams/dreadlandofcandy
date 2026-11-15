@@ -6,7 +6,7 @@ FName JamMusic::CueFor(const FJamMusicContext& C)
 	{
 	case EJamFilmPhase::Title:    return TEXT("quest_accepted");        // a solemn undertaking, for a film about rats
 	case EJamFilmPhase::Premiere: return TEXT("emotional_revelation");
-	case EJamFilmPhase::Credits:  return TEXT("theme_song");            // R2: the song plays here only, not in play
+	case EJamFilmPhase::Credits:  return TEXT("credits");               // Dylan, Nov 15: the generated score, not the theme song
 	default: break;
 	}
 	if (C.bBudgetOut) { return NAME_None; }   // she hums it instead (T21)
