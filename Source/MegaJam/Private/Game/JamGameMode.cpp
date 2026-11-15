@@ -1052,29 +1052,15 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 	case EJamSkill::LastJudgment:     JamSfx::Play(this, TEXT("Manners_Dome_Open")); JamSfx::Play(this, TEXT("LastJudgment_Contact"), 0.2f); JamSfx::Play(this, TEXT("Manners_Dome_Rebuke"), 0.6f); break;
 	default: break;
 	}
-	if (Skill == EJamSkill::Lecture)
-	{
-		Say(EJamLineTrigger::LectureCast);
-		// The lecture itself: one jagged line over the knight, sadder once she sulks (BUILD_SPEC 6, T19).
-		const AJamGameState* GS = GetJamGameState();
-		const bool bSad = GS && GS->GetShoot().IsSulking();
-		const EJamLineTrigger Pool = GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : (bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault);
-		// Only the knight actually lectures; the mage's volley, the archer's arrows and the barbarian's kneading stay silent.
-		if (Cast == 0) { Bubble(Pool, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true); }
-	}
-	else
-	{
-		// Fixes3 #25 put a lecture bubble on every attack; bubbles are for lecture-style attacks only
-		// (the knight's lecture and her Form a Line).
-		++SkillCasts;
-		if (Skill == EJamSkill::FormALine && Cast == 0)
-		{
-			const AJamGameState* GS = GetJamGameState();
-			Bubble(GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
-		}
-	}
-	if (InHero && InHero->GetCastIndex() == 0) { SpawnKnightPlacards(InHero, Skill); }
-	if (InHero) { SpawnComicCards(InHero, Skill); }
+	// Dylan, Nov 15: no dark text bubbles over the hero, ever (the lecture line, Form a Line line and the knight's
+	// placards are gone). The spiky comic cards are the lecture attacks' visual (Lecture and Form a Line are mostly
+	// shouting, so they need something to see), not every attack's.
+	if (Skill == EJamSkill::Lecture) { Say(EJamLineTrigger::LectureCast); }
+	else { ++SkillCasts; }
+	// The mage's soap and the archer's floss have their own effects; only the knight's shout and the barbarian's
+	// encouragement blast need the cards.
+	const bool bShoutedFormALine = Skill == EJamSkill::FormALine && (Cast == 0 || Cast == 3);
+	if (Skill == EJamSkill::Lecture || bShoutedFormALine) { SpawnComicCards(InHero, Skill); }
 }
 
 void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
