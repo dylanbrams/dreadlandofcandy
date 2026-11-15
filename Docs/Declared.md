@@ -66,6 +66,7 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | Meshy | Generated models, character rigs, animation library and text-to-motion clips |
 | Hyper3D Rodin | Generated environment, character and prop meshes |
 | fal.ai (Hunyuan3D) | Generated environment, prop and particle meshes |
+| Tripo (web interface, used by Dylan) | Generated much of the foliage and the second village's buildings (`Assets/DylanGeneration*`) |
 | ElevenLabs | English Fenella dialogue, cast battle cries and sound effects |
 | ACE Studio | Music, with Dylan's own vocals on the theme song |
 | Anthropic Claude Haiku | Typed director notes and generated premiere text; backend deployed Nov 14 |
