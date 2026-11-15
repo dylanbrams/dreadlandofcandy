@@ -2,7 +2,7 @@
 
     python -I find_stalls.py
 
-A stall = at least 0.5 s of exactly repeated frames. Natural 8-10 fps duplication gives runs of 3-4 frames, never 15.
+A stall = at least 0.3 s of exactly repeated frames. Natural 8-10 fps duplication gives runs of 3-4 frames, never 9.
 render_rough cuts stalls out of B-roll windows (voice-over, so nobody misses them).
 """
 import json
@@ -14,7 +14,7 @@ import numpy as np
 
 HERE = Path(__file__).parent
 FOOT = HERE.parent / "GameFootage"
-MIN_RUN = 15
+MIN_RUN = 9      # 0.3 s: without interpolation a hitch this long shows as a freeze
 
 
 def stalls(path):
@@ -43,7 +43,7 @@ def stalls(path):
 
 
 def main():
-    files = sorted(FOOT.glob("*.mp4"))
+    files = sorted(FOOT.glob("*.mp4")) + sorted((HERE / "raw" / "gameplay").glob("*.mp4"))
     out = {}
     with ProcessPoolExecutor(max_workers=4) as ex:
         for name, runs in ex.map(stalls, files):

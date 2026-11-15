@@ -36,7 +36,7 @@ TAIL = 0.25
 FONT = "C:/Windows/Fonts/arial.ttf"
 FONT_B = "C:/Windows/Fonts/arialbd.ttf"
 VERSION = "v2"
-FOOTAGE_REV = "stall2"   # bump to re-render every piece that shows game footage   # bump to invalidate every cached segment
+FOOTAGE_REV = "plain1"   # bump to re-render every piece that shows game footage   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
     ("slide: sound", [HERE / "graphics/slide_sound.png"]),
@@ -101,13 +101,29 @@ def make_card(path, title, body_lines, small=None, body_size=54):
     return path
 
 
-def fit_canvas(src, path, scale=2):
+GROW_FROM = 0.93          # a slide starts at 93% of the frame and grows to 100%: one direction, never past the edge
+
+
+def grow_expr(d):
+    comma = "\\,"   # an escaped comma: the expression sits inside a filter graph
+    f = f"({GROW_FROM}+{1 - GROW_FROM:.3f}*min(t/{d:.3f}{comma}1))"
+    return f"scale=w='trunc({W}*{f}/2)*2':h='trunc({H}*{f}/2)*2':eval=frame"
+
+
+def grow_overlay():
+    return "[1:v][s]overlay=x='(W-w)/2':y='(H-h)/2':shortest=1,format=yuv420p"
+
+
+BG_HEX = "0x121216"
+
+
+def fit_canvas(src, path, scale=1):
     """Contain-fit an image on a dark 2x canvas (for the slow push)."""
     im = Image.open(src).convert("RGB")
     cw, ch = W * scale, H * scale
     s = min(cw / im.width, ch / im.height)
     im = im.resize((int(im.width * s), int(im.height * s)), Image.LANCZOS)
-    c = Image.new("RGB", (cw, ch), (24, 20, 28))
+    c = Image.new("RGB", (cw, ch), (18, 18, 22))
     c.paste(im, ((cw - im.width) // 2, (ch - im.height) // 2))
     c.save(path)
     return path
@@ -197,7 +213,7 @@ def mask_filter(clip_mask):
 
 
 TOASTS = json.loads((DEVLOG / "GameFootage" / "toasts.json").read_text(encoding="utf-8"))
-UNSCANNED = ("LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4")
+UNSCANNED = ("LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4", "gameplay_0059.mp4")
 
 
 def window_mask(name, start, n):
@@ -253,7 +269,7 @@ def plan_windows(clips, D, keep_stalls=False):
         # interpolation drops repeated frames, so the rendered clip is shorter than the window: ask for 60% more
         # (the join is trimmed to exactly D frames), instead of padding the shortfall with a frozen frame
         n_ext = min(n * 1.6, sd - start - 0.05) if c.get("interp") else n
-        if keep_stalls or src.name in STATIC_UI or src.name in UNSCANNED:
+        if keep_stalls or src.name in STATIC_UI:
             out.append((c, src, start, n_ext))
         else:
             out.extend((c, src, s, l) for s, l in cut_stalls(src.name, start, n_ext, sd))
@@ -270,12 +286,15 @@ def footage_video(clips, D, out, tag, blur=False, keep_stalls=False):
                   f"scale={W}:{H}:flags=lanczos" + mask_filter(mask))
         else:
             vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(mask)
+        f = TMP / f"{tag}_{k}.mp4"
         if src.name in STATIC_UI:
-            vf = (f"scale={W}:{H}:flags=lanczos,zoompan=z='min(1+0.0005*on,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
-                  f":d=1:s={W}x{H}:fps={FPS}")
+            ff("-ss", f"{start:.3f}", "-t", f"{n:.3f}", "-i", src, "-f", "lavfi", "-i", f"color=c={BG_HEX}:s={W}x{H}:r={FPS}",
+               "-filter_complex", f"[0:v]scale={W}:{H},fps={FPS},{grow_expr(n)}[s];{grow_overlay()}", "-an", "-c:v", "libx264",
+               "-crf", "17", "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
+            files.append(f)
+            continue
         if blur:
             vf += ",gblur=sigma=28,eq=brightness=-0.14"
-        f = TMP / f"{tag}_{k}.mp4"
         ff("-ss", f"{start:.3f}", "-t", f"{n:.3f}", "-i", src, "-vf", vf, "-an", "-c:v", "libx264", "-crf", "17",
            "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
         if f.stat().st_size > 2000:                          # an empty result (interpolation had nothing to work with)
@@ -294,9 +313,16 @@ def concat_video(files, D, out, tag):
     lst = TMP / f"{tag}_list.txt"
     lst.write_text("\n".join(f"file '{f.as_posix()}'" for f in files), encoding="utf-8")
     # hold the last frame if the footage ran short
-    ff("-f", "concat", "-safe", 0, "-i", lst, "-vf", "tpad=stop_mode=clone:stop_duration=3", "-frames:v", N, "-an",
+    ff("-f", "concat", "-safe", 0, "-i", lst, "-vf", "tpad=stop_mode=clone:stop_duration=120", "-frames:v", N, "-an",
        "-c:v", "libx264", "-crf", "17", "-preset", "veryfast", "-pix_fmt", "yuv420p", out)
     return out
+
+
+def grow_still(img, d, out):
+    frames = max(2, round(d * FPS))
+    ff("-loop", 1, "-framerate", FPS, "-t", f"{d + 0.3:.3f}", "-i", img, "-f", "lavfi", "-i", f"color=c={BG_HEX}:s={W}x{H}:r={FPS}",
+       "-filter_complex", f"[0:v]scale={W}:{H},{grow_expr(d)}[s];{grow_overlay()}", "-frames:v", frames, "-an",
+       "-c:v", "libx264", "-crf", "17", "-preset", "veryfast", "-pix_fmt", "yuv420p", out)
 
 
 def still_video(imgs, D, out, tag, blur=False):
@@ -305,21 +331,14 @@ def still_video(imgs, D, out, tag, blur=False):
     for k, im in enumerate(imgs):
         big = fit_canvas(im, TMP / f"{tag}_c{k}.png")
         f = TMP / f"{tag}_s{k}.mp4"
-        frames = max(2, round(per * FPS))
-        vf = (f"zoompan=z='1+0.0003*on':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=1:s={W}x{H}:fps={FPS}"
-              + (",gblur=sigma=28,eq=brightness=-0.14" if blur else ""))
-        ff("-loop", 1, "-framerate", FPS, "-i", big, "-vf", vf, "-frames:v", frames, "-an", "-c:v", "libx264",
-           "-crf", "17", "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
+        grow_still(big, per, f)
         files.append(f)
     return concat_video(files, D, out, tag)
 
 
 def still_image_video(img, D, out, tag, blur=False):
     f = TMP / f"{tag}_still.mp4"
-    N = round(D * FPS) + 3
-    vf = "fps=30" + (",gblur=sigma=28,eq=brightness=-0.14" if blur else "")
-    ff("-loop", 1, "-framerate", FPS, "-i", img, "-vf", vf, "-frames:v", N, "-an", "-c:v", "libx264", "-crf", "17",
-       "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
+    grow_still(img, D, f)
     return concat_video([f], D, out, tag)
 
 
@@ -452,6 +471,40 @@ def composite(mode, person, bg, wav, D, out, wall):
     return out
 
 
+def nframes(p):
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=nb_frames", "-of", "csv=p=0", str(p)],
+                       capture_output=True, text=True)
+    s = r.stdout.strip().split(",")[0]
+    if s.isdigit():
+        return int(s)
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-count_frames", "-show_entries", "stream=nb_read_frames",
+                        "-of", "csv=p=0", str(p)], capture_output=True, text=True)
+    return int(r.stdout.strip().split(",")[0])
+
+
+def sync_piece(v, w):
+    """Make the picture and the voice of one piece exactly the same length (the shorter one is padded: silence for audio,
+    a held last frame for picture). Without this, tiny per-piece differences add up to seconds of drift over the video."""
+    fv = nframes(v)
+    with wave.open(str(w)) as wf:
+        fa = wf.getnframes() / wf.getframerate()
+    target = max(fv, math.ceil(fa * FPS - 1e-6))
+    changed = []
+    if fv < target:
+        tmp = v.with_suffix(".sync.mp4")
+        ff("-i", v, "-vf", "tpad=stop_mode=clone:stop_duration=60", "-frames:v", target, "-an", "-c:v", "libx264", "-crf", "17",
+           "-preset", "veryfast", "-pix_fmt", "yuv420p", tmp)
+        tmp.replace(v)
+        changed.append(f"picture +{target - fv}f")
+    T = target / FPS
+    if fa < T - 0.0005:
+        tmp = w.with_suffix(".sync.wav")
+        ff("-i", w, "-af", f"apad=whole_dur={T:.5f}", "-t", f"{T:.5f}", "-ar", 48000, "-ac", 2, "-c:a", "pcm_s16le", tmp)
+        tmp.replace(w)
+        changed.append(f"audio +{(T - fa) * 1000:.0f}ms")
+    return changed
+
+
 def migrate_old_names():
     """One-off: pieces rendered under position numbers (NNN.*) are renamed to their content hash (read from NNN.key)."""
     for k in sorted(SEG.glob("[0-9][0-9][0-9].key")):
@@ -468,7 +521,7 @@ def migrate_old_names():
 
 # ---------------------------------------------------------------- one segment
 def seg_key(job):
-    rev = FOOTAGE_REV if (job["g"].get("broll") or {}).get("clips") else ""
+    rev = FOOTAGE_REV if (job["g"].get("broll") or {}).get("clips") else ("grow1" if job["g"].get("frame") in ("B", "P") else "")
     return hashlib.sha1((VERSION + rev + json.dumps(job["g"], sort_keys=True, default=str) + job["section"]
                          + json.dumps(job.get("bg"), sort_keys=True, default=str)).encode()).hexdigest()[:10]
 
@@ -661,6 +714,11 @@ def main():
         s[1] += d
         t += d
     total = t
+    fixed = 0
+    for pv, pw in zip(parts_v, parts_w):
+        if sync_piece(pv, pw):
+            fixed += 1
+    print(f"sync: {fixed} of {len(parts_v)} pieces needed their picture/audio lengths matched")
     lst = TMP / "all_v.txt"
     lst.write_text("\n".join(f"file '{p.as_posix()}'" for p in parts_v), encoding="utf-8")
     ff("-f", "concat", "-safe", 0, "-i", lst, "-c", "copy", BUILD / "assembled_video.mp4")

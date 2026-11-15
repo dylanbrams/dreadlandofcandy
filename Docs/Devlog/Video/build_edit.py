@@ -144,37 +144,41 @@ S["10"] = dict(title="Ending", bed=BED("victory_take1"), segs=[
 # segment's visual, [(file, in, out)], status). Index times can be 1-2 s early: scrub edges at render.
 # status: ok | unconfirmed | missing (use a still/slide, capture later)
 GF = "../GameFootage/"
-FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"   # Dylan's own; never scanned for toasts -> mask always
+FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"
+NEW = "raw/gameplay/gameplay_0059.mp4"   # Dylan's 00:59 gameplay recording (Nov 16): never scanned for toasts, always blurred   # Dylan's own; never scanned for toasts -> mask always
 BROLL = [
-    ("molar-hills pan", [(FLY, 63, 75)], "ok (flythrough: mountains behind the trees, road off to the side)"),
+    # scenic: Dylan's flythrough (about 24 fps, steady)
+    ("molar-hills pan", [(FLY, 63, 75)], "ok (mountains behind the trees, road off to the side)"),
     ("over molar-hills", [(FLY, 100, 108)], "ok"),
-    ("attack word cards, then non-english", [("knight-run.mp4", 10, 20), ("village-improvise.mp4", 83, 92)], "ok (Turkish card, village-improvise 1:23)"),
-    ("knight placards", [("knight-run.mp4", 10, 20)], "ok (pacify counter 1/3-3/3; no Resolve bar visible)"),
+    ("world pan", [(FLY, 40, 52)], "ok (yellow road, smooth)"),
+    ("village from above", [("village-aerial.mp4", 0, 12), (FLY, 118, 130)], "ok"),
+    ("village", [(NEW, 327, 345), (NEW, 495, 519)], "ok (playthrough village square)"),
+    ("river, bridge", [(FLY, 56, 62), (NEW, 111, 123)], "ok (river with marshmallows; the fixed bridge)"),
+    ("marshmallows drifting", [(FLY, 56, 62), ("tour-high.mp4", 25, 35)], "ok"),
+    ("river before", [(FLY, 58, 61), ("tour-high.mp4", 40, 44)], "partial: pre-fix bridge (flythrough) vs fixed bridge; no before/after river"),
+    ("camera lifting", [(FLY, 108, 114)], "ok: camera inside foliage (the bug); the 18:29 build fades foliage instead of lifting the camera"),
+    # gameplay: Dylan's playthrough (about 26 fps, HUD, real moments). Any old gameplay does; the narration does not need the exact shot
+    ("attack word cards, then non-english", [(NEW, 372, 384), (PLAY, 142, 154)], "ok (generic gameplay)"),
+    ("knight placards", [(NEW, 27, 39)], "ok (pacify counter; generic gameplay)"),
+    ("first-hero", [(PLAY, 22, 34)], "ok (late build, not day one)"),
+    ("hud, fenella", [(PLAY, 34, 46)], "ok"),
+    ("rat in game", [(PLAY, 46, 58)], "ok"),
+    ("attack effects", [(NEW, 183, 195), (NEW, 375, 387), (PLAY, 130, 142)], "ok (generic gameplay)"),
+    ("word cards, attacks", [(NEW, 372, 390), (PLAY, 142, 154)], "ok (generic gameplay)"),
+    ("celery arrows", [(PLAY, 178, 190), (PLAY, 154, 166)], "ok (generic gameplay)"),
+    ("compass", [(PLAY, 34, 40), ("controls-screen.mp4", 0, 8)], "ok (HUD, controls screen; compass not clearly visible)"),
+    ("controls", [("controls-screen.mp4", 0, 10)], "ok"),
+    # features that exist only in the new trailer captures (stalls are cut out of these)
     ("improvise", [("village-improvise.mp4", 120, 130)], "ok"),
     ("typed proposal", [("village-propose.mp4", 40, 56)], "ok (silly refusal missing; outcome of proposal unclear)"),
-    ("encore offer", [("village-third.mp4", 35, 45), ("village-third.mp4", 105, 115), (PLAY, 210, 229)], "ok (Crowd, Visit; Rush = clock objective in playthrough)"),
-    ("film shoot", [("knight-run.mp4", 0, 4), ("barbarian-run.mp4", 6, 10)], "ok (clean slates; later seconds of these captures show untextured card quads)"),
-    ("cut pitch", [("knight-run.mp4", 43, 49), ("typed-note.mp4", 20, 35), ("budget-out.mp4", 10, 20)], "ok (CUT!, typed note, budget boxes)"),
-    ("first-hero", [("hero-close.mp4", 0, 3.5), ("knight-run.mp4", 0, 4)], "ok (late build, not day one)"),
-    ("early arena", [], "missing"),
-    ("hud, fenella", [("knight-run.mp4", 60, 64)], "ok"),
-    ("early problem", [], "missing"),
-    ("rat in game", [("knight-run.mp4", 20, 24), ("hero-close.mp4", 19, 24)], "ok"),
-    ("world pan", [("tour-high.mp4", 11, 19)], "ok"),
+    ("encore offer", [("village-third.mp4", 35, 45), ("village-third.mp4", 105, 115), (PLAY, 210, 229)], "ok (Crowd, Visit; Rush clock in the playthrough)"),
+    ("film shoot", [("knight-run.mp4", 0, 4), ("barbarian-run.mp4", 6, 10)], "ok (clean slates)"),
+    ("cut pitch", [(NEW, 51, 63), (NEW, 207, 219), ("budget-out.mp4", 10, 20)], "ok (CUT!, the typed-note screen from the playthrough, budget boxes)"),
     ("quest givers", [("village-improvise.mp4", 35, 45), ("village-improvise.mp4", 100, 115)], "ok (Mayor Bonbon, Baker Crumb)"),
-    ("village from above", [("village-aerial.mp4", 0, 12), ("tour-high.mp4", 95, 105)], "ok"),
-    ("village", [("tour-low.mp4", 97, 105), ("village-aerial.mp4", 0, 8)], "ok"),
-    ("attack effects", [("knight-run.mp4", 10, 20), ("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55), ("mage-run.mp4", 45, 50)], "ok"),
-    ("word cards, attacks", [("knight-run.mp4", 75, 80), ("mage-run.mp4", 45, 50), ("barbarian-run.mp4", 38, 46)], "ok"),
-    ("celery arrows", [("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55)], "ok"),
-    ("river, bridge", [("tour-high.mp4", 25, 35), ("tour-high.mp4", 40, 44)], "ok"),
-    ("marshmallows drifting", [("tour-high.mp4", 25, 35), ("tour-low.mp4", 40, 45)], "ok"),
+    ("early arena", [], "missing"),
+    ("early problem", [], "missing"),
     ("old title", [("title-idle.mp4", 0, 14)], "ok (OLD title screen missing)"),
     ("title screen", [("title-idle.mp4", 0, 14)], "ok"),
-    ("river before", [(FLY, 58, 61), ("tour-high.mp4", 40, 44)], "partial: pre-fix bridge (flythrough) vs fixed bridge; no before/after river"),
-    ("camera lifting", [("tour-low.mp4", 90, 97)], "ok: camera inside foliage (the bug); the 18:29 build fades foliage instead of lifting the camera"),
-    ("compass", [("knight-run.mp4", 60, 64), ("controls-screen.mp4", 0, 8)], "ok (HUD, controls screen; compass not clearly visible)"),
-    ("controls", [("controls-screen.mp4", 0, 10)], "ok"),
 ]
 
 def toast_mask(name, i, o):
@@ -190,9 +194,8 @@ def broll_for(visual):
         if key in v:
             out = []
             for f, a, b in clips:
-                c = dict(src=GF + f, i=a, o=b)
-                if f not in ("title-idle.mp4", "controls-screen.mp4"):
-                    c["interp"] = True   # gameplay captures repeat 30-70% of their frames: interpolate real motion at render
+                c = dict(src=(("../Video/" + f) if f.startswith("raw/") else GF + f), i=a, o=b)
+                # no interpolation: motion-warp smeared foliage and ghosted frame-blends were worse than the game's own low framerate
                 m = toast_mask(f, a, b)
                 if m:
                     c["mask_bottom_right"] = m   # blur bottom-right 11.5% x 9.5% of the frame (see Trailer/build_demo.py mask_toast)
