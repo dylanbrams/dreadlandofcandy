@@ -8,12 +8,12 @@ Read naturally; slide prompts are cues. Section 0 is a screen recording of `cold
 | --- | --- | --- |
 | 0 Prompt screen | None: typing sounds and your voice only | Silence makes the typing land |
 | 1 Unreasonable idea | `music/title-theme_take1.mp3`, hitting on the first word after the prompt screen | The title music, utterly sincere |
-| 2 Premise | `music/village_take1.mp3` | Introduces the game |
+| 2 Hook montage | `music/standard-combat_take1.mp3`, ducked under voice, up in the gaps | Energy for the features |
 | 3 Collaboration | `music/setting-out_take1.mp3` | The journey begins |
 | 4 Day one | `music/quest-accepted_take1.mp3` | |
 | 4b Asset audition | `music/mystery_take1.mp3` | Three rats, one choice |
 | 5 World gets bigger | `music/open-world-exploration_take1.mp3` | |
-| 6 Playtest | `music/standard-combat_take1.mp3` | |
+| 6 Playtest | `music/standard-combat_take2.mp3` | |
 | 7 The long night | `music/hard-combat_take1.mp3` | |
 | 8 Sunday morning | `music/village_take2.mp3`; `music/feeding-candy_take1.mp3` under the marshmallows | The candy world gets a coat of paint |
 | 8b "The river is terrible" | `music/boss-battle_take1.mp3` | A bug list scored as a boss fight |
@@ -32,7 +32,7 @@ Rule of thumb: stay on CAM for no more than 6–8 seconds, then cut away for at 
 | --- | --- | --- |
 | 0 Prompt screen | None: screen only | The prompt screen full frame |
 | 1 Unreasonable idea | "That's pretty much the story of the last four days"; "my sense of reasonable scope may be a little compromised" | B-ROLL: Molar Hills pan with the "older than them thar hills" caption under the whole MMO list |
-| 2 Premise | "This is The Dread Land of Candy" | B-ROLL: Fenella, a CUT!, the budget-out boxes. PIP on "You're trying to get a usable take" |
+| 2 Hook montage | "So what did I end up with?"; "The AI is on a leash"; "You're trying to get a usable take" | B-ROLL with game audio up after every beat: cards and battle cries, Resolve and pacified rat, improvise screen, typed proposal, encores, CUT!, typed note, budget boxes |
 | 3 Setup | First sentence | B-ROLL: Gantt chart, then the checkpoint slides |
 | 4 Day one | None | B-ROLL throughout: first-hero and autoplay captures, early screenshots |
 | 4b Asset audition | "I picked the Rodin rat" (react to it) | B-ROLL: rat comparison card, then the rat in game |
@@ -83,13 +83,43 @@ So my sense of reasonable scope may be a little compromised.
 
 [On screen, in the background while you talk: a slow pan across the Molar Hills with the caption **"I am older than them thar hills."** Don't mention it; let it sit there.]
 
-## 2. The game we actually made
+## 2. What's actually in it — the hook montage
 
-This is The Dread Land of Candy. You're a hero in a candy world, but you're also an actor in a rather chaotic production. Fenella, your faerie director, has opinions. There are scenes to shoot, creatures to deal with, takes to ruin, and a budget that eventually runs out.
+*Fast. Each beat is one sentence on CAM or PIP, then 3–5 seconds of the thing itself with the game audio up. Bed: `music/standard-combat_take1.mp3`, ducked under your voice and swelling in the gaps. About 75–90 seconds.*
 
-The joke is that the heroic fantasy and the film production happen at once. You aren't just saving the day. You're trying to get a usable take.
+So what did I end up with? Here's what's actually in it.
 
-[Gameplay: Fenella, a scene, a CUT, the budget gag. Record from the final build.]
+**The attacks talk back.** Every attack throws comic word cards into the world, in several languages, and the hero shouts battle cries in a hundred and fifty-four translations. The first time you use a skill, it's English. After that, you never know what you'll get.
+
+[B-ROLL: a signature attack with the cards tumbling out; then the same skill again with a non-English cry. Game audio up.]
+
+**Nothing dies.** You lecture, you feed things celery, you brush their teeth. Enemies don't have health, they have Resolve. Wear it down and they sit there, chastened.
+
+[B-ROLL: knight placards on a group, a Resolve bar emptying, a pacified rat. Fenella: "That rat just earned a supporting credit."]
+
+**The quests can be rewritten while you play.** Every villager has authored jobs. But you can also hit "Ask Fenella to improvise," and an AI writes two new ways to do the job, which really change what you do. Lecture the rats becomes pacify the rats, then feed them celery.
+
+[B-ROLL: the offer screen, the improvise button, the two new routes appearing, then playing one.]
+
+**Or write your own.** Type how you'd handle it, "bribe them with snacks so they go home," and the director turns it into a playable route. Or refuses, in character, if it's nonsense.
+
+[B-ROLL: typing a proposal, the route appearing; then a refusal for something silly.]
+
+**The AI is on a leash.** It only gets to choose from pieces we built and tested. It can't break the game, and if the server's down, you just get the authored version.
+
+[CAM: one sentence. This is the line that answers "won't the AI just break it?"]
+
+**And the villagers keep coming back.** Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.
+
+[B-ROLL: a giver's encore offer, a Rush timer, a Crowd swarm.]
+
+**The whole thing is a film shoot.** Quests are scenes. Fenella, your faerie director, yells CUT! and pitches rewrites. Takes fail and get retaken. You can type director's notes mid-scene, "make the goblins enormous and ashamed," and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.
+
+[B-ROLL: Fenella's CUT! pitch ("Test audiences wanted more rats. I asked two rats."), a typed note changing a scene, then the budget-out boxes. Hold on the boxes. Fenella: "Pretend the box is a rat. I believe in you. I have to."]
+
+[CAM:] You're not saving the day. You're trying to get a usable take.
+
+*Capture these from a build with the backend live: the improvise, proposal, director's-note and premiere beats call Claude Haiku on the server, and offline they fall back to authored content. Check the backend is up (`readyz`) before you record.*
 
 ## 3. The setup
 
