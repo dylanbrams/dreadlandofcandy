@@ -441,6 +441,33 @@ bool FJamQuestProposalTest::RunTest(const FString&)
     TestFalse(TEXT("empty reaction"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("Bribery! Wonderful."), TEXT("<>")), TEXT("council_rats"), 0, Plan));
     TestFalse(TEXT("not json"), JamVillageQuests::ReadProposal(TEXT("Let's stick to the script"), TEXT("council_rats"), 0, Plan));
 
+    // Fixes5 #4: a plan may visit a listed place first and carry a twist.
+    const FString Visit = TEXT(R"({"v":1,"source":"model","quest_id":"council_rats","label":"Ask first","pitch":"Consult the Mayor, then feed them.","reaction":"Research! Bold.","modifier":"rush","steps":[{"verb":"visit","target":"place","count":4,"destination":"GiverMayor","errand":"Ask the Mayor what rats like"},{"verb":"feed","target":"rat","count":3,"destination":"CampRiverbank","errand":""}]})");
+    FJamQuestPlan VisitPlan;
+    TestTrue(TEXT("visit plan parses"), JamVillageQuests::ReadProposal(Visit, TEXT("council_rats"), 0, VisitPlan));
+    TestEqual(TEXT("visit plan has two steps"), VisitPlan.Steps.Num(), 2);
+    if (VisitPlan.Steps.Num() == 2)
+    {
+        TestEqual(TEXT("first is a visit"), VisitPlan.Steps[0].Verb, EJamStageVerb::Visit);
+        TestEqual(TEXT("visits count once"), VisitPlan.Steps[0].Count, 1);
+        TestEqual(TEXT("errand becomes the task"), VisitPlan.Steps[0].Task, FString(TEXT("Ask the Mayor what rats like")));
+        TestFalse(TEXT("visit has an arrival line"), VisitPlan.Steps[0].Arrival.IsEmpty());
+    }
+    TestEqual(TEXT("modifier read"), VisitPlan.Modifier, EJamQuestModifier::Rush);
+    FJamQuestPlan Bad;
+    TestFalse(TEXT("unknown modifier refused"), JamVillageQuests::ReadProposal(Visit.Replace(TEXT("\"rush\""), TEXT("\"turbo\"")), TEXT("council_rats"), 0, Bad));
+    TestFalse(TEXT("unlisted place refused"), JamVillageQuests::ReadProposal(Visit.Replace(TEXT("GiverMayor"), TEXT("Village")), TEXT("council_rats"), 0, Bad));
+    TestFalse(TEXT("a camp is not a place"), JamVillageQuests::ReadProposal(Visit.Replace(TEXT("GiverMayor"), TEXT("CampMeadowWest")), TEXT("council_rats"), 0, Bad));
+    {
+        FJamVillageQuestLog VisitLog; VisitLog.Recruit(); VisitLog.FinishMain();
+        const int32 PlanPay = VisitLog.PlanReward(0, VisitPlan.Steps);
+        TestTrue(TEXT("visit plan selected"), VisitLog.SelectPlan(0, VisitPlan));
+        TestTrue(TEXT("visit plan accepted"), VisitLog.Accept(0));
+        TestEqual(TEXT("rush pays more on accept"), VisitLog.Offer(0).Reward, FMath::Clamp(FMath::RoundToInt(PlanPay * 1.5f), 50, 400));
+        TestTrue(TEXT("arrive"), VisitLog.Report(EJamStageVerb::Visit));
+        TestEqual(TEXT("then feed"), VisitLog.CurrentStep(0).Verb, EJamStageVerb::Interact);
+    }
+
     TestTrue(TEXT("big counts clamp"), JamVillageQuests::ReadProposal(Good.Replace(TEXT("\"count\":3"), TEXT("\"count\":50")), TEXT("council_rats"), 0, Plan));
     TestEqual(TEXT("count clamped to 8"), Plan.Steps[0].Count, 8);
     TestEqual(TEXT("total clamped to 12"), Plan.Steps[0].Count + Plan.Steps[1].Count, 12);

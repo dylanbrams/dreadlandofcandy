@@ -219,3 +219,22 @@ and brushing already require pacifying first).
 - Local check after GO: the note stub gets a `/v1/director/quest/propose` route
   returning the success example; `-autopropose="feed them"` makes autoplay
   submit one proposal and pick the plan.
+
+## Fixes5 #4 additions (Nov 15): visits, modifiers, third routes
+
+Still `v: 1`; the vocabulary the client sends must equal `proposals.vocabulary()` exactly, so client and server
+ship together (server prompt version `qp3`).
+
+- Vocabulary gains `{"verb":"visit","targets":["place"]}`, `places` (`[{id,name}]`: Signpost, the five village
+  givers, SetField, SetFort, SetOrchard; order fixed) and `modifiers` (`none rush gentle crowd`). Camps now include
+  CampRiverbank and CampMintGrove (they were in the world table but missing server-side, which made every
+  proposal fail the vocabulary check).
+- Plan reply gains `modifier` (unknown -> `none` on the server; the client refuses unknown values). Every step has
+  `errand`: for a visit, 1-60 characters shown as the step's task; otherwise empty.
+- A visit: count is always 1, destination a place (never a camp), does not count toward the two-camp limit. A plan
+  of only visits is refused.
+- Client: Accept applies a plan's modifier (Rush/Gentle/Crowd, same pay multipliers as authored routes). The offer
+  shows the twist and the real pay.
+- History entries may name any route (`[a-z_]{1,16}`): third routes record `crowd`, `rush`, `gentle`, `errand`.
+- Branches requests send only the `original` and `alternative` routes; each job's authored third route never goes
+  to the backend and stays on the menu after Fenella improvises.

@@ -178,7 +178,8 @@ bool FJamVillageQuestLog::Accept(int32 Index)
     if (ActiveIndex != INDEX_NONE || State(Index) != EJamVillageQuestState::Available) { return false; }
     AcceptedFrom = Offers[Index];
     // The giver's level shapes the job (Fixes2 #5); a player's plan is taken as written.
-    if (Offers[Index].Route != FName(TEXT("proposal"))) { Offers[Index] = JamVillageQuests::Prepare(Offers[Index], LevelForQuest(Index)); }
+    Offers[Index] = Offers[Index].Route != FName(TEXT("proposal")) ? JamVillageQuests::Prepare(Offers[Index], LevelForQuest(Index))
+        : JamVillageQuests::ApplyModifier(Offers[Index]);   // Fixes5 #4: plans keep their steps but take their twist
     ActiveIndex = Index; Done = 0; StepIndex = 0; Emit(EJamQuestEvent::Accepted, Index); return true;
 }
 bool FJamVillageQuestLog::Report(EJamStageVerb Verb)
@@ -423,7 +424,7 @@ bool FJamVillageQuestLog::SelectBranch(int32 Index, const FJamQuestBranch& Branc
     if (ActiveIndex != INDEX_NONE || State(Index) != EJamVillageQuestState::Available) { return false; }
     if (!Branch.Plan.IsEmpty())
     {
-        FJamQuestPlan Plan; Plan.Label = Branch.Label; Plan.Pitch = Branch.Variation.Pitch; Plan.Steps = Branch.Plan;
+        FJamQuestPlan Plan; Plan.Label = Branch.Label; Plan.Pitch = Branch.Variation.Pitch; Plan.Steps = Branch.Plan; Plan.Modifier = Branch.Modifier;
         return SelectPlan(Index, Plan);
     }
     if (Offers[Index].bEncore) { return Branch.Route == Offers[Index].Route; }   // one fixed route
@@ -596,6 +597,17 @@ namespace
         return S;
     }
 
+    // Fixes5 #4: Fenella on arriving somewhere a player's plan sent the hero (Jokes.md, "Villagers: third routes").
+    FString PlanArrival(FName Place)
+    {
+        static const TCHAR* const Lines[] = {
+            TEXT("Arrived. I have ticked it off a clipboard I do not own."),
+            TEXT("We are here. It was your idea, so it counts as plot."),
+            TEXT("Visited. The audience loves a scene where nothing explodes. Allegedly."),
+        };
+        return Lines[GetTypeHash(Place) % UE_ARRAY_COUNT(Lines)];
+    }
+
     const TCHAR* const GLevelNames[] = { TEXT("Stranger"), TEXT("Acquaintance"), TEXT("Friend"), TEXT("Bestie") };
 
     // Docs/Design/Jokes.md, "Villagers: encores".
@@ -633,6 +645,7 @@ FString JamVillageQuests::VerbName(const FJamQuestStep& Step)
 
 FString JamVillageQuests::TargetName(const FJamQuestStep& Step)
 {
+    if (Step.Verb == EJamStageVerb::Visit) { return TEXT("place"); }
     if (Step.Verb == EJamStageVerb::Collect)
     {
         return Step.PickupMesh == TEXT("SM_Celery") ? TEXT("celery") : Step.PickupMesh == TEXT("SM_LollyShard") ? TEXT("candy_shard") : TEXT("almond");
@@ -655,6 +668,15 @@ bool JamVillageQuests::MakeStep(const FString& Verb, const FString& Target, int3
     }
     else if (Verb == TEXT("feed")) { if (Target != TEXT("rat")) { return false; } S.Verb = EJamStageVerb::Interact; S.Target = EJamTargetKind::Rat; }
     else if (Verb == TEXT("brush")) { if (Target != TEXT("goblin")) { return false; } S.Verb = EJamStageVerb::Interact; S.Target = EJamTargetKind::Goblin; }
+    else if (Verb == TEXT("visit"))
+    {
+        // Fixes5 #4: a listed place only; ReadProposal sets the task from the plan's errand.
+        const FJamVisitPlace* Place = VisitPlaces().FindByPredicate([&](const FJamVisitPlace& P) { return P.Id == Destination; });
+        if (Target != TEXT("place") || !Place) { return false; }
+        Out = MakeVisit(Destination, *(TEXT("Visit ") + Place->Name), *(TEXT("Visited ") + Place->Name), TEXT(""));
+        Out.Arrival = PlanArrival(Destination);
+        return true;
+    }
     else if (Verb == TEXT("gather"))
     {
         S.Verb = EJamStageVerb::Collect; S.Target = EJamTargetKind::Almond;
@@ -748,7 +770,8 @@ TArray<FJamQuestStep> JamVillageQuests::ClampPlan(TArray<FJamQuestStep> In, int3
     TArray<FName> Camps;
     for (FJamQuestStep& S : In)
     {
-        S.Count = FMath::Clamp(S.Count, 1, 8);
+        S.Count = S.Verb == EJamStageVerb::Visit ? 1 : FMath::Clamp(S.Count, 1, 8);
+        if (S.Verb == EJamStageVerb::Visit) { Out.Add(S); continue; }   // Fixes5 #4: places are not camps
         // Feeding and brushing already start with pacifying: "pacify the rats, then feed them" is one step.
         if (!Out.IsEmpty() && Out.Last().Verb == EJamStageVerb::Pacify && S.Verb == EJamStageVerb::Interact
             && Out.Last().Target == S.Target && Out.Last().Destination == S.Destination)
@@ -773,6 +796,8 @@ TArray<FJamQuestStep> JamVillageQuests::ClampPlan(TArray<FJamQuestStep> In, int3
         if (Out[i].Count <= 0) { Out.SetNum(i); break; }
         Total += Out[i].Count;
     }
+    // A plan of nothing but visits is a walk, not a job.
+    if (!Out.ContainsByPredicate([](const FJamQuestStep& S) { return S.Verb != EJamStageVerb::Visit; })) { Out.Reset(); }
     return Out;
 }
 
@@ -792,6 +817,8 @@ bool JamVillageQuests::ReadProposal(const FString& Json, FName QuestId, int32 Le
         || !Root->TryGetStringField(TEXT("reaction"), Plan.Reaction)
         || !Root->TryGetArrayField(TEXT("steps"), Steps) || Steps->IsEmpty() || Steps->Num() > 8) { return false; }
     Plan.Label = CleanVillageText(Plan.Label, 40); Plan.Pitch = CleanVillageText(Plan.Pitch, 240); Plan.Reaction = CleanVillageText(Plan.Reaction, 160);
+    FString Modifier = TEXT("none");
+    if (Root->HasField(TEXT("modifier")) && (!Root->TryGetStringField(TEXT("modifier"), Modifier) || !ParseModifier(Modifier.ToLower(), Plan.Modifier))) { return false; }
     if (Plan.Label.IsEmpty() || Plan.Pitch.IsEmpty() || Plan.Reaction.IsEmpty()) { return false; }
     TArray<FJamQuestStep> Parsed;
     for (const TSharedPtr<FJsonValue>& Value : *Steps)
@@ -805,6 +832,12 @@ bool JamVillageQuests::ReadProposal(const FString& Json, FName QuestId, int32 Le
             || FMath::FloorToDouble(Count) != Count) { return false; }
         FJamQuestStep Step;
         if (!MakeStep(Verb.ToLower(), Target.ToLower(), int32(Count), FName(*Destination), Step)) { return false; }
+        FString Errand;
+        if (Step.Verb == EJamStageVerb::Visit && (*Object)->TryGetStringField(TEXT("errand"), Errand))
+        {
+            Errand = CleanVillageText(Errand, 60);
+            if (!Errand.IsEmpty()) { Step.Task = Errand; }
+        }
         Parsed.Add(MoveTemp(Step));
     }
     Plan.Steps = ClampPlan(MoveTemp(Parsed), Level);
@@ -849,13 +882,20 @@ bool FJamVillageQuestLog::SelectPlan(int32 Index, const FJamQuestPlan& Plan)
     if (ActiveIndex != INDEX_NONE || State(Index) != EJamVillageQuestState::Available || Plan.Steps.IsEmpty()) { return false; }
     const TArray<FJamQuestStep> Clamped = JamVillageQuests::ClampPlan(Plan.Steps, LevelForQuest(Index));
     if (Clamped.IsEmpty()) { return false; }
-    for (const FJamQuestStep& S : Clamped) { if (!CampAllows(S.Destination, S)) { return false; } }
+    for (const FJamQuestStep& S : Clamped)
+    {
+        const bool bOk = S.Verb == EJamStageVerb::Visit
+            ? JamVillageQuests::VisitPlaces().ContainsByPredicate([&](const FJamVisitPlace& P) { return P.Id == S.Destination; })
+            : CampAllows(S.Destination, S);
+        if (!bOk) { return false; }
+    }
     FJamVillageQuestDef& Q = Offers[Index];
     Q.Reward = PlanReward(Index, Clamped);
     SetFirst(Q, Clamped[0]);
     Q.Extra.Reset();
     for (int32 i = 1; i < Clamped.Num(); ++i) { Q.Extra.Add(Clamped[i]); }
     Q.Route = TEXT("proposal");
+    Q.Modifier = Plan.Modifier;
     const FString Pitch = CleanVillageText(Plan.Pitch, 240);
     if (!Pitch.IsEmpty()) { Q.Request = Pitch; }
     return true;
@@ -941,4 +981,35 @@ float JamVillageQuests::VisitRadius(FName Destination)
     case EJamLocationKind::Camp: return 500.f;
     default: return 280.f;
     }
+}
+
+const TArray<FJamVisitPlace>& JamVillageQuests::VisitPlaces()
+{
+    static const TArray<FJamVisitPlace> Places = {
+        { TEXT("Signpost"), TEXT("the signpost in the square") }, { TEXT("GiverMayor"), TEXT("Mayor Bonbon") },
+        { TEXT("GiverBaker"), TEXT("Baker Crumb") }, { TEXT("GiverGardener"), TEXT("Gardener Sprig") },
+        { TEXT("GiverDentist"), TEXT("Dr. Molar") }, { TEXT("GiverScout"), TEXT("Scout Taffy") },
+        { TEXT("SetField"), TEXT("the meadow film set") }, { TEXT("SetFort"), TEXT("the fort film set") },
+        { TEXT("SetOrchard"), TEXT("the orchard film set") },
+    };
+    return Places;
+}
+
+bool JamVillageQuests::ParseModifier(const FString& Name, EJamQuestModifier& Out)
+{
+    if (Name == TEXT("none")) { Out = EJamQuestModifier::None; return true; }
+    if (Name == TEXT("rush")) { Out = EJamQuestModifier::Rush; return true; }
+    if (Name == TEXT("gentle")) { Out = EJamQuestModifier::Gentle; return true; }
+    if (Name == TEXT("crowd")) { Out = EJamQuestModifier::Crowd; return true; }
+    return false;
+}
+
+FJamVillageQuestDef JamVillageQuests::FromPlan(const TArray<FJamQuestStep>& Steps, EJamQuestModifier Modifier, int32 Reward)
+{
+    FJamVillageQuestDef Q;
+    if (Steps.IsEmpty()) { return Q; }
+    SetFirstStep(Q, Steps[0]);
+    for (int32 i = 1; i < Steps.Num(); ++i) { Q.Extra.Add(Steps[i]); }
+    Q.Modifier = Modifier; Q.Reward = Reward; Q.Route = TEXT("proposal");
+    return Q;
 }

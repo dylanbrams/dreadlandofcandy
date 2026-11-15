@@ -113,6 +113,8 @@ void UJamNoteClient::RequestQuestBranches(const FJamVillageQuestDef& Quest, cons
     TArray<TSharedPtr<FJsonValue>> RouteValues;
     for (const FJamVillageQuestDef& Route : Routes)
     {
+        // Fixes5 #4: the backend rewrites exactly the original and alternative routes; the authored third stays home.
+        if (Route.Route != FName(TEXT("original")) && Route.Route != FName(TEXT("alternative"))) { continue; }
         const TSharedRef<FJsonObject> R = MakeShared<FJsonObject>();
         R->SetStringField(TEXT("route"), Route.Route.ToString());
         R->SetStringField(TEXT("verb"), Route.Verb == EJamStageVerb::Collect ? TEXT("collect") : Route.Verb == EJamStageVerb::Interact ? TEXT("interact") : TEXT("pacify"));
@@ -173,6 +175,7 @@ void UJamNoteClient::RequestQuestProposal(const FJamVillageQuestDef& Quest, int3
     AddVerb(TEXT("feed"), { TEXT("rat") });
     AddVerb(TEXT("brush"), { TEXT("goblin") });
     AddVerb(TEXT("gather"), { TEXT("almond"), TEXT("celery"), TEXT("candy_shard") });
+    AddVerb(TEXT("visit"), { TEXT("place") });   // Fixes5 #4
     Vocabulary->SetArrayField(TEXT("steps"), StepValues);
     TArray<TSharedPtr<FJsonValue>> CampValues;
     for (const FJamLocation* Camp : JamWorld::OfKind(EJamLocationKind::Camp))
@@ -194,6 +197,17 @@ void UJamNoteClient::RequestQuestProposal(const FJamVillageQuestDef& Quest, int3
         CampValues.Add(MakeShared<FJsonValueObject>(C));
     }
     Vocabulary->SetArrayField(TEXT("camps"), CampValues);
+    // Fixes5 #4: where a visit may go, and the job-wide twists (backend/director/proposals.py PLACES, MODIFIERS).
+    TArray<TSharedPtr<FJsonValue>> PlaceValues;
+    for (const FJamVisitPlace& Place : JamVillageQuests::VisitPlaces())
+    {
+        const TSharedRef<FJsonObject> P = MakeShared<FJsonObject>();
+        P->SetStringField(TEXT("id"), Place.Id.ToString());
+        P->SetStringField(TEXT("name"), Place.Name);
+        PlaceValues.Add(MakeShared<FJsonValueObject>(P));
+    }
+    Vocabulary->SetArrayField(TEXT("places"), PlaceValues);
+    Vocabulary->SetArrayField(TEXT("modifiers"), Strings({ TEXT("none"), TEXT("rush"), TEXT("gentle"), TEXT("crowd") }));
     const TSharedRef<FJsonObject> Limits = MakeShared<FJsonObject>();
     Limits->SetNumberField(TEXT("max_steps"), 3);
     Limits->SetNumberField(TEXT("max_count"), 8);

@@ -8,6 +8,9 @@ enum class EJamQuestEvent : uint8 { Recruited, MainComplete, Accepted, Progress,
 
 struct FJamVillageGiverDef { FName Location; FString Name; };
 
+/** Fixes5 #4: somewhere a player's plan may visit (the backend's PLACES, same order). */
+struct FJamVisitPlace { FName Id; FString Name; };
+
 /** Fixes5 #4: a job-wide twist on a route. Rush: a clock per step from arrival. Gentle: any hit restarts the step.
  *  Crowd: twice the targets. Each pays more (ModifierRewardScale). */
 enum class EJamQuestModifier : uint8 { None, Rush, Gentle, Crowd };
@@ -67,6 +70,8 @@ struct FJamQuestPlan
     FString Pitch;
     FString Reaction;
     TArray<FJamQuestStep> Steps;
+    /** Fixes5 #4: the player's twist ("do it fast" = Rush). */
+    EJamQuestModifier Modifier = EJamQuestModifier::None;
 };
 
 /** Narrow hook for authored tools or a future generated-quest service. Gameplay stays within a recipe. */
@@ -87,6 +92,8 @@ struct FJamQuestBranch
     TArray<FJamQuestStep> Plan;
     /** Shown reward when set (plans, encores); otherwise the screen scales the base reward by count. */
     int32 Reward = 0;
+    /** Fixes5 #4: a plan's twist, carried to SelectPlan. */
+    EJamQuestModifier Modifier = EJamQuestModifier::None;
 };
 
 struct FJamQuestOfferView
@@ -150,6 +157,12 @@ namespace JamVillageQuests
     MEGAJAM_API float RushSeconds(const FJamQuestStep& Step);
     /** A visit step: walk to Destination (any location). */
     MEGAJAM_API FJamQuestStep MakeVisit(FName Destination, const TCHAR* Task, const TCHAR* Objective, const TCHAR* Arrival);
+    /** Fixes5 #4: places a player's plan may visit, in contract order. */
+    MEGAJAM_API const TArray<FJamVisitPlace>& VisitPlaces();
+    /** "none" "rush" "gentle" "crowd"; false for anything else. */
+    MEGAJAM_API bool ParseModifier(const FString& Name, EJamQuestModifier& Out);
+    /** A plan's steps as a job (for previews): first step, extras, modifier, reward. */
+    MEGAJAM_API FJamVillageQuestDef FromPlan(const TArray<FJamQuestStep>& Steps, EJamQuestModifier Modifier, int32 Reward);
     /** Distance (uu) at which a visit counts as arrived. */
     MEGAJAM_API float VisitRadius(FName Destination);
     /** A giver's repeatable encore after Jobs paid jobs (built at least at Friend); bigger every time. */
@@ -158,7 +171,7 @@ namespace JamVillageQuests
     MEGAJAM_API bool ReadProposal(const FString& Json, FName QuestId, int32 Level, FJamQuestPlan& Out);
     /** Clamp plan steps: count 1-8, total 12, steps by level, pacify+feed/brush of the same target merged. */
     MEGAJAM_API TArray<FJamQuestStep> ClampPlan(TArray<FJamQuestStep> Steps, int32 Level);
-    /** Contract names: "pacify" "feed" "brush" "gather"; "rat" "goblin" "bug" "almond" "celery" "candy_shard". */
+    /** Contract names: "pacify" "feed" "brush" "gather" "visit"; "rat" "goblin" "bug" "almond" "celery" "candy_shard" "place". */
     MEGAJAM_API FString VerbName(const FJamQuestStep& Step);
     MEGAJAM_API FString TargetName(const FJamQuestStep& Step);
     MEGAJAM_API bool MakeStep(const FString& Verb, const FString& Target, int32 Count, FName Destination, FJamQuestStep& Out);

@@ -26,6 +26,11 @@ Camps Riverbank and Mint Grove now used. Offer screen takes 4 routes (`QuestBran
 third. Autoplay `-autobranch=2` plays third routes: Crowd, Visit, Rush (no timeout) and Crowd seen paying out over 4
 jobs; run stopped when the bot snagged on an edge heading to Mint Grove. Gentle not seen live (autoplay ignores Gentle
 hits). Not packaged.
+- Player plans (Propose a plan) can now visit places and carry a Rush/Gentle/Crowd twist (contract in
+  `QuestBranches.md`, "Fixes5 #4 additions"). Fixed on the way: improvise sent 3 routes (backend wants 2, so it always
+  fell back); the backend camp list lacked Riverbank and Mint Grove, so every proposal failed its vocabulary check;
+  the backend refused third-route history. Backend committed in its own repo (`backend/`, 9695393, 156 pytest pass),
+  **not deployed: Dylan deploys it**; until then proposals still fall back (improvise fix is client-only).
 - Seen in a 70 s autoplay shot: camera inside a giant teal candy prop on the way to The Almond Affair.
 
 ## Fixes4 #1-8 (Nov 15, `Docs/Feedback/Fixes4.txt`)

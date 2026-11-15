@@ -818,10 +818,15 @@ void AJamGameMode::ResolveVillageProposal(int32 Serial, int32 Index, bool bOk, c
         Branch.Route = TEXT("proposal");
         Branch.Label = TEXT("Your plan: ") + Plan.Label;
         Branch.Plan = Plan.Steps;
-        Branch.Objective = JamVillageFlow::PlanText(Plan.Steps);
+        Branch.Modifier = Plan.Modifier;
+        // Fixes5 #4: shown as it will play, twist and pay included (Accept applies the same modifier).
+        const FJamVillageQuestDef Ready = JamVillageQuests::ApplyModifier(
+            JamVillageQuests::FromPlan(Plan.Steps, Plan.Modifier, VillageQuests.PlanReward(Index, Plan.Steps)));
+        const FString Rule = JamVillageQuests::ModifierRule(Plan.Modifier);
+        Branch.Objective = (Rule.IsEmpty() ? FString() : Rule + TEXT(". ")) + JamVillageFlow::PlanText(JamVillageQuests::Steps(Ready));
         Branch.Variation.Pitch = Plan.Pitch;
         for (const FJamQuestStep& S : Plan.Steps) { Branch.Variation.Count += S.Count; }
-        Branch.Reward = VillageQuests.PlanReward(Index, Plan.Steps);
+        Branch.Reward = Ready.Reward;
         QuestOffer.Branches.Add(MoveTemp(Branch));
         // On the screen itself: captions hide while a menu is open.
         QuestOffer.Status = TEXT("Fenella: ") + Plan.Reaction;
@@ -840,12 +845,12 @@ TArray<FString> AJamGameMode::ProposalSuggestions() const
     const FJamQuestStep First = JamVillageQuests::FirstStep(VillageQuests.Offer(OfferedQuest));
     if (First.Verb == EJamStageVerb::Collect)
     {
-        return { TEXT("Gather twice as much"), TEXT("Calm the locals first, then gather"), TEXT("Gather celery instead and share it") };
+        return { TEXT("Gather twice as much"), TEXT("Ask Scout Taffy where to look, then gather"), TEXT("Do it fast for extra pay") };
     }
     switch (First.Target)
     {
-    case EJamTargetKind::Goblin: return { TEXT("Calm the goblins and brush their teeth"), TEXT("Bribe them with candy shards"), TEXT("Visit two goblin camps") };
-    case EJamTargetKind::Bug:    return { TEXT("Calm the bugs, then tidy up the candy shards"), TEXT("Lecture the bugs twice as hard"), TEXT("Gather candy shards to distract them") };
-    default:                     return { TEXT("Calm the rats, then feed them celery"), TEXT("Bribe them with celery"), TEXT("Lecture rats at two camps") };
+    case EJamTargetKind::Goblin: return { TEXT("Get advice from Dr. Molar, then brush them"), TEXT("Bribe them with candy shards"), TEXT("Brush them without getting hit") };
+    case EJamTargetKind::Bug:    return { TEXT("Fetch the call sheet from the orchard set first"), TEXT("Lecture the bugs twice as hard"), TEXT("Calm the whole swarm, all of them") };
+    default:                     return { TEXT("Calm the rats, then feed them celery"), TEXT("Ask the Mayor first, then bribe them"), TEXT("Do it fast for extra pay") };
     }
 }

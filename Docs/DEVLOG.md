@@ -484,3 +484,6 @@ Follow-up: Dylan wanted the cards in the game world, not the HUD. Rebuilt as `AJ
 Every village job gained a third authored route: a new Visit step (walk somewhere, Fenella comments on arrival) and
 Rush / Gentle / Crowd modifiers, using the two camps nobody visited. Text only, no new voice. 86/86 tests; autoplay on
 the third routes paid out 4 jobs (Crowd, Visit, Rush) before the bot snagged on terrain near Mint Grove.
+Then player plans: the backend learned "visit" (signpost, villagers, film sets) and Rush/Gentle/Crowd twists, and two
+contract mismatches turned up (improvise sending three routes; the backend missing two camps, which had quietly broken
+every proposal). Both fixed; backend needs a deploy.
