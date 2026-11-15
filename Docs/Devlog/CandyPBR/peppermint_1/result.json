@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287eb/yvrFQ33vYFyF3GizkqJgA_2fMTZFLA.png",
+      "content_type": "image/png",
+      "file_name": "yvrFQ33vYFyF3GizkqJgA_2fMTZFLA.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/VfSIPi4Rx5S8CS7IkkbUD_BUoiH9oR.png",
+      "content_type": "image/png",
+      "file_name": "VfSIPi4Rx5S8CS7IkkbUD_BUoiH9oR.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/mlSGOk1c8KMi6JFKA5T1Q_eO90RULN.png",
+      "content_type": "image/png",
+      "file_name": "mlSGOk1c8KMi6JFKA5T1Q_eO90RULN.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/8Kp9ivJq_BhI2a4gqkhej_KWIcvX7B.png",
+      "content_type": "image/png",
+      "file_name": "8Kp9ivJq_BhI2a4gqkhej_KWIcvX7B.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/7Q_W7B302CwAJgRRMUo42_STrE8Vrf.png",
+      "content_type": "image/png",
+      "file_name": "7Q_W7B302CwAJgRRMUo42_STrE8Vrf.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/7qKYyZMI5ZfJKtIsqlCDh_Kk9ksJgP.png",
+      "content_type": "image/png",
+      "file_name": "7qKYyZMI5ZfJKtIsqlCDh_Kk9ksJgP.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261115,
+  "prompt": "Top-down orthographic view of a seamless PBR ground material featuring rounded peppermint candy cobblestones. The surface is composed of thick ivory stones decorated with vibrant raspberry red spiral stripes. The gaps between the candies are filled with narrow cocoa powder mortar joints. The candy stones feature chunky, whimsical storybook shapes with smooth, gently worn edges and a subtle sugary crystalline sheen. Perfectly flat surface, uniform bright lighting, high-resolution 4k photograph quality, vibrant candy fantasy palette. Clear texture readability for game environments, consistent material depth, macro detail of sweets, delightful confectionery aesthetic.",
+  "timings": {
+    "texture_generation": 7.906616833000953,
+    "pbr_prediction": 7.237171574999593
+  }
+}

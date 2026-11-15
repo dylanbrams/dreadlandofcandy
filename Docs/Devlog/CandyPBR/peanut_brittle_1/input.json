@@ -1,0 +1,14 @@
+{
+  "prompt": "Seamless game environment PBR ground material, top down orthographic flat surface: peanut butter brittle paving bricks, golden caramel rectangular staggered bricks embedded with crushed peanuts, narrow dark caramel joints, chunky storybook shapes, gently worn edges. Cohesive whimsical candy fantasy, readable at gameplay distance, no perspective, no cast shadows, no text, no objects above surface.",
+  "image_size": "square_hd",
+  "seed": 261115,
+  "tiling_mode": "both",
+  "maps": [
+    "basecolor",
+    "normal",
+    "roughness",
+    "height",
+    "metalness"
+  ],
+  "output_format": "png"
+}

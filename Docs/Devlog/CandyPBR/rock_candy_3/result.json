@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287d5/n7MC8vvGzna3gxGjZbZnK_DQZV9PCR.png",
+      "content_type": "image/png",
+      "file_name": "n7MC8vvGzna3gxGjZbZnK_DQZV9PCR.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e5/VHJSYW51kj_KSOvGOy5j1_PT2EYOuG.png",
+      "content_type": "image/png",
+      "file_name": "VHJSYW51kj_KSOvGOy5j1_PT2EYOuG.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e5/fo9PZ3Por81lgrKkhFwFo_OayktG9E.png",
+      "content_type": "image/png",
+      "file_name": "fo9PZ3Por81lgrKkhFwFo_OayktG9E.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e5/7a3waTI_X8-jcIIBzu3QQ_ZfGvPSbT.png",
+      "content_type": "image/png",
+      "file_name": "7a3waTI_X8-jcIIBzu3QQ_ZfGvPSbT.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e5/sDYRde_ux4a0agWX0nAmT_AG2yM8zH.png",
+      "content_type": "image/png",
+      "file_name": "sDYRde_ux4a0agWX0nAmT_AG2yM8zH.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e5/xuenHOvABfEAT3xi_0WgL_lzOhaUz8.png",
+      "content_type": "image/png",
+      "file_name": "xuenHOvABfEAT3xi_0WgL_lzOhaUz8.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261117,
+  "prompt": "Top-down orthographic view of a seamless PBR ground material consisting of densely packed tiny angular translucent rock candy gravel. A vibrant mix of turquoise, rose, lilac, and honey-colored crystals scattered across a flat surface. Fine white sugar dust fills the crevices between handcrafted varied crystal sizes. High-resolution 4k photograph style with soft, uniform global illumination and no cast shadows. Clean, readable texture for a whimsical candy fantasy game environment. The palette is composed of restrained pastel tones. Extremely detailed crystalline facets and subtle subsurface scattering, perfectly flat composition with no perspective distortion, professional game art quality.",
+  "timings": {
+    "texture_generation": 9.93935832399984,
+    "pbr_prediction": 154.27282062800077
+  }
+}

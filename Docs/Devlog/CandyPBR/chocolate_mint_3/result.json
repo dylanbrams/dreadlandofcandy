@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/LgsjHciOQsjIxG9rdieab_m2D5nj3K.png",
+      "content_type": "image/png",
+      "file_name": "LgsjHciOQsjIxG9rdieab_m2D5nj3K.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/6oF0h5n1LDM0SNXK9ljwb_CYR3xyP7.png",
+      "content_type": "image/png",
+      "file_name": "6oF0h5n1LDM0SNXK9ljwb_CYR3xyP7.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/l1Ana8oRjVqSZyQdKEcBZ_I2REwLN6.png",
+      "content_type": "image/png",
+      "file_name": "l1Ana8oRjVqSZyQdKEcBZ_I2REwLN6.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/p9mWMmol80B5frwSgaHKz_P5vwdnrB.png",
+      "content_type": "image/png",
+      "file_name": "p9mWMmol80B5frwSgaHKz_P5vwdnrB.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/XxzzvXy-KV0xPXJT8ISIj_cltZp8wZ.png",
+      "content_type": "image/png",
+      "file_name": "XxzzvXy-KV0xPXJT8ISIj_cltZp8wZ.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/NaPf3Pir38G-_kgwultJ-_CIVZEq3F.png",
+      "content_type": "image/png",
+      "file_name": "NaPf3Pir38G-_kgwultJ-_CIVZEq3F.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261117,
+  "prompt": "Top-down orthographic view of a seamless fantasy ground material. Large, rounded dark chocolate cobblestones featuring elegant mint green marbled swirls and embedded pale mint chips. Handcrafted stones of varying sizes are nestled into narrow cocoa powder mortar joints. Professional PBR texture, flat surface, uniform ambient lighting, and high-resolution 4k detail. Whimsical candy aesthetic with a restrained pastel color palette. Clean, readable game environment texture, sharp focus, consistent matte finish, vibrant cocoa and mint tones. High-quality digital render, intricate edible stone details, no perspective distortion.",
+  "timings": {
+    "texture_generation": 8.83050533000096,
+    "pbr_prediction": 7.987599330001103
+  }
+}

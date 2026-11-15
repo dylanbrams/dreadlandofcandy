@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e6/2Y7PUfOvR4Sn_wFFmZS9I_ClHLjfnj.png",
+      "content_type": "image/png",
+      "file_name": "2Y7PUfOvR4Sn_wFFmZS9I_ClHLjfnj.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/lSg8YSTwKBzMPBoB3iTF3_rbQDox7Y.png",
+      "content_type": "image/png",
+      "file_name": "lSg8YSTwKBzMPBoB3iTF3_rbQDox7Y.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/WnseOcnYB_SrQvpBOWDWr_Y9E4G1En.png",
+      "content_type": "image/png",
+      "file_name": "WnseOcnYB_SrQvpBOWDWr_Y9E4G1En.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/USUXS_i2v1nmGr_N6LokJ_bQ5rraeQ.png",
+      "content_type": "image/png",
+      "file_name": "USUXS_i2v1nmGr_N6LokJ_bQ5rraeQ.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/U2TL743y-rddyrX7U61FB_4Fcb4JEf.png",
+      "content_type": "image/png",
+      "file_name": "U2TL743y-rddyrX7U61FB_4Fcb4JEf.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/U6Q8KuNB1iVg3pAwZuorX_sXH7YbLb.png",
+      "content_type": "image/png",
+      "file_name": "U6Q8KuNB1iVg3pAwZuorX_sXH7YbLb.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261115,
+  "prompt": "Top down orthographic photograph of a seamless PBR ground material. Rectangular paving bricks made of golden peanut butter brittle, arranged in a staggered running bond pattern. The bricks are embedded with visible crushed peanut pieces and coarse salt crystals. Narrow joints filled with dark, glossy liquid caramel. Chunky, whimsical storybook aesthetic with gently worn, rounded edges. High-resolution 4k texture, flat surface, uniform studio lighting, neutral exposure. Vibrant candy fantasy colors with a matte sugary finish. Perfectly flat plane with no perspective distortion, no cast shadows, and no height variations, ensuring maximum readability for game environment design.",
+  "timings": {
+    "texture_generation": 9.22204690000035,
+    "pbr_prediction": 24.7411452489996
+  }
+}

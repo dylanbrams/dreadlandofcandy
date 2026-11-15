@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287d6/c7D6k8K3Bf_sNxK8fR2GT_Ncm7M5vr.png",
+      "content_type": "image/png",
+      "file_name": "c7D6k8K3Bf_sNxK8fR2GT_Ncm7M5vr.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e7/RJEAFUDFfV1iIeZYb8csF_wYRGF92X.png",
+      "content_type": "image/png",
+      "file_name": "RJEAFUDFfV1iIeZYb8csF_wYRGF92X.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e7/eLnp8a94pBdxwJUC6ZHve_rbw38LiU.png",
+      "content_type": "image/png",
+      "file_name": "eLnp8a94pBdxwJUC6ZHve_rbw38LiU.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e7/-bcVieScKrnS3GiB218j5_caxaRu0g.png",
+      "content_type": "image/png",
+      "file_name": "-bcVieScKrnS3GiB218j5_caxaRu0g.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e7/-MLNtv-QhmovujrsH7G3z_tWvf68oJ.png",
+      "content_type": "image/png",
+      "file_name": "-MLNtv-QhmovujrsH7G3z_tWvf68oJ.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e7/RinfeboVlF50B57wwFzsy_KnLGXYcK.png",
+      "content_type": "image/png",
+      "file_name": "RinfeboVlF50B57wwFzsy_KnLGXYcK.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261115,
+  "prompt": "A high-resolution, 4k top-down orthographic PBR ground texture featuring a dense layer of tiny angular translucent rock candy gravel. The surface is composed of chunky, whimsical crystal shapes in vibrant shades of turquoise, rose, lilac, and honey. Fine white sugar dust is settled into the crevices between the stones. The texture has a flat, walkable profile with gently worn edges and a soft matte glow. Uniform, diffused lighting ensures a clean, readable material suitable for a fantasy game environment. The composition is a seamless, cohesive spread of candy minerals with no perspective or directional shadows, capturing a vibrant and magical storybook aesthetic.",
+  "timings": {
+    "texture_generation": 9.903518306000478,
+    "pbr_prediction": 171.89973609200024
+  }
+}

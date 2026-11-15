@@ -1,0 +1,12 @@
+{
+  "status": "IN_QUEUE",
+  "request_id": "01a1dddc-cae9-7702-99a2-e46c89526276",
+  "response_url": "https://queue.fal.run/fal-ai/patina/requests/01a1dddc-cae9-7702-99a2-e46c89526276",
+  "status_url": "https://queue.fal.run/fal-ai/patina/requests/01a1dddc-cae9-7702-99a2-e46c89526276/status",
+  "cancel_url": "https://queue.fal.run/fal-ai/patina/requests/01a1dddc-cae9-7702-99a2-e46c89526276/cancel",
+  "logs": null,
+  "metrics": {},
+  "queue_position": 0,
+  "user_queue_position": 0,
+  "user_queued_count": 1
+}

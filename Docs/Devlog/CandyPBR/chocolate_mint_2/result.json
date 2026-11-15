@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ef/JEiFLm1jG5i95FWWAZpT7_QVksKHjl.png",
+      "content_type": "image/png",
+      "file_name": "JEiFLm1jG5i95FWWAZpT7_QVksKHjl.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/JGi3Gqwt9vb5jNNZM_R3-_yKKp2fB9.png",
+      "content_type": "image/png",
+      "file_name": "JGi3Gqwt9vb5jNNZM_R3-_yKKp2fB9.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/7lo48TbpIg5jD7K9WJ0l5_RQXvYSm8.png",
+      "content_type": "image/png",
+      "file_name": "7lo48TbpIg5jD7K9WJ0l5_RQXvYSm8.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/ikDT1htkFUfvx5sis23KM_87BUJtYb.png",
+      "content_type": "image/png",
+      "file_name": "ikDT1htkFUfvx5sis23KM_87BUJtYb.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/a0rFHq_ToPgQ13ULLMj5p_Z6mEXwYC.png",
+      "content_type": "image/png",
+      "file_name": "a0rFHq_ToPgQ13ULLMj5p_Z6mEXwYC.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/RAiW7m4dAp7lQ69kxIhLK_oS7030rk.png",
+      "content_type": "image/png",
+      "file_name": "RAiW7m4dAp7lQ69kxIhLK_oS7030rk.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261116,
+  "prompt": "A top-down orthographic high-resolution 4k PBR ground texture featuring rounded dark chocolate cobblestones. The stones are detailed with elegant mint green marbled swirls and tiny pale mint confectionery chips embedded in the surface. Narrow cocoa-colored mortar joints fill the gaps between the cobblestones and smaller irregular chocolate pieces. The entire surface has a subtle, crystalline sugar sparkle that catches the uniform studio lighting. Whimsical candy fantasy aesthetic, perfectly flat game environment material, clean macro photography, consistent color palette of deep browns and soft mint greens, sharp details, smooth matte finish with glistening accents. High-quality digital render, neutral lighting, no shadows, professional game asset.",
+  "timings": {
+    "texture_generation": 9.303875536001215,
+    "pbr_prediction": 7.184205736000877
+  }
+}

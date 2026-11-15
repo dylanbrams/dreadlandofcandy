@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/VvcN-HJOd7yv3gFQG-zF5_vSPe9maE.png",
+      "content_type": "image/png",
+      "file_name": "VvcN-HJOd7yv3gFQG-zF5_vSPe9maE.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/Cw8Hlt2K30pJm-Hcd7Ak-_BZ3nrTuU.png",
+      "content_type": "image/png",
+      "file_name": "Cw8Hlt2K30pJm-Hcd7Ak-_BZ3nrTuU.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/UPmMxv2TGsLO8CuMqb5J8_sQ14RwYo.png",
+      "content_type": "image/png",
+      "file_name": "UPmMxv2TGsLO8CuMqb5J8_sQ14RwYo.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/0S9QWhphxT1eTwjrR9NO4_mmctAQxY.png",
+      "content_type": "image/png",
+      "file_name": "0S9QWhphxT1eTwjrR9NO4_mmctAQxY.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/aoqWV5udBhCavLU4BhtMS_F3zdaQST.png",
+      "content_type": "image/png",
+      "file_name": "aoqWV5udBhCavLU4BhtMS_F3zdaQST.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/_j9ZcULRgNHH7yZkA2WaP_pMsj7WU2.png",
+      "content_type": "image/png",
+      "file_name": "_j9ZcULRgNHH7yZkA2WaP_pMsj7WU2.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261117,
+  "prompt": "Top-down orthographic view of a seamless PBR ground material featuring rounded peppermint candy cobblestones. Each stone is ivory with distinct raspberry red spiral stripes, appearing in handcrafted varied sizes across a flat surface. Narrow cocoa-colored mortar joints fill the gaps between the sweets. The lighting is uniform and flat, specifically designed for game environments to ensure readability at a distance. Whimsical candy fantasy aesthetic with a restrained pastel palette, high-resolution 4k texture, crisp details, and smooth material finishes. Clean, professional game asset with no perspective distortion or cast shadows, focusing entirely on the sugary stone pattern.",
+  "timings": {
+    "texture_generation": 8.79535844899874,
+    "pbr_prediction": 8.44092885399914
+  }
+}

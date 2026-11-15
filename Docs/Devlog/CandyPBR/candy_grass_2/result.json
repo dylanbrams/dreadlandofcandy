@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/8mjyQo_Bz4stXld71iZ2__SfyxXiNs.png",
+      "content_type": "image/png",
+      "file_name": "8mjyQo_Bz4stXld71iZ2__SfyxXiNs.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/UAXHaKazn0XIaTqqoVIFd_6yCrl6OB.png",
+      "content_type": "image/png",
+      "file_name": "UAXHaKazn0XIaTqqoVIFd_6yCrl6OB.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/0U0UZlMcLQNmgHGWoSmKJ_Wt5MnmoU.png",
+      "content_type": "image/png",
+      "file_name": "0U0UZlMcLQNmgHGWoSmKJ_Wt5MnmoU.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/ERYyYvpNe4JJY2iQGO9QX_kKB0cj2T.png",
+      "content_type": "image/png",
+      "file_name": "ERYyYvpNe4JJY2iQGO9QX_kKB0cj2T.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/egGKAOnfvgqDekvEoTWP6_oa24jtR8.png",
+      "content_type": "image/png",
+      "file_name": "egGKAOnfvgqDekvEoTWP6_oa24jtR8.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/yLNgWAmHfZ_xZYWcVFWbc_e3p82yzb.png",
+      "content_type": "image/png",
+      "file_name": "yLNgWAmHfZ_xZYWcVFWbc_e3p82yzb.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261116,
+  "prompt": "Top-down orthographic view of a seamless PBR ground material featuring dense, short mint green sugar grass. The surface is a lush, continuous carpet of tiny edible mint blades interspersed with sparse pastel-colored sugar sprinkles. High-resolution 4k photograph quality with uniform, flat lighting and no cast shadows. Whimsical candy fantasy aesthetic with subtle sugar crystal sparkles reflecting light evenly. Clean, cohesive texture with small irregular pieces of candy detail, optimized for gameplay readability. Rich minty greens and soft pastel accents, perfectly flat surface with no perspective or large objects, showcasing a high-quality, professional game environment asset.",
+  "timings": {
+    "texture_generation": 9.064917081999738,
+    "pbr_prediction": 47.1417803430013
+  }
+}

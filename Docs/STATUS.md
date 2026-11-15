@@ -60,3 +60,18 @@ Open: 12 archer voice recordings themselves (mapping is right; may need regenera
 1. Dylan playtests the fresh package: attack FX feel (flour density, arrow orientation, peppermint giants), bubbles,
    bugs munching, villager props, WASD after quest accept, walk speed.
 2. Tune FX recipes from that playtest, repackage, smoke, zip, then Dylan uploads.
+
+
+## Nov 15: candy environment pass (ChatGPT)
+
+Generated/reviewed 15 fal PATINA seamless 1K PBR sets (3 variants each: rock
+candy, peanut brittle, peppermint, chocolate mint, mint grass). All 75 map PNGs
+validated. Sources/seeds/review: Docs/Devlog/CandyPBR; selected choices recorded.
+Applied blended paving + mint ground to original terrain actor overrides and
+Riverlands. Added 36 trees, 73 shrubs, 23 eastern backdrop mountains, 13 drifting
+3D marshmallows and 30 faint steam cards; river is opaque glossy hot chocolate.
+Scripts: Docs/Devlog/apply_candy_environment.py. Inspect fresh review captures in
+Saved/Screenshots/WindowsEditor/candy-{chocolate,village}.png. Runtime review logs
+have no persisted material compile failures; apply-time missing-input warnings
+occur while rebuilding graphs. No packaging or upload in this task. Packaged
+delivery, manual traversal and gameplay performance remain unverified.

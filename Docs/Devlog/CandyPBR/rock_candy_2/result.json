@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287d6/yxgfhg8RmngKFleGB66qK_YCh6UK3I.png",
+      "content_type": "image/png",
+      "file_name": "yxgfhg8RmngKFleGB66qK_YCh6UK3I.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e4/xV7ABwNPdIjkpJfVV78_I_InLZfGIV.png",
+      "content_type": "image/png",
+      "file_name": "xV7ABwNPdIjkpJfVV78_I_InLZfGIV.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e4/I2EtD3dEGPiGfYLWhAMmE_IIoae0Kg.png",
+      "content_type": "image/png",
+      "file_name": "I2EtD3dEGPiGfYLWhAMmE_IIoae0Kg.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e4/rXClzeh1ZoKIDX3oQLoRf_N4hqFcQM.png",
+      "content_type": "image/png",
+      "file_name": "rXClzeh1ZoKIDX3oQLoRf_N4hqFcQM.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e4/3En5DpehGxoTeWhjUg6F7_HAEiIPJ1.png",
+      "content_type": "image/png",
+      "file_name": "3En5DpehGxoTeWhjUg6F7_HAEiIPJ1.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e4/o1Z4mcl3kiVHKwqhl_dFv_nycCpUK8.png",
+      "content_type": "image/png",
+      "file_name": "o1Z4mcl3kiVHKwqhl_dFv_nycCpUK8.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261116,
+  "prompt": "Top-down orthographic PBR ground texture of densely packed tiny angular translucent rock candy gravel. A vibrant mix of turquoise, rose, lilac, and honey colored crystals. High-resolution 4k photograph featuring a flat walkable surface with fine white sugar dust settled into the crevices. Irregular crystalline shapes with a subtle prismatic sparkle and crystalline transparency. Uniform ambient lighting across the entire frame to ensure seamless tiling. High detail, sharp focus on mineral textures, whimsical candy fantasy aesthetic, clean and readable game environment material. Pristine quality with no depth distortion or perspective.",
+  "timings": {
+    "texture_generation": 9.633197643999665,
+    "pbr_prediction": 144.27480094199927
+  }
+}

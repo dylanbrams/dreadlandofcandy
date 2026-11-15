@@ -437,3 +437,18 @@ unverified. No deployment/upload. Final verification recorded in STATUS.
 ## Nov 15 ~08:30 JST (Claude, GAME)
 Repackaged with #3, #16, 10b and review fixes: smoke PASS (0 errors), ZIP 737.7 MB. Full village autoplay PASS (3 main, 10 side).
 Archer bow draws to hand_l on every skill (#12 carry part). Engine handed to Codex for terrain + cobblestone path (#13).
+
+
+## Nov 15: candy environment pass (ChatGPT)
+
+Generated/reviewed 15 fal PATINA seamless 1K PBR sets (3 variants each: rock
+candy, peanut brittle, peppermint, chocolate mint, mint grass). All 75 map PNGs
+validated. Sources/seeds/review: Docs/Devlog/CandyPBR; selected choices recorded.
+Applied blended paving + mint ground to original terrain actor overrides and
+Riverlands. Added 36 trees, 73 shrubs, 23 eastern backdrop mountains, 13 drifting
+3D marshmallows and 30 faint steam cards; river is opaque glossy hot chocolate.
+Scripts: Docs/Devlog/apply_candy_environment.py. Inspect fresh review captures in
+Saved/Screenshots/WindowsEditor/candy-{chocolate,village}.png. Runtime review logs
+have no persisted material compile failures; apply-time missing-input warnings
+occur while rebuilding graphs. No packaging or upload in this task. Packaged
+delivery, manual traversal and gameplay performance remain unverified.

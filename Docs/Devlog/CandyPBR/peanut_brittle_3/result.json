@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287e9/yBnUPmgDd1PZ_ELpm9GX8_rk9zI4aB.png",
+      "content_type": "image/png",
+      "file_name": "yBnUPmgDd1PZ_ELpm9GX8_rk9zI4aB.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ea/wyVNUQvm8s5c6N3DMoMQY_yPb3HIke.png",
+      "content_type": "image/png",
+      "file_name": "wyVNUQvm8s5c6N3DMoMQY_yPb3HIke.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ea/bzsoXCEf2SoI2p7BMkXDe_vIjF17KO.png",
+      "content_type": "image/png",
+      "file_name": "bzsoXCEf2SoI2p7BMkXDe_vIjF17KO.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ea/Klnj5GTG35r7d2RYInmKC_jjHumFpf.png",
+      "content_type": "image/png",
+      "file_name": "Klnj5GTG35r7d2RYInmKC_jjHumFpf.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ea/_Ljo4tVWVwIdcMMlceNmQ_qPPoVVOp.png",
+      "content_type": "image/png",
+      "file_name": "_Ljo4tVWVwIdcMMlceNmQ_qPPoVVOp.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ea/DZx4ooXhTQDynTAeWlsHG_qxmQmeDN.png",
+      "content_type": "image/png",
+      "file_name": "DZx4ooXhTQDynTAeWlsHG_qxmQmeDN.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261117,
+  "prompt": "A high-resolution 4k orthographic top-down photograph of a seamless game environment PBR ground material. The surface consists of handcrafted peanut butter brittle paving bricks in a staggered rectangular pattern. The bricks are a warm golden caramel hue, embedded with realistic fragments of crushed peanuts. Narrow joints are filled with dark, glossy caramel. The texture features a restrained pastel palette with whimsical candy fantasy aesthetics. The surface is perfectly flat with uniform ambient lighting and no cast shadows, ensuring clear readability for gameplay. Sharp details, macro photography of sugary textures, matte and gloss contrast, highly detailed food material, uniform distribution.",
+  "timings": {
+    "texture_generation": 9.043478499999765,
+    "pbr_prediction": 8.583941096001581
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f2/72RU0WOd7ZDVHp7FH4ovE_d82kxL8Y.png",
+      "content_type": "image/png",
+      "file_name": "72RU0WOd7ZDVHp7FH4ovE_d82kxL8Y.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/vBknaIoae8212mrEmflFK_Aa6j0mqf.png",
+      "content_type": "image/png",
+      "file_name": "vBknaIoae8212mrEmflFK_Aa6j0mqf.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/AXgJ9Qr7KR6rcfdP0ZYYy_EwQDKQOm.png",
+      "content_type": "image/png",
+      "file_name": "AXgJ9Qr7KR6rcfdP0ZYYy_EwQDKQOm.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/MWzpsTAsOTSXh80u-0icC_30EFJ4U9.png",
+      "content_type": "image/png",
+      "file_name": "MWzpsTAsOTSXh80u-0icC_30EFJ4U9.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/E59lTY83Yd-Lnx8Qz-D0H_WHQdrQaH.png",
+      "content_type": "image/png",
+      "file_name": "E59lTY83Yd-Lnx8Qz-D0H_WHQdrQaH.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f4/Vqa9-OiEGfOTGD0riYKea_CqF7s80z.png",
+      "content_type": "image/png",
+      "file_name": "Vqa9-OiEGfOTGD0riYKea_CqF7s80z.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261117,
+  "prompt": "Top-down orthographic PBR game texture of a dense, lush mint green sugar grass field. The surface is a uniform ground cover of short, handcrafted edible mint blades in varying sizes. Sparse, tiny pastel sugar sprinkles are scattered across the vibrant minty turf. High-resolution 4k photograph style with flat, uniform lighting and a restrained pastel palette. Cohesive whimsical candy fantasy aesthetic, designed for a flat gameplay surface with no perspective or cast shadows. Clean, high-quality material with micro-details visible at a distance, featuring a soft organic feel and a matte sugary finish. Small-scale varied textures create a continuous, non-repetitive organic landscape.",
+  "timings": {
+    "texture_generation": 9.14348622200123,
+    "pbr_prediction": 18.466130909999265
+  }
+}

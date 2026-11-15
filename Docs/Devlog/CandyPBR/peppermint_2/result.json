@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ec/0wDG8NcTiAp9JTLfBAp0p_XHr7kxGt.png",
+      "content_type": "image/png",
+      "file_name": "0wDG8NcTiAp9JTLfBAp0p_XHr7kxGt.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/OY1oC6dcjHRxLwg5gPm8g_rkqMJ4Z9.png",
+      "content_type": "image/png",
+      "file_name": "OY1oC6dcjHRxLwg5gPm8g_rkqMJ4Z9.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/eLfXVAlceG9gmNnXnjMn5_SHhzw4P2.png",
+      "content_type": "image/png",
+      "file_name": "eLfXVAlceG9gmNnXnjMn5_SHhzw4P2.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/IctvlzVOvvgfzBXgnuMoX_jde6G3aD.png",
+      "content_type": "image/png",
+      "file_name": "IctvlzVOvvgfzBXgnuMoX_jde6G3aD.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/vU_GN_ZH6vv1udFtTY5Kv_aiWpJ7yF.png",
+      "content_type": "image/png",
+      "file_name": "vU_GN_ZH6vv1udFtTY5Kv_aiWpJ7yF.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/Ii_K-d0PeoyCgycZ6Wqh1_wyFBigJc.png",
+      "content_type": "image/png",
+      "file_name": "Ii_K-d0PeoyCgycZ6Wqh1_wyFBigJc.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261116,
+  "prompt": "A high-resolution 4k orthographic top-down photograph of a seamless candy fantasy ground texture. The surface consists of rounded ivory peppermint cobblestones featuring distinct raspberry red spiral stripes. The stones are set in narrow cocoa-colored chocolate mortar joints with smaller irregular candy fragments scattered throughout. Subtle sugar crystal sparkles catch the light across the flat surface. The lighting is perfectly uniform and diffuse to ensure PBR compatibility. Professional game environment material, clean whimsical aesthetic, vibrant confectionery colors, sharp macro details, and a cohesive flat layout designed for gameplay readability. Full frame texture with no perspective or depth distortion.",
+  "timings": {
+    "texture_generation": 8.213914895000926,
+    "pbr_prediction": 10.409322933999647
+  }
+}

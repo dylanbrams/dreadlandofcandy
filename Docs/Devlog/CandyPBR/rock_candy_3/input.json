@@ -1,0 +1,14 @@
+{
+  "prompt": "Seamless game environment PBR ground material, top down orthographic flat surface: tiny angular translucent rock candy gravel, turquoise rose lilac and honey crystals, densely packed walkable gravel with sugar dust in crevices, handcrafted varied sizes, restrained pastel palette. Cohesive whimsical candy fantasy, readable at gameplay distance, no perspective, no cast shadows, no text, no objects above surface.",
+  "image_size": "square_hd",
+  "seed": 261117,
+  "tiling_mode": "both",
+  "maps": [
+    "basecolor",
+    "normal",
+    "roughness",
+    "height",
+    "metalness"
+  ],
+  "output_format": "png"
+}

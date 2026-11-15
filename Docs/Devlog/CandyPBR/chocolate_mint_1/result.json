@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ed/ep3dG1DgviQnNPxy-ZeQB_lqRGrgOC.png",
+      "content_type": "image/png",
+      "file_name": "ep3dG1DgviQnNPxy-ZeQB_lqRGrgOC.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/GUz1Fp6vmirwRy6cTULoH_AbPkyTCc.png",
+      "content_type": "image/png",
+      "file_name": "GUz1Fp6vmirwRy6cTULoH_AbPkyTCc.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/CW5wBqKiUtm1a84DllgiF_2tWnmTnF.png",
+      "content_type": "image/png",
+      "file_name": "CW5wBqKiUtm1a84DllgiF_2tWnmTnF.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/xmdUaUdQdWlnxL_-mtOG2_PdNACDLY.png",
+      "content_type": "image/png",
+      "file_name": "xmdUaUdQdWlnxL_-mtOG2_PdNACDLY.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/0e_b4UTtPtbOJBS0twHdf_ymjSZgWy.png",
+      "content_type": "image/png",
+      "file_name": "0e_b4UTtPtbOJBS0twHdf_ymjSZgWy.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287ee/THXWRJ4bM_NQJj88YUCOz_Tdv08Jxt.png",
+      "content_type": "image/png",
+      "file_name": "THXWRJ4bM_NQJj88YUCOz_Tdv08Jxt.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261115,
+  "prompt": "Top down orthographic flat surface of a seamless PBR game material featuring rounded dark chocolate cobblestones. The stones are decorated with intricate mint green marbled swirls and embedded pale mint chips. Narrow cocoa-colored mortar fills the joints between chunky, storybook-style stone shapes with gently worn edges. High-resolution 4k photograph style with uniform albedo lighting and clear textures. Whimsical candy fantasy aesthetic, vibrant colors, clean and readable details for gameplay distance. Flat texture, macro photography, soft matte finish, consistent material distribution across the entire frame.",
+  "timings": {
+    "texture_generation": 9.11512053899969,
+    "pbr_prediction": 8.131892424000398
+  }
+}

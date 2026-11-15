@@ -1,0 +1,63 @@
+{
+  "images": [
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f0/Q17cQoWyqWo5caA5zk4Nl_ZOIIV4RR.png",
+      "content_type": "image/png",
+      "file_name": "Q17cQoWyqWo5caA5zk4Nl_ZOIIV4RR.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/vVuwzly4E_6qeHQFIM6U7_EhLkEY4T.png",
+      "content_type": "image/png",
+      "file_name": "vVuwzly4E_6qeHQFIM6U7_EhLkEY4T.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "basecolor"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/BMNXOVNqG6Z38dPS3YJsm_ZYs2FCOL.png",
+      "content_type": "image/png",
+      "file_name": "BMNXOVNqG6Z38dPS3YJsm_ZYs2FCOL.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "normal"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/JJPVSDrPuC1YdAE4GFSn0_j4Ir63Rz.png",
+      "content_type": "image/png",
+      "file_name": "JJPVSDrPuC1YdAE4GFSn0_j4Ir63Rz.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "roughness"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/3tR1asV300x57UYVqRwD-_z52MsfcV.png",
+      "content_type": "image/png",
+      "file_name": "3tR1asV300x57UYVqRwD-_z52MsfcV.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "height"
+    },
+    {
+      "url": "https://v3b.fal.media/files/b/0ab287f1/CPFA1Rro30v2rWPdgxnuE_BtCV9JRN.png",
+      "content_type": "image/png",
+      "file_name": "CPFA1Rro30v2rWPdgxnuE_BtCV9JRN.png",
+      "file_size": null,
+      "width": 1024,
+      "height": 1024,
+      "map_type": "metalness"
+    }
+  ],
+  "seed": 261115,
+  "prompt": "A high-resolution 4k orthographic top-down photograph of a seamless PBR ground material featuring dense, short mint green sugar grass. The surface is a lush, continuous carpet of tiny edible mint blades interspersed with sparse pastel sugar sprinkles. The style is a cohesive whimsical candy fantasy with chunky storybook shapes and gently worn edges. Uniform, flat lighting ensures no cast shadows or perspective distortions, making the texture perfectly readable for game environments. The color palette is dominated by vibrant mint greens and soft candy pastels. The texture is clean, high-quality, and detailed, presenting a perfectly flat and uniform edible landscape suitable for a professional game environment.",
+  "timings": {
+    "texture_generation": 9.181693622000239,
+    "pbr_prediction": 7.8354258310009754
+  }
+}
