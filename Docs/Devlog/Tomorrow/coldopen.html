@@ -66,6 +66,7 @@ function later(fn,ms){timers.push(setTimeout(fn,ms))}
 
 // Keyboard clicks synthesized with WebAudio: short filtered noise bursts.
 function click(){
+  console.log('EVT key');
   if(muted) return;
   if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)();
   const t=ctx.currentTime, len=0.03+Math.random()*0.02;
@@ -135,7 +136,9 @@ document.addEventListener('keydown',e=>{
 stage.addEventListener('click',()=>{ if(i<0) next() });
 const q=new URLSearchParams(location.search);
 if(q.has('beat')){ i=Math.max(0,Math.min(beats.length-1,+q.get('beat')))-1; muted=true; next(); }
-if(q.has('auto')){ auto=true; }
+if(q.has('zoom')){ zoom=+q.get('zoom')||1; }
+if(q.has('auto')){ auto=true; if(i<0) next(); }
+if(q.has('rec')){ document.body.classList.add('rec'); muted=true; }
 </script>
 </body>
 </html>

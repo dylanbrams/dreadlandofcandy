@@ -1,0 +1,4 @@
+raw/
+build/
+*.mp4
+*.events.json
