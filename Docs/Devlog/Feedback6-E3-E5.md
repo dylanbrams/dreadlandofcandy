@@ -4,3 +4,6 @@
 - E3: first implementation adds an amber bakery light, four periodic flour puffs, and a swinging sign, using bakery mesh bounds.
 - Editor build passed and 86 Jam tests passed with E3/E4. A subsequent small sign rotation correction rebuilt successfully. The village capture feedback6-bakery.png is blocked by a roof; bakery placement and fireflies still need visual inspection.
 - E5: existing striped grass already has root-masked wind; tree materials lack a verified wind mask. A tree pass needs root anchoring, bounds changes and near/far review.
+
+- Runtime log feedback6-bakery-close.log reports bakery found and 12 fireflies. The close capture shows a warm window; the sign and flour remain obscured. feedback6-fireflies.png shows small light points at the riverbank; animation has not been assessed in motion.
+- E5 is not implemented: striped grass already sways, while tree wind needs a per-instance root mask and bounds verification. No tree material was changed.
