@@ -69,7 +69,7 @@ for src, t, cry, g in (('archer-run.mp4', 15.0, 'VO_A01_en_epic', 5.5), ('barbar
 # tour-high stalls 2-3 s in every 5: only its moving stretch 31.6-33.8 (river from above).
 clip('tour-high.mp4', 31.6, 2.2, [(0.1, ANN / 'A07_openworld.mp3', 0.0)])
 clip(FLY, 60.0, 2.5, push=0.04)  # river and marshmallows; tour-high 37.7 flies through blurred foliage
-clip('village-improvise.mp4', 121.2, 2.8, [(0.3, ANN / 'A08_quests.mp3', 0.0)])
+clip('village-improvise.mp4', 121.2, 2.8, [(0.3, ANN / 'A11_negotiate.mp3', -0.7)])
 clip(FLY, 120.0, 2.8, push=0.04)
 # 6. CUT!, the sad-rats rewrite, budget boxes.
 clip('knight-run.mp4', 46.9, 1.5, [(0.1, FEN / 'VO_CutPitch_04.mp3', 0.0)])
@@ -77,8 +77,7 @@ clip('typed-note.mp4', 25.5, 3.0)
 clip('budget-out.mp4', 10.25, 3.9, [(0.2, FEN / 'VO_BudgetOut_02.mp3', 0.0)])
 # 7. Premiere.
 m3 = clip('budget-out.mp4', 24.6, 3.6, [(0.3, FEN / 'VO_Premiere_02.mp3', 0.0)])
-# 8. Dylan closes, no music.
-d8 = seg('cam', 3.5, [(0.0, tk('13-29-20'), 0.0, 32.45, 3.45)], take='13-29-20', t_in=32.45, bg='tour-high.mp4', bg_in=60.0)
+# 8. (Dylan's "Four days. One dude." closer cut, Dylan Nov 15.)
 # 9. Title.
 end = seg('card', 5.5, [(0.4, ANN / 'A09_title.mp3', 0.0)], bg='tour-high.mp4', bg_in=15.0, fade_out=1.0,
           text={'text': 'THE DREAD LAND OF CANDY', 'size': 96, 'sub': 'Made in four days for the 2026 Epic AI MegaJam'})
@@ -86,5 +85,4 @@ TOTAL = _t[0]
 
 music(m1 - 0.3, 'title-theme_take1', -6.0, 2.0, m2 - m1 + 0.6)
 music(m2, 'boss-battle_take1', -5.0, 6.0, m3 - m2)
-music(m3, 'victory_take1', -9.0, 0.0, d8 - m3)
-music(end, 'victory_take1', -6.0, 20.0, TOTAL - end)
+music(m3, 'victory_take1', -8.0, 0.0, TOTAL - m3)  # one bed from the premiere through the title
