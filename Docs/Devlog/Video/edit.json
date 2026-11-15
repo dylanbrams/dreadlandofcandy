@@ -77,7 +77,17 @@
     "dur": 6.5,
     "frame": "B",
     "visual": "molar-hills pan + caption 'I am older than them thar hills'",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 20,
+       "o": 49
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -88,7 +98,17 @@
     "dur": 10.8,
     "frame": "B",
     "visual": "molar-hills pan",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 20,
+       "o": 49
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -162,7 +182,22 @@
     "dur": 15.6,
     "frame": "B",
     "visual": "BROLL attack word cards, then non-English battle cry",
-    "note": "check 'talk back'"
+    "note": "check 'talk back'",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 19
+      },
+      {
+       "src": "../GameFootage/village-quests.mp4",
+       "i": 10,
+       "o": 19
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -173,7 +208,17 @@
     "dur": 11.8,
     "frame": "B",
     "visual": "BROLL knight placards, Resolve bar, pacified rat",
-    "note": "check 'have health'"
+    "note": "check 'have health'",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 24
+      }
+     ],
+     "status": "unconfirmed"
+    }
    },
    {
     "kind": "take",
@@ -184,7 +229,11 @@
     "dur": 20.7,
     "frame": "B",
     "visual": "BROLL improvise screen, two new routes",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -195,7 +244,11 @@
     "dur": 15.9,
     "frame": "B",
     "visual": "BROLL typed proposal, route, refusal",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -219,7 +272,17 @@
      "build/clean/02-encores.mp4"
     ],
     "dur": 7.7,
-    "partial": false
+    "partial": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/DylanPlaythrough.mp4",
+       "i": 210,
+       "o": 229
+      }
+     ],
+     "status": "unconfirmed"
+    }
    },
    {
     "kind": "take",
@@ -230,7 +293,17 @@
     "dur": 1.2,
     "frame": "B",
     "visual": "BROLL film shoot",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-quests.mp4",
+       "i": 0,
+       "o": 15
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "pickup",
@@ -243,7 +316,22 @@
      "build/clean/02-filmshoot-partial.mp4"
     ],
     "dur": 6.2,
-    "partial": true
+    "partial": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/cut-forcefail.mp4",
+       "i": 15,
+       "o": 19
+      },
+      {
+       "src": "../GameFootage/DylanPlaythrough.mp4",
+       "i": 200,
+       "o": 209
+      }
+     ],
+     "status": "ok (cardboard boxes missing)"
+    }
    },
    {
     "kind": "pickup",
@@ -416,7 +504,17 @@
     "dur": 10.7,
     "frame": "B",
     "visual": "first-hero and autoplay captures",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 0,
+       "o": 9
+      }
+     ],
+     "status": "ok (late build, not day one)"
+    }
    },
    {
     "kind": "take",
@@ -427,7 +525,11 @@
     "dur": 5.6,
     "frame": "B",
     "visual": "early arena screenshot",
-    "note": "trim stutter"
+    "note": "trim stutter",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -438,7 +540,17 @@
     "dur": 13.3,
     "frame": "B",
     "visual": "HUD, Fenella captures",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 50,
+       "o": 60
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -449,7 +561,11 @@
     "dur": 11.9,
     "frame": "B",
     "visual": "early problem screenshots",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    }
   ]
  },
@@ -490,7 +606,22 @@
     "dur": 9.8,
     "frame": "B",
     "visual": "rat in game, foliage",
-    "note": "check Rodin NPCs claim"
+    "note": "check Rodin NPCs claim",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 20,
+       "o": 24
+      },
+      {
+       "src": "../GameFootage/DylanPlaythrough.mp4",
+       "i": 60,
+       "o": 69
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -531,7 +662,17 @@
     "dur": 12.2,
     "frame": "B",
     "visual": "world pan, compass",
-    "note": "trim after 'arena game'?"
+    "note": "trim after 'arena game'?",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 0,
+       "o": 19
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -542,7 +683,17 @@
     "dur": 6.3,
     "frame": "B",
     "visual": "village",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 110,
+       "o": 129
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -553,7 +704,11 @@
     "dur": 30.2,
     "frame": "P",
     "visual": "quest givers footage",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -585,7 +740,17 @@
      "build/clean/06-playtest.mp4"
     ],
     "dur": 12.1,
-    "partial": false
+    "partial": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 50,
+       "o": 60
+      }
+     ],
+     "status": "ok (compass not clearly visible)"
+    }
    }
   ]
  },
@@ -604,7 +769,17 @@
     "dur": 6.0,
     "frame": "B",
     "visual": "village from above",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 110,
+       "o": 129
+      }
+     ],
+     "status": "ok (not truly aerial)"
+    }
    },
    {
     "kind": "take",
@@ -615,7 +790,17 @@
     "dur": 2.2,
     "frame": "B",
     "visual": "village",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 110,
+       "o": 129
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -626,7 +811,32 @@
     "dur": 18.5,
     "frame": "B",
     "visual": "attack effects in motion",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 19
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 45,
+       "o": 59
+      },
+      {
+       "src": "../GameFootage/mage-run.mp4",
+       "i": 45,
+       "o": 58
+      },
+      {
+       "src": "../GameFootage/archer-run.mp4",
+       "i": 10,
+       "o": 24
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -637,7 +847,22 @@
     "dur": 12.2,
     "frame": "B",
     "visual": "word cards, attacks",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-quests.mp4",
+       "i": 10,
+       "o": 19
+      },
+      {
+       "src": "../GameFootage/mage-run.mp4",
+       "i": 45,
+       "o": 58
+      }
+     ],
+     "status": "ok"
+    }
    },
    {
     "kind": "take",
@@ -659,7 +884,22 @@
     "dur": 20.6,
     "frame": "B",
     "visual": "celery arrows, flour cloud, card storm",
-    "note": "check '15 languages'"
+    "note": "check '15 languages'",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/archer-run.mp4",
+       "i": 10,
+       "o": 24
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 45,
+       "o": 59
+      }
+     ],
+     "status": "ok"
+    }
    }
   ]
  },
@@ -702,7 +942,17 @@
     "dur": 23.8,
     "frame": "B",
     "visual": "river, bridge, village from above",
-    "note": "check river timing"
+    "note": "check river timing",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 110,
+       "o": 129
+      }
+     ],
+     "status": "ok (not truly aerial)"
+    }
    },
    {
     "kind": "pickup",
@@ -775,7 +1025,17 @@
      "build/clean/08-blacksugar-b.mp4"
     ],
     "dur": 16.7,
-    "partial": false
+    "partial": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/title-idle.mp4",
+       "i": 0,
+       "o": 14
+      }
+     ],
+     "status": "ok (old title missing)"
+    }
    }
   ]
  },
@@ -840,7 +1100,11 @@
      "build/clean/08b-fixed.mp4"
     ],
     "dur": 18.6,
-    "partial": false
+    "partial": false,
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -851,7 +1115,11 @@
     "dur": 30.5,
     "frame": "B",
     "visual": "camera lifting over a canopy",
-    "note": ""
+    "note": "",
+    "broll": {
+     "clips": [],
+     "status": "missing"
+    }
    },
    {
     "kind": "take",
@@ -972,7 +1240,17 @@
      "build/clean/10-ending.mp4"
     ],
     "dur": 10.4,
-    "partial": false
+    "partial": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/title-idle.mp4",
+       "i": 0,
+       "o": 14
+      }
+     ],
+     "status": "ok"
+    }
    }
   ]
  },

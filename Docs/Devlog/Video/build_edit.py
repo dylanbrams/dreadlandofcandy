@@ -125,6 +125,46 @@ S["11"] = dict(title="Post-credits", bed=None, segs=[
     ("PICKUP", "11-theme", "And that's why the theme song was cut.", "C", 3, ""),
 ])
 
+# Gameplay B-roll picks from BROLL_INDEX.md: (substring of the segment's visual, [(file, in, out)], status)
+# status: ok | unconfirmed (frames not clearly showing the named thing) | missing (use a still/slide, capture later)
+GF = "../GameFootage/"
+BROLL = [
+    ("molar-hills pan", [("LandOfCandyFlythrough.mp4", 20, 49)], "ok"),
+    ("attack word cards, then non-english", [("knight-run.mp4", 10, 19), ("village-quests.mp4", 10, 19)], "ok"),
+    ("knight placards", [("knight-run.mp4", 10, 24)], "unconfirmed"),
+    ("improvise", [], "missing"),
+    ("typed proposal", [], "missing"),
+    ("encore offer", [("DylanPlaythrough.mp4", 210, 229)], "unconfirmed"),
+    ("film shoot", [("village-quests.mp4", 0, 15)], "ok"),
+    ("cut pitch", [("cut-forcefail.mp4", 15, 19), ("DylanPlaythrough.mp4", 200, 209)], "ok (cardboard boxes missing)"),
+    ("first-hero", [("knight-run.mp4", 0, 9)], "ok (late build, not day one)"),
+    ("early arena", [], "missing"),
+    ("hud, fenella", [("knight-run.mp4", 50, 60)], "ok"),
+    ("early problem", [], "missing"),
+    ("rat in game", [("knight-run.mp4", 20, 24), ("DylanPlaythrough.mp4", 60, 69)], "ok"),
+    ("world pan", [("LandOfCandyFlythrough.mp4", 0, 19)], "ok"),
+    ("quest givers", [], "missing"),
+    ("village from above", [("LandOfCandyFlythrough.mp4", 110, 129)], "ok (not truly aerial)"),
+    ("village", [("LandOfCandyFlythrough.mp4", 110, 129)], "ok"),
+    ("attack effects", [("knight-run.mp4", 10, 19), ("barbarian-run.mp4", 45, 59), ("mage-run.mp4", 45, 58), ("archer-run.mp4", 10, 24)], "ok"),
+    ("word cards, attacks", [("village-quests.mp4", 10, 19), ("mage-run.mp4", 45, 58)], "ok"),
+    ("celery arrows", [("archer-run.mp4", 10, 24), ("barbarian-run.mp4", 45, 59)], "ok"),
+    ("river, bridge", [("LandOfCandyFlythrough.mp4", 110, 129)], "river/bridge missing"),
+    ("marshmallows drifting", [("LandOfCandyFlythrough.mp4", 75, 85)], "unconfirmed (blurry)"),
+    ("old title", [("title-idle.mp4", 0, 14)], "ok (old title missing)"),
+    ("title screen", [("title-idle.mp4", 0, 14)], "ok"),
+    ("river before", [], "missing"),
+    ("camera lifting", [], "missing"),
+    ("compass", [("knight-run.mp4", 50, 60)], "ok (compass not clearly visible)"),
+]
+
+def broll_for(visual):
+    v = visual.lower()
+    for key, clips, status in BROLL:
+        if key in v:
+            return dict(clips=[dict(src=GF + f, i=a, o=b) for f, a, b in clips], status=status)
+    return None
+
 def clean_clips(pid):
     """build/clean/<pid>*.mp4 -> [(relative path, seconds)], so recorded pickups replace the placeholder."""
     res = []
@@ -153,6 +193,11 @@ def main():
                 segs.append(dict(kind="take", take=s[0], src=f"raw/original/2026-11-15 {s[0]}.mp4", i=s[1], o=s[2], dur=d,
                                  frame=s[3], visual=s[4], note=s[5]))
             dur += d
+        for g in segs:
+            if g["frame"] in "BP" and g.get("visual"):
+                b = broll_for(g["visual"])
+                if b:
+                    g["broll"] = b
         for k, g in enumerate(segs):
             if g["frame"] == "C":
                 d = g.get("dur", g.get("est", 0))
@@ -165,6 +210,8 @@ def main():
     (HERE / "edit.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     cam = sum(g.get("dur", g.get("est", 0)) for s in out for g in s["segments"] if g["frame"] == "C")
     print(f"TOTAL {tot/60:.1f} min ({tot:.0f}s), CAM {cam:.0f}s = {100*cam/tot:.0f}%")
+    miss = sorted({g["visual"][:48] for s in out for g in s["segments"] if g.get("broll", {}).get("status", "").startswith(("missing", "river", "unconf"))})
+    print("B-roll missing/unconfirmed:", "; ".join(miss))
     print("CAM >8s:", "; ".join(camrun_flags))
 
 main()
