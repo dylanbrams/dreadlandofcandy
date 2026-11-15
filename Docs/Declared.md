@@ -54,6 +54,7 @@ Assets we did not make (Fab, engine content, music...), with their licence.
 | Asset | Source | Licence |
 | --- | --- | --- |
 | `Template_Default` map (placeholder) | Unreal Engine 5.8 engine content | Unreal Engine EULA |
+| Cinzel and Cormorant Garamond fonts (UI) | Google Fonts; licence files in `Content/UI/Fonts/` | SIL Open Font License 1.1 |
 
 ## AI tools used
 
