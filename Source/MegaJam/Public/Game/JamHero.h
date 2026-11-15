@@ -37,7 +37,7 @@ public:
 	 * A skill button (LMB / RMB / Q / R, or RT / RB / LB / Y). While the wrap panel is up it spends a skill point on
 	 * that skill instead (BUILD_SPEC 3c); otherwise it casts. Input and the bot both come through here.
 	 */
-	bool RequestSkill(EJamSkill Skill);
+	bool RequestSkill(EJamSkill Skill, bool bGamepadAttack = false);
 	/** Fixes3 #2: kick the camera (uu of jitter), now or after Delay seconds of world time. */
 	void AddShake(float Amplitude, float Delay = 0.f);
 
@@ -63,7 +63,8 @@ public:
 
 	/**
 	 * Open mode (R4, BUILD_SPEC 3e): a third-person follow camera. Mouse / right stick turn it, movement is relative
-	 * to its yaw, the hero faces where he walks and turns to the camera's yaw when he casts. SetAimOverride also
+	 * to its yaw. Gamepad attacks follow movement or the existing facing; keyboard casts retain camera/mouse aim.
+ * SetAimOverride also
 	 * turns it, so the bot films what it does. Backlot keeps the fixed camera.
 	 */
 	void EnableFollowCamera(float Yaw);
@@ -105,6 +106,10 @@ private:
 	void CreateInput();
 	void OnMove(const FInputActionValue& Value);
 	void OnLecture(const FInputActionValue& Value);
+	void OnGamepadLecture(const FInputActionValue& Value);
+	void OnGamepadSkill2(const FInputActionValue& Value);
+	void OnGamepadSkill4(const FInputActionValue& Value);
+	void FaceGamepadAttack();
 	void OnAim(const FInputActionValue& Value);
 	void OnLook(const FInputActionValue& Value);
 	void OnCameraTurn(const FInputActionValue& Value);
@@ -247,6 +252,15 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> LectureAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> GamepadLectureAction;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> GamepadSkill2Action;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> GamepadSkill4Action;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> AimAction;

@@ -88,7 +88,7 @@ FJamScreenView JamScreens::Controls(const FJamMenuSettings& S)
 	V.Title = TEXT("Know your marks");
 	V.Subtitle = TEXT("Default controls");
 	V.Quotes = S.bGamepad ? TArray<FString>{
-		TEXT("Left stick: move    Right stick: camera"),
+		TEXT("Left stick: move / aim attacks    Right stick: camera"),
 		TEXT("RT: basic    RB: signature    LB: ultimate"),
 		TEXT("Hold A: use / take note    B: refuse note"),
 		TEXT("Y: write directions    Menu: pause    View: this list"),

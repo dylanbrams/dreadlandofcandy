@@ -1,5 +1,9 @@
 # STATUS (rewrite this file; do not prepend)
 
+## Gamepad attack direction
+
+Gamepad RT/RB/LB attacks now follow movement or the character's current facing instead of forcing the camera yaw; fixed-camera right-stick aim remains available. Gamepad attacks clear stale mouse aiming, and the controls card describes movement-based aim. Editor build and 89 Jam tests pass, including movement, stationary, stale mouse and fixed-camera checks. `Saved/Screenshots/WindowsEditor/gamepad-aim-controls.png` shows the controls screen with keyboard prompts; physical gamepad play remains unverified. No package or upload.
+
 ## Black Sugar box consistency and peppermint work (in progress)
 
 HUD reading panels and the menu caption now use the shared Black Sugar candy border; interaction prompt padding was increased after screenshot review. Editor build and 89 Jam tests pass. Six-screen review captured at `Saved/Screenshots/WindowsEditor/black-sugar-*-1280.png`; the final padding adjustment has not been recaptured. Quest-branch copy and centered backdrops now have stronger contrast, reviewed at 720p in `black-sugar-proposal-final.png`. The full 25-screen sweep and physical gamepad review remain outstanding.

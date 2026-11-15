@@ -532,3 +532,8 @@ Not packaged or smoke-tested. Esc quits; `-tourspeed/-tourheight/-tourstart/-tou
 
 ## Nov 15: props grounded on the terrain
 `ImportSource/Terrain/Grounding/ground_audit.py` reads the terrain triangles (headless editor traces hit nothing), checks the lowest band of each mesh (trunk/root flare) against the slope, and with `-groundfix` drops floating props to the ground plus 3-6 cm. It moved 3,560 placements in L_Sugarborough (trees 20-100 cm, grass, bushes, mushrooms, backdrop mountains, a few buildings 12-73 cm); a re-audit finds 0. Left as they were on purpose: snowflakes, river marshmallows, perched bluebirds, the bridge, the cave mouth and props on it. List of moves: `ground_fix_moved.json`.
+
+
+## Gamepad attack direction
+
+Gamepad attacks now use the moving or stationary character facing, rather than forcing camera yaw. Split gamepad attack input actions preserve keyboard/mouse behavior and clear stale mouse aim. Editor build and 89 Jam tests passed; controls screenshot captured. Physical gamepad playtest remains open.

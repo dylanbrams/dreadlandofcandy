@@ -340,7 +340,7 @@ bool AJamHero::RequestLecture()
 	return RequestSkill(EJamSkill::Lecture);
 }
 
-bool AJamHero::RequestSkill(EJamSkill Skill)
+bool AJamHero::RequestSkill(EJamSkill Skill, bool bGamepadAttack)
 {
 	AJamPlayerState* PS = GetPlayerState<AJamPlayerState>();
 	AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>();
@@ -351,8 +351,9 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	{
 		return false;
 	}
-	// Gamepad attacks follow the camera; mouse attacks retain the cursor aim set by UpdateFacing.
-	if (bFollowCamera && AimOverride.IsNearlyZero() && AimSource != EAimSource::Mouse) { SetActorRotation(FRotator(0.f, CameraYaw, 0.f)); }
+	// Gamepad attacks use movement/facing; keyboard and mouse keep their existing aim.
+	if (bGamepadAttack) { FaceGamepadAttack(); }
+	else if (bFollowCamera && AimOverride.IsNearlyZero() && AimSource != EAimSource::Mouse) { SetActorRotation(FRotator(0.f, CameraYaw, 0.f)); }
 	const bool bActivated = PS->GetAbilitySystemComponent()->TryActivateAbility(PS->GetSkillHandle(Skill));
 	if (bActivated)
 	{
@@ -464,6 +465,9 @@ void AJamHero::CreateInput()
 	MoveAction->ValueType = EInputActionValueType::Axis2D;
 	LectureAction = NewObject<UInputAction>(this, TEXT("IA_Lecture"));
 	LectureAction->ValueType = EInputActionValueType::Boolean;
+	GamepadLectureAction = NewObject<UInputAction>(this, TEXT("IA_GamepadLecture"));
+	GamepadSkill2Action = NewObject<UInputAction>(this, TEXT("IA_GamepadSkill2"));
+	GamepadSkill4Action = NewObject<UInputAction>(this, TEXT("IA_GamepadSkill4"));
 	AimAction = NewObject<UInputAction>(this, TEXT("IA_Aim"));
 	AimAction->ValueType = EInputActionValueType::Axis2D;
 	InteractAction = NewObject<UInputAction>(this, TEXT("IA_Interact"));
@@ -525,7 +529,7 @@ void AJamHero::CreateInput()
 	// Nov 14: primary / RT, interact on F / A. Space also lectures (handy on a laptop).
 	InputContext->MapKey(LectureAction, EKeys::LeftMouseButton);
 	InputContext->MapKey(LectureAction, EKeys::SpaceBar);
-	InputContext->MapKey(LectureAction, EKeys::Gamepad_RightTrigger);
+	InputContext->MapKey(GamepadLectureAction, EKeys::Gamepad_RightTrigger);
 	InputContext->MapKey(InteractAction, EKeys::F);
 	InputContext->MapKey(InteractAction, EKeys::Gamepad_FaceButton_Bottom);
 	// At CUT!: hold F / A takes the note, X / B refuses it.
@@ -536,8 +540,8 @@ void AJamHero::CreateInput()
 	// Three active slots: Mouse 1 / Mouse 3 (or Left Shift, for trackpads) / R, RT / RB / LB.
 	InputContext->MapKey(SkillActions[0], EKeys::MiddleMouseButton);
 	InputContext->MapKey(SkillActions[0], EKeys::LeftShift);
-	InputContext->MapKey(SkillActions[0], EKeys::Gamepad_RightShoulder);
-	InputContext->MapKey(SkillActions[2], EKeys::Gamepad_LeftShoulder);
+	InputContext->MapKey(GamepadSkill2Action, EKeys::Gamepad_RightShoulder);
+	InputContext->MapKey(GamepadSkill4Action, EKeys::Gamepad_LeftShoulder);
 	InputContext->MapKey(SkillActions[2], EKeys::R);
 	InputContext->MapKey(WriteAction, EKeys::Gamepad_FaceButton_Top);
 	InputContext->MapKey(PauseAction, EKeys::Gamepad_Special_Right);
@@ -554,6 +558,9 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AJamHero::OnMove);
 		Input->BindAction(LectureAction, ETriggerEvent::Started, this, &AJamHero::OnLecture);
+		Input->BindAction(GamepadLectureAction, ETriggerEvent::Started, this, &AJamHero::OnGamepadLecture);
+		Input->BindAction(GamepadSkill2Action, ETriggerEvent::Started, this, &AJamHero::OnGamepadSkill2);
+		Input->BindAction(GamepadSkill4Action, ETriggerEvent::Started, this, &AJamHero::OnGamepadSkill4);
 		Input->BindAction(AimAction, ETriggerEvent::Triggered, this, &AJamHero::OnAim);
 		Input->BindAction(AimAction, ETriggerEvent::Completed, this, &AJamHero::OnAim);
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &AJamHero::OnLook);
@@ -798,6 +805,21 @@ void AJamHero::OnLecture(const FInputActionValue& /*Value*/)
 {
 	RequestLecture();
 }
+
+void AJamHero::FaceGamepadAttack()
+{
+	bUsingGamepad = true;
+	if (AimSource == EAimSource::Mouse) { AimSource = EAimSource::Movement; }
+	// The fixed-camera mode retains its direct right-stick aim. In follow mode,
+	// the right stick controls the camera, so the player attacks where they walk.
+	const FVector Facing = !bFollowCamera && AimSource == EAimSource::Stick
+		? StickAim.GetSafeNormal2D() : GetCharacterMovement()->Velocity.GetSafeNormal2D();
+	if (!Facing.IsNearlyZero()) { SetActorRotation(Facing.Rotation()); }
+}
+
+void AJamHero::OnGamepadLecture(const FInputActionValue&) { RequestSkill(EJamSkill::Lecture, true); }
+void AJamHero::OnGamepadSkill2(const FInputActionValue&) { RequestSkill(EJamSkill::FormALine, true); }
+void AJamHero::OnGamepadSkill4(const FInputActionValue&) { RequestSkill(EJamSkill::LastJudgment, true); }
 
 void AJamHero::OnAim(const FInputActionValue& Value)
 {

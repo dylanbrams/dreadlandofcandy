@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "InputActionValue.h"
 #include "InputMappingContext.h"
 #include "InputCoreTypes.h"
@@ -37,6 +38,28 @@ bool FJamHeroControlsTest::RunTest(const FString&)
     TestTrue(TEXT("X refuses notes"), Bound(Hero->RefuseAction, EKeys::X));
     TestFalse(TEXT("camera drag does not cast signature"), Bound(Hero->SkillActions[0], EKeys::RightMouseButton));
     TestFalse(TEXT("Q no longer casts ultimate"), Bound(Hero->SkillActions[2], EKeys::Q));
+    TestTrue(TEXT("gamepad attack buttons use device-specific actions"),
+        Bound(Hero->GamepadLectureAction, EKeys::Gamepad_RightTrigger) &&
+        Bound(Hero->GamepadSkill2Action, EKeys::Gamepad_RightShoulder) &&
+        Bound(Hero->GamepadSkill4Action, EKeys::Gamepad_LeftShoulder));
+    Hero->EnableFollowCamera(90.f);
+    Hero->AimSource = AJamHero::EAimSource::Mouse;
+    Hero->GetCharacterMovement()->Velocity = FVector(100.f, 0.f, 0.f);
+    Hero->SetActorRotation(FRotator(0.f, 45.f, 0.f));
+    Hero->FaceGamepadAttack();
+    TestTrue(TEXT("gamepad cast follows movement, not camera or stale mouse aim"), Hero->GetActorForwardVector().Equals(FVector::ForwardVector, 0.001f));
+    TestTrue(TEXT("gamepad cast selects gamepad prompts"), Hero->IsUsingGamepad());
+    TestTrue(TEXT("gamepad cast clears stale mouse aim"), Hero->AimSource == AJamHero::EAimSource::Movement);
+    Hero->GetCharacterMovement()->Velocity = FVector::ZeroVector;
+    Hero->SetActorRotation(FRotator(0.f, -45.f, 0.f));
+    Hero->FaceGamepadAttack();
+    TestTrue(TEXT("standing gamepad cast preserves facing"), FMath::IsNearlyEqual(Hero->GetActorRotation().Yaw, -45.f, 0.01f));
+    Hero->bFollowCamera = false;
+    Hero->AimSource = AJamHero::EAimSource::Stick;
+    Hero->StickAim = FVector(0.f, 1.f, 0.f);
+    Hero->FaceGamepadAttack();
+    TestTrue(TEXT("fixed camera retains right-stick aim"), Hero->GetActorForwardVector().Equals(FVector::RightVector, 0.001f));
+    Hero->AimSource = AJamHero::EAimSource::Movement;
     Hero->EnableFollowCamera(0.f);
     Hero->OnCameraTurn(FInputActionValue(1.f));
     Hero->TickFollowCamera(0.5f);
