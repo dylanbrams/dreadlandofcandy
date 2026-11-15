@@ -46,9 +46,9 @@ def music(at, name, gain, src_in, dur):
 # 1. Cold open: the devlog's prompt screen (000.mp4), held at 3.2 s where the ask is fully typed (2.9) and before Claude's
 #    reply starts. Trailer rule (Dylan, Nov 15): gameplay within ~5 s. Dylan's ask is his re-recorded pickup
 #    (BuildMeAnMMOPlease.wav, speech 0.73-3.2 s) because the devlog's cut clipped the "please"; the game is the answer.
-COLD = ROOT / 'Docs/Devlog/Video/build/seg/000'
+# coldopen_prompt.mp4 is a frozen copy of the devlog's 000.mp4 (Nov 15) so its re-renders can't move the held frame.
 ASK = ROOT / 'Docs/Devlog/Video/BuildMeAnMMOPlease.wav'
-seg('clip', 3.4, [(0.0, ASK, 0.0, 0.6, 2.75)], src=str(Path(f'{COLD}.mp4')), **{'in': 0.0}, hold=3.2)
+seg('clip', 3.4, [(0.0, ASK, 0.0, 0.6, 2.75)], src=str(Path(__file__).parent / 'coldopen_prompt.mp4'), **{'in': 0.0}, hold=3.2)
 # 2. The land, the hero, the lecture.
 m1 = clip(FLY, 44.0, 4.6, [(0.5, ANN / 'A01_land.mp3', 0.0)])
 clip('hero-close.mp4', 0.3, 3.2, [(0.2, ANN / 'A02_hero.mp3', 0.0)])
