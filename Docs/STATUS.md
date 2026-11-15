@@ -13,6 +13,14 @@ loops + spins 4 turns with a bigger 4.2 s flour cloud (FX regenerated), knight a
 Packaged to `Builds/Win64-Development` (log `Saved/pkg-fixes4.log`); no smoke or zip yet. Items 9-10 (river, bridge,
 path brush, house on path, tree in road) go to the TERRAIN thread.
 
+## Fixes4 #11 camera (Nov 15)
+
+Follow camera lifts (up to 55 degrees more pitch, fast up / slow down) when a sweep from the hero to the camera hits
+anything on Visibility (terrain, buildings) or any of the 18 tall instanced-foliage components (tree canopies, big
+gumdrops have no collision, so their instance bounds are checked). Pinned scene shots keep their framing. Hero walkable
+floor 52 degrees, step 60 (snagging on banks). Seen in autoplay: same frame went from canopy-filled to a clear view
+(`camlift_b.png` vs `camlift_d.png`). Not packaged. Engine/build FREE after this commit.
+
 ## Black Sugar UI (Nov 15, after terrain handoff)
 
 Implemented the selected dark candy UI. Editor build passes, all 82 Jam tests pass.

@@ -21,6 +21,7 @@
 #include "Animation/AnimSequence.h"
 #include "Game/JamNuisance.h"
 #include "EngineUtils.h"
+#include "Components/InstancedStaticMeshComponent.h"
 #include "InputTriggers.h"
 #include "Gas/JamAbilitySystemComponent.h"
 #include "Gas/JamClassShape.h"
@@ -70,6 +71,18 @@ namespace JamHeroTuning
 	constexpr float MouseYawSpeed = 0.6f;        // degrees per mouse count
 	constexpr float StickYawSpeed = 160.f;       // degrees per second at full stick
 	constexpr float BotTurnSpeed = 4.f;          // how fast the camera swings behind the bot's aim
+	// Fixes4 #11: terrain lift (degrees of extra downward pitch while the view is blocked).
+	constexpr float TerrainLiftMax = 55.f;
+	constexpr float TerrainLiftRaiseSpeed = 140.f;   // per second; fast, so the hero is hidden for a frame or two at most
+	constexpr float TerrainLiftRelaxSpeed = 25.f;    // per second; slow, so it does not bob on bumpy ground
+	constexpr float TerrainLiftHysteresis = 6.f;     // must be clear this much lower before it eases down
+	constexpr float TerrainLiftPitchFloor = -75.f;
+	constexpr float TerrainLiftProbeRadius = 30.f;
+	constexpr float TerrainLiftFoliageRadius = 60.f;
+	constexpr float TerrainLiftFoliageMinHeight = 250.f;
+	// Fixes4 #11: the hero snagged on carved banks and terrain seams.
+	constexpr float WalkableFloorAngle = 52.f;
+	constexpr float MaxStepHeight = 60.f;
 }
 
 AJamHero::AJamHero()
@@ -82,6 +95,8 @@ AJamHero::AJamHero()
 	Move->bOrientRotationToMovement = false;   // UpdateFacing() turns the hero
 	Move->RotationRate = FRotator(0.f, 720.f, 0.f);
 	Move->MaxWalkSpeed = JamHeroTuning::WalkSpeed;
+	Move->SetWalkableFloorAngle(JamHeroTuning::WalkableFloorAngle);
+	Move->MaxStepHeight = JamHeroTuning::MaxStepHeight;
 
 	CameraArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraArm"));
 	CameraArm->SetupAttachment(RootComponent);
@@ -627,6 +642,7 @@ void AJamHero::EnableFollowCamera(float Yaw)
 	CameraArm->bEnableCameraLag = true;
 	CameraArm->CameraLagSpeed = 10.f;
 	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
+	GatherCameraOccluderFoliage();
 	if (APlayerController* PC = Cast<APlayerController>(GetController())) { PC->bShowMouseCursor = true; }
 }
 
@@ -654,7 +670,78 @@ void AJamHero::TickFollowCamera(float DeltaSeconds)
 	{
 		CameraYaw = FMath::FixedTurn(CameraYaw, AimOverride.Rotation().Yaw, JamHeroTuning::BotTurnSpeed * 45.f * DeltaSeconds);
 	}
-	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
+	// Fixes4 #11: when a hill or a building cuts the line from the hero to the camera, swing the camera up
+	// over it instead of letting the arm's probe pull it into the hero's back; ease back down once clear.
+	// Pinned shots (scene takes) keep their framing; the arm's own probe still guards them.
+	if (!bCameraPinned)
+	{
+		const float LiftedPitch = CameraPitchFollow - CameraTerrainLift;
+		if (IsCameraViewBlocked(LiftedPitch))
+		{
+			if (CameraTerrainLift <= 0.f) { UE_LOG(LogJam, Log, TEXT("CameraLift: engaged at %s"), *GetActorLocation().ToCompactString()); }
+			CameraTerrainLift = FMath::Min(CameraTerrainLift + JamHeroTuning::TerrainLiftRaiseSpeed * DeltaSeconds, JamHeroTuning::TerrainLiftMax);
+		}
+		else if (CameraTerrainLift > 0.f && !IsCameraViewBlocked(LiftedPitch + JamHeroTuning::TerrainLiftHysteresis))
+		{
+			CameraTerrainLift = FMath::Max(CameraTerrainLift - JamHeroTuning::TerrainLiftRelaxSpeed * DeltaSeconds, 0.f);
+		}
+	}
+	else
+	{
+		CameraTerrainLift = 0.f;
+	}
+	const float Pitch = FMath::Max(CameraPitchFollow - CameraTerrainLift, JamHeroTuning::TerrainLiftPitchFloor);
+	CameraArm->SetWorldRotation(FRotator(Pitch, CameraYaw, 0.f));
+}
+
+void AJamHero::GatherCameraOccluderFoliage()
+{
+	CameraOccluderFoliage.Reset();
+	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+	{
+		TArray<UInstancedStaticMeshComponent*> Components;
+		It->GetComponents(Components);
+		for (UInstancedStaticMeshComponent* Component : Components)
+		{
+			const UStaticMesh* FoliageMesh = Component->GetStaticMesh();
+			if (!FoliageMesh || Component->GetInstanceCount() == 0) { continue; }
+			// Only tall things hide the hero; grass and flowers stay out (their instance scale is close to 1).
+			if (FoliageMesh->GetBounds().BoxExtent.Z * 2.f * Component->GetComponentScale().Z >= JamHeroTuning::TerrainLiftFoliageMinHeight)
+			{
+				CameraOccluderFoliage.Add(Component);
+			}
+		}
+	}
+	UE_LOG(LogJam, Log, TEXT("CameraLift: %d tall foliage components"), CameraOccluderFoliage.Num());
+}
+
+bool AJamHero::IsCameraViewBlocked(float Pitch) const
+{
+	UWorld* World = GetWorld();
+	if (!World || !CameraArm) { return false; }
+	const FVector Origin = GetActorLocation() + CameraArm->TargetOffset;
+	const FRotator View(FMath::Max(Pitch, JamHeroTuning::TerrainLiftPitchFloor), CameraYaw, 0.f);
+	// Stop a little short of the camera: only what hides the hero matters, not a wall behind the lens.
+	const FVector End = Origin - View.Vector() * CameraArm->TargetArmLength * 0.95f;
+	FCollisionQueryParams Params(SCENE_QUERY_STAT(JamCameraLift), false, this);
+	FHitResult Hit;
+	// Tree canopies and big candy props have no collision: sample spheres along the line against instance bounds.
+	const float R = JamHeroTuning::TerrainLiftFoliageRadius;
+	for (const float T : { 0.35f, 0.55f, 0.75f, 0.95f })
+	{
+		const FVector Sample = FMath::Lerp(Origin, End, T);
+		for (const TWeakObjectPtr<UInstancedStaticMeshComponent>& Weak : CameraOccluderFoliage)
+		{
+			const UInstancedStaticMeshComponent* Foliage = Weak.Get();
+			if (!Foliage || !Foliage->IsVisible() || !Foliage->Bounds.GetBox().ExpandBy(R).IsInside(Sample)) { continue; }
+			if (!Foliage->GetInstancesOverlappingSphere(Sample, R, true).IsEmpty()) { return true; }
+		}
+	}
+	// A probe that starts inside something (under the bridge, in a doorway) cannot be fixed by pitch: ignore it.
+	// Visibility, not the arm's Camera channel: trees and big candy props ignore Camera (so the arm does not
+	// snap into them) but still hide the hero, and rising over them is the right answer.
+	return World->SweepSingleByChannel(Hit, Origin, End, FQuat::Identity, ECC_Visibility,
+		FCollisionShape::MakeSphere(JamHeroTuning::TerrainLiftProbeRadius), Params) && !Hit.bStartPenetrating;
 }
 
 void AJamHero::OnLecture(const FInputActionValue& /*Value*/)

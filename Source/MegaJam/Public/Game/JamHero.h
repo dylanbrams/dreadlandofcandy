@@ -117,6 +117,12 @@ private:
 	float CameraTurn = 0.f;
 	float CameraZoomOffset = 0.f;
 	float CameraPitchFollow = -14.f;
+	// Fixes4 #11: extra downward pitch (degrees) while terrain or a building sits between the hero and the camera.
+	float CameraTerrainLift = 0.f;
+	bool IsCameraViewBlocked(float Pitch) const;
+	// Tall instanced foliage (trees, gumdrops): their canopies have no collision, so the lift checks instance bounds.
+	TArray<TWeakObjectPtr<class UInstancedStaticMeshComponent>> CameraOccluderFoliage;
+	void GatherCameraOccluderFoliage();
 	FVector2D StickLook = FVector2D::ZeroVector;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> LookAction;
