@@ -40,16 +40,17 @@ def music(at, name, gain, src_in, dur):
     AUDIO.append((at, MUSIC / f'{name}.mp3', gain, src_in, dur, 'music'))
 
 
-# 1. Cold open: Dylan, on camera, over a blurred aerial.
-seg('cam', 3.9, [(0.0, tk('12-16-09'), 2.0, 0.55, 3.8)],
-    take='12-16-09', t_in=0.55, wall=780, bg='tour-high.mp4', bg_in=80.0, fade_in=0.2)
+# 1. Cold open: the devlog's own (coldopen.html prompt screen, Claude / ChatGPT split, Dylan's voice and the click
+#    track), used exactly as the devlog renders it (Dylan, Nov 15: the two must match).
+COLD = ROOT / 'Docs/Devlog/Video/build/seg/000'
+seg('clip', 12.0, [(0.0, Path(f'{COLD}.wav'), 0.0)], src=str(Path(f'{COLD}.mp4')), **{'in': 0.0}, fade_out=0.3)
 # 2. The land, the hero, the lecture.
 m1 = clip('tour-high.mp4', 75.0, 4.6, [(0.5, ANN / 'A01_land.mp3', 0.0)])
 clip('hero-close.mp4', 0.3, 3.2, [(0.2, ANN / 'A02_hero.mp3', 0.0)])
 clip('knight-run.mp4', 10.0, 4.3, [(0.3, ANN / 'A03_armed.mp3', 0.0)])
 clip('barbarian-run.mp4', 9.0, 3.4, [(0.2, FEN / 'VO_LectureCast_02.mp3', 0.0)])
 # 3. Dylan in the corner over the giant celery.
-seg('pip', 4.5, [(0.0, tk('13-09-43'), 2.0, 0.2, 4.4)], take='13-09-43', t_in=0.2, src='hero-close.mp4', **{'in': 20.8})
+seg('pip', 4.5, [(0.0, tk('13-09-43'), 0.0, 0.2, 4.4)], take='13-09-43', t_in=0.2, src='hero-close.mp4', **{'in': 20.8})
 # 4. Music kicks in: manners, vegetables, a fast montage of all four classes.
 m2 = clip('typed-note.mp4', 15.0, 2.4, [(0.3, ANN / 'A05_manners.mp3', 0.0)])
 clip('typed-note.mp4', 30.0, 2.6, [(0.3, ANN / 'A06_vegetables.mp3', 0.0)])
@@ -68,7 +69,7 @@ clip('budget-out.mp4', 10.0, 3.9, [(0.2, FEN / 'VO_BudgetOut_02.mp3', 0.0)])
 # 7. Premiere.
 m3 = clip('budget-out.mp4', 24.6, 3.6, [(0.3, FEN / 'VO_Premiere_02.mp3', 0.0)])
 # 8. Dylan closes, no music.
-d8 = seg('cam', 3.5, [(0.0, tk('13-29-20'), 2.0, 32.45, 3.45)], take='13-29-20', t_in=32.45, bg='tour-high.mp4', bg_in=60.0)
+d8 = seg('cam', 3.5, [(0.0, tk('13-29-20'), 0.0, 32.45, 3.45)], take='13-29-20', t_in=32.45, bg='tour-high.mp4', bg_in=60.0)
 # 9. Title.
 end = seg('card', 5.5, [(0.4, ANN / 'A09_title.mp3', 0.0)], bg='tour-high.mp4', bg_in=15.0, fade_out=1.0,
           text={'text': 'THE DREAD LAND OF CANDY', 'size': 96, 'sub': 'Made in four days for the 2026 Epic AI MegaJam'})

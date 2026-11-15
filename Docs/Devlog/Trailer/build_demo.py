@@ -238,6 +238,41 @@ def render_video(path, t_from=0.0, t_to=1e9):
 
 
 # ---------------------------------------------------------------- sound
+VOICE_FX = ('highpass=f=80,afftdn=nf=-30,acompressor=threshold=-24dB:ratio=3:attack=5:release=120:makeup=6,'
+            'equalizer=f=3000:t=q:w=1:g=3')
+VOICE_LUFS = -15.0
+
+
+def lufs(path):
+    out = subprocess.run(['ffmpeg', '-hide_banner', '-i', str(path), '-af', 'ebur128', '-f', 'null', '-'],
+                         capture_output=True, text=True).stderr
+    vals = [l.split()[1] for l in out.splitlines() if l.strip().startswith('I:')]
+    return float(vals[-1])
+
+
+def prepare_take(src, s_in, s_dur):
+    """One of Dylan's lines: cut, clean, measure, then gain to exactly VOICE_LUFS. Cached in build/voice/."""
+    d = OUT_DIR / 'voice'
+    d.mkdir(parents=True, exist_ok=True)
+    out = d / f'{Path(src).stem.replace(" ", "_")}_{s_in:.2f}_{s_dur or 0:.2f}.wav'
+    if out.exists():
+        return out
+    raw = out.with_suffix('.raw.wav')
+    subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-ss', str(s_in)] + (['-t', str(s_dur)] if s_dur else [])
+                   + ['-i', str(src), '-vn', '-af', VOICE_FX, '-ar', '48000', '-ac', '2', str(raw)], check=True)
+    g = VOICE_LUFS - lufs(raw)
+    for _ in range(3):   # short lines measure a little differently after gain: correct until within 0.3 dB
+        subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-i', str(raw), '-af',
+                        f'volume={g:.2f}dB,alimiter=limit=0.89', str(out)], check=True)
+        err = VOICE_LUFS - lufs(out)
+        if abs(err) <= 0.3:
+            break
+        g += err
+    raw.unlink()
+    print(f'  voice {out.name}: {g:+.1f} dB -> {lufs(out):.1f} LUFS', flush=True)
+    return out
+
+
 def render_audio(path, total):
     args, voice, music = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y'], [], []
     filt = []
@@ -247,7 +282,14 @@ def render_audio(path, total):
         fades = ''
         if bus == 'music':
             fades = f',afade=t=in:d=0.6' + (f',afade=t=out:st={max(0, s_dur - 1.5)}:d=1.5' if s_dur else '')
-        filt.append(f'[{i}:a]{trim},asetpts=PTS-STARTPTS,aformat=sample_rates=48000:channel_layouts=stereo{fades},'
+        voice_fx = ''
+        if str(f).startswith(str(TAKES)):
+            # Dylan's raw takes differ in level from take to take (around -42 to -49 LUFS) and carry room tone:
+            # clean each line, then bring it to exactly the announcer's level (two-pass, see prepare_take).
+            f, s_in, s_dur = prepare_take(f, s_in, s_dur), 0.0, None
+            trim = 'atrim=start=0'
+            args[-1] = str(f)
+        filt.append(f'[{i}:a]{trim},asetpts=PTS-STARTPTS{voice_fx},aformat=sample_rates=48000:channel_layouts=stereo{fades},'
                     f'volume={gain}dB,adelay={int(at * 1000)}:all=1[a{i}]')
         (voice if bus == 'voice' else music).append(f'[a{i}]')
     filt.append(f'{"".join(voice)}amix=inputs={len(voice)}:normalize=0,apad=whole_dur={total}[v]')
