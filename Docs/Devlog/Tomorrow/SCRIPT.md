@@ -2,7 +2,7 @@
 
 Read naturally; slide prompts are cues. Each section is a **take** you can record on its own: it opens with a music bed and ends on a clean beat, so the takes can be cut together in any order. Sections 1–6 come from ChatGPT's Nov 15 01:45 draft, lightly tightened. Section 7 covers the long night, and sections 8 and 8b reconstruct Sunday morning, 05:00–11:00 project time, from git and `Docs/DEVLOG.md`. The ending is still open. About 9–11 minutes in all.
 
-**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. **Do not use `theme-song.mp3` anywhere; the theme song is cut from the game, the video and the trailer.**
+**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. **Do not use `theme-song.mp3` anywhere; the theme song is cut from the game, the video and the trailer.** The one exception is the a cappella blooper in section 11.
 
 | Take | Bed | Why |
 | --- | --- | --- |
