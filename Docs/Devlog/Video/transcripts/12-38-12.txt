@@ -1,0 +1,10 @@
+# 12-38-12  (58s)
+[0.6-1.8] We didn't use one generator.
+[2.6-5.8] We did three, to start with, to sort of pick things.
+[6.2-10.3] So we had Meshy, Hyper3D, Rodan, and, FAL.
+[10.8-13.8] And they all had very different looks to them in some ways.
+[14.3-18.0] And so I picked the Rodan Rat, and then, and
+[19.6-19.9] then,
+[21.2-25.2] you know, generated all the foliage and everything else with, with one of the other models.
+[25.4-44.0] And, and then, you know, like it was main character Meshy, everything else sort of balance between the two so that I could I could get as get a full -fledged like visual game coming out nothing
+[46.2-55.7] came back from the AI right so you'd need to so so you know I had chat GPT or sorry for months I've been using

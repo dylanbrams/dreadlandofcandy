@@ -1,0 +1,10 @@
+# 12-36-41  (65s)
+[0.5-2.2] Then came my heads -up display,
+[3.5-13.8] HUD, and Fenella, the director that's, you know, the fairy over your shoulder, and the in -thing, skills, music, characters, a look.
+[13.9-23.9] There were lots and lots of things that need to be done, and they all just kind of, you know, I, I put jobs out in the universe, and then they all co -sort of came back with, with results and stuff to put into the game.
+[26.5-28.3] and there were lots of problems at the time.
+[28.8-30.5] You know, there was a camera that got too close.
+[30.5-40.7] There were rats that could run too fast for the bot to move through it, and there were a lot of generated objects that I would need to look at generated objects and say, this isn't right or this isn't right.
+[41.1-53.1] It became more of a judgment and QA process for me than a create a house for looking at.
+[53.3-60.1] I needed to decide which of the AI generators to use for which objects in the game.
+[60.1-63.8] so that I could load balance based upon the amount of credit I had.

@@ -1,0 +1,23 @@
+# 13-22-27  (123s)
+[1.7-6.9] And today I was like, well, let's just make the in -game stuff a little prettier, even.
+[8.4-11.5] I had this concept that I
+[12.5-15.5] wanted a chocolate, chocolate, like a hot chocolate river.
+[15.8-17.5] I've never heard of a hot chocolate river.
+[18.5-20.3] There's kind of one in Willy on Wonka,
+[21.4-25.9] but once I had that concept, I really wanted one in my game.
+[26.8-32.2] And so I was like, all right, well, make me some marshmallows and make me a chocolate river and put it in this thing and we'll make a bridge.
+[35.6-36.0] and
+[37.8-50.5] you know then you clean it up in blender and you put it on in and it you know it happens in and a half an hour which is very different from the traditional time frame and the flow of it the
+[51.9-53.9] marshmallows started as like
+[56.9-69.3] cylinders they did not work well and then you know I mean there's still a hole in the bottom of one that I hope to fix by the end of the day but but yeah Yeah, it's been
+[72.0-78.8] an interesting experience to be able to throw a chocolate river in my thing and then say, look, I want more variety in my foliage.
+[79.3-82.4] So I go off, and I generate eight
+[83.5-86.0] more foliage models from random stuff.
+[86.2-89.7] Like I asked ChatTPT for a list of foreign treats.
+[89.8-93.7] I was thinking Knafa bushes, but it didn't give me that.
+[94.4-96.9] I should have generated Knafa bush.
+[98.0-102.4] But there's all sorts of random suites from around the world.
+[102.5-108.7] I ended up using gumdrop bushes and jellybean bushes and just
+[109.5-115.6] make crazy stuff, and it just all ends up in the game.
+[116.0-116.6] That's kind of cool.
+[118.9-120.6] And then I also wanted the UI.

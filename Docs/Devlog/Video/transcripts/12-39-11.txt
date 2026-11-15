@@ -1,0 +1,9 @@
+# 12-39-11  (61s)
+[0.5-2.7] Nothing really comes back from,
+[4.2-11.1] from the, the 3D generators perfectly, so I've been using Blender scripts,
+[12.6-14.2] and clean up stuff for meshes,
+[15.3-19.2] that, that get all the, all the various details, UVs and so on,
+[20.1-21.6] missing faces, open faces.
+[22.4-26.7] I've been cleaning a lot of that up for months with, with a script written by,
+[29.8-30.3] by Claude.
+[32.8-58.6] So, so all of this stuff like I've been I've been working with this in the past and that's the thing is that some of this there is experience you know people will talk about AI slop but if you're trying to get quality results from AI you do need some experience and how to some experience that it from from working with regular games that does translate into games that have you know art stuff made with AI

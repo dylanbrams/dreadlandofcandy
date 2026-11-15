@@ -1,0 +1,33 @@
+# 13-25-53  (197s)
+[1.1-3.7] Controls are hidden under notes on the title menu.
+[4.1-6.4] These are the one thing that should not have a joke label.
+[7.6-10.9] The archer's flashes is the right idea, but a little too big and bright.
+[11.1-11.5] It hurts.
+[12.2-13.4] The river is terrible.
+[13.9-16.0] It's a single ribbon with no depth above the ground.
+[16.3-18.4] The bridge is flattened for some reason and looks like crap.
+[19.1-23.2] There's a house actually sitting on the path and a tree in the middle of where a road should be.
+[23.8-24.0] So,
+[27.4-30.8] these are all fixes that are very small that I could make.
+[30.8-31.8] these
+[33.8-38.1] are things I might and hopefully would not have done originally and initially and the AI did.
+[39.8-41.4] Is fixing all of them
+[42.3-50.4] more time -consuming than or is AI fixing them more time -consuming than me fixing them?
+[51.0-51.0] No.
+[51.6-55.2] Is having them all there for me to look at more time -consuming?
+[56.2-56.5] Yes.
+[57.8-80.6] So one of the things that people who are programmers really hate about working with AI is all mistakes but I've worked as a programmer I've worked as QA before I was a programmer I was a QA tech for a while I was a QA tooling tech as well and you know it's just obvious to me that
+[82.0-91.8] programmers are gonna do stuff that I don't want to and these are just more programmers to me and and
+[96.4-110.9] so and so here we are with this with this cool setup where to me it's great in that I get to look at the problems that there are in this and say look this just doesn't work visually.
+[111.6-124.7] Now I am an expert on programming and so my broad strokes view you know approach to the visuals is not what my artist wife's approach will be.
+[125.7-126.5] It's just not.
+[126.5-127.2] It's not as good.
+[129.0-132.5] I end up being a generalist and to make a better game I would need more input.
+[133.0-142.3] That's one thing that I really think that people should take from this video is to make a better game you don't need just AI input.
+[142.4-143.7] You need input from other people.
+[145.0-159.2] And if you look at the game closely, and I will more closely as I as I you know have time to play it instead of make it I'm gonna end up with a lot more sort
+[160.1-178.6] of problems and issues and things that I would like yeah yeah and and and if I had more people helping me with this I would be able to make a better game that's just kind of the core realization that everybody should have when they do something like this.
+[179.4-186.6] If you can figure out how to work with other people, you slow down the actual production process in some ways but the end result is better.
+[190.7-191.3] To a point.
+[192.1-192.1] Alright.
+[192.6-195.6] Committees do kill everything eventually.

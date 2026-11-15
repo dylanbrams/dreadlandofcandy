@@ -1,0 +1,63 @@
+12-15-53     5s    0w   0f |  ... 
+12-16-00     7s    0w   0f |  ... 
+12-16-09    27s   21w   0f | Build me an MMO in four days, please. Build me an MMO ... please. Here's an a design talk.
+12-16-38    14s   17w   0f | Here's a design dock and schedule for an MMO. Let's build it. ... it. Then I scale back up.
+12-16-58    16s    8w   0f | Repeat for four days. Repeat for four days. ... four days. Repeat for four days.
+12-17-20    13s   26w   0f | That's pretty much the story of the last four days. I asked ... out. Chog clops it down to...
+12-17-35    23s   50w   1f | That's pretty much the story of the last four days. I asked ... it sounded like I wanted to...
+12-18-01    34s   65w   1f | I started out making a game in a game jam, and I ... be done in a weekend. yeah.
+12-18-42    13s   25w   0f | So I ended up, like, pushing to make an MMO in a ... AI. Like, all of the AI.
+12-18-57    76s  157w   2f | I personally have played a lot of MMOs when I started. I ... bigger ones that are out now.
+12-20-17    45s   88w   3f | I skipped Ultima Online and World of Warcraft and the really big ... big, a little like this big.
+12-24-53    59s  119w   3f | just generally, I have difficulty restraining the scope of my ambitions, which ... all I have for you today.
+12-25-56    84s  188w   1f | So the concept was, like, let's make the dreadland of candy. You're, ... would be really new and unique
+12-27-22     8s   11w   0f | So, what we've got is me, like, I kind of divide... ... me, like, I kind of divide...
+12-27-32   100s  212w   1f | So Mini Software Team is built with sort of layers, if you're ... that's what this video is about.
+12-29-14    24s   46w   2f | So, the core of this video is an experiment, and to see ... cases, pseudos. I mean, they're artists.
+12-29-39    11s   17w   0f | So, the real core of this video is figuring out if I ... I can make something inter -
+12-29-51    43s   94w   0f | So the real core of this video is figuring out if I ... idea guy despite having terrible ideas.
+12-30-44    44s  120w   1f | that said, so, what I've done is I've also done sort of ... to be able to be handled.
+12-34-50    18s   41w   0f | So, step one was a complete loop before polishing. By the first ... earned its keep, the game could...
+12-35-10    19s   40w   1f | So, the first goal was a full game loop, before I did ... you know, like, shout at things.
+12-35-30    69s  142w   2f | But the first morning, there's a hero on the screen. Late morning, ... where stuff moved around. Then came...
+12-36-41    65s  185w   2f | Then came my heads -up display, HUD, and Fenella, the director that's, ... the amount of credit I had.
+12-37-51    19s   34w   1f | And so, you know, we, we, we didn't use one generator. We ... Hyper -3D, and one with, FAL.
+12-38-12    58s  125w   3f | We didn't use one generator. We did three, to start with, to ... sorry for months I've been using
+12-39-11    61s  137w   6f | Nothing really comes back from, from the, the 3D generators perfectly, so ... know art stuff made with AI
+12-40-18    12s   16w   0f | The film shoot structure kept getting changed by the Candy World. So, ... World. So, Sugarboro, I didn't like...
+12-40-31    80s  179w   2f | So I didn't like the, the concept of an arena game, okay? ... kind of part of the deal
+13-08-18     8s    9w   0f | So, what are you up with? Well, so, okay. ... you up with? Well, so, okay.
+13-08-28     4s    6w   0f | So, what do I end with? ... So, what do I end with?
+13-08-34     6s    8w   0f | So, what did I end up with? Ugh. ... did I end up with? Ugh.
+13-08-46     5s    7w   0f | So, what did I end up with? ... what did I end up with?
+13-09-00     4s    7w   0f | So, what did I end up with? ... what did I end up with?
+13-09-07    35s   69w   1f | I got some cool features that are all pretty unique from what ... know? That's, That's something I don't...
+13-09-43    16s   42w   1f | Nothing dies. So you lecture, you feed things celery, you brush your ... stuff some celery. Stuff some celery.
+13-10-07    25s   52w   0f | The quests are rewritten while you play. So, every villager has authored ... rat and then beat its celery.
+13-10-34    35s   95w   2f | The other option is to write your own. So, you can, instead ... in, which is kind of cool.
+13-11-11    11s    9w   3f | and then the AI, is on a lead, yeah. ... AI, is on a lead, yeah.
+13-11-24    27s   69w   1f | So, the AI chooses from the pieces we built and tested, of ... the remote I've got set up.
+13-12-05    27s   81w   0f | And then on top of that, the villagers, like, you, the, the, ... you want to go after that.
+13-12-35    54s  121w   2f | And in line with the game jam rules, the whole thing's a ... little best parts of it. Yeah.
+13-13-39    40s   89w   1f | I directed and play tested, Claude and Chat GBT worked together on, ... lot of various tools flying around.
+13-16-35    44s   92w   2f | I didn't ask one generator for World and accept whatever came back. ... to be worthwhile. for a while.
+13-17-24     7s    1w   0f | So. ... So.
+13-17-38    70s  144w   2f | So, the film shoot structure, I didn't like, you know, film. I ... about it in a proper way.
+13-18-49     6s    0w   1f |  ... 
+13-18-57    68s  160w   0f | As Saturday night sort of ended, and Sunday began, the village kind ... was like, okay, make it bigger.
+13-20-06    48s  106w   2f | And while making it bigger, make it more fun and make it ... thing so what I did was
+13-20-55    54s  137w   4f | So what I did was I took concept of, like, comic book ... be doable in a game jam
+13-22-00    25s   33w   2f | So, Sunday, today, there's a second release candidate. So, I've released, I've ... at it, nobody's interested, nobody cares.
+13-22-27   123s  286w   1f | And today I was like, well, let's just make the in -game ... then I also wanted the UI.
+13-24-31    54s  123w   2f | And then I also, and then I have, you know, in playing ... the game really ends up working
+13-25-32    20s   34w   4f | And then I started doing these, like, fixed notes. Okay, so, I'm ... under notes on the title menu.
+13-25-53   197s  474w   0f | Controls are hidden under notes on the title menu. These are the ... Alright. Committees do kill everything eventually.
+13-29-20    38s  111w   0f | More problems? I mean, we had the camera. So, at 11 this ... What are you going to do?
+13-30-08     6s    9w   0f | And the last part of this devlog. Okay, so... ... part of this devlog. Okay, so...
+13-30-15   323s  756w   1f | An important part to talk about here is why to do it, ... not be fun to anybody else
+13-35-40    55s   74w   1f | So, listen to this horror created. Not for very long, because, oh ... track that AI generated. Just know.
+13-54-05   204s  432w   0f | Okay, so, okay. So, this is a Gantt chart. It's the whole ... the, you know, the pseudo -artist.
+13-57-31    39s   70w   2f | You can also see where I was more comfortable with Twitch AI. ... like how things were pulled out.
+13-58-12    21s   43w   2f | What's not on the chart at all is me, you know? I ... design documents, watching my kids, of
+13-58-34     5s    8w   0f | So, what's not apparently on this Gantt chart? ... not apparently on this Gantt chart?
+13-58-41   149s  364w   1f | So the hard thing to quantify with this Gantt chart is my ... these as I was working alone.

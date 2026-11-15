@@ -1,0 +1,5 @@
+# 13-10-07  (25s)
+[0.5-3.0] The quests are rewritten while you play.
+[3.7-14.4] So, every villager has authored jobs, but you can also say ask vanilla to improvise, and the AI will write two new ways to do the job.
+[15.1-16.4] That changes what you do.
+[17.7-21.2] Lecture the rat can become pacify the rat and then beat its celery.

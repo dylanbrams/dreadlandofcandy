@@ -1,0 +1,7 @@
+# 13-57-31  (39s)
+[0.2-3.8] You can also see where I was more comfortable with Twitch AI.
+[4.5-9.1] So, Claude was handed game code, most of the time.
+[10.7-15.7] and chatgpt was handed generation tasks, prompt writing,
+[18.7-22.0] all sorts of things that had to rela - that were related to the aesthetics.
+[22.0-31.6] were primarily a chat GPT, partially because that's just what I'm less comfortable with.
+[31.8-35.7] It just ended up being like how things were pulled out.

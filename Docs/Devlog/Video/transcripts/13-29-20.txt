@@ -1,0 +1,12 @@
+# 13-29-20  (38s)
+[0.6-1.5] More problems?
+[1.7-2.5] I mean, we had the camera.
+[2.7-8.5] So, at 11 this morning, I'm like, well, the camera keeps getting stuck in the hills and tree canopies.
+[9.5-14.3] I try to fix it once, because the camera, the trees in the map, they don't block the camera's trace at all.
+[16.0-20.6] So, it had to check the trees bounce directly, and now the camera goes up and straight over the character.
+[21.3-31.1] Sometimes, I'm still not perfectly happy with it, but it's better, you know, and an That incremental improvement is the best I can do.
+[31.3-32.4] It's a game, game, game, game.
+[32.6-33.1] Four days.
+[33.5-34.0] Four days.
+[34.3-34.7] One dude.
+[35.1-35.8] What are you going to do?

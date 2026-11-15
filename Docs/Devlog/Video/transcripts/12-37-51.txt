@@ -1,0 +1,5 @@
+# 12-37-51  (19s)
+[0.4-5.1] And so, you know, we, we, we didn't use one generator.
+[5.6-6.2] We used three.
+[7.3-13.8] We had, we built one with MeSHy, one RAT with MeSHy, and one with Hyper -3D, and one with,
+[16.2-16.3] FAL.

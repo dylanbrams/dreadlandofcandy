@@ -18,7 +18,11 @@ def model():
     return WhisperModel("small.en", device="cpu", compute_type="int8")
 
 def run(m, path):
-    segs, info = m.transcribe(str(path), word_timestamps=True, vad_filter=True, beam_size=5)
+    segs, info = m.transcribe(str(path), word_timestamps=True, vad_filter=True, beam_size=5,
+                                 vad_parameters={"threshold": 0.35, "min_silence_duration_ms": 300},
+                                 condition_on_previous_text=False,
+                                 # keeps disfluencies in the text so the edit can cut them
+                                 initial_prompt="Um, so, uh, I, I mean, like, you know... Uh, okay. Um, well, so, uh, yeah.")
     out = {"file": path.name, "duration": info.duration, "words": [], "segments": []}
     for s in segs:
         out["segments"].append({"text": s.text.strip(), "s": round(s.start, 3), "e": round(s.end, 3)})

@@ -1,0 +1,580 @@
+## 12-15-53 (5s, 0 fillers)
+
+
+## 12-16-00 (7s, 0 fillers)
+
+
+## 12-16-09 (27s, 0 fillers)
+[0.7-4.1] Build me an MMO in four days, please.
+[12.4-15.4] Build me an MMO in four days, please.
+[23.9-25.4] Here's an a design talk.
+
+## 12-16-38 (14s, 0 fillers)
+[1.9-4.7] Here's a design dock and schedule for an MMO.
+[5.2-6.2] Let's build it.
+[10.7-12.1] Then I scale back up.
+
+## 12-16-58 (16s, 0 fillers)
+[4.4-6.6] Repeat for four days.
+[13.5-15.1] Repeat for four days.
+
+## 12-17-20 (13s, 0 fillers)
+[1.2-3.5] That's pretty much the story of the last four days.
+[3.9-5.6] I asked Claude for something huge.
+[6.6-7.8] Chad GPT specs it out.
+[8.8-10.0] Chog clops it down to...
+
+## 12-17-35 (23s, 1 fillers)
+[0.9-3.2] That's pretty much the story of the last four days.
+[3.4-6.4] I asked Claude for something huge, chat GPT specs it out,
+[7.2-11.5] Claude cuts it, makes it doable, and then I'm like, More!
+[15.7-17.8] I wanted to make a game and a game jam.
+[18.5-18.9] Somewhere,
+[20.1-21.9] like, it sounded like I wanted to...
+
+## 12-18-01 (34s, 1 fillers)
+[0.9-7.4] I started out making a game in a game jam, and I really wanted to do something big that I couldn't do alone in the past.
+[9.2-13.3] Really, I wanted to do the archtypical, like,
+[14.7-15.5] Redditor question.
+[16.4-17.8] How do I make an MMO?
+[18.2-20.0] I've got the best idea for an MMO.
+[23.7-25.7] I want to see how much of that could be done in a weekend.
+[31.1-31.4] yeah.
+
+## 12-18-42 (13s, 0 fillers)
+[0.8-5.9] So I ended up, like, pushing to make an MMO in a few days with AI.
+[7.0-7.7] A lot of AI.
+[8.5-8.6] Like,
+[9.4-10.4] all of the AI.
+
+## 12-18-57 (76s, 2 fillers)
+[1.1-4.9] I personally have played a lot of MMOs when I started.
+[5.1-6.5] I started on Muntz.
+[6.9-11.9] I started on Ancient Anguish and Tsunami Muntz 35 years ago,
+[13.9-15.2] and the graphics were all in your head.
+[16.1-22.3] And then City of Heroes, Star Wars Galaxies, and Eve Online, and Path of Exile 1 and 2, I played all of those.
+[22.8-25.5] I actually, you know, I was a Master Crafter in,
+[28.3-29.3] Star Wars Galaxies.
+[30.7-52.1] and being as good at crafting things in Star Wars galaxies I was the best starship manufacturer in the whole galaxy and being that good at that is what ended up giving me the confidence and sort of the understanding and the sort of the framework for me to believe that I could go and get my second degree in engineering and electrical engineering.
+[55.1-58.5] So I skipped some Ultimate Online and World of Warcraft,
+[60.2-67.5] and I've tried a lot of the bigger ones that are out now.
+
+## 12-20-17 (45s, 3 fillers)
+[2.0-5.8] I skipped Ultima Online and World of Warcraft and the really big ones.
+[6.7-7.8] all the Final Fantasies.
+[10.1-10.8] but I dabble.
+[10.9-11.4] I look in.
+[11.6-15.8] I, I, I design games, so I, I check in on what games are doing and I play a little of them.
+[17.8-20.0] you know, I've, I've, I've
+[22.9-24.6] played a lot of MMO time.
+[25.2-25.8] A lot.
+[29.2-36.5] So what I think of as reasonable and what I think of as sort of a basic game is a little big,
+[37.3-38.1] a little big,
+[39.0-40.3] a little like this big.
+
+## 12-24-53 (59s, 3 fillers)
+[2.6-7.6] just generally, I have difficulty restraining the scope of my ambitions, which is
+[8.6-23.2] problematic, but what ends up happening sometimes is I make a better plan and I accomplish things sequentially and some of my ambitions get, get actually put into something viable.
+[25.1-26.2] so,
+[28.9-33.1] this was a chance for me to say, well, I'm gonna do four, take four days,
+[34.3-44.6] and I'm going to just throw everything at the wall and see what works and try and make something cool and fun and use whatever tools I have in hand.
+[45.3-46.9] I'm not planning on selling any of this.
+[47.2-52.9] I'm just like, hey, let's make something I think is funny and interesting.
+[55.6-56.0] Yeah.
+[56.0-56.4] That's all I have for you today.
+
+## 12-25-56 (84s, 1 fillers)
+[0.6-5.0] So the concept was, like, let's make the dreadland of candy.
+[6.4-24.1] You're, like, a hero in a candy world, but you're also an actor in a chaotic production where Fenella, your little fairy director, has opinions, and there are scenes to shoot and creatures to deal with and takes to mess up in a budget that runs out.
+[25.1-26.6] and the joke is kind of like,
+[27.7-81.2] you've got this like Elden Ringstar hero and he's in he's in this like happy fantasy world and he's he's he's he's he's playing around in this world where there's candy canes and like he's got to like shout at the rats and get them to behave like like brush their teeth and you know I mean the concept is to is to is to have this like really heavy contrast between the traditional violence at video games that like it being very just like not at all a violent game and there and and that's like the core that's the core theme of the game but then I tried to add a bunch of stuff that would be really new and unique
+
+## 12-27-22 (8s, 0 fillers)
+[0.8-6.3] So, what we've got is me, like, I kind of divide...
+
+## 12-27-32 (100s, 1 fillers)
+[0.8-8.1] So Mini Software Team is built with sort of layers, if you're building a big enough piece of software.
+[8.2-12.2] And normally I do all of the layers myself, or I have in the past.
+[13.3-23.1] it's easier with AI in that what I did this time is I kind of directed, I playtested, I did some writing, I did some vocals that didn't work out at all.
+[26.7-32.4] I did some visual cohesion.
+[33.6-36.8] I wrote prompts for various things,
+[40.3-42.6] but I did sort of the top level.
+[43.2-46.0] This is sort of bi -coding.
+[47.3-81.1] And then Claude and Chad GPT did planning, and code, and art, and terrain, and audio and integration and you know and they ran audio they ran tools via AI I ran some tools via tech via you know via web interface I ran one or two tools but there were handoffs there was parallel work there was a lot of checking whether things looked right and it you know that whether things had visuals for cohesion because when you use different AI tools you end up losing cohesion and some of the setup and design work existed before
+[82.8-87.4] Specifically, some of the technical stuff I've had laying around for a long time.
+[91.6-96.6] But yeah, that's what this video is about.
+
+## 12-29-14 (24s, 2 fillers)
+[0.9-10.8] So, the core of this video is an experiment, and to see what can be made, and what the drawbacks are in working with AI this way, where you've got,
+[13.1-18.4] these very, very competent techni - technicians, and in some cases, pseudos.
+[18.7-19.5] I mean, they're artists.
+
+## 12-29-39 (11s, 0 fillers)
+[0.7-4.3] So, the real core of this video is figuring
+[6.0-6.4] out
+[7.5-10.4] if I can make something inter -
+
+## 12-29-51 (43s, 0 fillers)
+[0.3-3.5] So the real core of this video is figuring out if I can make something interesting,
+[4.3-7.6] and make something unique, and make something worth playing.
+[8.5-10.5] When I do do a lot of this stuff
+[12.2-13.6] with external tools.
+[14.0-18.0] Like, I, I, I, I never considered doing all of it with tools.
+[18.2-19.3] It doesn't make any sense.
+[19.5-22.2] Like, I always want to have my hands and little pieces of it.
+[22.5-26.8] But this is me just saying, here's my vision.
+[29.1-30.3] Let's try and make it happen.
+[33.5-37.2] So I can be an idea guy despite having terrible ideas.
+
+## 12-30-44 (44s, 1 fillers)
+[3.7-9.8] that said, so, what I've done is I've also done sort of an engineering analysis of it.
+[10.2-16.9] I've done Gantt charts saying, well, here's what it did, here's what, here's what actually took the time over the course of the four, four days.
+[18.0-20.2] I was able to have stuff work while I was sleeping.
+[20.6-23.6] I was able to, you know, fix bugs I was able to do.
+[23.8-26.0] I'm recording this while there's an AI in the background.
+[26.8-35.8] There's a lot of work going on that I don't directly need to be part of and so even though this is a 100 % solo experiment,
+[37.7-41.7] more threads can be handled at a time than used to be able to be handled.
+
+## 12-34-50 (18s, 0 fillers)
+[0.6-1.2] So,
+[2.2-4.9] step one was a complete loop before polishing.
+[6.4-12.9] By the first morning, there was a hero on the screen, and by late morning, a bot could play through a film by itself.
+[13.4-16.5] The bot earned its keep, the game could...
+
+## 12-35-10 (19s, 1 fillers)
+[0.8-7.4] So, the first goal was a full game loop, before I did any real polish, or expansion.
+[8.3-14.3] So, by the end of the first warning, there's hero on the screen, he can attack, and, you know, like, shout at things.
+
+## 12-35-30 (69s, 2 fillers)
+[1.3-3.2] But the first morning, there's a hero on the screen.
+[4.2-4.7] Late morning,
+[6.5-11.4] like, he can shout and run through the thing, and the bot can play through the game.
+[14.0-19.2] the game being able to compile and run through something and fail, that's a good step.
+[19.6-21.4] You know, like, the first day or so,
+[26.3-31.9] basically, the, the, the, Claude decided to make it an arena game at first.
+[31.9-38.3] and it ran through this arena dozens upon dozens of times making sure that
+[39.5-48.7] the goblins could be beaten and that the goblins could be used sometimes and you know actually there was no goblins beating you at any point in the beginning
+[50.3-50.9] but
+[52.5-64.4] like there was a massive amount of testing that went in to get making the game automatically work as a playable game to start with where stuff moved around.
+[66.2-67.4] Then came...
+
+## 12-36-41 (65s, 2 fillers)
+[0.5-2.2] Then came my heads -up display,
+[3.5-13.8] HUD, and Fenella, the director that's, you know, the fairy over your shoulder, and the in -thing, skills, music, characters, a look.
+[13.9-23.9] There were lots and lots of things that need to be done, and they all just kind of, you know, I, I put jobs out in the universe, and then they all co -sort of came back with, with results and stuff to put into the game.
+[26.5-28.3] and there were lots of problems at the time.
+[28.8-30.5] You know, there was a camera that got too close.
+[30.5-40.7] There were rats that could run too fast for the bot to move through it, and there were a lot of generated objects that I would need to look at generated objects and say, this isn't right or this isn't right.
+[41.1-53.1] It became more of a judgment and QA process for me than a create a house for looking at.
+[53.3-60.1] I needed to decide which of the AI generators to use for which objects in the game.
+[60.1-63.8] so that I could load balance based upon the amount of credit I had.
+
+## 12-37-51 (19s, 1 fillers)
+[0.4-5.1] And so, you know, we, we, we didn't use one generator.
+[5.6-6.2] We used three.
+[7.3-13.8] We had, we built one with MeSHy, one RAT with MeSHy, and one with Hyper -3D, and one with,
+[16.2-16.3] FAL.
+
+## 12-38-12 (58s, 3 fillers)
+[0.6-1.8] We didn't use one generator.
+[2.6-5.8] We did three, to start with, to sort of pick things.
+[6.2-10.3] So we had Meshy, Hyper3D, Rodan, and, FAL.
+[10.8-13.8] And they all had very different looks to them in some ways.
+[14.3-18.0] And so I picked the Rodan Rat, and then, and
+[19.6-19.9] then,
+[21.2-25.2] you know, generated all the foliage and everything else with, with one of the other models.
+[25.4-44.0] And, and then, you know, like it was main character Meshy, everything else sort of balance between the two so that I could I could get as get a full -fledged like visual game coming out nothing
+[46.2-55.7] came back from the AI right so you'd need to so so you know I had chat GPT or sorry for months I've been using
+
+## 12-39-11 (61s, 6 fillers)
+[0.5-2.7] Nothing really comes back from,
+[4.2-11.1] from the, the 3D generators perfectly, so I've been using Blender scripts,
+[12.6-14.2] and clean up stuff for meshes,
+[15.3-19.2] that, that get all the, all the various details, UVs and so on,
+[20.1-21.6] missing faces, open faces.
+[22.4-26.7] I've been cleaning a lot of that up for months with, with a script written by,
+[29.8-30.3] by Claude.
+[32.8-58.6] So, so all of this stuff like I've been I've been working with this in the past and that's the thing is that some of this there is experience you know people will talk about AI slop but if you're trying to get quality results from AI you do need some experience and how to some experience that it from from working with regular games that does translate into games that have you know art stuff made with AI
+
+## 12-40-18 (12s, 0 fillers)
+[1.0-5.3] The film shoot structure kept getting changed by the Candy World.
+[5.9-7.1] So, Sugarboro,
+[10.3-11.9] I didn't like...
+
+## 12-40-31 (80s, 2 fillers)
+[0.5-5.2] So I didn't like the, the concept of an arena game, okay?
+[6.0-12.7] So, the way the game was originally set up, like, it was sort of walked through these four static arenas,
+[16.5-22.0] and, you know, it has acts as in stages, so it had one, stage one, two, three,
+[24.7-66.6] and I just didn't, I was not, I wasn't happy with that, that wasn't my dream, like, my dream, when I started out, was like, hey look we've got Skyrim in Candyland with this Elden Ring guy kind of and and he's brushing the teeth of rats with a giant toothbrush and feeding them celery like ridiculous so so you know that dream and the dream of like walking into like this like walking into Candyland was not something that was served by you know a 45 degree kind of Diablo style viewpoint on a game that that
+[68.2-77.9] was supposed to be like sort of open to be somewhat open -ended like that was part of the deal so the whole open -ended is kind of part of the deal
+
+## 13-08-18 (8s, 0 fillers)
+[0.6-2.9] So, what are you up with?
+[4.5-5.7] Well, so,
+[6.9-7.5] okay.
+
+## 13-08-28 (4s, 0 fillers)
+[0.3-1.8] So, what do I end with?
+
+## 13-08-34 (6s, 0 fillers)
+[0.8-3.4] So, what did I end up with?
+[5.0-5.5] Ugh.
+
+## 13-08-46 (5s, 0 fillers)
+[0.7-2.7] So, what did I end up with?
+
+## 13-09-00 (4s, 0 fillers)
+[0.3-2.5] So, what did I end up with?
+
+## 13-09-07 (35s, 1 fillers)
+[2.0-5.8] I got some cool features that are all pretty unique from what I've seen.
+[8.3-10.1] the attacks hop back, okay?
+[10.5-19.0] Every attack throws comic word cards into the world in several languages and the hero shouts battle cries and 154 translations.
+[20.2-23.9] The first time you use a skill, it's English and after that, well, you never know what you're gonna get.
+[25.6-27.5] Nothing dies, you know?
+[27.6-29.9] That's, That's something I don't...
+
+## 13-09-43 (16s, 1 fillers)
+[0.3-1.2] Nothing dies.
+[2.0-4.4] So you lecture, you feed things celery, you brush your teeth.
+[5.6-12.1] enemies sort of have health, they have resolve, you wear it down, and they sit there jazzing so that you can, you know, stuff some celery.
+[13.2-14.1] Stuff some celery.
+
+## 13-10-07 (25s, 0 fillers)
+[0.5-3.0] The quests are rewritten while you play.
+[3.7-14.4] So, every villager has authored jobs, but you can also say ask vanilla to improvise, and the AI will write two new ways to do the job.
+[15.1-16.4] That changes what you do.
+[17.7-21.2] Lecture the rat can become pacify the rat and then beat its celery.
+
+## 13-10-34 (35s, 2 fillers)
+[0.6-3.1] The other option is to write your own.
+[3.8-8.8] So, you can, instead of lecturing the rats, you can bribe them with snacks so they go home.
+[9.3-16.5] And the director can turn it into a playable route in certain situations, or just refuse the character of its nonsense.
+[17.1-18.2] You know, it's, it's,
+[20.3-33.5] it's limited to what I've coded ahead of time, in some cases, as far as the possibility, but there are lots of possibilities for what the next quest can be, and you can pick one by typing it in, which is kind of cool.
+
+## 13-11-11 (11s, 3 fillers)
+[1.7-2.8] and then the AI,
+[6.0-7.9] is on a lead, yeah.
+
+## 13-11-24 (27s, 1 fillers)
+[0.9-4.8] So, the AI chooses from the pieces we built and tested, of course.
+[5.5-6.7] It can't break the gain.
+[8.0-10.4] And if the server's down, it just kind of goes with what's already there.
+[10.6-14.2] It says, oh, yeah, the director rejected whatever he wanted to say, which is weird,
+[15.5-15.9] I'm sure.
+[18.3-26.7] so, the, the, the concept here is that, like, it still runs even without the remote I've got set up.
+
+## 13-12-05 (27s, 0 fillers)
+[0.8-2.7] And then on top of that, the villagers,
+[4.5-25.5] like, you, the, the, you get a set quest line, and then after the set quest line, you can sort of talk to villagers and help them out, and you, like, it, it begins the same way in a lot of ways that, well, a lot of open world games do, where you start with a little quest, and then it lets you sort of pick where you want to go after that.
+
+## 13-12-35 (54s, 2 fillers)
+[0.3-2.7] And in line with the game jam rules,
+[4.5-5.7] the whole thing's a film shoot.
+[5.8-17.8] It's the director's cut, so, you know, there will be, there will be, of course, things that are cut in the actual film, which Fernella is making her, her reality TV show,
+[22.6-25.0] but you're playing along in the whole thing, you know?
+[25.2-25.7] It's kinda cool.
+[25.7-27.7] I mean, the concept is,
+[28.5-37.6] I mean, I wouldn't have thought of it that way, but it's kind of funny because when you think about games, you think about them as like a highlight reel.
+[39.3-47.8] A game is like this, you know, it's like this giant thing and then, you know, you only remember like the little best parts of it.
+[50.6-51.5] Yeah.
+
+## 13-13-39 (40s, 1 fillers)
+[0.9-2.3] I directed and play tested,
+[3.9-9.3] Claude and Chat GBT worked together on, and sort of alternating on all sorts of things.
+[9.6-13.6] So, they did planning code, art, terrain, audio and integration,
+[15.7-31.0] and there was a whole bunch of other stuff that I used as APIs and, and as web interfaces to get all sorts of models and, and, and music and translations and so on.
+[31.0-33.4] Well, no, the translations were all done directly by chat2bt.
+[34.8-39.9] But yeah, it was generally there was a lot of various tools flying around.
+
+## 13-16-35 (44s, 2 fillers)
+[1.1-4.3] I didn't ask one generator for World and accept whatever came back.
+[4.9-5.8] I kind of thought auditions.
+[8.1-8.9] Three rats.
+[9.3-15.7] So, Meshy, Hyper 3D Rodan, and Faal used the Hunyun 3D.
+[17.6-25.2] They all had very different results, and we picked one sort of group of models to do with each one.
+[25.5-27.4] So, Rodan, we did the rat and the NPCs,
+[28.8-30.1] Tripo I used for the,
+[31.3-31.7] candy foliage,
+[32.6-35.3] and Meshy I used for the main characters.
+[37.4-38.6] A generated model,
+[40.4-42.6] you got to massage it a little for it to be worthwhile.
+[42.6-42.8] for a while.
+
+## 13-17-24 (7s, 0 fillers)
+[2.2-2.8] So.
+
+## 13-17-38 (70s, 2 fillers)
+[0.8-2.3] So, the film shoot structure,
+[3.7-5.8] I didn't like, you know, film.
+[6.5-8.3] I didn't like the arena structure.
+[9.3-10.8] I wanted the Candy World.
+[12.0-15.6] And Sugarbro became a little Candy World.
+[16.3-16.8] And
+[18.1-22.1] the question of what I could actually ship, what we could put together,
+[24.1-48.3] the release plan protected time for packaging and testing and I changed the plan the village quest givers were too central and you know the link jobs went back in and then the dynamic jobs because I really wanted the dynamic jobs because that's something that like everybody has this concept Skyrim with dynamic quests you know this
+[50.0-56.9] is a step towards that that I might walk along or I might continue along with, but I might not.
+[57.1-57.4] Who knows?
+[62.0-68.1] But, you know, this is the beginning of building that kind of infrastructure and thinking about it in a proper way.
+
+## 13-18-49 (6s, 1 fillers)
+
+
+## 13-18-57 (68s, 0 fillers)
+[0.5-2.7] As Saturday night sort of ended,
+[3.7-6.5] and Sunday began, the village kind of grew, okay?
+[6.8-9.9] So the landscape was pretty small.
+[10.3-12.5] It was, well, great for three quests,
+[13.4-13.8] all right?
+[13.9-21.0] That even, you know, walked around and went to the various quest places for, but it could use more.
+[21.8-28.6] It could be, like, a village in a, like, a little hamlet, or, you know, like, I, I generated more buildings.
+[29.6-37.6] I made a bridge I was like all right I want more terrain I want to go further out you
+[38.7-57.6] know I just wanted a little more so that the game had meat and so somebody if they wanted to sort of keep exploring the game could keep exploring it so that was kind of the that was kind of what happened last night is that beyond the first little play test and the first little first little chunk that I got billed.
+[57.8-58.6] I was like, okay,
+[59.6-60.0] make it bigger.
+
+## 13-20-06 (48s, 2 fillers)
+[0.4-1.9] And while making it bigger,
+[3.2-10.6] make it more fun and make it more interesting because the attacks, so, if you look at the attacks in Path of Exile or in,
+[13.3-18.9] or in Diablo or something like that, you want, like, you want visual feedback.
+[19.7-19.8] And
+[21.6-27.5] when you don't play the game and you don't notice, well, that Niagara Effect, it's kinda mediocre.
+[27.7-29.7] It's not doing what I want.
+[30.0-40.4] And it's, or it isn't like it isn't do it doesn't look meaty it doesn't have a flash it doesn't have the swing it doesn't have that you know doesn't have the thing so
+[42.9-44.3] what I did was
+
+## 13-20-55 (54s, 4 fillers)
+[0.5-8.8] So what I did was I took concept of, like, comic book -y, like, the old Batman TV series, where you bam it.
+[9.0-9.5] Freedom Force.
+[9.8-12.7] I mean, Freedom Force did exactly this with a pow zap zoom.
+[15.9-18.8] and instead of that, I'm like, eat your vegetables!
+[19.5-22.9] And you put the eat your vegetables in the comic thing on the,
+[24.2-24.6] on the,
+[26.7-29.4] on the, on the little, the little comic, comic bubble.
+[31.2-51.8] and throw that around and you know I mean it's just it make it ridiculous all right and and that's not something that I could do without AI like I couldn't I couldn't translate eat your vegetables into 15 languages and have my little character throwing bubbles I could okay yes I could do that without AI but it wouldn't be doable in a game jam
+
+## 13-22-00 (25s, 2 fillers)
+[0.5-2.5] So, Sunday, today,
+[5.0-6.3] there's a second release candidate.
+[6.7-7.4] So, I've released,
+[9.3-15.6] I've been, you know, I've, I've uploaded three or four times the itch, people have looked at it, nobody's interested, nobody cares.
+
+## 13-22-27 (123s, 1 fillers)
+[1.7-6.9] And today I was like, well, let's just make the in -game stuff a little prettier, even.
+[8.4-11.5] I had this concept that I
+[12.5-15.5] wanted a chocolate, chocolate, like a hot chocolate river.
+[15.8-17.5] I've never heard of a hot chocolate river.
+[18.5-20.3] There's kind of one in Willy on Wonka,
+[21.4-25.9] but once I had that concept, I really wanted one in my game.
+[26.8-32.2] And so I was like, all right, well, make me some marshmallows and make me a chocolate river and put it in this thing and we'll make a bridge.
+[35.6-36.0] and
+[37.8-50.5] you know then you clean it up in blender and you put it on in and it you know it happens in and a half an hour which is very different from the traditional time frame and the flow of it the
+[51.9-53.9] marshmallows started as like
+[56.9-69.3] cylinders they did not work well and then you know I mean there's still a hole in the bottom of one that I hope to fix by the end of the day but but yeah Yeah, it's been
+[72.0-78.8] an interesting experience to be able to throw a chocolate river in my thing and then say, look, I want more variety in my foliage.
+[79.3-82.4] So I go off, and I generate eight
+[83.5-86.0] more foliage models from random stuff.
+[86.2-89.7] Like I asked ChatTPT for a list of foreign treats.
+[89.8-93.7] I was thinking Knafa bushes, but it didn't give me that.
+[94.4-96.9] I should have generated Knafa bush.
+[98.0-102.4] But there's all sorts of random suites from around the world.
+[102.5-108.7] I ended up using gumdrop bushes and jellybean bushes and just
+[109.5-115.6] make crazy stuff, and it just all ends up in the game.
+[116.0-116.6] That's kind of cool.
+[118.9-120.6] And then I also wanted the UI.
+
+## 13-24-31 (54s, 2 fillers)
+[0.4-6.3] And then I also, and then I have, you know, in playing the game, I looked at the A, I was like, no, no.
+[7.4-8.3] What I want
+[9.1-13.8] is Elden Ring with a Sweet Shop,
+[16.3-21.3] or Dark Souls or something, you know, with a, with a Darkest Dungeon, maybe,
+[22.6-23.8] with a Sweet Shop feel.
+[24.3-30.9] So, you know, so, so you have this, the, the, going back to the course concept of this game with the Dreadland of Candy.
+[31.1-42.1] where you've got this like very dark serious overtone to a game that's ultimately incredibly silly you
+[42.9-51.7] know so that's really the goal here is like this this big contrast between what I'm thinking about the game being and how the game really ends up working
+
+## 13-25-32 (20s, 4 fillers)
+[0.5-3.2] And then I started doing these, like, fixed notes.
+[3.9-4.3] Okay, so,
+[6.0-8.0] I'm currently on fixed5 .txt.
+[10.9-14.3] and fixes4 had the following notes in it verbatim.
+[15.1-17.8] Controls are hidden under notes on the title menu.
+
+## 13-25-53 (197s, 0 fillers)
+[1.1-3.7] Controls are hidden under notes on the title menu.
+[4.1-6.4] These are the one thing that should not have a joke label.
+[7.6-10.9] The archer's flashes is the right idea, but a little too big and bright.
+[11.1-11.5] It hurts.
+[12.2-13.4] The river is terrible.
+[13.9-16.0] It's a single ribbon with no depth above the ground.
+[16.3-18.4] The bridge is flattened for some reason and looks like crap.
+[19.1-23.2] There's a house actually sitting on the path and a tree in the middle of where a road should be.
+[23.8-24.0] So,
+[27.4-30.8] these are all fixes that are very small that I could make.
+[30.8-31.8] these
+[33.8-38.1] are things I might and hopefully would not have done originally and initially and the AI did.
+[39.8-41.4] Is fixing all of them
+[42.3-50.4] more time -consuming than or is AI fixing them more time -consuming than me fixing them?
+[51.0-51.0] No.
+[51.6-55.2] Is having them all there for me to look at more time -consuming?
+[56.2-56.5] Yes.
+[57.8-80.6] So one of the things that people who are programmers really hate about working with AI is all mistakes but I've worked as a programmer I've worked as QA before I was a programmer I was a QA tech for a while I was a QA tooling tech as well and you know it's just obvious to me that
+[82.0-91.8] programmers are gonna do stuff that I don't want to and these are just more programmers to me and and
+[96.4-110.9] so and so here we are with this with this cool setup where to me it's great in that I get to look at the problems that there are in this and say look this just doesn't work visually.
+[111.6-124.7] Now I am an expert on programming and so my broad strokes view you know approach to the visuals is not what my artist wife's approach will be.
+[125.7-126.5] It's just not.
+[126.5-127.2] It's not as good.
+[129.0-132.5] I end up being a generalist and to make a better game I would need more input.
+[133.0-142.3] That's one thing that I really think that people should take from this video is to make a better game you don't need just AI input.
+[142.4-143.7] You need input from other people.
+[145.0-159.2] And if you look at the game closely, and I will more closely as I as I you know have time to play it instead of make it I'm gonna end up with a lot more sort
+[160.1-178.6] of problems and issues and things that I would like yeah yeah and and and if I had more people helping me with this I would be able to make a better game that's just kind of the core realization that everybody should have when they do something like this.
+[179.4-186.6] If you can figure out how to work with other people, you slow down the actual production process in some ways but the end result is better.
+[190.7-191.3] To a point.
+[192.1-192.1] Alright.
+[192.6-195.6] Committees do kill everything eventually.
+
+## 13-29-20 (38s, 0 fillers)
+[0.6-1.5] More problems?
+[1.7-2.5] I mean, we had the camera.
+[2.7-8.5] So, at 11 this morning, I'm like, well, the camera keeps getting stuck in the hills and tree canopies.
+[9.5-14.3] I try to fix it once, because the camera, the trees in the map, they don't block the camera's trace at all.
+[16.0-20.6] So, it had to check the trees bounce directly, and now the camera goes up and straight over the character.
+[21.3-31.1] Sometimes, I'm still not perfectly happy with it, but it's better, you know, and an That incremental improvement is the best I can do.
+[31.3-32.4] It's a game, game, game, game.
+[32.6-33.1] Four days.
+[33.5-34.0] Four days.
+[34.3-34.7] One dude.
+[35.1-35.8] What are you going to do?
+
+## 13-30-08 (6s, 0 fillers)
+[0.3-2.2] And the last part of this devlog.
+[2.9-3.8] Okay, so...
+
+## 13-30-15 (323s, 1 fillers)
+[0.9-4.6] An important part to talk about here is why to do it, okay?
+[4.8-5.0] So,
+[7.7-10.4] I want to make great stuff, okay?
+[10.7-16.5] AI is the best tool I've ever encountered for making things, okay?
+[17.1-20.4] This was me testing the limits of its speed and flexibility.
+[22.1-27.8] it passed, it passed in flying colors in some places, and it failed pretty badly in others.
+[33.0-47.8] It's an iterative tool in a lot of great ways and so it's no wonder that software people love it where other people who aren't used to their life being very iterative and everything in their life being iterative be just hated and can't stand it.
+[49.1-61.3] One of the things you learn from working in software for a long period of time and I've
+[66.2-72.7] What you learn when you do software for that long is that everything you do is flawed and can be improved upon eventually.
+[76.6-80.2] And the faster you can iterate, the faster you can improve it, in some cases.
+[82.7-87.3] And that makes a lot of people uncomfortable and it's very difficult because it requires
+[88.8-90.6] a disassociation from your own work.
+[91.0-96.5] It's like a very, I mean, if you look at Marx, it's a very alienating kind of work in its own way, software.
+[96.5-102.4] I am certain that in 30 years of producing code, maybe a hundred lines of what I'm written are still in use.
+[109.5-110.0] So
+[112.3-117.8] this is the draft list of what I wanted,
+[118.8-118.8] okay,
+[120.4-131.8] 150 of what I, this is a, sorry, this is a draft list of what I got, alright, 150 more battle cries in various languages, picked at random after my first English one.
+[132.4-134.7] I got a voice fairy director and voice cast.
+[135.3-141.5] I got 3D models, additions across Meshi, Rodan, Hunyan, and Tripo, then cleaned up in Rig.
+[142.2-147.6] I got 20 pieces of score with two tapes each from a studio.
+[148.1-152.5] I got 15 generated candy PBR materials picked from a review page.
+[153.6-165.3] I generated buildings, I generated a bridge, I generated foliage, I got bots that can test my whole game unattended, so every single build gets checked.
+[166.7-173.6] Along with the raft of unit tests that I would never have had the chance to write during a game jam.
+[175.2-184.7] The difference is that what I do believe is quality is higher quality in a lot of ways than I would have been able to make on my own.
+[184.7-191.7] I would not have done many game jams if you look at my edge account I've done quite a few.
+[191.7-192.8] I did quite a few game jams.
+[192.9-194.6] That's just the ones I managed to finish.
+[194.7-196.1] There were others I did not
+[197.0-199.2] because I picked a
+[201.3-204.5] target game that ended up being too
+[206.0-210.1] Ultimately, just too complicated for me to do in the time allotted
+[211.2-229.8] And even the ones that I did end up with I got bogged down with one I always wanted to make one specific cool new mechanic I got bogged down with that new mechanic and ended up with a game that was kind of cool But not very playable, you know The only game that I ever made in a game jam that ended up being fun was one where I chopped
+[231.2-236.6] everything creative out of it except the core concept and that core concept was
+[237.5-250.7] let's make a game where you try and stop a bulldozer from running over your house and you can pick stuff up easily and move it around like it's fun it's simple but it's not something that it's
+[252.4-273.6] not something that I would play for more than five or ten minutes ever and it couldn't really be expanded you know it just wasn't it was not impressive to me so despite all of that time and experience programming and despite me working very hard to learn to program and work with Unity and Unreal and all these things were
+[277.3-284.7] my interest in mechanics ended up bogging me down when it came to building a playable interesting game by design.
+[285.7-287.5] That may also have happened here.
+[287.7-289.7] I mean I'm not sure that this game is a lot of fun.
+[289.9-295.9] It's certainly an interesting tech demo but
+[299.1-302.9] part of the result may
+[303.8-304.6] not be fun to play.
+[304.7-305.8] I would need more people to play it.
+[305.9-317.4] I need people to try it up again like it's the problem with working solo is that you end up with a lot of problems making something fun because it might be fun to you but it might not be fun to anybody else
+
+## 13-35-40 (55s, 1 fillers)
+[1.8-2.4] So,
+[14.9-17.2] listen to this horror created.
+[19.3-21.3] Not for very long, because, oh my god, it's a horror.
+[27.7-30.3] just so you understand how bad things can go,
+[31.2-48.0] this audio is my voice, the best of my voice, the best of my voice, singing Big Rock Candy Mountain, which I thought would be a great theme song, but we're gonna sort of move that to the side with the backing track that AI generated.
+[52.7-53.5] Just know.
+
+## 13-54-05 (204s, 0 fillers)
+[0.8-2.3] Okay, so,
+[3.2-3.9] okay.
+[4.4-6.5] So, this is a Gantt chart.
+[7.6-8.4] It's the whole jam.
+[10.1-12.8] Everything I did, everything various AIs did,
+[13.8-17.6] like, the whole process in little step -by -steps.
+[18.4-19.9] So, you've got each bar doing something.
+[20.2-25.8] You've got each row being a kind of work design, assets, terrain, art, backend, game code, docs.
+[26.5-28.7] And each bar is a stretch of work.
+[28.8-36.4] You've got orange for Claude, green for chat GPT and codecs the times come from git and there were 229 commits over five days
+[38.3-67.1] that includes the warm -up stuff so I you are allowed to write some prompts before I was very careful to follow the rules as to which like which stuff like I imported I kind of had an idea after I had the theme what I was going to be building and so I imported the code I had another projects that would help with that to the tasks that I was going to attach attack
+[68.2-80.4] so a commit tells you when something was finished not when it was started and most of the bars are an estimate and the
+[83.5-87.8] reality is that the AIs are fighting for credit chat
+[92.8-98.9] TV like says Claude is doing stuff like I'm you more used to Claude so I'm using Claude more.
+[99.6-101.7] ChatTPT says Claude's taking too much credit.
+[102.4-103.6] I don't
+[106.7-107.2] know what to do.
+[107.7-111.4] I'm just sort of shrugging and saying look this is the game that got built.
+[115.5-116.1] It's funny.
+[118.8-120.1] So it
+[121.3-125.1] looks a lot like a team and
+[126.5-128.4] it mostly isn't.
+[128.7-130.6] You know you add it up and they're only about four hours.
+[130.8-134.9] We're both Claude and ChatTPT are working at the same time.
+[135.3-137.0] That's because of my usage limits.
+[137.2-138.4] I'm on the basic subscriptions.
+[138.8-140.4] I pay very little for these.
+[140.6-148.2] I paid like 20 bucks a month or something for each one as opposed to the $200 thing.
+[149.4-149.4] And
+[150.6-157.4] so I use up all of the quota on one and then I move to the other or I use, you know,
+[158.5-164.2] towards the end of the jam I had learned how to use have the agents do sub -agents which
+[166.2-173.0] is not very difficult but yeah here we go we got here
+[175.0-185.1] we go we've got 68 bars 42 commit time 26 I guess I mean here's what I find some of it is just quota I just said that you
+[187.6-200.8] can also see what I'm comfortable handing things to so Claude spent a lot of Claude was more responsible for game code where chat LGBT was more responsible for the, you know, the pseudo -artist.
+
+## 13-57-31 (39s, 2 fillers)
+[0.2-3.8] You can also see where I was more comfortable with Twitch AI.
+[4.5-9.1] So, Claude was handed game code, most of the time.
+[10.7-15.7] and chatgpt was handed generation tasks, prompt writing,
+[18.7-22.0] all sorts of things that had to rela - that were related to the aesthetics.
+[22.0-31.6] were primarily a chat GPT, partially because that's just what I'm less comfortable with.
+[31.8-35.7] It just ended up being like how things were pulled out.
+
+## 13-58-12 (21s, 2 fillers)
+[2.0-4.2] What's not on the chart at all is me,
+[5.1-5.6] you know?
+[5.7-13.0] I mean, if you were to add where I was sleeping or where I was in the park, texting back and forth with Jet GPT, making design documents,
+[14.8-15.8] watching my kids,
+[17.3-17.5] of
+
+## 13-58-34 (5s, 0 fillers)
+[0.4-2.7] So, what's not apparently on this Gantt chart?
+
+## 13-58-41 (149s, 1 fillers)
+[1.7-6.5] So the hard thing to quantify with this Gantt chart is my time.
+[7.8-14.2] So I had this assembled from all of the calls that these various AIs made to each other and to themselves.
+[14.8-16.4] They have access to all their logs.
+[16.5-18.1] I don't really know.
+[21.3-25.3] I talked a lot with chat GPT about the design document.
+[26.6-28.9] some of that was done in the park on my phone with my kids.
+[30.7-40.6] Some of that was done, you know, in my office, and some of that was done at night, you know, right before the jam started, I was texting,
+[42.1-44.8] nagging forth concepts on what to make.
+[49.1-57.2] But running all of this, you know, I ended up basically doing project management rather than programming.
+[60.2-60.7] And
+[62.0-65.5] when people talk about there being, you know,
+[66.8-76.9] so much less to do for people, like don't know that they understand that making this happen, I ended up with a big fat result,
+[78.0-79.6] but
+[81.8-118.7] it required a lot of oversight and there, I mean, there could have been even more oversight than that and, you know, I could have spent 10 times as many tokens if I really tried to make things perfect but had you know three other people for other people that all had the same subscriptions I do we could have picked an orchestrator and had piece specific people make to make the make the decisions and you know we could have organized things a little differently and we would have ended up with you know I think an interesting result that would have been better in some ways.
+[119.8-121.7] Maybe it wouldn't have had, you know, I'm,
+[122.5-141.8] there's a trade -off here in that being a solar programmer and a solo designer and a solo director and a solar maker of this, I took some massive risks and I made, you know, something that was very risky to make in the amount of time and, you know, it may or may not be interesting and there may be big holes in it and people may not like it.
+[142.3-147.1] All of these are massive risks that I was I was allowed to take these as I was working alone.

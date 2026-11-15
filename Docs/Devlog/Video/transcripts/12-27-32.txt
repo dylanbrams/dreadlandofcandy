@@ -1,0 +1,11 @@
+# 12-27-32  (100s)
+[0.8-8.1] So Mini Software Team is built with sort of layers, if you're building a big enough piece of software.
+[8.2-12.2] And normally I do all of the layers myself, or I have in the past.
+[13.3-23.1] it's easier with AI in that what I did this time is I kind of directed, I playtested, I did some writing, I did some vocals that didn't work out at all.
+[26.7-32.4] I did some visual cohesion.
+[33.6-36.8] I wrote prompts for various things,
+[40.3-42.6] but I did sort of the top level.
+[43.2-46.0] This is sort of bi -coding.
+[47.3-81.1] And then Claude and Chad GPT did planning, and code, and art, and terrain, and audio and integration and you know and they ran audio they ran tools via AI I ran some tools via tech via you know via web interface I ran one or two tools but there were handoffs there was parallel work there was a lot of checking whether things looked right and it you know that whether things had visuals for cohesion because when you use different AI tools you end up losing cohesion and some of the setup and design work existed before
+[82.8-87.4] Specifically, some of the technical stuff I've had laying around for a long time.
+[91.6-96.6] But yeah, that's what this video is about.

@@ -1,0 +1,4 @@
+# 12-16-38  (14s)
+[1.9-4.7] Here's a design dock and schedule for an MMO.
+[5.2-6.2] Let's build it.
+[10.7-12.1] Then I scale back up.

@@ -1,0 +1,45 @@
+# 13-30-15  (323s)
+[0.9-4.6] An important part to talk about here is why to do it, okay?
+[4.8-5.0] So,
+[7.7-10.4] I want to make great stuff, okay?
+[10.7-16.5] AI is the best tool I've ever encountered for making things, okay?
+[17.1-20.4] This was me testing the limits of its speed and flexibility.
+[22.1-27.8] it passed, it passed in flying colors in some places, and it failed pretty badly in others.
+[33.0-47.8] It's an iterative tool in a lot of great ways and so it's no wonder that software people love it where other people who aren't used to their life being very iterative and everything in their life being iterative be just hated and can't stand it.
+[49.1-61.3] One of the things you learn from working in software for a long period of time and I've
+[66.2-72.7] What you learn when you do software for that long is that everything you do is flawed and can be improved upon eventually.
+[76.6-80.2] And the faster you can iterate, the faster you can improve it, in some cases.
+[82.7-87.3] And that makes a lot of people uncomfortable and it's very difficult because it requires
+[88.8-90.6] a disassociation from your own work.
+[91.0-96.5] It's like a very, I mean, if you look at Marx, it's a very alienating kind of work in its own way, software.
+[96.5-102.4] I am certain that in 30 years of producing code, maybe a hundred lines of what I'm written are still in use.
+[109.5-110.0] So
+[112.3-117.8] this is the draft list of what I wanted,
+[118.8-118.8] okay,
+[120.4-131.8] 150 of what I, this is a, sorry, this is a draft list of what I got, alright, 150 more battle cries in various languages, picked at random after my first English one.
+[132.4-134.7] I got a voice fairy director and voice cast.
+[135.3-141.5] I got 3D models, additions across Meshi, Rodan, Hunyan, and Tripo, then cleaned up in Rig.
+[142.2-147.6] I got 20 pieces of score with two tapes each from a studio.
+[148.1-152.5] I got 15 generated candy PBR materials picked from a review page.
+[153.6-165.3] I generated buildings, I generated a bridge, I generated foliage, I got bots that can test my whole game unattended, so every single build gets checked.
+[166.7-173.6] Along with the raft of unit tests that I would never have had the chance to write during a game jam.
+[175.2-184.7] The difference is that what I do believe is quality is higher quality in a lot of ways than I would have been able to make on my own.
+[184.7-191.7] I would not have done many game jams if you look at my edge account I've done quite a few.
+[191.7-192.8] I did quite a few game jams.
+[192.9-194.6] That's just the ones I managed to finish.
+[194.7-196.1] There were others I did not
+[197.0-199.2] because I picked a
+[201.3-204.5] target game that ended up being too
+[206.0-210.1] Ultimately, just too complicated for me to do in the time allotted
+[211.2-229.8] And even the ones that I did end up with I got bogged down with one I always wanted to make one specific cool new mechanic I got bogged down with that new mechanic and ended up with a game that was kind of cool But not very playable, you know The only game that I ever made in a game jam that ended up being fun was one where I chopped
+[231.2-236.6] everything creative out of it except the core concept and that core concept was
+[237.5-250.7] let's make a game where you try and stop a bulldozer from running over your house and you can pick stuff up easily and move it around like it's fun it's simple but it's not something that it's
+[252.4-273.6] not something that I would play for more than five or ten minutes ever and it couldn't really be expanded you know it just wasn't it was not impressive to me so despite all of that time and experience programming and despite me working very hard to learn to program and work with Unity and Unreal and all these things were
+[277.3-284.7] my interest in mechanics ended up bogging me down when it came to building a playable interesting game by design.
+[285.7-287.5] That may also have happened here.
+[287.7-289.7] I mean I'm not sure that this game is a lot of fun.
+[289.9-295.9] It's certainly an interesting tech demo but
+[299.1-302.9] part of the result may
+[303.8-304.6] not be fun to play.
+[304.7-305.8] I would need more people to play it.
+[305.9-317.4] I need people to try it up again like it's the problem with working solo is that you end up with a lot of problems making something fun because it might be fun to you but it might not be fun to anybody else

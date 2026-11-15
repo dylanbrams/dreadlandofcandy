@@ -1,0 +1,7 @@
+# 13-11-24  (27s)
+[0.9-4.8] So, the AI chooses from the pieces we built and tested, of course.
+[5.5-6.7] It can't break the gain.
+[8.0-10.4] And if the server's down, it just kind of goes with what's already there.
+[10.6-14.2] It says, oh, yeah, the director rejected whatever he wanted to say, which is weird,
+[15.5-15.9] I'm sure.
+[18.3-26.7] so, the, the, the concept here is that, like, it still runs even without the remote I've got set up.

@@ -1,0 +1,8 @@
+# 12-30-44  (44s)
+[3.7-9.8] that said, so, what I've done is I've also done sort of an engineering analysis of it.
+[10.2-16.9] I've done Gantt charts saying, well, here's what it did, here's what, here's what actually took the time over the course of the four, four days.
+[18.0-20.2] I was able to have stuff work while I was sleeping.
+[20.6-23.6] I was able to, you know, fix bugs I was able to do.
+[23.8-26.0] I'm recording this while there's an AI in the background.
+[26.8-35.8] There's a lot of work going on that I don't directly need to be part of and so even though this is a 100 % solo experiment,
+[37.7-41.7] more threads can be handled at a time than used to be able to be handled.

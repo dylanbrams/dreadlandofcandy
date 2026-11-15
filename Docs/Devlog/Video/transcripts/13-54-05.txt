@@ -1,0 +1,35 @@
+# 13-54-05  (204s)
+[0.8-2.3] Okay, so,
+[3.2-3.9] okay.
+[4.4-6.5] So, this is a Gantt chart.
+[7.6-8.4] It's the whole jam.
+[10.1-12.8] Everything I did, everything various AIs did,
+[13.8-17.6] like, the whole process in little step -by -steps.
+[18.4-19.9] So, you've got each bar doing something.
+[20.2-25.8] You've got each row being a kind of work design, assets, terrain, art, backend, game code, docs.
+[26.5-28.7] And each bar is a stretch of work.
+[28.8-36.4] You've got orange for Claude, green for chat GPT and codecs the times come from git and there were 229 commits over five days
+[38.3-67.1] that includes the warm -up stuff so I you are allowed to write some prompts before I was very careful to follow the rules as to which like which stuff like I imported I kind of had an idea after I had the theme what I was going to be building and so I imported the code I had another projects that would help with that to the tasks that I was going to attach attack
+[68.2-80.4] so a commit tells you when something was finished not when it was started and most of the bars are an estimate and the
+[83.5-87.8] reality is that the AIs are fighting for credit chat
+[92.8-98.9] TV like says Claude is doing stuff like I'm you more used to Claude so I'm using Claude more.
+[99.6-101.7] ChatTPT says Claude's taking too much credit.
+[102.4-103.6] I don't
+[106.7-107.2] know what to do.
+[107.7-111.4] I'm just sort of shrugging and saying look this is the game that got built.
+[115.5-116.1] It's funny.
+[118.8-120.1] So it
+[121.3-125.1] looks a lot like a team and
+[126.5-128.4] it mostly isn't.
+[128.7-130.6] You know you add it up and they're only about four hours.
+[130.8-134.9] We're both Claude and ChatTPT are working at the same time.
+[135.3-137.0] That's because of my usage limits.
+[137.2-138.4] I'm on the basic subscriptions.
+[138.8-140.4] I pay very little for these.
+[140.6-148.2] I paid like 20 bucks a month or something for each one as opposed to the $200 thing.
+[149.4-149.4] And
+[150.6-157.4] so I use up all of the quota on one and then I move to the other or I use, you know,
+[158.5-164.2] towards the end of the jam I had learned how to use have the agents do sub -agents which
+[166.2-173.0] is not very difficult but yeah here we go we got here
+[175.0-185.1] we go we've got 68 bars 42 commit time 26 I guess I mean here's what I find some of it is just quota I just said that you
+[187.6-200.8] can also see what I'm comfortable handing things to so Claude spent a lot of Claude was more responsible for game code where chat LGBT was more responsible for the, you know, the pseudo -artist.

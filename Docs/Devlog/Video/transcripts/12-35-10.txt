@@ -1,0 +1,3 @@
+# 12-35-10  (19s)
+[0.8-7.4] So, the first goal was a full game loop, before I did any real polish, or expansion.
+[8.3-14.3] So, by the end of the first warning, there's hero on the screen, he can attack, and, you know, like, shout at things.

@@ -1,0 +1,18 @@
+# 13-58-41  (149s)
+[1.7-6.5] So the hard thing to quantify with this Gantt chart is my time.
+[7.8-14.2] So I had this assembled from all of the calls that these various AIs made to each other and to themselves.
+[14.8-16.4] They have access to all their logs.
+[16.5-18.1] I don't really know.
+[21.3-25.3] I talked a lot with chat GPT about the design document.
+[26.6-28.9] some of that was done in the park on my phone with my kids.
+[30.7-40.6] Some of that was done, you know, in my office, and some of that was done at night, you know, right before the jam started, I was texting,
+[42.1-44.8] nagging forth concepts on what to make.
+[49.1-57.2] But running all of this, you know, I ended up basically doing project management rather than programming.
+[60.2-60.7] And
+[62.0-65.5] when people talk about there being, you know,
+[66.8-76.9] so much less to do for people, like don't know that they understand that making this happen, I ended up with a big fat result,
+[78.0-79.6] but
+[81.8-118.7] it required a lot of oversight and there, I mean, there could have been even more oversight than that and, you know, I could have spent 10 times as many tokens if I really tried to make things perfect but had you know three other people for other people that all had the same subscriptions I do we could have picked an orchestrator and had piece specific people make to make the make the decisions and you know we could have organized things a little differently and we would have ended up with you know I think an interesting result that would have been better in some ways.
+[119.8-121.7] Maybe it wouldn't have had, you know, I'm,
+[122.5-141.8] there's a trade -off here in that being a solar programmer and a solo designer and a solo director and a solar maker of this, I took some massive risks and I made, you know, something that was very risky to make in the amount of time and, you know, it may or may not be interesting and there may be big holes in it and people may not like it.
+[142.3-147.1] All of these are massive risks that I was I was allowed to take these as I was working alone.
