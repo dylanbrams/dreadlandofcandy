@@ -22,6 +22,8 @@ Everything below was made before Nov 12, 2026. None of it is gameplay. Paste thi
 | fal.ai 3D client (queue API, Hunyuan3D v3.1 by default) | `Scripts/fal3d.py` | Written Nov 12, before any game asset was generated, with Claude Code; tested with one throwaway model (a stool) that was deleted and is not in the game |
 | Generation job list: one prompt subject per planned asset, and the two 2D style paragraphs | `Assets/Generation/jobs.json` | Written for the jam (Nov 11), with Claude Code; prompts only, nothing generated |
 | Asset list, generation map and runbook | `Docs/Design/ASSETS.md`, `Docs/GenerationMap.md`, `Docs/GenerationRunbook.md` | Written for the jam (Nov 11), with Claude Code; planning text only |
+| Candidate voice-line text for villagers, heroes and opponents | `vocals/VoiceLines.md` | Written for the jam (Nov 11), with Claude Code; text only, nothing recorded or generated |
+| Per-asset generation prompts (2D and 3D) and generation routing (Rodin/Tripo, credit fallback, fal test twins) | `Assets/Prompts/`, `Assets/Prompts/prompts.json`, `Scripts/gen_batch.py`, `Assets/Generation/jobs.json` | Written Nov 12 before 7:00 AM UTC+2, i.e. before the jam's start (Nov 12, 12:00 AM EST), with Claude Code; prompts and tooling only, nothing generated until after the start |
 
 ## Ability layer test template (Nov 11, 2026, before the jam)
 
