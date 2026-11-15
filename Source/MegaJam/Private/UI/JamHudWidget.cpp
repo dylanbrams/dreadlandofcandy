@@ -388,22 +388,6 @@ UBorder* UJamHudWidget::MakeChoiceTile(const FLinearColor& Accent, const TCHAR* 
 	return Tile;
 }
 
-UImage* UJamHudWidget::GetCard(int32 Index)
-{
-	while (ComicCards.Num() <= Index)
-	{
-		UImage* I = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
-		I->SetVisibility(ESlateVisibility::HitTestInvisible);
-		I->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
-		UCanvasPanelSlot* S = BubbleLayer->AddChildToCanvas(I);
-		S->SetAutoSize(false);
-		S->SetAlignment(FVector2D(0.5f, 0.5f));
-		S->SetZOrder(4);
-		ComicCards.Add(I);
-	}
-	return ComicCards[Index];
-}
-
 UBorder* UJamHudWidget::GetBubble(int32 Index)
 {
 	while (Bubbles.Num() <= Index)
@@ -521,33 +505,6 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(B->Slot)) { S->SetPosition(Data.Position); }
 	}
 	for (int32 i = View.Bubbles.Num(); i < Bubbles.Num(); ++i) { Show(Bubbles[i], false); }
-
-	// Comic action cards (Fixes5 #1). A card whose texture is missing (not cooked) is simply skipped.
-	int32 CardCount = 0;
-	for (const FJamHudCard& Data : View.Cards)
-	{
-		TObjectPtr<UTexture2D>* Found = CardTextures.Find(Data.Texture);
-		UTexture2D* Texture = Found ? Found->Get() : nullptr;
-		if (!Found)
-		{
-			Texture = LoadObject<UTexture2D>(nullptr, *Data.Texture, nullptr, LOAD_NoWarn | LOAD_Quiet);
-			CardTextures.Add(Data.Texture, Texture);
-		}
-		if (!Texture) { continue; }
-		UImage* I = GetCard(CardCount++);
-		Show(I, true);
-		I->SetBrushFromTexture(Texture, false);
-		I->SetRenderOpacity(Data.Opacity);
-		FWidgetTransform T;
-		T.Angle = Data.Angle;
-		I->SetRenderTransform(T);
-		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(I->Slot))
-		{
-			S->SetPosition(Data.Position);
-			S->SetSize(FVector2D(Data.Size, Data.Size));
-		}
-	}
-	for (int32 i = CardCount; i < ComicCards.Num(); ++i) { Show(ComicCards[i], false); }
 
 	Show(CaptionPanel, !View.Caption.IsEmpty());
 	SetTextIfChanged(CaptionText, View.Caption);

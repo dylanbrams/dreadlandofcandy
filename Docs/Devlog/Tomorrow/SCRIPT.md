@@ -2,7 +2,7 @@
 
 Read naturally; slide prompts are cues. Each section is a **take** you can record on its own: it opens with a music bed and ends on a clean beat, so the takes can be cut together in any order. Sections 1–6 come from ChatGPT's Nov 15 01:45 draft, lightly tightened. Section 7 covers the long night, and sections 8 and 8b reconstruct Sunday morning, 05:00–11:00 project time, from git and `Docs/DEVLOG.md`. The ending is still open. About 9–11 minutes in all.
 
-**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. **Do not use `theme-song.mp3` anywhere in the video or the trailer.** Its guitar comes from the 1928 McClintock recording (see section 10).
+**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. **Do not use `theme-song.mp3` anywhere; the theme song is cut from the game, the video and the trailer.**
 
 | Take | Bed | Why |
 | --- | --- | --- |
@@ -17,8 +17,7 @@ Read naturally; slide prompts are cues. Each section is a **take** you can recor
 | 8 Sunday morning | `music/village_take2.mp3`; `music/feeding-candy_take1.mp3` under the marshmallows | The candy world gets a coat of paint |
 | 8b "The river is terrible" | `music/boss-battle_take1.mp3` | A bug list scored as a boss fight |
 | 9 Why do this | `music/emotional-revelation_take1.mp3` | The sincere bit |
-| 10 Theme song | `music/inn_take1.mp3` very low, or nothing | You tell how it was made; the song itself is not played |
-| 11 Ending | `music/victory_take1.mp3` under the last words, then `music/credits_take1.mp3` | |
+| 10 Ending | `music/victory_take1.mp3` under the last words, then `music/credits_take1.mp3` | |
 
 ## 1. Cold open — an unreasonable idea
 
@@ -159,25 +158,7 @@ That's the real limitation of AI here. It's hard to get multiple points of view,
 
 [Optional, about quest length. There's solid research that people value what they put effort into, the "IKEA effect" (Norton, Mochon and Ariely, 2011), and it only held when people finished the thing. I found no study that measures attachment to longer quests in games, so say it as your hunch, backed by that research, not as a games finding. Something like: "People value what they work for, as long as they get to finish it. That's why the villagers keep coming back with more jobs."]
 
-## 10. The theme song
-
-*Bed: none, or `music/inn_take1.mp3` very low. Talk straight to camera. This one is personal, and it may be complicated for some listeners, so don't play it for laughs.*
-
-The game has a theme song, and I want to be upfront about how it was made, because I know this one will be complicated for some people.
-
-It started with "Big Rock Candy Mountain," Harry McClintock's recording from nearly a hundred years ago. I downloaded it from the Internet Archive. I took the lyrics and had OpenAI rewrite them for this game. Then I fixed the phrasing on several lines myself and went back to ChatGPT for help with more rewrites.
-
-Then I had the original recording cleaned up and the backing track separated from his vocals. I sang and whistled seven or eight takes over it, and had my singing voice thickened, because I don't like my timbre in that range.
-
-I'm not happy with it. It's what I could do during a jam.
-
-And I honestly don't know whether it's a fair tribute or whether I'm trampling on Harry McClintock's legacy. I don't think he'd mind. He was a hobo singer who wrote a song about a candy paradise, and here's a game set in one. I hope he wouldn't mind.
-
-[Optional closing lines, if you want to say why it isn't playing here: "You won't hear it in this video. The guitar comes from that 1928 recording, and it turns out the recording is still under US copyright until 2029. If this game goes anywhere, I'll play that guitar part myself."]
-
-[Do not play `theme-song.mp3`. If you want a visual, show the lyric sheet (`Docs/BigRockCandyMountainAdjustedLyrics.txt`) or the session folder.]
-
-## 11. Ending — to be written
+## 10. Ending — to be written
 
 [Fill in after the remaining work: the final build, the jam submission, what survived, what broke, and how you feel about it. Add the itch.io link when it's live.]
 

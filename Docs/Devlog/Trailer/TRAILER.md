@@ -2,7 +2,7 @@
 
 About 75 seconds. There's no narrator: Fenella's existing voice lines, text cards and gameplay carry it. The joke is the same as the score's: an utterly sincere epic trailer about lecturing rats and feeding them celery.
 
-**Music: generated score only. Never `theme-song.mp3`** (its guitar is the 1928 McClintock recording, still under US copyright until 2029). All tracks are in `music/`.
+**Music: generated score only. The theme song is cut; never use `theme-song.mp3`.** All tracks are in `music/`.
 
 - 0:00–0:18 `title-theme_take1.mp3`, from its opening (the rising horn motif).
 - 0:18–0:55 `boss-battle_take1.mp3` (or `hard-combat_take1.mp3`), cut on a downbeat.

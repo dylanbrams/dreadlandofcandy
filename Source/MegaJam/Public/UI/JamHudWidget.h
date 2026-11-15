@@ -70,10 +70,6 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UBorder> FlashLayer;
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> BubbleLayer;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> Bubbles;
-	/** Fixes5 #1: pooled comic action cards and their textures, loaded on first use. */
-	UPROPERTY(Transient) TArray<TObjectPtr<UImage>> ComicCards;
-	UPROPERTY(Transient) TMap<FString, TObjectPtr<UTexture2D>> CardTextures;
-	UImage* GetCard(int32 Index);
 	UPROPERTY(Transient) TObjectPtr<UBorder> PromptPanel;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> PromptText;
 
