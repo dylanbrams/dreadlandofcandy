@@ -38,6 +38,7 @@ FONT_B = "C:/Windows/Fonts/arialbd.ttf"
 VERSION = "v2"   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
+    ("architecture diagram", [HERE / "graphics/architecture.png"]),
     ("gantt", [DEVLOG / "Checkpoint1/gantt/gantt_slide.png"]),
     ("rat comparison", [DEVLOG / "Tomorrow/assets/generation-comparison.jpg"]),
     ("pbr contact", [DEVLOG / "CandyPBR/contact.jpg"]),

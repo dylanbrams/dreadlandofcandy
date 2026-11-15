@@ -40,7 +40,7 @@ S["02"] = dict(title="Hook montage", bed=BED("standard-combat_take1"), segs=[
     ("13-09-43", 0.3, 12.1, "B", "BROLL knight placards, Resolve bar, pacified rat", "check 'have health'"),
     ("13-10-07", 0.5, 21.2, "B", "BROLL improvise screen, two new routes", ""),
     ("13-10-34", 0.6, 16.5, "B", "BROLL typed proposal, route, refusal", ""),
-    ("13-11-24", 0.9, 10.4, "C", "", "AI on a leash"),
+    ("13-11-24", 0.9, 10.4, "B", "architecture diagram", "AI on a leash: Director service diagram (graphics/architecture.png)"),
     ("PICKUP", "02-encores", "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.", "B", 12, "BROLL encore offer, Rush timer, Crowd swarm"),
     ("13-12-35", 4.5, 5.7, "B", "BROLL film shoot", ""),
     ("PICKUP", "02-filmshoot", "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.", "B", 14, "BROLL CUT pitch, typed note, budget boxes"),

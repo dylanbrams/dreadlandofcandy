@@ -227,9 +227,9 @@
     "i": 0.9,
     "o": 10.4,
     "dur": 9.5,
-    "frame": "C",
-    "visual": "",
-    "note": "AI on a leash"
+    "frame": "B",
+    "visual": "architecture diagram",
+    "note": "AI on a leash: Director service diagram (graphics/architecture.png)"
    },
    {
     "kind": "pickup",
