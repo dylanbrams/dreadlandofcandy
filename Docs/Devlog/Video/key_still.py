@@ -15,8 +15,9 @@ CROP_W = 898
 A_SUBJ, A_SCREEN = -6.0, -14.0   # Lab a*: above A_SUBJ = subject, below A_SCREEN = green/teal screen
 WALL_X = None                    # set per take if the screen stops short of the frame edge (garbage matte, px)
 
-def key(bgr, wall_x=WALL_X):
-    crop = bgr[:, :CROP_W]
+def key(bgr, wall_x=WALL_X, x_range=None):
+    x0c, x1c = x_range or (0, CROP_W)
+    crop = bgr[:, x0c:x1c]
     lab = cv2.cvtColor(crop.astype(np.float32) / 255.0, cv2.COLOR_BGR2Lab)
     lab = cv2.GaussianBlur(lab, (0, 0), 1.0)   # sensor noise
     astar = lab[..., 1]

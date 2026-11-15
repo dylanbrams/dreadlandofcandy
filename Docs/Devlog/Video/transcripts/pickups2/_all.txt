@@ -1,0 +1,18 @@
+## 22-30-17 (40s, 0 fillers)
+[27.4-30.9] Here's how the AI part works.
+[33.8-39.2] if you come up with something that the nothing breaks all right let's stop it nothing breaks
+
+## 22-31-01 (24s, 0 fillers)
+[1.6-5.1] So, the model proposes, the server decides, and that's why it can't break the game.
+[7.3-17.9] But it still allows for a real wide range of new things to be done when you talk to this model, because it leaves a lot more open room for
+[19.0-21.5] what the player can do as far as meaningful choices.
+
+## 22-31-35 (73s, 1 fillers)
+[1.0-7.0] So, almost everything on this list is something I normally have cut, or at least done far more simply.
+[7.8-18.2] You can request to take your feedback, with twists, like a time limit, a crowd, rats to fight back, 171 comic cards in 15 languages, with 154 translated battle cries,
+[19.4-31.4] a voiced fairy director, and voiced heroes, 47 sound effects, and about 20 pieces of score, 15 candy materials, 36 trees, 73 shrubs, 23 mountains, and a river with 52 marshmallows.
+[33.2-38.0] Four classes with their particle effects, rigged in animated villagers, rats, and goblins.
+[38.8-53.1] And then there was a UI called the Black Sugar UI with a compass and some resolve bars and then game support, which hopefully if works, I haven't tested it yet, I will before the end of the night.
+[53.1-57.6] and then the bot that plays the whole whole game just for automated testing
+[58.7-64.0] I'd have cut almost every one of these instead they're all in instead I have
+[65.1-68.8] essentially a very small scale functioning open world RPG

@@ -36,7 +36,7 @@ TAIL = 0.25
 FONT = "C:/Windows/Fonts/arial.ttf"
 FONT_B = "C:/Windows/Fonts/arialbd.ttf"
 VERSION = "v2"
-FOOTAGE_REV = "stall1"   # bump to re-render every piece that shows game footage   # bump to invalidate every cached segment
+FOOTAGE_REV = "stall2"   # bump to re-render every piece that shows game footage   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
     ("slide: sound", [HERE / "graphics/slide_sound.png"]),
@@ -232,7 +232,7 @@ def cut_stalls(name, start, n, sd):
             parts.append((cursor, take))
             need -= take
         cursor = st[1]
-    parts = [pt for pt in parts if pt[1] >= 0.35]            # slivers make empty files downstream
+    parts = [pt for pt in parts if pt[1] >= 0.7]             # slivers make empty files downstream
     return parts or [(start, n)]
 
 
@@ -250,10 +250,13 @@ def plan_windows(clips, D, keep_stalls=False):
         start = c["i"] if n <= avail else max(0.0, c["i"] - (n - avail) / 2)
         sd = dur(src)
         n = min(n, sd - start - 0.05)
+        # interpolation drops repeated frames, so the rendered clip is shorter than the window: ask for 60% more
+        # (the join is trimmed to exactly D frames), instead of padding the shortfall with a frozen frame
+        n_ext = min(n * 1.6, sd - start - 0.05) if c.get("interp") else n
         if keep_stalls or src.name in STATIC_UI or src.name in UNSCANNED:
-            out.append((c, src, start, n))
+            out.append((c, src, start, n_ext))
         else:
-            out.extend((c, src, s, l) for s, l in cut_stalls(src.name, start, n, sd))
+            out.extend((c, src, s, l) for s, l in cut_stalls(src.name, start, n_ext, sd))
     return out
 
 
@@ -382,8 +385,25 @@ def wall_x_for(g):
     return 820 if g.get("kind") == "take" and g["take"].startswith("12-") else None
 
 
+def detect_crop(person):
+    """x-range of the actual picture inside the 1280x720 OBS frame (older takes: 0-898; the 22:30 takes are centred)."""
+    c = cv2.VideoCapture(str(person))
+    cols = np.zeros(1280, bool)
+    for _ in range(6):
+        ok, f = c.read()
+        if not ok:
+            break
+        cols |= f.max(axis=(0, 2)) > 12
+    xs = np.where(cols)[0]
+    if len(xs) < 200:
+        return 0, ks.CROP_W
+    return int(xs.min()), int(xs.max()) + 1
+
+
 def composite(mode, person, bg, wav, D, out, wall):
     N = round(D * FPS)
+    xr = detect_crop(person)
+    cw = xr[1] - xr[0]
     cp = cv2.VideoCapture(str(person))
     cb = None if str(bg).endswith(".png") else cv2.VideoCapture(str(bg))
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}",
@@ -403,13 +423,13 @@ def composite(mode, person, bg, wav, D, out, wall):
                 bgf = bg_last
         okp, pf = cp.read()
         if okp:
-            fg, a = ks.key(pf, wall)
+            fg, a = ks.key(pf, wall, xr)
             if prev_a is not None and prev_a.shape == a.shape:
                 a = 0.65 * a + 0.35 * prev_a
             prev_a = a
             last = (fg, a)
         elif last is None:
-            last = (np.zeros((720, ks.CROP_W, 3), np.float32), np.zeros((720, ks.CROP_W), np.float32))
+            last = (np.zeros((720, cw, 3), np.float32), np.zeros((720, cw), np.float32))
         fg, a = last
         frame = bgf.astype(np.float32)
         if mode == "C":
@@ -419,7 +439,7 @@ def composite(mode, person, bg, wav, D, out, wall):
             x0, y0 = (W - f.shape[1]) // 2, H - f.shape[0]
         else:
             ph = 400
-            pw = int(ks.CROP_W * ph / fg.shape[0])
+            pw = int(cw * ph / fg.shape[0])
             f = cv2.resize(fg, (pw, ph), interpolation=cv2.INTER_AREA)
             m = cv2.resize(a, (pw, ph), interpolation=cv2.INTER_AREA)
             x0, y0 = W - pw - 30, H - ph - 20

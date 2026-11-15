@@ -1,0 +1,3 @@
+# 23-59-29  (8s)
+[0.6-1.7] Quests are scenes.
+[2.1-6.0] Fennella, the director, yells, Cut, and then you can rewrite quests.

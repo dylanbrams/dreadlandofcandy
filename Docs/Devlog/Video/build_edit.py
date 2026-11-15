@@ -24,7 +24,7 @@ S["00"] = dict(title="Cold open", bed=None, segs=[
 ])
 S["01"] = dict(title="The plain version", bed=BED("title-theme_take1"), segs=[
     ("12-17-35", 0.9, 11.5, "C", "", "opener"),
-    ("PICKUP", "01-plain", "Four days later, here's what I ended up with: an open-world game with dynamic quests.", "B", 8, "world pan over the candy world, then village from above"),
+    ("raw/pickups3/2026-11-15 23-59-04.mp4", 0.8, 6.6, "B", "world pan, then village from above", "plain statement: 'Four days later, I didn't have an MMO, but I had an open world game with dynamic quests' (re-recorded)"),
 ])
 S["01b"] = dict(title="How we got here", bed=BED("setting-out_take1"), segs=[
     ("12-18-01", 0.9, 7.4, "B", "molar-hills pan + caption 'I am older than them thar hills'", ""),
@@ -63,6 +63,7 @@ S["02"] = dict(title="Hook montage", bed=BED("standard-combat_take1"), segs=[
     ("13-11-24", 0.9, 10.4, "C", "", "AI picks from what we built and tested; works if the server is down"),
     ("PICKUP", "02-encores", "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.", "B", 12, "BROLL encore offer, Rush timer, Crowd swarm"),
     ("13-12-35", 4.5, 5.7, "B", "BROLL film shoot", ""),
+    ("raw/pickups3/2026-11-15 23-59-51.mp4", 0.6, 5.0, "B", "film shoot", "[exact] 'Quests are scenes. Your director yells cut, and then you can pitch rewrites' (re-recorded)"),
     ("PICKUP", "02-filmshoot", "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.", "B", 14, "BROLL CUT pitch, typed note, budget boxes"),
     ("PICKUP", "02-usabletake", "You're not saving the day. You're trying to get a usable take.", "C", 4, ""),
 ])
@@ -145,16 +146,16 @@ S["10"] = dict(title="Ending", bed=BED("victory_take1"), segs=[
 GF = "../GameFootage/"
 FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"   # Dylan's own; never scanned for toasts -> mask always
 BROLL = [
-    ("molar-hills pan", [("tour-high.mp4", 26, 34)], "ok"),
-    ("over molar-hills", [("tour-high.mp4", 27, 33)], "ok"),
+    ("molar-hills pan", [(FLY, 63, 75)], "ok (flythrough: mountains behind the trees, road off to the side)"),
+    ("over molar-hills", [(FLY, 100, 108)], "ok"),
     ("attack word cards, then non-english", [("knight-run.mp4", 10, 20), ("village-improvise.mp4", 83, 92)], "ok (Turkish card, village-improvise 1:23)"),
     ("knight placards", [("knight-run.mp4", 10, 20)], "ok (pacify counter 1/3-3/3; no Resolve bar visible)"),
     ("improvise", [("village-improvise.mp4", 120, 130)], "ok"),
     ("typed proposal", [("village-propose.mp4", 40, 56)], "ok (silly refusal missing; outcome of proposal unclear)"),
     ("encore offer", [("village-third.mp4", 35, 45), ("village-third.mp4", 105, 115), (PLAY, 210, 229)], "ok (Crowd, Visit; Rush = clock objective in playthrough)"),
-    ("film shoot", [("knight-run.mp4", 0, 8)], "ok"),
+    ("film shoot", [("knight-run.mp4", 0, 4), ("barbarian-run.mp4", 6, 10)], "ok (clean slates; later seconds of these captures show untextured card quads)"),
     ("cut pitch", [("knight-run.mp4", 43, 49), ("typed-note.mp4", 20, 35), ("budget-out.mp4", 10, 20)], "ok (CUT!, typed note, budget boxes)"),
-    ("first-hero", [("hero-close.mp4", 0, 8)], "ok (late build, not day one)"),
+    ("first-hero", [("hero-close.mp4", 0, 3.5), ("knight-run.mp4", 0, 4)], "ok (late build, not day one)"),
     ("early arena", [], "missing"),
     ("hud, fenella", [("knight-run.mp4", 60, 64)], "ok"),
     ("early problem", [], "missing"),
@@ -164,7 +165,7 @@ BROLL = [
     ("village from above", [("village-aerial.mp4", 0, 12), ("tour-high.mp4", 95, 105)], "ok"),
     ("village", [("tour-low.mp4", 97, 105), ("village-aerial.mp4", 0, 8)], "ok"),
     ("attack effects", [("knight-run.mp4", 10, 20), ("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55), ("mage-run.mp4", 45, 50)], "ok"),
-    ("word cards, attacks", [("knight-run.mp4", 75, 80), ("mage-run.mp4", 45, 50)], "ok"),
+    ("word cards, attacks", [("knight-run.mp4", 75, 80), ("mage-run.mp4", 45, 50), ("barbarian-run.mp4", 38, 46)], "ok"),
     ("celery arrows", [("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55)], "ok"),
     ("river, bridge", [("tour-high.mp4", 25, 35), ("tour-high.mp4", 40, 44)], "ok"),
     ("marshmallows drifting", [("tour-high.mp4", 25, 35), ("tour-low.mp4", 40, 45)], "ok"),

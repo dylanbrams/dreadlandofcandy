@@ -1,0 +1,4 @@
+# 22-31-01  (24s)
+[1.6-5.1] So, the model proposes, the server decides, and that's why it can't break the game.
+[7.3-17.9] But it still allows for a real wide range of new things to be done when you talk to this model, because it leaves a lot more open room for
+[19.0-21.5] what the player can do as far as meaningful choices.

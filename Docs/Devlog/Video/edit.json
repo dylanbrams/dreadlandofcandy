@@ -59,7 +59,7 @@
   "section": "01",
   "title": "The plain version",
   "bed": "music/title-theme_take1.mp3",
-  "est_s": 18.6,
+  "est_s": 16.4,
   "segments": [
    {
     "kind": "take",
@@ -74,12 +74,16 @@
     "exact": false
    },
    {
-    "kind": "pickup",
-    "id": "01-plain",
-    "text": "Four days later, here's what I ended up with: an open-world game with dynamic quests.",
+    "kind": "take",
+    "take": "raw/pickups3/2026-11-15 23-59-04.mp4",
+    "src": "raw/pickups3/2026-11-15 23-59-04.mp4",
+    "i": 0.8,
+    "o": 6.6,
+    "dur": 5.8,
     "frame": "B",
-    "est": 8,
-    "visual": "world pan over the candy world, then village from above",
+    "visual": "world pan, then village from above",
+    "note": "plain statement: 'Four days later, I didn't have an MMO, but I had an open world game with dynamic quests' (re-recorded)",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -98,7 +102,7 @@
   "section": "02",
   "title": "Hook montage",
   "bed": "music/standard-combat_take1.mp3",
-  "est_s": 96.8,
+  "est_s": 101.2,
   "segments": [
    {
     "kind": "take",
@@ -311,11 +315,46 @@
       {
        "src": "../GameFootage/knight-run.mp4",
        "i": 0,
-       "o": 8,
+       "o": 4,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 6,
+       "o": 10,
        "interp": true
       }
      ],
-     "status": "ok"
+     "status": "ok (clean slates; later seconds of these captures show untextured card quads)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups3/2026-11-15 23-59-51.mp4",
+    "src": "raw/pickups3/2026-11-15 23-59-51.mp4",
+    "i": 0.6,
+    "o": 5.0,
+    "dur": 4.4,
+    "frame": "B",
+    "visual": "film shoot",
+    "note": "[exact] 'Quests are scenes. Your director yells cut, and then you can pitch rewrites' (re-recorded)",
+    "exact": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 0,
+       "o": 4,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 6,
+       "o": 10,
+       "interp": true
+      }
+     ],
+     "status": "ok (clean slates; later seconds of these captures show untextured card quads)"
     }
    },
    {
@@ -581,6 +620,22 @@
        "i": 45,
        "o": 50,
        "interp": true
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 38,
+       "o": 46,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         36.5,
+         37.0
+        ],
+        [
+         39.5,
+         39.5
+        ]
+       ]
       }
      ],
      "status": "ok"
@@ -765,13 +820,14 @@
     "broll": {
      "clips": [
       {
-       "src": "../GameFootage/tour-high.mp4",
-       "i": 26,
-       "o": 34,
-       "interp": true
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 63,
+       "o": 75,
+       "interp": true,
+       "mask_bottom_right": "always"
       }
      ],
-     "status": "ok"
+     "status": "ok (flythrough: mountains behind the trees, road off to the side)"
     }
    },
    {
@@ -788,13 +844,14 @@
     "broll": {
      "clips": [
       {
-       "src": "../GameFootage/tour-high.mp4",
-       "i": 26,
-       "o": 34,
-       "interp": true
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 63,
+       "o": 75,
+       "interp": true,
+       "mask_bottom_right": "always"
       }
      ],
-     "status": "ok"
+     "status": "ok (flythrough: mountains behind the trees, road off to the side)"
     }
    },
    {
@@ -811,10 +868,11 @@
     "broll": {
      "clips": [
       {
-       "src": "../GameFootage/tour-high.mp4",
-       "i": 27,
-       "o": 33,
-       "interp": true
+       "src": "../GameFootage/LandOfCandyFlythrough.mp4",
+       "i": 100,
+       "o": 108,
+       "interp": true,
+       "mask_bottom_right": "always"
       }
      ],
      "status": "ok"
@@ -1030,14 +1088,14 @@
       {
        "src": "../GameFootage/hero-close.mp4",
        "i": 0,
-       "o": 8,
-       "interp": true,
-       "mask_bottom_right": [
-        [
-         10.0,
-         11.0
-        ]
-       ]
+       "o": 3.5,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 0,
+       "o": 4,
+       "interp": true
       }
      ],
      "status": "ok (late build, not day one)"
@@ -1530,6 +1588,22 @@
        "i": 45,
        "o": 50,
        "interp": true
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 38,
+       "o": 46,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         36.5,
+         37.0
+        ],
+        [
+         39.5,
+         39.5
+        ]
+       ]
       }
      ],
      "status": "ok"
