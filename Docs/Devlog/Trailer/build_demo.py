@@ -41,7 +41,7 @@ def take(name):
 
 # ---------------------------------------------------------------- edit decision list
 # Video: (kind, seconds, params). Times inside sources are in seconds.
-# Audio: (start, file, gain_db, src_in, src_dur or None, bus)  bus = 'voice' | 'music'
+# Audio: (start, file, gain_db, src_in, src_dur or None, bus, fade_out)  bus = 'voice' | 'music'
 from demo_edl import VIDEO, AUDIO  # noqa: E402  (kept separate so the cut can be changed without touching this)
 
 
@@ -276,12 +276,14 @@ def prepare_take(src, s_in, s_dur):
 def render_audio(path, total):
     args, voice, music = ['ffmpeg', '-hide_banner', '-loglevel', 'error', '-y'], [], []
     filt = []
-    for i, (at, f, gain, s_in, s_dur, bus) in enumerate(AUDIO):
+    for i, (at, f, gain, s_in, s_dur, bus, v_fade) in enumerate(AUDIO):
         args += ['-i', str(f)]
         trim = f'atrim=start={s_in}' + (f':duration={s_dur}' if s_dur else '')
         fades = ''
         if bus == 'music':
             fades = f',afade=t=in:d=0.6' + (f',afade=t=out:st={max(0, s_dur - 1.5)}:d=1.5' if s_dur else '')
+        elif v_fade and s_dur:
+            fades = f',afade=t=out:st={max(0, s_dur - v_fade)}:d={v_fade}'
         voice_fx = ''
         if str(f).startswith(str(TAKES)):
             # Dylan's raw takes differ in level from take to take (around -42 to -49 LUFS) and carry room tone:

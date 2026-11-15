@@ -20,14 +20,15 @@ _t = [0.0]
 
 
 def seg(kind, dur, voices=(), **p):
-    """voices: (offset, file, gain_db[, src_in, src_dur])"""
+    """voices: (offset, file, gain_db[, src_in, src_dur[, fade_out]])"""
     start = _t[0]
     VIDEO.append((kind, dur, p))
     for v in voices:
         off, f, g = v[:3]
         s_in = v[3] if len(v) > 3 else 0.0
         s_dur = v[4] if len(v) > 4 else None
-        AUDIO.append((start + off, f, g, s_in, s_dur, 'voice'))
+        fo = v[5] if len(v) > 5 else 0.0
+        AUDIO.append((start + off, f, g, s_in, s_dur, 'voice', fo))
     _t[0] += round(dur * 30) / 30
     return start
 
@@ -37,13 +38,15 @@ def clip(src, t_in, dur, voices=(), **p):
 
 
 def music(at, name, gain, src_in, dur):
-    AUDIO.append((at, MUSIC / f'{name}.mp3', gain, src_in, dur, 'music'))
+    AUDIO.append((at, MUSIC / f'{name}.mp3', gain, src_in, dur, 'music', 0.0))
 
 
 # 1. Cold open: the devlog's own (coldopen.html prompt screen, Claude / ChatGPT split, Dylan's voice and the click
-#    track), used exactly as the devlog renders it (Dylan, Nov 15: the two must match).
+#    track), as the devlog renders it. Trailer rule (Dylan, Nov 15): gameplay within ~5 s, so only Dylan's ask
+#    (0.2-2.9 s: "Build me an MMO in four days... please.") then a hard cut to the land; the game is the answer.
+#    The wav sits ~1 dB under -15 LUFS: +1 dB.
 COLD = ROOT / 'Docs/Devlog/Video/build/seg/000'
-seg('clip', 12.0, [(0.0, Path(f'{COLD}.wav'), 0.0)], src=str(Path(f'{COLD}.mp4')), **{'in': 0.0}, fade_out=0.3)
+seg('clip', 3.0, [(0.0, Path(f'{COLD}.wav'), 1.0, 0.0, 3.0, 0.08)], src=str(Path(f'{COLD}.mp4')), **{'in': 0.0})
 # 2. The land, the hero, the lecture.
 m1 = clip('tour-high.mp4', 75.0, 4.6, [(0.5, ANN / 'A01_land.mp3', 0.0)])
 clip('hero-close.mp4', 0.3, 3.2, [(0.2, ANN / 'A02_hero.mp3', 0.0)])
