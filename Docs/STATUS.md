@@ -4,6 +4,13 @@ Keep this page short: current state, what is unverified, what is next. Session h
 `Docs/DEVLOG.md`; the old long-form STATUS is in `Docs/Status/STATUS-archive-to-Nov15.md` (read a
 section there only when a task needs it).
 
+## Next: `Docs/Feedback/Feedback6.txt` (Nov 15)
+
+Remaining work is split there into groups A-E with the files each may touch. Dylan assigns groups to sessions
+(Claude / ChatGPT); work only your group. Latest package + smoke + zip: `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip`
+(776 MB, 13:13, includes everything below and 171 comic cards); not uploaded. Backend redeployed with the
+visit/modifier proposal contract and verified live (a real proposal returned a visit step + Rush).
+
 ## Fixes5 (Nov 15, `Docs/Feedback/Fixes5.txt`)
 
 Done, editor build + Jam tests green, seen in autoplay screenshots (`Saved/Screenshots/WindowsEditor/fixes5*_*.png`):
@@ -16,7 +23,7 @@ Done, editor build + Jam tests green, seen in autoplay screenshots (`Saved/Scree
 - #2 help: H / F1 / gamepad View opens Controls over a pause, Back resumes. Hints hide 12 s after they last changed;
   the camera tip shows only for the first 40 s and ends "H: all controls".
 - #3 Resolve bars over every unpacified nuisance within 2600 uu (`AJamHUD::DrawResolveBars`, canvas).
-Not packaged; packaged cook of the cards unverified (smoke test).
+Cards: 135 expansion cards added (171 total, 15+ languages); one big card per burst (two on ultimates), rest small. Packaged and smoked.
 
 **#4 more quest types / directions (done, 86/86 Jam tests green, partly seen in autoplay):** every authored job has a
 third route (`ThirdRoute` in `JamVillageQuests.cpp`, lines in Jokes.md "Villagers: third routes", text only). New step
