@@ -166,6 +166,7 @@ private:
 	float NextMunchAt = 0.f;
 	float MunchUntil = -1.f;
 	bool bHeadingForFood = false;
+	float HeadingForFoodSince = 0.f;
 	TWeakObjectPtr<AActor> FoodTarget;
 	FVector BodyBaseScale = FVector::OneVector;
 	FVector BodyBaseLocation = FVector::ZeroVector;

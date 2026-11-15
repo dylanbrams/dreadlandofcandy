@@ -351,21 +351,42 @@ bool AJamHero::RequestSkill(EJamSkill Skill)
 	return bActivated;
 }
 
+namespace
+{
+	// The same shape the ability hits with (Fixes3 #3), so the flash and particles never lie about the area.
+	FJamAoePatternParams HeroClassShapeFor(int32 CastIndex, EJamSkill Skill, const FJamSkillRank& N)
+	{
+		FJamAoePatternParams P;
+		if (Skill == EJamSkill::Lecture)
+		{
+			P.Shape = EJamAoeShape::Cone;
+			P.Radius = N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange;
+			P.ConeHalfAngleDeg = JamHeroTuning::LectureHalfAngleDeg;
+			P.Width = 100.f;
+		}
+		else if (Skill == EJamSkill::FormALine) { P.Shape = EJamAoeShape::Line; P.Radius = N.Length; P.Width = N.Width * 0.5f; }
+		else { P.Shape = EJamAoeShape::Circle; P.Radius = N.Radius; }
+		JamClassShape::Adjust(CastIndex, Skill, P);
+		return P;
+	}
+
+	// The particle layers read Radius/Length/Width from the rank: feed them the class's adjusted area.
+	FJamSkillRank HeroShownRank(int32 CastIndex, EJamSkill Skill, const FJamSkillRank& N)
+	{
+		if (CastIndex == 0 || Skill == EJamSkill::DisappointedSigh) { return N; }
+		const FJamAoePatternParams P = HeroClassShapeFor(CastIndex, Skill, N);
+		FJamSkillRank Out = N;
+		Out.Radius = P.Radius;
+		if (P.Shape == EJamAoeShape::Line) { Out.Length = P.Radius; Out.Width = P.Width * 2.f; }
+		else { Out.Length = 0.f; }
+		return Out;
+	}
+}
+
 AJamSkillFx* AJamHero::SpawnClassShapeFx(EJamSkill Skill, const FJamSkillRank& N, const FVector& Floor, const FVector& Fwd,
 	const FLinearColor& Colour, float Seconds) const
 {
-	// The same shape the ability hits with (Fixes3 #3), so the flash never lies about the area.
-	FJamAoePatternParams P;
-	if (Skill == EJamSkill::Lecture)
-	{
-		P.Shape = EJamAoeShape::Cone;
-		P.Radius = N.Radius > 0.f ? N.Radius : JamHeroTuning::LectureRange;
-		P.ConeHalfAngleDeg = JamHeroTuning::LectureHalfAngleDeg;
-		P.Width = 100.f;
-	}
-	else if (Skill == EJamSkill::FormALine) { P.Shape = EJamAoeShape::Line; P.Radius = N.Length; P.Width = N.Width * 0.5f; }
-	else { P.Shape = EJamAoeShape::Circle; P.Radius = N.Radius; }
-	JamClassShape::Adjust(CastIndex, Skill, P);
+	const FJamAoePatternParams P = HeroClassShapeFor(CastIndex, Skill, N);
 	switch (P.Shape)
 	{
 	case EJamAoeShape::Cone: return AJamSkillFx::Spawn(GetWorld(), EJamFxShape::Fan, Floor, Fwd, P.Radius, P.ConeHalfAngleDeg, Colour, Seconds);
@@ -380,7 +401,7 @@ void AJamHero::DrawSkillShape(EJamSkill Skill, const FJamSkillRank& N) const
 	const FVector At = GetActorLocation();
 	const FVector Fwd = GetActorForwardVector();
 	const FVector Floor = At - FVector(0.f, 0.f, GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
-	AJamAttackParticles::Spawn(const_cast<AJamHero*>(this), Skill, N, Floor);
+	AJamAttackParticles::Spawn(const_cast<AJamHero*>(this), Skill, HeroShownRank(CastIndex, Skill, N), Floor);
 	AJamSkillFx* Fx = nullptr;
 	switch (Skill)
 	{

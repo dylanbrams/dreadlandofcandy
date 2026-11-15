@@ -263,6 +263,14 @@ bool AJamNuisance::TickMunch(float DeltaSeconds)
 		return true;
 	}
 	if (NextMunchAt <= 0.f) { NextMunchAt = Now + FMath::FRandRange(1.5f, 4.f); }
+	// Food outside the set bounds (or behind something) is never reached: give up after a while and wander.
+	if (bHeadingForFood && Now - HeadingForFoodSince > 6.f)
+	{
+		bHeadingForFood = false;
+		FoodTarget.Reset();
+		NextMunchAt = Now + FMath::FRandRange(1.5f, 4.f);
+		return false;
+	}
 	const bool bArrived = bHeadingForFood && FVector2D::Distance(WanderTarget, FVector2D(GetActorLocation())) < 70.f;
 	if (bArrived || (!bHeadingForFood && Now >= NextMunchAt))
 	{
@@ -277,7 +285,7 @@ bool AJamNuisance::TickMunch(float DeltaSeconds)
 				float CropBest = 2400.f;
 				for (const TWeakObjectPtr<AActor>& C : GM->GetCrops())
 				{
-					const float D = C.IsValid() ? FVector::Dist2D(C->GetActorLocation(), GetActorLocation()) : TNumericLimits<float>::Max();
+					const float D = C.IsValid() && SetBounds.IsInside(FVector2D(C->GetActorLocation())) ? FVector::Dist2D(C->GetActorLocation(), GetActorLocation()) : TNumericLimits<float>::Max();
 					if (D < CropBest) { CropBest = D; Food = C.Get(); }
 				}
 			}
@@ -285,11 +293,11 @@ bool AJamNuisance::TickMunch(float DeltaSeconds)
 			{
 				for (TActorIterator<AJamPickup> It(GetWorld()); It; ++It)
 				{
-					const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation());
+					const float D = SetBounds.IsInside(FVector2D(It->GetActorLocation())) ? FVector::Dist2D(It->GetActorLocation(), GetActorLocation()) : TNumericLimits<float>::Max();
 					if (D < Best) { Best = D; Food = *It; }
 				}
 			}
-			if (Food) { WanderTarget = FVector2D(Food->GetActorLocation()); FoodTarget = const_cast<AActor*>(Food); bHeadingForFood = true; return false; }
+			if (Food) { WanderTarget = FVector2D(Food->GetActorLocation()); FoodTarget = const_cast<AActor*>(Food); bHeadingForFood = true; HeadingForFoodSince = Now; return false; }
 		}
 		static const TCHAR* Noms[] = { TEXT("nom nom nom"), TEXT("*crunch*"), TEXT("mine!"), TEXT("CHOMP"), TEXT("tastes like candy"), TEXT("snack!"), TEXT("*munch munch*") };
 		if (AJamGameMode* GM = GetWorld()->GetAuthGameMode<AJamGameMode>())
@@ -327,7 +335,7 @@ const AActor* AJamNuisance::FindNearestHero(float& OutDistance) const
 	OutDistance = TNumericLimits<float>::Max();
 	for (TActorIterator<AJamHero> It(GetWorld()); It; ++It)
 	{
-		const float D = FVector::Dist2D(It->GetActorLocation(), GetActorLocation());
+		const float D = SetBounds.IsInside(FVector2D(It->GetActorLocation())) ? FVector::Dist2D(It->GetActorLocation(), GetActorLocation()) : TNumericLimits<float>::Max();
 		if (D < OutDistance) { OutDistance = D; Nearest = *It; }
 	}
 	return Nearest;

@@ -24,7 +24,19 @@ const FJamLine* FJamNagScheduler::Pick(EJamLineTrigger Trigger)
 	{
 		TArray<const FJamLine*> Fitting = Pool.FilterByPredicate([this](const FJamLine* L)
 		{
-			for (const FString& W : AvoidWords) { if (L->Text.Contains(W, ESearchCase::IgnoreCase)) { return false; } }
+			// Whole words (plural allowed): "rat" drops "rats!" but not "rate" or "Collaboration".
+			for (const FString& W : AvoidWords)
+			{
+				for (int32 At = L->Text.Find(W, ESearchCase::IgnoreCase); At != INDEX_NONE;
+					At = L->Text.Find(W, ESearchCase::IgnoreCase, ESearchDir::FromStart, At + 1))
+				{
+					int32 End = At + W.Len();
+					if (End < L->Text.Len() && FChar::ToLower(L->Text[End]) == TEXT('s')) { ++End; }
+					const bool bStart = At == 0 || !FChar::IsAlpha(L->Text[At - 1]);
+					const bool bEnd = End >= L->Text.Len() || !FChar::IsAlpha(L->Text[End]);
+					if (bStart && bEnd) { return false; }
+				}
+			}
 			return true;
 		});
 		if (Fitting.Num() > 0) { Pool = MoveTemp(Fitting); }

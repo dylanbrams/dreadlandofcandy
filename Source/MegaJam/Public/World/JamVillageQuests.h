@@ -167,6 +167,8 @@ public:
     TArray<FString> CompletedRoutes() const;
     /** Steps (Fixes2 #4, #5): the active job's current step; any other job's first. */
     int32 Step() const { return StepIndex; }
+    /** Defeat on a dangerous errand: the current step's progress goes back to 0. */
+    void RestartStep() { if (ActiveIndex != INDEX_NONE) { Done = 0; } }
     int32 StepCount(int32 Index) const;
     FJamQuestStep CurrentStep(int32 Index) const;
     /** Relationship with a giver (index into Givers()): jobs paid so far, capped at MaxLevel. */

@@ -172,6 +172,12 @@ int32 AJamGameMode::VillageTarget(const AJamHero* InHero) const
 		const float Distance = FVector::Dist2D(Actor->GetActorLocation(), InHero->GetActorLocation());
 		if (Distance < Best) { Best = Distance; Target = Id; }
 	};
+	// A treatable nuisance in reach wins over Fenella's always-on town prompt, or errands in town can't be finished.
+	if (bVillageExploration && VillageQuests.Active() != INDEX_NONE)
+	{
+		AJamNuisance* N = InHero->FindInteractTarget();
+		if (N && Nuisances.Contains(N)) { return INDEX_NONE; }
+	}
 	if (bRecruitmentPending) { Near(Faerie, JamVillageFlow::FenellaTarget); }
 	// Fenella is available at the hero's shoulder in town, including during an errand.
 	if (bVillageExploration && FVector2D(InHero->GetActorLocation()).Size() < JamWorld::Def().VillageRadius)
@@ -324,6 +330,8 @@ void AJamGameMode::StartVillageStep()
 	ClearStageActors();
 	FieldBounds = FBox2D(Destination->Position - FVector2D(650.f), Destination->Position + FVector2D(650.f));
 	GroundZ = TraceGround(Destination->Position);
+	// Collect steps are always safe; never inherit the previous errand's danger.
+	VillageDanger = 0;
 	if (Step.Verb == EJamStageVerb::Collect)
 	{
 		for (int32 i = 0; i < Step.Count; ++i)
@@ -416,7 +424,8 @@ void AJamGameMode::VillageDefeat()
 	GetWorldTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this, [this]()
 	{
 		if (AJamGameState* State = GetJamGameState()) { State->Dignity.Reset(); }
-		if (VillageQuests.Active() != INDEX_NONE) { StartVillageStep(); }
+		// The step really starts over: progress back to 0, so the fresh nuisances all count.
+		if (VillageQuests.Active() != INDEX_NONE) { VillageQuests.RestartStep(); StartVillageStep(); UpdateVillageObjective(); }
 	}));
 }
 

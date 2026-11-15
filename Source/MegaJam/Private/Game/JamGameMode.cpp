@@ -950,12 +950,20 @@ void AJamGameMode::Quip(AActor* Anchor, const FString& Text, float Seconds, bool
 	AJamGameState* GS = GetJamGameState();
 	if (!GS || !Anchor || Text.IsEmpty()) { return; }
 	const float Now = GetWorld()->GetTimeSeconds();
-	GS->Bubbles.RemoveAll([Now, Anchor](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid() || B.Anchor.Get() == Anchor; });
+	// Replace only an earlier quip on this anchor: a nuisance's reply bubble (HandlePacified) must survive the hit word.
+	bool bHasReply = false;
+	GS->Bubbles.RemoveAll([Now, Anchor, &bHasReply](const AJamGameState::FWorldBubble& B)
+	{
+		const bool bGone = B.Until <= Now || !B.Anchor.IsValid() || (B.Anchor.Get() == Anchor && B.LineId == TEXT("Quip"));
+		if (!bGone && B.Anchor.Get() == Anchor) { bHasReply = true; }
+		return bGone;
+	});
 	AJamGameState::FWorldBubble B;
 	B.LineId = TEXT("Quip");
 	B.Text = Text;
 	B.Anchor = Anchor;
-	B.Offset = Offset;
+	// Stack the hit word above a reply so both read.
+	B.Offset = bHasReply ? Offset + FVector(0.f, 0.f, 110.f) : Offset;
 	B.Until = Now + Seconds;
 	B.bJagged = bJagged;
 	GS->Bubbles.Add(B);
