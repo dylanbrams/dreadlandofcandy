@@ -265,7 +265,7 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	if (View.Screen != ShownScreen) { ShownScreen = View.Screen; ShownAt = RealSeconds; }
 
 	const bool bSideMenu = View.Screen == EJamScreen::Title || View.Screen == EJamScreen::Pause || View.Screen == EJamScreen::Options || View.Screen == EJamScreen::QuitConfirm;
-	Backdrop->SetBrushColor(JamUi::Surface(View.bOpaque ? 0.94f : bSideMenu ? 0.48f : 0.82f));
+	Backdrop->SetBrushColor(JamUi::Surface(View.bOpaque ? 0.94f : bSideMenu ? 0.48f : 0.92f));
 	ShowScreenPart(MenuShade, bSideMenu);
 	if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(Column->Slot))
 	{
@@ -309,7 +309,13 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	for (int32 i = 0; i < QuoteTexts.Num(); ++i)
 	{
 		ShowScreenPart(QuoteTexts[i], View.Quotes.IsValidIndex(i));
-		if (View.Quotes.IsValidIndex(i)) { SetScreenText(QuoteTexts[i], View.Quotes[i]); }
+		if (View.Quotes.IsValidIndex(i))
+		{
+			SetScreenText(QuoteTexts[i], View.Quotes[i]);
+			const bool bQuestCopy = View.Screen == EJamScreen::QuestBranches;
+			QuoteTexts[i]->SetFont(JamUi::Font(24, bQuestCopy));
+			QuoteTexts[i]->SetColorAndOpacity(FSlateColor(bQuestCopy ? JamUi::Ink() : JamUi::Dim()));
+		}
 	}
 
 	const bool bCredits = View.Body.Num() > 0;
