@@ -19,5 +19,12 @@ private:
 	UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Puffs;
 	UPROPERTY() TArray<TObjectPtr<class UMaterialInstanceDynamic>> Materials;
 	TArray<FVector> Sources;
+	UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> Fireflies;
+	TArray<FVector> FireflyOrigins;
+	UPROPERTY() TObjectPtr<class UStaticMeshComponent> BakerySign;
+	UPROPERTY() TArray<TObjectPtr<class UStaticMeshComponent>> FlourPuffs;
+	UPROPERTY() TArray<TObjectPtr<class UMaterialInstanceDynamic>> FlourMaterials;
+	FVector BakeryFront = FVector::ZeroVector;
+	FVector SignPivot = FVector::ZeroVector;
 	float Age = 0.f;
 };
