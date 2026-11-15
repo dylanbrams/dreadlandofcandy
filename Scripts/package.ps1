@@ -26,7 +26,7 @@ New-Item -ItemType Directory -Force -Path $ArchiveDir | Out-Null
 
 Write-Host "== Packaging $ProjectName Win64 $Config -> $ArchiveDir ==" -ForegroundColor Cyan
 & $RunUAT BuildCookRun "-project=$Project" "-target=$GameTarget" -platform=Win64 "-clientconfig=$Config" `
-    -build -cook -stage -package -pak -iostore -archive "-archivedirectory=$ArchiveDir" -unattended -utf8output
+    -build -cook -stage -package -pak -iostore -prereqs -archive "-archivedirectory=$ArchiveDir" -unattended -utf8output
 if ($LASTEXITCODE -ne 0) { throw "RunUAT failed with exit code $LASTEXITCODE" }
 
 # Give the player-facing launcher the game's title. The root exe is only a bootstrap stub that
