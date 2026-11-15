@@ -80,7 +80,7 @@ UTextBlock* UJamScreenWidget::MakeText(int32 Size, const FLinearColor& Colour, b
 
 UBorder* UJamScreenWidget::MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding)
 {
-	UBorder* B = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	UBorder* B = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 	B->SetBrush(ScreenRounded(FLinearColor::Transparent, Radius, 0.f));
 	B->SetBrushColor(Colour);
 	B->SetPadding(InPadding);

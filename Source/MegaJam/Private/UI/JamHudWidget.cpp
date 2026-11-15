@@ -66,7 +66,12 @@ TSharedRef<SWidget> UJamHudWidget::RebuildWidget()
 
 UBorder* UJamHudWidget::MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding)
 {
-	UBorder* B = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	// Reading surfaces share the etched Black Sugar frame used by menus and dialogue.
+	// Coloured bars remain simple so their fill and size retain their meaning.
+	const bool bReadingSurface = Colour == PanelDark || (Colour.R == 0.f && Colour.G == 0.f && Colour.B == 0.f);
+	UBorder* B = bReadingSurface
+		? WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass())
+		: WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
 	B->SetBrush(Rounded(FLinearColor::White, 2.f, JamUi::Silver().CopyWithNewOpacity(0.45f), 1.f));
 	B->SetBrushColor(Colour);
 	B->SetPadding(InPadding);
@@ -142,7 +147,7 @@ void UJamHudWidget::BuildTree()
 	}
 
 	// Interact prompt, placed over its target.
-	PromptPanel = MakePanel(PanelDark, 6.f, FMargin(14.f, 6.f));
+	PromptPanel = MakePanel(PanelDark, 6.f, FMargin(22.f, 6.f));
 	PromptText = MakeText(22, FLinearColor::White, true);
 	PromptText->SetWrapTextAt(650.f);
 	PromptText->SetJustification(ETextJustify::Center);
