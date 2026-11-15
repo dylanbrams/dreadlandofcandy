@@ -31,6 +31,18 @@ def key(bgr, wall_x=WALL_X):
         if stats[i, cv2.CC_STAT_AREA] > 4000:
             keep[lab_ == i] = 1
     keep = cv2.morphologyEx(keep, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+    # the green screen reflected in the glasses reads as screen and punches holes through the lenses: fill small
+    # enclosed holes (lens-sized), but not the big gap between headband and head
+    inv = (keep == 0).astype(np.uint8)
+    n2, lab2, st2, _ = cv2.connectedComponentsWithStats(inv, connectivity=4)
+    holes = np.zeros_like(a)
+    hh, ww = keep.shape
+    for i in range(1, n2):
+        x, y, w, h, area = st2[i]
+        if x > 0 and y > 0 and x + w < ww and y + h < hh and area < 3200 and w < 95 and h < 85:
+            holes[lab2 == i] = 1.0
+            keep[lab2 == i] = 1
+    a = np.maximum(a, holes)
     a = a * cv2.GaussianBlur(keep.astype(np.float32), (0, 0), 1.2)
     a = cv2.GaussianBlur(a, (0, 0), 0.8)
     im = crop.astype(np.float32)

@@ -3,18 +3,18 @@
   "section": "00",
   "title": "Cold open",
   "bed": null,
-  "est_s": 12.1,
+  "est_s": 13.1,
   "segments": [
    {
     "kind": "take",
-    "take": "12-16-09",
-    "src": "raw/original/2026-11-15 12-16-09.mp4",
-    "i": 0.7,
-    "o": 4.1,
-    "dur": 3.4,
+    "take": "raw/pickups/BuildMeAnMMOPlease.wav",
+    "src": "raw/pickups/BuildMeAnMMOPlease.wav",
+    "i": 0.0,
+    "o": 4.43,
+    "dur": 4.4,
     "frame": "B",
     "visual": "coldopen beat 1",
-    "note": "hopeful"
+    "note": "hopeful; Dylan re-recorded (Nov 15 evening)"
    },
    {
     "kind": "take",
@@ -53,9 +53,9 @@
  },
  {
   "section": "01",
-  "title": "An unreasonable idea",
+  "title": "The plain version",
   "bed": "music/title-theme_take1.mp3",
-  "est_s": 76.4,
+  "est_s": 18.6,
   "segments": [
    {
     "kind": "take",
@@ -68,6 +68,311 @@
     "visual": "",
     "note": "opener"
    },
+   {
+    "kind": "pickup",
+    "id": "01-plain",
+    "text": "Four days later, here's what I ended up with: an open-world game with dynamic quests.",
+    "frame": "B",
+    "est": 8,
+    "visual": "world pan over the candy world, then village from above",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/tour-high.mp4",
+       "i": 11,
+       "o": 19,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   }
+  ]
+ },
+ {
+  "section": "02",
+  "title": "Hook montage",
+  "bed": "music/standard-combat_take1.mp3",
+  "est_s": 96.8,
+  "segments": [
+   {
+    "kind": "take",
+    "take": "13-09-00",
+    "src": "raw/original/2026-11-15 13-09-00.mp4",
+    "i": 0.3,
+    "o": 2.5,
+    "dur": 2.2,
+    "frame": "C",
+    "visual": "",
+    "note": "what did I end up with"
+   },
+   {
+    "kind": "take",
+    "take": "13-09-07",
+    "src": "raw/original/2026-11-15 13-09-07.mp4",
+    "i": 8.3,
+    "o": 23.9,
+    "dur": 15.6,
+    "frame": "B",
+    "visual": "BROLL attack word cards, then non-English battle cry",
+    "note": "check 'talk back'",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 20,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/village-improvise.mp4",
+       "i": 83,
+       "o": 92,
+       "interp": true
+      }
+     ],
+     "status": "ok (Turkish card, village-improvise 1:23)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "13-09-43",
+    "src": "raw/original/2026-11-15 13-09-43.mp4",
+    "i": 0.3,
+    "o": 12.1,
+    "dur": 11.8,
+    "frame": "B",
+    "visual": "BROLL knight placards, Resolve bar, pacified rat",
+    "note": "check 'have health'",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 20,
+       "interp": true
+      }
+     ],
+     "status": "ok (pacify counter 1/3-3/3; no Resolve bar visible)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "13-10-07",
+    "src": "raw/original/2026-11-15 13-10-07.mp4",
+    "i": 0.5,
+    "o": 21.2,
+    "dur": 20.7,
+    "frame": "B",
+    "visual": "BROLL improvise screen, two new routes",
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-improvise.mp4",
+       "i": 120,
+       "o": 130,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         127.0,
+         128.5
+        ]
+       ]
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "13-10-34",
+    "src": "raw/original/2026-11-15 13-10-34.mp4",
+    "i": 0.6,
+    "o": 16.5,
+    "dur": 15.9,
+    "frame": "B",
+    "visual": "BROLL typed proposal, route, refusal",
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-propose.mp4",
+       "i": 40,
+       "o": 56,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         38.5,
+         45.5
+        ],
+        [
+         48.5,
+         48.5
+        ],
+        [
+         56.0,
+         56.0
+        ]
+       ]
+      }
+     ],
+     "status": "ok (silly refusal missing; outcome of proposal unclear)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "13-11-24",
+    "src": "raw/original/2026-11-15 13-11-24.mp4",
+    "i": 0.9,
+    "o": 10.4,
+    "dur": 9.5,
+    "frame": "C",
+    "visual": "",
+    "note": "AI on a leash"
+   },
+   {
+    "kind": "pickup",
+    "id": "02-encores",
+    "text": "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.",
+    "frame": "B",
+    "est": 12,
+    "visual": "BROLL encore offer, Rush timer, Crowd swarm",
+    "recorded": [
+     "build/clean/02-encores.mp4"
+    ],
+    "dur": 9.9,
+    "partial": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-third.mp4",
+       "i": 35,
+       "o": 45,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         37.0,
+         37.0
+        ],
+        [
+         39.5,
+         40.0
+        ]
+       ]
+      },
+      {
+       "src": "../GameFootage/village-third.mp4",
+       "i": 105,
+       "o": 115,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         107.5,
+         113.5
+        ]
+       ]
+      },
+      {
+       "src": "../GameFootage/DylanPlaythrough.mp4",
+       "i": 210,
+       "o": 229,
+       "interp": true,
+       "mask_bottom_right": "always"
+      }
+     ],
+     "status": "ok (Crowd, Visit; Rush = clock objective in playthrough)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "13-12-35",
+    "src": "raw/original/2026-11-15 13-12-35.mp4",
+    "i": 4.5,
+    "o": 5.7,
+    "dur": 1.2,
+    "frame": "B",
+    "visual": "BROLL film shoot",
+    "note": "",
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 0,
+       "o": 8,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "pickup",
+    "id": "02-filmshoot",
+    "text": "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.",
+    "frame": "B",
+    "est": 14,
+    "visual": "BROLL CUT pitch, typed note, budget boxes",
+    "recorded": [
+     "build/clean/02-filmshoot-partial.mp4"
+    ],
+    "dur": 6.5,
+    "partial": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 43,
+       "o": 49,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         40.5,
+         41.0
+        ],
+        [
+         43.5,
+         44.0
+        ]
+       ]
+      },
+      {
+       "src": "../GameFootage/typed-note.mp4",
+       "i": 20,
+       "o": 35,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/budget-out.mp4",
+       "i": 10,
+       "o": 20,
+       "interp": true
+      }
+     ],
+     "status": "ok (CUT!, typed note, budget boxes)"
+    }
+   },
+   {
+    "kind": "pickup",
+    "id": "02-usabletake",
+    "text": "You're not saving the day. You're trying to get a usable take.",
+    "frame": "C",
+    "est": 4,
+    "visual": "",
+    "recorded": [
+     "build/clean/02-usabletake.mp4"
+    ],
+    "dur": 3.5,
+    "partial": false
+   }
+  ]
+ },
+ {
+  "section": "01b",
+  "title": "How we got here",
+  "bed": "music/setting-out_take1.mp3",
+  "est_s": 65.8,
+  "segments": [
    {
     "kind": "take",
     "take": "12-18-01",
@@ -82,23 +387,9 @@
      "clips": [
       {
        "src": "../GameFootage/tour-high.mp4",
-       "i": 45,
-       "o": 65
-      },
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 30,
-       "o": 40,
-       "mask_bottom_right": [
-        [
-         30.5,
-         31.0
-        ],
-        [
-         40.5,
-         41.0
-        ]
-       ]
+       "i": 26,
+       "o": 34,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -118,23 +409,9 @@
      "clips": [
       {
        "src": "../GameFootage/tour-high.mp4",
-       "i": 45,
-       "o": 65
-      },
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 30,
-       "o": 40,
-       "mask_bottom_right": [
-        [
-         30.5,
-         31.0
-        ],
-        [
-         40.5,
-         41.0
-        ]
-       ]
+       "i": 26,
+       "o": 34,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -154,8 +431,9 @@
      "clips": [
       {
        "src": "../GameFootage/tour-high.mp4",
-       "i": 45,
-       "o": 65
+       "i": 27,
+       "o": 33,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -197,276 +475,10 @@
   ]
  },
  {
-  "section": "02",
-  "title": "Hook montage",
-  "bed": "music/standard-combat_take1.mp3",
-  "est_s": 94.0,
-  "segments": [
-   {
-    "kind": "take",
-    "take": "13-09-00",
-    "src": "raw/original/2026-11-15 13-09-00.mp4",
-    "i": 0.3,
-    "o": 2.5,
-    "dur": 2.2,
-    "frame": "C",
-    "visual": "",
-    "note": "what did I end up with"
-   },
-   {
-    "kind": "take",
-    "take": "13-09-07",
-    "src": "raw/original/2026-11-15 13-09-07.mp4",
-    "i": 8.3,
-    "o": 23.9,
-    "dur": 15.6,
-    "frame": "B",
-    "visual": "BROLL attack word cards, then non-English battle cry",
-    "note": "check 'talk back'",
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 10,
-       "o": 20
-      },
-      {
-       "src": "../GameFootage/village-improvise.mp4",
-       "i": 83,
-       "o": 92
-      }
-     ],
-     "status": "ok (Turkish card, village-improvise 1:23)"
-    }
-   },
-   {
-    "kind": "take",
-    "take": "13-09-43",
-    "src": "raw/original/2026-11-15 13-09-43.mp4",
-    "i": 0.3,
-    "o": 12.1,
-    "dur": 11.8,
-    "frame": "B",
-    "visual": "BROLL knight placards, Resolve bar, pacified rat",
-    "note": "check 'have health'",
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 10,
-       "o": 20
-      }
-     ],
-     "status": "ok (pacify counter 1/3-3/3; no Resolve bar visible)"
-    }
-   },
-   {
-    "kind": "take",
-    "take": "13-10-07",
-    "src": "raw/original/2026-11-15 13-10-07.mp4",
-    "i": 0.5,
-    "o": 21.2,
-    "dur": 20.7,
-    "frame": "B",
-    "visual": "BROLL improvise screen, two new routes",
-    "note": "",
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/village-improvise.mp4",
-       "i": 120,
-       "o": 130,
-       "mask_bottom_right": [
-        [
-         127.0,
-         128.5
-        ]
-       ]
-      }
-     ],
-     "status": "ok"
-    }
-   },
-   {
-    "kind": "take",
-    "take": "13-10-34",
-    "src": "raw/original/2026-11-15 13-10-34.mp4",
-    "i": 0.6,
-    "o": 16.5,
-    "dur": 15.9,
-    "frame": "B",
-    "visual": "BROLL typed proposal, route, refusal",
-    "note": "",
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/village-propose.mp4",
-       "i": 40,
-       "o": 56,
-       "mask_bottom_right": [
-        [
-         38.5,
-         45.5
-        ],
-        [
-         48.5,
-         48.5
-        ],
-        [
-         56.0,
-         56.0
-        ]
-       ]
-      }
-     ],
-     "status": "ok (silly refusal missing; outcome of proposal unclear)"
-    }
-   },
-   {
-    "kind": "take",
-    "take": "13-11-24",
-    "src": "raw/original/2026-11-15 13-11-24.mp4",
-    "i": 0.9,
-    "o": 10.4,
-    "dur": 9.5,
-    "frame": "C",
-    "visual": "",
-    "note": "AI on a leash"
-   },
-   {
-    "kind": "pickup",
-    "id": "02-encores",
-    "text": "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.",
-    "frame": "B",
-    "est": 12,
-    "visual": "BROLL encore offer, Rush timer, Crowd swarm",
-    "recorded": [
-     "build/clean/02-encores.mp4"
-    ],
-    "dur": 7.7,
-    "partial": false,
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/village-third.mp4",
-       "i": 35,
-       "o": 45,
-       "mask_bottom_right": [
-        [
-         37.0,
-         37.0
-        ],
-        [
-         39.5,
-         40.0
-        ]
-       ]
-      },
-      {
-       "src": "../GameFootage/village-third.mp4",
-       "i": 105,
-       "o": 115,
-       "mask_bottom_right": [
-        [
-         107.5,
-         113.5
-        ]
-       ]
-      },
-      {
-       "src": "../GameFootage/DylanPlaythrough.mp4",
-       "i": 210,
-       "o": 229,
-       "mask_bottom_right": "always"
-      }
-     ],
-     "status": "ok (Crowd, Visit; Rush = clock objective in playthrough)"
-    }
-   },
-   {
-    "kind": "take",
-    "take": "13-12-35",
-    "src": "raw/original/2026-11-15 13-12-35.mp4",
-    "i": 4.5,
-    "o": 5.7,
-    "dur": 1.2,
-    "frame": "B",
-    "visual": "BROLL film shoot",
-    "note": "",
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 0,
-       "o": 8
-      }
-     ],
-     "status": "ok"
-    }
-   },
-   {
-    "kind": "pickup",
-    "id": "02-filmshoot",
-    "text": "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.",
-    "frame": "B",
-    "est": 14,
-    "visual": "BROLL CUT pitch, typed note, budget boxes",
-    "recorded": [
-     "build/clean/02-filmshoot-partial.mp4"
-    ],
-    "dur": 6.2,
-    "partial": true,
-    "broll": {
-     "clips": [
-      {
-       "src": "../GameFootage/knight-run.mp4",
-       "i": 43,
-       "o": 49,
-       "mask_bottom_right": [
-        [
-         40.5,
-         41.0
-        ],
-        [
-         43.5,
-         44.0
-        ]
-       ]
-      },
-      {
-       "src": "../GameFootage/typed-note.mp4",
-       "i": 20,
-       "o": 35
-      },
-      {
-       "src": "../GameFootage/budget-out.mp4",
-       "i": 10,
-       "o": 20
-      }
-     ],
-     "status": "ok (CUT!, typed note, budget boxes)"
-    }
-   },
-   {
-    "kind": "pickup",
-    "id": "02-usabletake",
-    "text": "You're not saving the day. You're trying to get a usable take.",
-    "frame": "C",
-    "est": 4,
-    "visual": "",
-    "recorded": [
-     "build/clean/02-usabletake.mp4"
-    ],
-    "dur": 3.2,
-    "partial": false
-   }
-  ]
- },
- {
   "section": "03",
   "title": "The setup",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 23.3,
+  "est_s": 23.6,
   "segments": [
    {
     "kind": "take",
@@ -500,7 +512,7 @@
     "recorded": [
      "build/clean/03-declared.mp4"
     ],
-    "dur": 3.3,
+    "dur": 3.6,
     "partial": false
    },
    {
@@ -520,7 +532,7 @@
   "section": "03b",
   "title": "Reading the chart",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 75.5,
+  "est_s": 75.8,
   "segments": [
    {
     "kind": "take",
@@ -554,7 +566,7 @@
     "recorded": [
      "build/clean/03b-warning.mp4"
     ],
-    "dur": 3.0,
+    "dur": 3.3,
     "partial": false
    },
    {
@@ -625,6 +637,7 @@
        "src": "../GameFootage/hero-close.mp4",
        "i": 0,
        "o": 8,
+       "interp": true,
        "mask_bottom_right": [
         [
          10.0,
@@ -666,7 +679,8 @@
       {
        "src": "../GameFootage/knight-run.mp4",
        "i": 60,
-       "o": 64
+       "o": 64,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -732,12 +746,14 @@
       {
        "src": "../GameFootage/knight-run.mp4",
        "i": 20,
-       "o": 24
+       "o": 24,
+       "interp": true
       },
       {
        "src": "../GameFootage/hero-close.mp4",
        "i": 19,
-       "o": 24
+       "o": 24,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -787,14 +803,9 @@
      "clips": [
       {
        "src": "../GameFootage/tour-high.mp4",
-       "i": 0,
-       "o": 20,
-       "mask_bottom_right": [
-        [
-         1.0,
-         1.0
-        ]
-       ]
+       "i": 11,
+       "o": 19,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -814,13 +825,10 @@
      "clips": [
       {
        "src": "../GameFootage/tour-low.mp4",
-       "i": 90,
+       "i": 97,
        "o": 105,
+       "interp": true,
        "mask_bottom_right": [
-        [
-         91.5,
-         91.5
-        ],
         [
          97.5,
          99.5
@@ -832,9 +840,10 @@
        ]
       },
       {
-       "src": "../GameFootage/village-improvise.mp4",
-       "i": 25,
-       "o": 30
+       "src": "../GameFootage/village-aerial.mp4",
+       "i": 0,
+       "o": 8,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -856,6 +865,7 @@
        "src": "../GameFootage/village-improvise.mp4",
        "i": 35,
        "o": 45,
+       "interp": true,
        "mask_bottom_right": [
         [
          38.0,
@@ -875,6 +885,7 @@
        "src": "../GameFootage/village-improvise.mp4",
        "i": 100,
        "o": 115,
+       "interp": true,
        "mask_bottom_right": [
         [
          102.5,
@@ -915,7 +926,7 @@
   "section": "06",
   "title": "Playtest",
   "bed": "music/standard-combat_take2.mp3",
-  "est_s": 12.1,
+  "est_s": 12.9,
   "segments": [
    {
     "kind": "pickup",
@@ -927,14 +938,15 @@
     "recorded": [
      "build/clean/06-playtest.mp4"
     ],
-    "dur": 12.1,
+    "dur": 12.9,
     "partial": false,
     "broll": {
      "clips": [
       {
        "src": "../GameFootage/knight-run.mp4",
        "i": 60,
-       "o": 64
+       "o": 64,
+       "interp": true
       }
      ],
      "status": "unconfirmed (compass not clearly visible)"
@@ -964,6 +976,7 @@
        "src": "../GameFootage/village-aerial.mp4",
        "i": 0,
        "o": 12,
+       "interp": true,
        "mask_bottom_right": [
         [
          13.5,
@@ -975,6 +988,7 @@
        "src": "../GameFootage/tour-high.mp4",
        "i": 95,
        "o": 105,
+       "interp": true,
        "mask_bottom_right": [
         [
          94.5,
@@ -1008,13 +1022,10 @@
      "clips": [
       {
        "src": "../GameFootage/tour-low.mp4",
-       "i": 90,
+       "i": 97,
        "o": 105,
+       "interp": true,
        "mask_bottom_right": [
-        [
-         91.5,
-         91.5
-        ],
         [
          97.5,
          99.5
@@ -1026,9 +1037,10 @@
        ]
       },
       {
-       "src": "../GameFootage/village-improvise.mp4",
-       "i": 25,
-       "o": 30
+       "src": "../GameFootage/village-aerial.mp4",
+       "i": 0,
+       "o": 8,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -1049,22 +1061,26 @@
       {
        "src": "../GameFootage/knight-run.mp4",
        "i": 10,
-       "o": 20
+       "o": 20,
+       "interp": true
       },
       {
        "src": "../GameFootage/archer-run.mp4",
        "i": 10,
-       "o": 20
+       "o": 20,
+       "interp": true
       },
       {
        "src": "../GameFootage/barbarian-run.mp4",
        "i": 45,
-       "o": 55
+       "o": 55,
+       "interp": true
       },
       {
        "src": "../GameFootage/mage-run.mp4",
        "i": 45,
-       "o": 50
+       "o": 50,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -1086,6 +1102,7 @@
        "src": "../GameFootage/knight-run.mp4",
        "i": 75,
        "o": 80,
+       "interp": true,
        "mask_bottom_right": [
         [
          74.5,
@@ -1096,7 +1113,8 @@
       {
        "src": "../GameFootage/mage-run.mp4",
        "i": 45,
-       "o": 50
+       "o": 50,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -1128,12 +1146,14 @@
       {
        "src": "../GameFootage/archer-run.mp4",
        "i": 10,
-       "o": 20
+       "o": 20,
+       "interp": true
       },
       {
        "src": "../GameFootage/barbarian-run.mp4",
        "i": 45,
-       "o": 55
+       "o": 55,
+       "interp": true
       }
      ],
      "status": "ok"
@@ -1145,7 +1165,7 @@
   "section": "08",
   "title": "Sunday morning",
   "bed": "music/village_take2.mp3",
-  "est_s": 105.5,
+  "est_s": 110.4,
   "segments": [
    {
     "kind": "take",
@@ -1168,7 +1188,7 @@
     "recorded": [
      "build/clean/08-three.mp4"
     ],
-    "dur": 6.2,
+    "dur": 7.2,
     "partial": false
    },
    {
@@ -1187,6 +1207,7 @@
        "src": "../GameFootage/village-aerial.mp4",
        "i": 0,
        "o": 12,
+       "interp": true,
        "mask_bottom_right": [
         [
          13.5,
@@ -1198,6 +1219,7 @@
        "src": "../GameFootage/tour-high.mp4",
        "i": 95,
        "o": 105,
+       "interp": true,
        "mask_bottom_right": [
         [
          94.5,
@@ -1227,7 +1249,7 @@
     "recorded": [
      "build/clean/08-pbr.mp4"
     ],
-    "dur": 6.9,
+    "dur": 7.2,
     "partial": false
    },
    {
@@ -1251,7 +1273,7 @@
     "recorded": [
      "build/clean/08-marshmallows.mp4"
     ],
-    "dur": 6.0,
+    "dur": 6.3,
     "partial": false
    },
    {
@@ -1287,7 +1309,7 @@
      "build/clean/08-blacksugar-a.mp4",
      "build/clean/08-blacksugar-b.mp4"
     ],
-    "dur": 16.7,
+    "dur": 20.0,
     "partial": false,
     "broll": {
      "clips": [
@@ -1306,7 +1328,7 @@
   "section": "08b",
   "title": "The river is terrible",
   "bed": "music/boss-battle_take1.mp3",
-  "est_s": 82.5,
+  "est_s": 86.3,
   "segments": [
    {
     "kind": "take",
@@ -1362,7 +1384,7 @@
     "recorded": [
      "build/clean/08b-fixed.mp4"
     ],
-    "dur": 18.6,
+    "dur": 22.4,
     "partial": false,
     "broll": {
      "clips": [
@@ -1370,12 +1392,14 @@
        "src": "../GameFootage/LandOfCandyFlythrough.mp4",
        "i": 58,
        "o": 61,
+       "interp": true,
        "mask_bottom_right": "always"
       },
       {
        "src": "../GameFootage/tour-high.mp4",
        "i": 40,
-       "o": 44
+       "o": 44,
+       "interp": true
       }
      ],
      "status": "partial: pre-fix bridge (flythrough) vs fixed bridge; no before/after river"
@@ -1413,7 +1437,7 @@
   "section": "09",
   "title": "Why do this",
   "bed": "music/emotional-revelation_take1.mp3",
-  "est_s": 106.9,
+  "est_s": 58.5,
   "segments": [
    {
     "kind": "take",
@@ -1436,7 +1460,7 @@
     "recorded": [
      "build/clean/09-lookatwhat.mp4"
     ],
-    "dur": 1.4,
+    "dur": 1.7,
     "partial": false
    },
    {
@@ -1451,28 +1475,6 @@
     "note": "check list items and 154"
    },
    {
-    "kind": "take",
-    "take": "13-30-15",
-    "src": "raw/original/2026-11-15 13-30-15.mp4",
-    "i": 287.7,
-    "o": 305.8,
-    "dur": 18.1,
-    "frame": "C",
-    "visual": "",
-    "note": "18s on CAM: break up"
-   },
-   {
-    "kind": "take",
-    "take": "13-25-53",
-    "src": "raw/original/2026-11-15 13-25-53.mp4",
-    "i": 129.0,
-    "o": 143.7,
-    "dur": 14.7,
-    "frame": "B",
-    "visual": "text/slides",
-    "note": ""
-   },
-   {
     "kind": "pickup",
     "id": "09-green",
     "text": "Every test was green when I wrote 'the river is terrible.'",
@@ -1482,19 +1484,8 @@
     "recorded": [
      "build/clean/09-green.mp4"
     ],
-    "dur": 3.5,
+    "dur": 3.8,
     "partial": false
-   },
-   {
-    "kind": "take",
-    "take": "13-25-53",
-    "src": "raw/original/2026-11-15 13-25-53.mp4",
-    "i": 179.4,
-    "o": 195.6,
-    "dur": 16.2,
-    "frame": "C",
-    "visual": "",
-    "note": "music swells after last line"
    }
   ]
  },
@@ -1502,7 +1493,7 @@
   "section": "10",
   "title": "Ending",
   "bed": "music/victory_take1.mp3",
-  "est_s": 10.4,
+  "est_s": 12.9,
   "segments": [
    {
     "kind": "pickup",
@@ -1514,7 +1505,7 @@
     "recorded": [
      "build/clean/10-ending.mp4"
     ],
-    "dur": 10.4,
+    "dur": 12.9,
     "partial": false,
     "broll": {
      "clips": [
@@ -1526,57 +1517,6 @@
      ],
      "status": "ok"
     }
-   }
-  ]
- },
- {
-  "section": "11",
-  "title": "Post-credits",
-  "bed": null,
-  "est_s": 19.5,
-  "segments": [
-   {
-    "kind": "take",
-    "take": "13-35-40",
-    "src": "raw/original/2026-11-15 13-35-40.mp4",
-    "i": 14.9,
-    "o": 21.3,
-    "dur": 6.4,
-    "frame": "C",
-    "visual": "",
-    "note": ""
-   },
-   {
-    "kind": "take",
-    "take": "13-35-40",
-    "src": "raw/original/2026-11-15 13-35-40.mp4",
-    "i": 27.7,
-    "o": 30.3,
-    "dur": 2.6,
-    "frame": "B",
-    "visual": "black",
-    "note": ""
-   },
-   {
-    "kind": "blooper",
-    "id": "blooper",
-    "text": "Tomorrow/assets/blooper/BigRockCandyMountain_Blooper_8s.mp3",
-    "frame": "B",
-    "est": 8.5,
-    "visual": "black screen; only theme-song audio allowed"
-   },
-   {
-    "kind": "pickup",
-    "id": "11-theme",
-    "text": "And that's why the theme song was cut.",
-    "frame": "C",
-    "est": 3,
-    "visual": "",
-    "recorded": [
-     "build/clean/11-theme.mp4"
-    ],
-    "dur": 2.0,
-    "partial": false
    }
   ]
  }

@@ -66,7 +66,8 @@ def wav_len(p):
 # ---------------------------------------------------------------- timeline
 def build_timeline():
     rng = random.Random(11)
-    dylan = [wav_len(SEG / f"{i:03d}.wav") - 0.25 for i in (1, 2, 3, 4)]
+    names = json.loads((SEG / "names.json").read_text())
+    dylan = [wav_len(SEG / f"{names[str(i)]}.wav") - 0.25 for i in (1, 2, 3, 4)]
     beats, events, voice_at, t = [], [], [], 0.3
     for i, (kind, who, user, resp, tid, line) in enumerate(BEATS):
         b = {"i": i, "t0": round(t, 3), "kind": kind}

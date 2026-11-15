@@ -35,7 +35,7 @@ W, H, FPS = 1920, 1080, 30
 TAIL = 0.25
 FONT = "C:/Windows/Fonts/arial.ttf"
 FONT_B = "C:/Windows/Fonts/arialbd.ttf"
-VERSION = "v1"   # bump to invalidate every cached segment
+VERSION = "v2"   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
     ("gantt", [DEVLOG / "Checkpoint1/gantt/gantt_slide.png"]),
@@ -122,7 +122,7 @@ def build_voice(g, out_mp4, video):
             if video:
                 fc.append(f"[{k}:v]trim=start={s:.3f}:end={e:.3f},setpts=PTS-STARTPTS,fps={FPS}[v{n}]")
             fc.append(f"[{k}:a]atrim=start={s:.3f}:end={e:.3f},asetpts=PTS-STARTPTS,aresample=48000,"
-                      f"aformat=channel_layouts=stereo,afade=t=in:d=0.01,afade=t=out:st={max(d - 0.01, 0):.3f}:d=0.01[a{n}]")
+                      f"aformat=channel_layouts=stereo,afade=t=in:d=0.03,afade=t=out:st={max(d - 0.03, 0):.3f}:d=0.03[a{n}]")
             labels += f"[v{n}][a{n}]" if video else f"[a{n}]"
             n += 1
     fc.append(f"{labels}concat=n={n}:v={1 if video else 0}:a=1" + ("[v][a]" if video else "[a]"))
@@ -195,7 +195,12 @@ def footage_video(clips, D, out, tag, blur=False):
         sd = dur(src)
         start = c["i"] if n <= avail else max(0.0, c["i"] - (n - avail) / 2)
         n = min(n, sd - start - 0.05)
-        vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(c.get("mask_bottom_right"))
+        if c.get("interp"):
+            # drop the repeated frames, then synthesise real in-betweens (motion-compensated) at 30 fps
+            vf = (f"scale=1280:720,mpdecimate,minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,"
+                  f"scale={W}:{H}:flags=lanczos" + mask_filter(c.get("mask_bottom_right")))
+        else:
+            vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(c.get("mask_bottom_right"))
         if blur:
             vf += ",gblur=sigma=28,eq=brightness=-0.14"
         f = TMP / f"{tag}_{k}.mp4"
@@ -284,25 +289,42 @@ def picture(g, D, out, tag, blur=False):
 
 
 # ---------------------------------------------------------------- composite (CAM / PIP)
+def cam_backdrop():
+    """Soft plum radial gradient for CAM shots (cached PNG)."""
+    out = TMP / "cam_backdrop.png"
+    if not out.exists():
+        yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+        r = np.sqrt(((xx - W / 2) / (W * 0.62)) ** 2 + ((yy - H * 0.42) / (H * 0.75)) ** 2)
+        k = np.clip(1 - r, 0, 1)[..., None] ** 1.3
+        c0, c1 = np.array([30, 22, 38], np.float32), np.array([88, 62, 96], np.float32)      # RGB: edge, centre
+        img = (c0 + (c1 - c0) * k).astype(np.uint8)[..., ::-1]
+        cv2.imwrite(str(out), np.ascontiguousarray(img))
+    return out
+
+
 def wall_x_for(g):
     return 820 if g.get("kind") == "take" and g["take"].startswith("12-") else None
 
 
 def composite(mode, person, bg, wav, D, out, wall):
     N = round(D * FPS)
-    cp, cb = cv2.VideoCapture(str(person)), cv2.VideoCapture(str(bg))
+    cp = cv2.VideoCapture(str(person))
+    cb = None if str(bg).endswith(".png") else cv2.VideoCapture(str(bg))
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "bgr24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-frames:v", str(N), "-an", "-c:v", "libx264", "-crf", "17",
                             "-preset", "veryfast", "-pix_fmt", "yuv420p", str(out)], stdin=subprocess.PIPE)
     last = None
     prev_a = None
-    bg_last = np.zeros((H, W, 3), np.uint8)
+    bg_last = cv2.imread(str(bg)) if cb is None else np.zeros((H, W, 3), np.uint8)
     for _ in range(N):
-        okb, bgf = cb.read()
-        if okb:
-            bg_last = bgf
-        else:
+        if cb is None:
             bgf = bg_last
+        else:
+            okb, bgf = cb.read()
+            if okb:
+                bg_last = bgf
+            else:
+                bgf = bg_last
         okp, pf = cp.read()
         if okp:
             fg, a = ks.key(pf, wall)
@@ -315,10 +337,10 @@ def composite(mode, person, bg, wav, D, out, wall):
         fg, a = last
         frame = bgf.astype(np.float32)
         if mode == "C":
-            s = H / fg.shape[0]
+            s = 0.9 * H / fg.shape[0]                     # about 90% of the frame height, sat on the bottom edge
             f = cv2.resize(fg, None, fx=s, fy=s, interpolation=cv2.INTER_AREA)
             m = cv2.resize(a, None, fx=s, fy=s, interpolation=cv2.INTER_AREA)
-            x0, y0 = (W - f.shape[1]) // 2, 0
+            x0, y0 = (W - f.shape[1]) // 2, H - f.shape[0]
         else:
             ph = 400
             pw = int(ks.CROP_W * ph / fg.shape[0])
@@ -334,6 +356,20 @@ def composite(mode, person, bg, wav, D, out, wall):
     return out
 
 
+def migrate_old_names():
+    """One-off: pieces rendered under position numbers (NNN.*) are renamed to their content hash (read from NNN.key)."""
+    for k in sorted(SEG.glob("[0-9][0-9][0-9].key")):
+        key = k.read_text().strip()
+        for ext in ("mp4", "wav"):
+            src, dst = k.with_suffix("." + ext), SEG / f"{key}.{ext}"
+            if src.exists() and not dst.exists():
+                src.replace(dst)
+            elif src.exists():
+                src.unlink()
+        (SEG / f"{key}.key").write_text(key)
+        k.unlink()
+
+
 # ---------------------------------------------------------------- one segment
 def seg_key(job):
     return hashlib.sha1((VERSION + json.dumps(job["g"], sort_keys=True, default=str) + job["section"]
@@ -342,13 +378,13 @@ def seg_key(job):
 
 def render_segment(job):
     idx, g, sec = job["idx"], job["g"], job["section"]
-    tag = f"{idx:03d}"
-    stamp = SEG / f"{tag}.key"
-    key = seg_key(job)
-    if stamp.exists() and stamp.read_text() == key and (SEG / f"{tag}.mp4").exists() and (SEG / f"{tag}.wav").exists():
-        return idx, dur(SEG / f"{tag}.wav")
+    tag = f"{idx:03d}"                      # temp-file tag only
+    key = seg_key(job)                      # the piece's permanent name: a hash of its contents, so reordering re-renders nothing
+    stamp = SEG / f"{key}.key"
+    if stamp.exists() and (SEG / f"{key}.mp4").exists() and (SEG / f"{key}.wav").exists():
+        return idx, dur(SEG / f"{key}.wav")
     TMP.mkdir(parents=True, exist_ok=True)
-    out_v, out_w = SEG / f"{tag}.mp4", SEG / f"{tag}.wav"
+    out_v, out_w = SEG / f"{key}.mp4", SEG / f"{key}.wav"
     if g["kind"] == "blooper":
         D = math.ceil((dur(DEVLOG / g["text"]) + 0.3) * FPS) / FPS
         ff("-i", DEVLOG / g["text"], "-af", f"apad=whole_dur={D:.5f},atrim=0:{D:.5f}", "-ar", 48000, "-ac", 2, "-c:a", "pcm_s16le", out_w)
@@ -362,7 +398,7 @@ def render_segment(job):
     finish_voice(raw, out_w, D)
     if sec == "00":                      # cold open: only the voice is needed, the picture is coldopen.html
         stamp.write_text(key)
-        (SEG / f"{tag}.mp4").write_bytes(b"")
+        out_v.write_bytes(b"")
         return idx, D
     if mode == "B":
         picture(g, D, out_v, tag)
@@ -370,8 +406,7 @@ def render_segment(job):
             add_caption(out_v, "I am older than them thar hills.", tag)
     else:
         if mode == "C":
-            bgseg = job.get("bg") or {"visual": "", "broll": {"clips": [dict(src="../GameFootage/tour-high.mp4", i=0, o=20)]}}
-            bgv = picture(bgseg, D, TMP / f"{tag}_bg.mp4", tag + "bg", blur=True)
+            bgv = cam_backdrop()                       # a calm plum backdrop; blurred game footage behind a face looked like junk
         else:
             bgv = picture(g, D, TMP / f"{tag}_bg.mp4", tag + "bg")
         composite(mode, raw, bgv, out_w, D, out_v, wall_x_for(g))
@@ -456,9 +491,10 @@ def main():
     SEG.mkdir(parents=True, exist_ok=True)
     TMP.mkdir(parents=True, exist_ok=True)
     if fresh:
-        for f in SEG.glob("[0-9][0-9][0-9].*"):
+        for f in SEG.glob("*.key"):
             f.unlink()
     edit = json.loads((HERE / "edit.json").read_text(encoding="utf-8"))
+    migrate_old_names()
 
     # flatten; section 0 = indices 1..4 voices feed the cold open (idx 0)
     jobs, order = [], []
@@ -478,6 +514,8 @@ def main():
         if sec["section"] == "10":     # credits tail: footage under credits music, no voice
             order.append(("credits", "10c", "music/credits_take1.mp3"))
 
+    names = {j["idx"]: seg_key(j) for j in jobs}
+    (SEG / "names.json").write_text(json.dumps(names), encoding="utf-8")   # idx -> piece name, for the other tools
     todo = [j for j in jobs if only is None or j["idx"] in only]
     durs = {}
     with ProcessPoolExecutor(max_workers=4) as ex:
@@ -487,7 +525,7 @@ def main():
     if only is not None:
         return
     for j in jobs:
-        durs.setdefault(j["idx"], dur(SEG / f"{j['idx']:03d}.wav"))
+        durs.setdefault(j["idx"], dur(SEG / f"{names[j['idx']]}.wav"))
 
     # level every voice clip to -16 LUFS (+-0.3), cold-open lines included; the blooper is already matched
     skip = {j["idx"] for j in jobs if j["g"]["kind"] == "blooper"}
@@ -495,14 +533,14 @@ def main():
     for j in jobs:
         if j["idx"] in skip:
             continue
-        w = SEG / f"{j['idx']:03d}.wav"
+        w = SEG / f"{names[j['idx']]}.wav"
         report.append((j["idx"], relevel(w)))
     bad = [(i, round(v, 1)) for i, v in report if v is not None and abs(v + 16) > 0.5]
     print(f"voice levels: {len(report)} clips levelled to -16 LUFS; outside +-0.5 dB: {bad or 'none'}")
 
     # cold open: its voice lines are the first four segments of section "00"
     s0 = [j["idx"] for j in jobs if j["section"] == "00"]
-    cold = build_coldopen([SEG / f"{i:03d}.wav" for i in s0])
+    cold = build_coldopen([SEG / f"{names[i]}.wav" for i in s0])
 
     # credits tail
     cd = 15.0
@@ -521,7 +559,7 @@ def main():
         if i == "credits":
             parts_v.append(SEG / "credits.mp4"); parts_w.append(SEG / "credits.wav"); d = cd
         else:
-            parts_v.append(SEG / f"{i:03d}.mp4"); parts_w.append(SEG / f"{i:03d}.wav"); d = durs[i]
+            parts_v.append(SEG / f"{names[i]}.mp4"); parts_w.append(SEG / f"{names[i]}.wav"); d = durs[i]
         s = sections.setdefault(sec, [t, 0.0, bed])
         s[1] += d
         t += d

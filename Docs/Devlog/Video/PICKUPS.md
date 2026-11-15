@@ -8,9 +8,10 @@ Speak naturally, don't worry about ums: they are cut. Pickup text is a suggestio
 
 | ID | Where | Frame | Say |
 | --- | --- | --- | --- |
+| 01-plain | Opening (right after the cold open's opener) | B-roll over the world | **Four days later, here's what I ended up with: an open-world game with dynamic quests.** Say it plainly, in your own words; this is the core opening hook. About 6-8 seconds. |
 | 02-encores | Hook | B-roll | And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye. |
 | 02-filmshoot | Hook | B-roll | Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes. |
-| 02-usabletake | Hook | CAM | You're not saving the day. You're trying to get a usable take. |
+| 02-usabletake | Hook | CAM | You're not saving the day. You're trying to get a usable take. | (NOTE: I grabbed the camera, turned it to the side to get my greenscreen into the full frame, and said, "Welcome to that life," after this take, which is a fantastic outtake)
 | 03-declared | Setup | B-roll | Some setup and design work existed before the jam, and it's declared. |
 | 03b-warning | Gantt | CAM | A warning before anyone reads it like a leaderboard. |
 | 06-playtest | Playtest (optional) | B-roll | This is where a list of finished tasks starts being a game. A green test can't tell me whether an attack feels funny, or whether walking across the river is any fun. |

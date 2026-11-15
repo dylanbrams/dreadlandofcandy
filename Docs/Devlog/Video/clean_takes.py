@@ -14,7 +14,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 OUT = HERE / "build" / "clean"
 FILLERS = {"um", "uh", "uhm", "umm", "uhh", "er", "erm", "ah", "hmm", "mm", "hm", "eh"}
-GAP, PAD, FADE = 0.35, 0.07, 0.01
+FADE = 0.03
 
 P = "pickups"
 PICKS = {
@@ -49,40 +49,71 @@ PICKS = {
 def norm(w):
     return re.sub(r"[^a-z]", "", w.lower())
 
-def spans(words, ranges, drops):
-    """Words to keep -> list of (start, end) source spans, merged across short gaps."""
-    keep = []
-    for w in words:
-        if norm(w["w"]) in FILLERS:
-            continue
-        if not any(a <= w["s"] and w["e"] <= b for a, b in ranges):
-            continue
-        if any(a <= w["s"] and w["e"] <= b for a, b in drops):
-            continue
-        keep.append(w)
+SENT_END = re.compile(r"[.?!][\"')\]]*$")
+GAP_KEEP = 1.0                 # natural pauses up to this long stay as spoken
+PAD_BEFORE, PAD_AFTER = 0.14, 0.22
+TAIL_END = 0.30                # extra room after the last word, so a trailing syllable is never clipped
+
+
+def select_words(words, a, b, complete=True):
+    """Words that START inside [a - 0.15, b); then run on to the end of the sentence (a word ending . ? !)."""
+    sel = [i for i, w in enumerate(words) if a - 0.15 <= w["s"] < b]
+    if not sel or not complete:
+        return sel
+    last = sel[-1]
+    k = last
+    while k < len(words) and not SENT_END.search(words[k]["w"]):
+        nxt = k + 1
+        if nxt >= len(words) or words[nxt]["s"] - words[k]["e"] > 1.5 or words[nxt]["e"] - b > 9:
+            break
+        k = nxt
+        sel.append(k)
+    return sel
+
+
+def spans(words, ranges, drops, complete=True):
+    """Keep every word in the ranges, remove um/uh (and anything in `drops`), keep natural pauses up to GAP_KEEP,
+    and always finish the sentence. Returns (lo, hi) source spans; cut edges fall in room tone, not on words."""
     out = []
-    for w in keep:
-        s, e = w["s"], w["e"]
-        if out and s - out[-1][1] <= GAP:
-            out[-1][1] = e
+    for a, b in ranges:
+        idx = select_words(words, a, b, complete)
+        kept = [i for i in idx if norm(words[i]["w"]) not in FILLERS
+                and not any(x <= words[i]["s"] and words[i]["e"] <= y for x, y in drops)]
+        if not kept:
+            continue
+        cur = [max(0.0, words[kept[0]]["s"] - PAD_BEFORE), None]
+        for n, i in enumerate(kept):
+            w = words[i]
+            nxt = kept[n + 1] if n + 1 < len(kept) else None
+            if nxt is None:
+                after = words[i + 1]["s"] - 0.02 if i + 1 < len(words) else w["e"] + TAIL_END
+                cur[1] = min(w["e"] + TAIL_END, after)
+                break
+            gap = words[nxt]["s"] - w["e"]
+            hole = any(j not in kept for j in range(i + 1, nxt))        # an um/uh or dropped word sits in the gap
+            if hole or gap > GAP_KEEP:
+                cut_end = min(w["e"] + PAD_AFTER, words[i + 1]["s"] - 0.02)
+                nxt_start = max(words[nxt]["s"] - PAD_BEFORE, words[nxt - 1]["e"] + 0.02)
+                if nxt_start > cut_end + 0.06:                           # a real cut; otherwise just keep it natural
+                    cur[1] = cut_end
+                    out.append(tuple(cur))
+                    cur = [nxt_start, None]
+        out.append(tuple(cur))
+    # merge overlaps between ranges
+    merged = []
+    for lo, hi in sorted(out):
+        if merged and lo <= merged[-1][1] + 0.01:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], hi))
         else:
-            out.append([s, e])
-    # pad, without overlapping a neighbour's pad
-    res = []
-    for i, (s, e) in enumerate(out):
-        lo = max(0.0, s - PAD)
-        hi = e + PAD
-        if res and lo < res[-1][1]:
-            lo = res[-1][1]
-        if i + 1 < len(out) and hi > out[i + 1][0] - PAD:
-            hi = (e + out[i + 1][0]) / 2
-        res.append((lo, hi))
-    return res
+            merged.append((lo, hi))
+    return merged
+
 
 def render(name, folder, take, ranges, drops):
     src = HERE / "raw" / folder / f"2026-11-15 {take}.mp4"
     words = json.loads(src.with_suffix(".words.json").read_text(encoding="utf-8"))["words"]
     sp = spans(words, ranges, drops)
+    assert sp, f'{name}: no words selected'
     parts, ins = [], ""
     for i, (s, e) in enumerate(sp):
         d = e - s

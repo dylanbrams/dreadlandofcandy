@@ -15,14 +15,18 @@ TOASTS = json.loads((HERE.parent / "GameFootage" / "toasts.json").read_text(enco
 BED = "music/{}.mp3".format
 
 S = {}
+ORDER = ["00", "01", "02", "01b", "03", "03b", "04", "04b", "05", "06", "07", "08", "08b", "09", "10"]
 S["00"] = dict(title="Cold open", bed=None, segs=[
-    ("12-16-09", 0.7, 4.1, "B", "coldopen beat 1", "hopeful"),
+    ("raw/pickups/BuildMeAnMMOPlease.wav", 0.0, 4.43, "B", "coldopen beat 1", "hopeful; Dylan re-recorded (Nov 15 evening)"),
     ("12-16-09", 12.4, 15.4, "B", "coldopen beat 2", "more tired"),
     ("12-16-38", 1.9, 6.2, "B", "coldopen beat 4", "confident"),
     ("12-16-38", 10.7, 12.1, "B", "coldopen beat 5 card", ""),
 ])
-S["01"] = dict(title="An unreasonable idea", bed=BED("title-theme_take1"), segs=[
+S["01"] = dict(title="The plain version", bed=BED("title-theme_take1"), segs=[
     ("12-17-35", 0.9, 11.5, "C", "", "opener"),
+    ("PICKUP", "01-plain", "Four days later, here's what I ended up with: an open-world game with dynamic quests.", "B", 8, "world pan over the candy world, then village from above"),
+])
+S["01b"] = dict(title="How we got here", bed=BED("setting-out_take1"), segs=[
     ("12-18-01", 0.9, 7.4, "B", "molar-hills pan + caption 'I am older than them thar hills'", ""),
     ("12-18-01", 9.2, 20.0, "B", "molar-hills pan", ""),
     ("12-18-57", 6.9, 22.3, "B", "slide: MMO list over molar-hills", ""),
@@ -111,19 +115,10 @@ S["09"] = dict(title="Why do this", bed=BED("emotional-revelation_take1"), segs=
     ("13-30-15", 7.7, 27.8, "C", "", "20s on CAM: cut to B-roll every other sentence"),
     ("PICKUP", "09-lookatwhat", "Look at what's in here.", "B", 3, ""),
     ("13-30-15", 132.4, 165.3, "B", "one shot per draft-list item", "check list items and 154"),
-    ("13-30-15", 287.7, 305.8, "C", "", "18s on CAM: break up"),
-    ("13-25-53", 129.0, 143.7, "B", "text/slides", ""),
     ("PICKUP", "09-green", "Every test was green when I wrote 'the river is terrible.'", "C", 4, "river-before on 'the river is terrible'"),
-    ("13-25-53", 179.4, 195.6, "C", "", "music swells after last line"),
 ])
 S["10"] = dict(title="Ending", bed=BED("victory_take1"), segs=[
     ("PICKUP", "10-ending", "That's the Dread Land of Candy. It's on itch.io, link below. It isn't an MMO. But you can lecture a rat, and your hero shouts in a hundred and fifty-four translations, and I'd call that a start.", "B", 20, "title screen, itch page; then credits_take1"),
-])
-S["11"] = dict(title="Post-credits", bed=None, segs=[
-    ("13-35-40", 14.9, 21.3, "C", "", ""),
-    ("13-35-40", 27.7, 30.3, "B", "black", ""),
-    ("BLOOPER", "blooper", "Tomorrow/assets/blooper/BigRockCandyMountain_Blooper_8s.mp3", "B", 8.5, "black screen; only theme-song audio allowed"),
-    ("PICKUP", "11-theme", "And that's why the theme song was cut.", "C", 3, ""),
 ])
 
 # Gameplay B-roll picks from ../GameFootage/INDEX.md (30 fps, 1600x900 re-capture of 18:29): (substring of the
@@ -132,8 +127,8 @@ S["11"] = dict(title="Post-credits", bed=None, segs=[
 GF = "../GameFootage/"
 FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"   # Dylan's own; never scanned for toasts -> mask always
 BROLL = [
-    ("molar-hills pan", [("tour-high.mp4", 45, 65), ("knight-run.mp4", 30, 40)], "ok"),
-    ("over molar-hills", [("tour-high.mp4", 45, 65)], "ok"),
+    ("molar-hills pan", [("tour-high.mp4", 26, 34)], "ok"),
+    ("over molar-hills", [("tour-high.mp4", 27, 33)], "ok"),
     ("attack word cards, then non-english", [("knight-run.mp4", 10, 20), ("village-improvise.mp4", 83, 92)], "ok (Turkish card, village-improvise 1:23)"),
     ("knight placards", [("knight-run.mp4", 10, 20)], "ok (pacify counter 1/3-3/3; no Resolve bar visible)"),
     ("improvise", [("village-improvise.mp4", 120, 130)], "ok"),
@@ -146,10 +141,10 @@ BROLL = [
     ("hud, fenella", [("knight-run.mp4", 60, 64)], "ok"),
     ("early problem", [], "missing"),
     ("rat in game", [("knight-run.mp4", 20, 24), ("hero-close.mp4", 19, 24)], "ok"),
-    ("world pan", [("tour-high.mp4", 0, 20)], "ok"),
+    ("world pan", [("tour-high.mp4", 11, 19)], "ok"),
     ("quest givers", [("village-improvise.mp4", 35, 45), ("village-improvise.mp4", 100, 115)], "ok (Mayor Bonbon, Baker Crumb)"),
     ("village from above", [("village-aerial.mp4", 0, 12), ("tour-high.mp4", 95, 105)], "ok"),
-    ("village", [("tour-low.mp4", 90, 105), ("village-improvise.mp4", 25, 30)], "ok"),
+    ("village", [("tour-low.mp4", 97, 105), ("village-aerial.mp4", 0, 8)], "ok"),
     ("attack effects", [("knight-run.mp4", 10, 20), ("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55), ("mage-run.mp4", 45, 50)], "ok"),
     ("word cards, attacks", [("knight-run.mp4", 75, 80), ("mage-run.mp4", 45, 50)], "ok"),
     ("celery arrows", [("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55)], "ok"),
@@ -177,6 +172,8 @@ def broll_for(visual):
             out = []
             for f, a, b in clips:
                 c = dict(src=GF + f, i=a, o=b)
+                if f not in ("title-idle.mp4", "controls-screen.mp4"):
+                    c["interp"] = True   # gameplay captures repeat 30-70% of their frames: interpolate real motion at render
                 m = toast_mask(f, a, b)
                 if m:
                     c["mask_bottom_right"] = m   # blur bottom-right 11.5% x 9.5% of the frame (see Trailer/build_demo.py mask_toast)
@@ -195,7 +192,8 @@ def clean_clips(pid):
 
 def main():
     out, tot, camrun_flags = [], 0.0, []
-    for sid, sec in S.items():
+    for sid in ORDER:
+        sec = S[sid]
         segs, dur = [], 0.0
         for s in sec["segs"]:
             if s[0] in ("PICKUP", "BLOOPER"):
@@ -209,7 +207,7 @@ def main():
                 segs.append(g)
             else:
                 d = round(s[2] - s[1], 1)
-                segs.append(dict(kind="take", take=s[0], src=f"raw/original/2026-11-15 {s[0]}.mp4", i=s[1], o=s[2], dur=d,
+                segs.append(dict(kind="take", take=s[0], src=(s[0] if s[0].startswith("raw/") else f"raw/original/2026-11-15 {s[0]}.mp4"), i=s[1], o=s[2], dur=d,
                                  frame=s[3], visual=s[4], note=s[5]))
             dur += d
         for g in segs:
