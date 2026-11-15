@@ -59,7 +59,8 @@ def add_wind(mat, height):
                               u.MaterialPositionTransformSource.TRANSFORMPOSSOURCE_WORLD)
     local.set_editor_property('transform_type',
                               u.MaterialPositionTransformSource.TRANSFORMPOSSOURCE_INSTANCE)
-    LIB.connect_material_expressions(world, '', local, 'Input')
+    if not LIB.connect_material_expressions(world, '', local, ''):
+        raise RuntimeError('Could not connect world position to transform')
     clock = LIB.create_material_expression(mat, u.MaterialExpressionTime, -700, 500)
     variation = LIB.create_material_expression(mat, u.MaterialExpressionPerInstanceRandom, -700, 650)
     wind = LIB.create_material_expression(mat, u.MaterialExpressionCustom, -400, 300)

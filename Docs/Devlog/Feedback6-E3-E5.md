@@ -19,3 +19,25 @@ verified before applying. It stops if it cannot inspect existing WPO, or if a
 target material already has WPO. Collision is untouched. Existing striped
 grass is excluded. After the engine is handed back, inspect roots and near/far
 motion and confirm culling; do not claim E5 complete until those checks pass.
+
+## E5 applied and reviewed
+
+Applied a restrained 8 cm X / 3 cm Y world-space sway to the Polish
+peppermint birches, bubblegum blossoms and spun-sugar thicket. The weight is
+derived from per-instance local height, with the lowest 8 cm fixed and a
+quadratic ramp. Seven mesh assets have 60 cm horizontal bounds extensions;
+the source ecology instance scales are at least 0.65 for bushes and 0.8 for
+the affected trees, so those extensions exceed the maximum displacement.
+Collision and the other foliage types are unchanged.
+
+The first runtime render caught a missing Transform Position input and used
+fallback materials. `Scripts/repair_foliage_wind.py` connected it, and the
+generator was corrected to check the connection. Subsequent DenseGrove and
+DenseMeadow review renders report no material compilation failures and show
+normal colours. Grove captures at 30 and 32 seconds show changed canopy and
+bush positions with grounded trunks. These are stills, not a continuous
+motion or performance test; inspect culling during normal play. Review images:
+`ImportSource/Terrain/Polish/Review/polish-DenseGrove.png` and
+`polish-DenseMeadow.png`.
+
+No-build Jam suite after the material changes: 86 passed, 0 failed (Saved/Automation/RunTests.log). No packaging or continuous motion playtest was performed.
