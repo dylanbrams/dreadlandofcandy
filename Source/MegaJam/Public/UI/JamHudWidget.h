@@ -114,6 +114,8 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInstanceDynamic>> SkillIconMaterials;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillDamageAccents;
 	TArray<FString> ShownIconPaths;
+	TArray<bool> SkillWasCooling;
+	TArray<float> SkillReadyAt;
 
 	// The wrap panel (T14): ledger on the left, loot cards and the character sheet on the right.
 	UPROPERTY(Transient) TObjectPtr<UBorder> WrapPanel;

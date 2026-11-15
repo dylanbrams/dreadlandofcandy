@@ -507,3 +507,10 @@ the recommended first bundle is 2-3.5 hours with a shared verification pass.
 
 ## Feedback6 Groups B and C, written, not yet built
 B1-B4, B6: JamGameFeel.cpp (hit-stop via world time dilation with a restore timer, kicks, ultimate slow-mo with the cards delayed to match, Fenella combo line pool; mirrored in Jokes.md), nuisance pop in JamNuisance. C1-C3: JamVillageFeel.cpp (marker pop and spin as throwaway AJamQuestMarker copies, new AJamConfetti, a transient drawn heart on AJamComicCard). Left for a playtest: B5 card sizes, C4 third routes.
+# Nov 15: skill-ready flourish
+
+Implemented Fixes5 idea 15: a brief HUD border pulse when a skill cooldown ends,
+stronger for the ultimate. Editor build and 86 Jam tests passed. The autoplay
+screenshot initially timed out during Unreal startup. A retry captured gameplay
+and the HUD, but caught the skills cooling; the pulse still needs visual review.
+

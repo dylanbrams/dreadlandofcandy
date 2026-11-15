@@ -1,5 +1,12 @@
 # STATUS (rewrite this file; do not prepend)
 
+## Skill-ready flourish (Fixes5 idea 15)
+
+The skill HUD now pulses its border once when a cooldown finishes, with a stronger
+ultimate pulse. Editor build and 86/86 Jam tests passed. Autoplay screenshot
+`skill-ready-review.png` shows the HUD in gameplay, but caught the skills cooling;
+the brief ready pulse still needs a visual timing review. Unreal slot is free.
+
 Keep this page short: current state, what is unverified, what is next. Session history goes in
 `Docs/DEVLOG.md`; the old long-form STATUS is in `Docs/Status/STATUS-archive-to-Nov15.md` (read a
 section there only when a task needs it).

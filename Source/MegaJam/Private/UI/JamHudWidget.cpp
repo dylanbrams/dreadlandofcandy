@@ -967,6 +967,8 @@ void UJamHudWidget::BuildSkillBar()
 		SkillIconMaterials.Add(IconMaterial);
 		SkillIcons.Add(Icon);
 		ShownIconPaths.Add(FString());
+		SkillWasCooling.Add(false);
+		SkillReadyAt.Add(-1000.f);
 		// The cooldown material is the button's background, rather than a tiny
 		// thumbnail above several rows of text. Labels sit over its edges.
 		UOverlaySlot* ArtSlot = Face->AddChildToOverlay(Icon);
@@ -1032,7 +1034,11 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 {
 	const bool bBar = (View.bShootVisible || View.bTravelVisible) && View.Skills.Num() > 0;
 	Show(SkillBar, bBar);
-	if (!bBar) { return; }
+	if (!bBar)
+	{
+		for (int32 i = 0; i < SkillWasCooling.Num(); ++i) { SkillWasCooling[i] = false; SkillReadyAt[i] = -1000.f; }
+		return;
+	}
 	SetTextIfChanged(LevelText, View.EncoreLevel > 0 ? FString::Printf(TEXT("LV %d  ENCORE %d"), View.Level, View.EncoreLevel) : FString::Printf(TEXT("LV %d"), View.Level));
 	XpBar->SetPercent(FMath::Clamp(View.Xp, 0.f, 1.f));
 	Show(XpText, View.XpNeeded > 0);
@@ -1043,7 +1049,7 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 	{
 		const bool bSlot = View.Skills.IsValidIndex(i);
 		Show(SkillTiles[i]->GetParent(), bSlot);
-		if (!bSlot) { continue; }
+		if (!bSlot) { SkillWasCooling[i] = false; SkillReadyAt[i] = -1000.f; continue; }
 		const FJamHudSkill& K = View.Skills[i];
 		SetTextIfChanged(SkillKeys[i], K.Key);
 		SetTextIfChanged(SkillNames[i], K.Name);
@@ -1053,8 +1059,16 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 		FString Pips;
 		for (int32 r = 0; r < K.MaxRank; ++r) { Pips += r < K.Rank ? TEXT("\u25CF") : TEXT("\u25CB"); }
 		SetTextIfChanged(SkillRanks[i], K.bUnlocked ? Pips : FString(TEXT("locked")));
-		const FLinearColor Edge = K.bSpendable ? JamUi::Mint() : JamUi::Silver().CopyWithNewOpacity(K.bUnlocked ? 0.9f : 0.35f);
-		SkillTiles[i]->SetBrush(Rounded(FLinearColor::White, 6.f, Edge, K.bSpendable ? 3.f : 1.f));
+		const bool bCooling = K.bUnlocked && K.CooldownSeconds > 0.f;
+		if (SkillWasCooling[i] && K.bUnlocked && !bCooling) { SkillReadyAt[i] = RealSeconds; }
+		SkillWasCooling[i] = bCooling;
+		const float ReadyAge = RealSeconds - SkillReadyAt[i];
+		const float Pulse = ReadyAge >= 0.f && ReadyAge < 0.6f && K.bUnlocked && !bCooling
+			? FMath::Sin(PI * ReadyAge / 0.6f) : 0.f;
+		const bool bUltimate = JamProgression::ActiveSkills()[i] == EJamSkill::LastJudgment;
+		const FLinearColor BaseEdge = K.bSpendable ? JamUi::Mint() : JamUi::Silver().CopyWithNewOpacity(K.bUnlocked ? 0.9f : 0.35f);
+		const FLinearColor Edge = FMath::Lerp(BaseEdge, JamUi::Mint(), Pulse);
+		SkillTiles[i]->SetBrush(Rounded(FLinearColor::White, 6.f, Edge, (K.bSpendable ? 3.f : 1.f) + Pulse * (bUltimate ? 4.f : 2.f)));
 		SkillTiles[i]->SetBrushColor(PanelDark);
 		SkillTiles[i]->GetParent()->SetRenderOpacity(K.bUnlocked || K.bSpendable ? 1.f : 0.45f);
 		SkillDamageAccents[i]->SetBrushColor(K.DamageColor);
