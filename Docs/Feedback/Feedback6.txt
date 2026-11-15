@@ -1,0 +1,48 @@
+Feedback6 (Nov 15): the doable items from Fixes5, in groups that touch different files.
+Done in Fixes5: #1 comic cards on attacks (now 171, big/small), #2 help overlay + hint timeout, #3 resolve bars, #4 quest routes/visits/twists.
+Left out as too big for the time left: defend-a-camp and film-a-take quest types, physical gamepad playtest of every screen.
+
+Each group lists the files it is expected to touch. Two groups running at once should not share a file; where a group
+must touch a shared file (JamGameMode.cpp), it adds new functions rather than editing existing ones.
+Only one session opens the editor or builds at a time (CLAUDE.md); packaging happens once all assigned groups are in.
+
+
+=== GROUP A: HUD and screen polish ===
+Files: Source/MegaJam/Private/Game/JamHUD.cpp, UI/JamHudWidget.cpp, UI/JamHudView.cpp, UI/JamScreens.cpp, /Game/UI/WBP_* (only if needed)
+A1) Find and remove the "Bubbles" / "Words go here" placeholder popups Dylan saw (not in source text; likely a WBP default
+    text or a HUD bubble shown with empty content; reproduce with -uiscreen=bubbles and in autoplay first).
+A2) The controls tip at the top sits under the objective banner (Saved/Screenshots/WindowsEditor/cardsizes_a.png): stack them or hide the tip while an objective banner shows.
+A3) Sprinkle counter ticks up with a small bounce instead of jumping (sfx per tick optional).
+A4) Rush clock: the hint/clock pulses red under 5 s (the text is already built in JamVillageFlow.cpp UpdateVillageObjective; style only here).
+A5) Gentle hit: brief pink screen-edge vignette.
+
+=== GROUP B: combat feel ===
+Files: Game/JamNuisance.cpp/.h, Game/JamHero.cpp (camera only), Game/JamComicCard.cpp, JamGameMode.cpp (SpawnComicCards and new helper functions only)
+B1) Hit-stop: 40-60 ms freeze (global time dilation ~0.05) on the pacify that finishes a nuisance; ~120 ms on ultimates.
+B2) Camera kick: small shake on a big comic card / pacify, bigger on the ultimate.
+B3) Pacify pop: the nuisance squashes and stretches (1.25 -> 0.85 -> 1.0 over 0.25 s).
+B4) Ultimate opening: 0.3 s slow motion at launch, then the card ring bursts out at full speed.
+B5) Tune comic card sizes after a playtest (small 95-135 may be too small; big 290/320).
+B6) Fenella combo lines: 3+ pacifies within 4 s -> one line from a small pool (lines go in Docs/Design/Jokes.md; text only).
+
+=== GROUP C: village quest feedback ===
+Files: Game/JamVillageFlow.cpp, Game/JamQuestMarker.cpp/.h, Game/JamVillager.cpp (no animation changes: Group E owns villager animation)
+C1) Visit arrival: the quest marker pops (scale up + fade) with a chime.
+C2) Quest turn-in: confetti burst over the giver; their marker spins before hiding.
+C3) Villager level-up: a heart/emote card flies up over them (reuse AJamComicCard with a new texture).
+C4) Play the Gentle and Rush third routes by hand (open_wide / crop_circles for Gentle; actual_nuts, uncredited_extras,
+    brush_diplomacy for Rush) and tune JamVillageQuests::RushSeconds if the clock is too tight or too loose.
+
+=== GROUP D: world FX ===
+Files: new Niagara systems / materials under /Game/FX, foliage materials under /Game/World or /Game/Art (no C++ beyond one spawn call each)
+D1) Sugar dust puffs from the hero's footsteps on paths (denser on the brick road).
+D2) Pacified nuisances leave a crumb or wrapper decal/mesh that fades after ~10 s.
+D3) Wind sway on candy foliage (material world-position offset), if not already present.
+Note: overlaps Group E's house smoke on /Game/FX; give D and E to the same worker, or split FX folders.
+
+=== GROUP E: rigging and animation (ChatGPT's current batch, from Fixes5 #5-7) ===
+Files: skeletal meshes, anim blueprints/sequences, Game/JamNuisance and Game/JamVillager mesh setup
+E1) Rig the rats and other monsters.
+E2) Rig the villagers and give them idle animations.
+E3) Something animated on the houses (chimney smoke or idles).
+Note: E touches JamNuisance (B) and JamVillager (C) mesh setup; coordinate, or run E before B/C pick up those files.
