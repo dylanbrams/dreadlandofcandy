@@ -163,3 +163,17 @@ That's the real limitation of AI here. It's hard to get multiple points of view,
 [Fill in after the remaining work: the final build, the jam submission, what survived, what broke, and how you feel about it. Add the itch.io link when it's live.]
 
 [End credits: `music/credits_take1.mp3`.]
+
+## 11. Post-credits — a warning
+
+*Hard cut from the credits to black. No music bed. Deadpan.*
+
+> Before you go. AI made a lot of this game possible. It also made this possible. I'm sharing it so you understand the dangers.
+
+[Play `assets/blooper/BigRockCandyMountain_Blooper_8s.mp3` over a black screen: 8.5 seconds, the opening line of the cut theme song, your vocals and whistle only, with no guitar. It's already loudness-matched and faded out. Don't extend it.]
+
+> And that's why the theme song was cut.
+
+[Optional extra button, if you want it: "It's almost as bad as my early Bohlen-Pierce experiments."]
+
+*Use only this clip, never `theme-song.mp3` or `BigRockCandyMountain_Repaired.mp3`: those contain the 1928 guitar, which is still under US copyright. The clip is cut from your own stems (`Vocal_Warm_Repaired.wav` + `Whistle_Unchanged.wav` in `D:\AudacityRecordings\BigRockCandyMountain\output\repaired\`); the lyrics and melody are public domain.*
