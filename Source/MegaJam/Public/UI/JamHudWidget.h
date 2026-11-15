@@ -68,6 +68,15 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> HintText;
 
 	UPROPERTY(Transient) TObjectPtr<UBorder> FlashLayer;
+	/** A5: pink screen-edge vignette (three nested edge frames), fades after a hit. */
+	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> VignetteLayers;
+
+	/** A3: a sprinkle counter that ticks up toward its target with a bounce. */
+	struct FTickCount { float Shown = 0.f; int32 Disp = -1; float BounceAt = -10.f; };
+	FTickCount GrossCount, CutCount;
+	float WrapTickLast = -1.f;
+	void TickCounter(UTextBlock* Text, int32 Target, FTickCount& Count, float Dt, float Now);
+	float ApplyNow = 0.f;
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> BubbleLayer;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> Bubbles;
 	UPROPERTY(Transient) TObjectPtr<UBorder> PromptPanel;

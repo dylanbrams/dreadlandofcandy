@@ -46,6 +46,9 @@ private:
 	FString LastHint;
 	double HintChangedAt = -1000.0;
 	double FirstPlayAt = -1.0;
+	/** A5: when the hero last started a stagger (a hit), for the pink edge vignette. */
+	bool bWasStaggered = false;
+	double HitVignetteAt = -1000.0;
 	FString TimedHint(const FString& Raw, bool bCameraTip);
 	void BuildView();
 	/** The music (T18): one cue per moment, a random take, crossfaded, at the "Fenella" volume. */

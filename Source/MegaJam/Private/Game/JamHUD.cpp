@@ -261,6 +261,15 @@ void AJamHUD::BuildView()
 	View = FJamHudView();
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	if (!GS) { return; }
+	{
+		// A5: edge-detect the hero's hit (stagger starts) for the vignette.
+		const AJamHero* HitHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+		const bool bStaggered = GS->GetDignity().IsStaggered() || (HitHero && HitHero->IsStaggered());
+		const double HitNow = GetWorld()->GetRealTimeSeconds();
+		if (bStaggered && !bWasStaggered) { HitVignetteAt = HitNow; }
+		bWasStaggered = bStaggered;
+		View.HitVignette = FMath::Clamp(1.f - float(HitNow - HitVignetteAt) / 0.5f, 0.f, 1.f);
+	}
 	const bool bTravel = GS->bCompass && GS->Phase == EJamFilmPhase::Shooting;
 	if (!bTravel && GS->GetShoot().GetState() == EJamShootState::Idle) { return; }
 	View.bTravelVisible = bTravel;
@@ -312,6 +321,7 @@ void AJamHUD::BuildView()
 		{
 			const AActor* Anchor = B.Anchor.Get();
 			FVector2D OnScreen;
+			if (B.Text.TrimStartAndEnd().IsEmpty()) { continue; } // never show an empty placeholder bubble
 			if (Anchor && B.Until > Now && Now >= B.Born && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset + B.Drift * (Now - B.Born), OnScreen, false))
 			{
 				View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
@@ -392,6 +402,19 @@ void AJamHUD::BuildView()
 		const AJamHero* TravelHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
 		View.bGamepad = TravelHero && TravelHero->IsUsingGamepad();
 		View.Hint = TimedHint(GS->Hint, false);
+		{
+			// A4: the Rush clock is text in the hint (" RUSH: 4 s left!"); under 5 s the hint pulses red.
+			const int32 At = View.Hint.Find(TEXT("RUSH: "));
+			if (At != INDEX_NONE)
+			{
+				const FString Tail = View.Hint.Mid(At + 6);
+				if (Tail.Contains(TEXT(" s left")))
+				{
+					const int32 Left = FCString::Atoi(*Tail);
+					View.bHintDanger = Left > 0 && Left <= 5;
+				}
+			}
+		}
 		if (!GS->VillagePrompt.IsEmpty() && GS->VillagePromptAnchor.IsValid())
 		{
 			FVector2D OnScreen;

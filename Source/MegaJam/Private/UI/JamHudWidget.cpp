@@ -113,6 +113,24 @@ void UJamHudWidget::BuildTree()
 		S->SetZOrder(1);   // tints the world, not the panels
 	}
 
+	// Gentle hit: a pink vignette at the screen edge, three nested frames fading inward.
+	{
+		const float Widths[] = { 150.f, 90.f, 40.f };
+		const float Alphas[] = { 0.10f, 0.18f, 0.30f };
+		for (int32 i = 0; i < 3; ++i)
+		{
+			UBorder* V = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+			V->SetBrush(Rounded(FLinearColor::Transparent, 2.f, FLinearColor(1.f, 0.45f, 0.72f, Alphas[i]), Widths[i]));
+			V->SetBrushColor(FLinearColor::White);
+			V->SetVisibility(ESlateVisibility::Collapsed);
+			UCanvasPanelSlot* S = Root->AddChildToCanvas(V);
+			S->SetAnchors(FAnchors(0.f, 0.f, 1.f, 1.f));
+			S->SetOffsets(FMargin(0.f));
+			S->SetZOrder(2);
+			VignetteLayers.Add(V);
+		}
+	}
+
 	// Bubble layer: fills the screen, under the panels and the card.
 	BubbleLayer = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass());
 	BubbleLayer->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
@@ -228,6 +246,7 @@ void UJamHudWidget::BuildTree()
 		HintText->SetWrapTextAt(1200.f);
 		HintText->SetJustification(ETextJustify::Center);
 		HintPanel->SetContent(HintText);
+		HintPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 		UVerticalBoxSlot* HintSlot = Column->AddChildToVerticalBox(HintPanel);
 		HintSlot->SetHorizontalAlignment(HAlign_Center);
 		HintSlot->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
@@ -414,6 +433,13 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 {
 	if (!Root) { return; }
 	InputView = View;
+	ApplyNow = RealSeconds;
+
+	for (UBorder* V : VignetteLayers)
+	{
+		Show(V, View.HitVignette > 0.f);
+		V->SetRenderOpacity(View.HitVignette * View.HitVignette);
+	}
 
 	Show(FlashLayer, View.FailFlash > 0.f);
 	if (View.FailFlash > 0.f) { FlashLayer->SetRenderOpacity(0.55f * View.FailFlash * View.FailFlash); }
@@ -479,9 +505,16 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		}
 	}
 
-	Show(HintPanel, !View.Hint.IsEmpty());
+	// The direction banner sits where the hint column starts, so the hint waits until it has flown up and settled.
+	Show(HintPanel, !View.Hint.IsEmpty() && !bDirection);
 	HintPanel->SetRenderTranslation(FVector2D(0.f, View.bTravelVisible ? 110.f : 0.f));
 	SetTextIfChanged(HintText, View.Hint);
+	{
+		// A4: a Rush clock under 5 s pulses red.
+		const bool bHintPulse = View.bHintDanger && FMath::Fmod(RealSeconds, 0.5f) < 0.25f;
+		HintText->SetColorAndOpacity(FSlateColor(View.bHintDanger ? (bHintPulse ? FLinearColor(1.f, 0.6f, 0.5f) : RecRed) : Gold));
+		HintPanel->SetRenderScale(FVector2D(View.bHintDanger && bHintPulse ? 1.04f : 1.f));
+	}
 
 	// Interact prompt.
 	Show(PromptPanel, View.bPromptVisible);
@@ -493,10 +526,12 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	}
 
 	// Bubbles.
+	int32 ShownBubbles = 0;
 	for (int32 i = 0; i < View.Bubbles.Num(); ++i)
 	{
 		const FJamHudBubble& Data = View.Bubbles[i];
-		UBorder* B = GetBubble(i);
+		if (Data.Text.TrimStartAndEnd().IsEmpty()) { continue; }
+		UBorder* B = GetBubble(ShownBubbles++);
 		Show(B, true);
 		B->SetBrush(JamUi::Frame(Data.bJagged ? JamUi::Ruby() : JamUi::Amethyst()));
 		B->SetBrushColor(PanelDark);
@@ -504,7 +539,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		SetTextIfChanged(Cast<UTextBlock>(B->GetContent()), Data.Text);
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(B->Slot)) { S->SetPosition(Data.Position); }
 	}
-	for (int32 i = View.Bubbles.Num(); i < Bubbles.Num(); ++i) { Show(Bubbles[i], false); }
+	for (int32 i = ShownBubbles; i < Bubbles.Num(); ++i) { Show(Bubbles[i], false); }
 
 	Show(CaptionPanel, !View.Caption.IsEmpty());
 	SetTextIfChanged(CaptionText, View.Caption);
@@ -796,13 +831,35 @@ void UJamHudWidget::BuildWrapPanel()
 	Show(WrapPanel, false);
 }
 
+void UJamHudWidget::TickCounter(UTextBlock* Text, int32 Target, FTickCount& Count, float Dt, float Now)
+{
+	if (Target <= 0 || Count.Shown > Target) { Count.Shown = float(FMath::Max(Target, 0)); }
+	else { Count.Shown = FMath::Min(float(Target), Count.Shown + FMath::Max(60.f, Target / 0.9f) * Dt); }
+	// Show it in about 18 chunks so each tick is visible, ending exactly on the target.
+	const int32 Chunk = FMath::Max(1, FMath::RoundToInt(Target / 18.f));
+	const int32 Disp = Count.Shown >= Target ? Target : (int32(Count.Shown) / Chunk) * Chunk;
+	if (Disp != Count.Disp) { Count.Disp = Disp; Count.BounceAt = Now; }
+	SetTextIfChanged(Text, Sprinkles(Disp));
+	const float Bounce = FMath::Clamp(1.f - (Now - Count.BounceAt) / 0.14f, 0.f, 1.f);
+	Text->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
+	Text->SetRenderScale(FVector2D(1.f + 0.2f * Bounce * Bounce));
+}
+
 void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
 {
 	Show(WrapPanel, Wrap.bVisible);
-	if (!Wrap.bVisible) { return; }
+	if (!Wrap.bVisible)
+	{
+		GrossCount = FTickCount();
+		CutCount = FTickCount();
+		WrapTickLast = -1.f;
+		return;
+	}
 
 	SetTextIfChanged(WrapScene, FString::Printf(TEXT("\u201C%s\u201D"), *Wrap.SceneTitle));
-	SetTextIfChanged(WrapGross, Sprinkles(Wrap.Gross));
+	const float WrapDt = WrapTickLast < 0.f ? 0.f : FMath::Clamp(ApplyNow - WrapTickLast, 0.f, 0.1f);
+	WrapTickLast = ApplyNow;
+	TickCounter(WrapGross, Wrap.Gross, GrossCount, WrapDt, ApplyNow);
 	for (int32 i = 0; i < LedgerRows.Num(); ++i)
 	{
 		const bool bRow = Wrap.Lines.IsValidIndex(i);
@@ -812,7 +869,7 @@ void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
 		SetTextIfChanged(LedgerNotes[i], Wrap.Lines[i].Note);
 		SetTextIfChanged(LedgerAmounts[i], FString::Printf(TEXT("-%d"), Wrap.Lines[i].Amount));
 	}
-	SetTextIfChanged(WrapCut, Sprinkles(Wrap.HeroCut));
+	TickCounter(WrapCut, Wrap.HeroCut, CutCount, WrapDt, ApplyNow);
 	SetTextIfChanged(WrapFooter, Wrap.Footer);
 
 	for (int32 i = 0; i < LootCards.Num(); ++i)

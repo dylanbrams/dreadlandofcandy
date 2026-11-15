@@ -488,6 +488,9 @@ Then player plans: the backend learned "visit" (signpost, villagers, film sets) 
 contract mismatches turned up (improvise sending three routes; the backend missing two camps, which had quietly broken
 every proposal). Both fixed; backend needs a deploy.
 
+## Feedback6 Group A (HUD polish), unbuilt
+A1 empty-text bubbles skipped (source of "Words go here" not found; needs a screenshot). A2 hint hidden while the direction banner shows. A3 wrap-panel sprinkle counters count up with a bounce. A4 Rush clock under 5 s pulses red (hint). A5 pink edge vignette on hero stagger. Not built or tested yet: engine kept free for rigging work.
+
 ## Nov 15 - Fixes5 #5-7 / Feedback6 Group E (ChatGPT)
 Animated village life: actual Meshy rigs/idle/walk for the approved upright rat, goblin
 and villager; distance-driven nuisance gaits, villager body/prop motion, floating pickups,

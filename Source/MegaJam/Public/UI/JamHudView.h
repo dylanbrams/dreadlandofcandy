@@ -73,6 +73,10 @@ struct MEGAJAM_API FJamHudView
 	float DignityHit = 0.f;
 
 	FString Hint;
+	/** A4: the hint carries a Rush clock under 5 s; it pulses red. */
+	bool bHintDanger = false;
+	/** A5: the hero was just hit, a pink screen-edge vignette, 1 fading to 0. */
+	float HitVignette = 0.f;
 
 	EJamCardKind CardKind = EJamCardKind::None;
 	FString CardTitle;

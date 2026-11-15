@@ -61,7 +61,7 @@ namespace
 
 TArray<FString> JamHud::SampleNames()
 {
-	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("dignity"), TEXT("bubbles"), TEXT("caption") };
+	return { TEXT("hud"), TEXT("slate"), TEXT("action"), TEXT("cut"), TEXT("retake"), TEXT("wrap"), TEXT("meter"), TEXT("dignity"), TEXT("bubbles"), TEXT("caption"), TEXT("hit") };
 }
 
 bool JamHud::Sample(const FString& Name, FJamHudView& V)
@@ -165,6 +165,15 @@ bool JamHud::Sample(const FString& Name, FJamHudView& V)
 		V.Bubbles.Add({ TEXT("Rats! You are vermin, and vermin is a choice."), FVector2D(760.f, 430.f), true });
 		V.Bubbles.Add({ TEXT("Consider your lifestyle!"), FVector2D(1180.f, 520.f), true });
 		V.Bubbles.Add({ TEXT("Ooh, keep that face. That's the poster."), FVector2D(1380.f, 300.f), false });
+	}
+	else if (N == TEXT("hit"))
+	{
+		// Group A: the hit vignette (A5) and a Rush hint under 5 s (A4), held at full strength.
+		Rolling(V);
+		V.Objective = TEXT("Pacify the rats   1/3");
+		V.Hint = TEXT("Rush Job: Step 1/2: Pacify the rats 1/3. RUSH: 3 s left! Follow the candy cane.");
+		V.bHintDanger = true;
+		V.HitVignette = 1.f;
 	}
 	else if (N == TEXT("caption"))
 	{
