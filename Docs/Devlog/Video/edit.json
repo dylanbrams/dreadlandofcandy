@@ -977,7 +977,7 @@
   "section": "03b",
   "title": "Reading the chart",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 73.5,
+  "est_s": 73.4,
   "segments": [
    {
     "kind": "take",
@@ -1021,11 +1021,11 @@
     "take": "13-54-05",
     "src": "raw/original/2026-11-15 13-54-05.mp4",
     "i": 68.2,
-    "o": 78.1,
-    "dur": 9.9,
+    "o": 78.0,
+    "dur": 9.8,
     "frame": "P",
     "visual": "gantt: approximate bars",
-    "note": "[exact] ends after 'estimate'",
+    "note": "[exact] ends after 'estimate' (the next word starts at 78.07)",
     "exact": true
    },
    {

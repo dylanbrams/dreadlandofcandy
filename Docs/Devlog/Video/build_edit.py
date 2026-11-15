@@ -77,7 +77,7 @@ S["03b"] = dict(title="Reading the chart", bed=BED("setting-out_take1"), segs=[
     ("13-54-05", 4.4, 8.4, "P", "gantt full", ""),
     ("13-54-05", 20.2, 36.4, "P", "gantt: colour key, one bar each", "highlights"),
     ("PICKUP", "03b-warning", "A warning before anyone reads it like a leaderboard.", "C", 4, ""),
-    ("13-54-05", 68.2, 78.1, "P", "gantt: approximate bars", "[exact] ends after 'estimate'"),
+    ("13-54-05", 68.2, 78.0, "P", "gantt: approximate bars", "[exact] ends after 'estimate' (the next word starts at 78.07)"),
     ("13-54-05", 118.8, 137.0, "P", "gantt: dim all but Saturday 18:00 overlap", ""),
     ("13-58-12", 2.0, 15.8, "C", "", "'what's not on the chart is me'; 14s: cut to PIP over full gantt after 8s"),
     ("13-58-41", 49.1, 57.2, "P", "gantt full", ""),
