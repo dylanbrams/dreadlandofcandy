@@ -522,3 +522,13 @@ existing world without reimporting the existing mesh variants. Review capture:
 `Saved/Screenshots/WindowsEditor/marshmallow-density.png`; the broad river is
 visible. A helper also rebuilt water and steam assets; left in place per Dylan.
 
+
+## Stock-footage tour (Nov 15)
+
+`AJamTourGameMode` (`?game=/Script/MegaJam.JamTourGameMode`, launched by `Scripts\stock-footage.ps1`): the real open world with
+no HUD and no hero, a camera slowly flying a 95,600 uu closed loop (147 s a lap at 650 uu/s) past every camp, film set and
+biome giver. Headless route and spline in `World/JamTour.*`; `Jam.Tour.*` tests (89/89 green). Seen in four in-engine shots.
+Not packaged or smoke-tested. Esc quits; `-tourspeed/-tourheight/-tourstart/-tourtime`. Silent (music is the HUD's).
+
+## Nov 15: props grounded on the terrain
+`ImportSource/Terrain/Grounding/ground_audit.py` reads the terrain triangles (headless editor traces hit nothing), checks the lowest band of each mesh (trunk/root flare) against the slope, and with `-groundfix` drops floating props to the ground plus 3-6 cm. It moved 3,560 placements in L_Sugarborough (trees 20-100 cm, grass, bushes, mushrooms, backdrop mountains, a few buildings 12-73 cm); a re-audit finds 0. Left as they were on purpose: snowflakes, river marshmallows, perched bluebirds, the bridge, the cave mouth and props on it. List of moves: `ground_fix_moved.json`.
