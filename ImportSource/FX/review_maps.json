@@ -64,7 +64,7 @@
     "layers": [
       "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1"
     ],
-    "duration_cap": 2.3,
+    "duration_cap": 4.2,
     "camera": {
       "distance_cm": 1640,
       "pitch": 50,

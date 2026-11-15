@@ -1104,7 +1104,7 @@
     "layers": [
       "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1"
     ],
-    "duration_cap": 2.3,
+    "duration_cap": 4.2,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
@@ -1151,7 +1151,7 @@
     "asset": "/Game/FX/Attacks/Systems/NS_B02_RollingPinCyclone_Layer1.NS_B02_RollingPinCyclone_Layer1",
     "emitters": 1,
     "layers": [],
-    "duration_cap": 2.3,
+    "duration_cap": 4.2,
     "authoring_diagnostics_complete": true,
     "authoring_error": "",
     "authoring_diagnostics": {
