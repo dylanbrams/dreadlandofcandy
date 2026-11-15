@@ -1,4 +1,4 @@
-"""Fixes5 #1: import the multilingual comic action cards (12 + 24 angular) as UI textures.
+"""Fixes5 #1: import the multilingual comic action cards (12 + 24 angular) as world effect textures (with mips).
 Run through Unreal's Python commandlet:
   UnrealEditor-Cmd.exe <uproject> -run=pythonscript -script=Scripts/import_comic_cards.py -unattended -nullrhi
 """
@@ -23,10 +23,12 @@ for source in sources:
     tools.import_asset_tasks([task])
     texture = unreal.load_asset(f"{destination}/{name}")
     assert isinstance(texture, unreal.Texture2D), task.get_editor_property("imported_object_paths")
-    texture.set_editor_property("lod_group", unreal.TextureGroup.TEXTUREGROUP_UI)
-    texture.set_editor_property("mip_gen_settings", unreal.TextureMipGenSettings.TMGS_NO_MIPMAPS)
+    texture.set_editor_property("lod_group", unreal.TextureGroup.TEXTUREGROUP_EFFECTS)
+    texture.set_editor_property("mip_gen_settings", unreal.TextureMipGenSettings.TMGS_FROM_TEXTURE_GROUP)
     texture.set_editor_property("max_texture_size", 512)
     texture.set_editor_property("srgb", True)
+    texture.set_editor_property("address_x", unreal.TextureAddress.TA_CLAMP)
+    texture.set_editor_property("address_y", unreal.TextureAddress.TA_CLAMP)
     unreal.EditorAssetLibrary.save_loaded_asset(texture)
     unreal.log("ComicCards: imported " + texture.get_path_name())
 unreal.log(f"ComicCards: SUCCESS {len(sources)} textures")

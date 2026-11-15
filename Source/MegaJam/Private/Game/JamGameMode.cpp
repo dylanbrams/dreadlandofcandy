@@ -1,4 +1,6 @@
 #include "Game/JamGameMode.h"
+#include "Game/JamComicCard.h"
+#include "Engine/Texture2D.h"
 #include "Game/JamNoteClient.h"
 #include "Game/JamLook.h"
 #include "Film/JamNoteClamp.h"
@@ -1058,11 +1060,11 @@ void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
 	static const TCHAR* Vitamins[] = { TEXT("Vitamins_en"), TEXT("Vitamins_de"), TEXT("Vitamins_fr"), TEXT("Vitamins_pt") };
 	static const TCHAR* Variants[] = { TEXT(""), TEXT("_Angular1"), TEXT("_Angular2") };
 	const TCHAR* const* Pool = CastIndex == 0 ? Manners : (CastIndex == 3 ? Vitamins : Brush);
-	const float Now = GetWorld()->GetTimeSeconds();
 	const float BaseYaw = InHero->GetActorRotation().Yaw;
 	const int32 First = FMath::RandRange(0, 3);
 	const int32 FirstVariant = FMath::RandRange(0, 2);
-	GS->Bubbles.RemoveAll([Now](const AJamGameState::FWorldBubble& B) { return B.Until <= Now || !B.Anchor.IsValid(); });
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	for (int32 i = 0; i < Count; ++i)
 	{
 		// Languages cycle so no two neighbours match; the art variant steps once per full cycle.
@@ -1070,16 +1072,14 @@ void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
 		const float Yaw = bUltimate ? BaseYaw + 360.f * i / Count + FMath::FRandRange(-12.f, 12.f)
 			: BaseYaw + (i - (Count - 1) * 0.5f) * (Count > 3 ? 26.f : 34.f) + FMath::FRandRange(-8.f, 8.f);
 		const FVector Dir = FRotator(0.f, Yaw, 0.f).Vector();
-		AJamGameState::FWorldBubble B;
-		B.LineId = TEXT("Placard");   // survives the next shout's bubble clear, like the knight's placards
-		B.Card = FString::Printf(TEXT("/Game/Art/UI/ComicCards/T_Comic_%s.T_Comic_%s"), *Name, *Name);
-		B.Anchor = InHero;
-		B.Offset = Dir * 90.f + FVector(0.f, 0.f, 130.f + 40.f * (i % 2));
-		B.Drift = Dir * FMath::FRandRange(320.f, 460.f) + FVector(0.f, 0.f, FMath::FRandRange(20.f, 90.f));
-		B.Born = Now + 0.05f * i;
-		B.Until = B.Born + 1.25f;
-		B.Spin = FMath::FRandRange(-25.f, 25.f);
-		GS->Bubbles.Add(B);
+		UTexture2D* Texture = LoadObject<UTexture2D>(nullptr, *FString::Printf(TEXT("/Game/Art/UI/ComicCards/T_Comic_%s.T_Comic_%s"), *Name, *Name), nullptr, LOAD_NoWarn | LOAD_Quiet);
+		if (!Texture) { continue; }
+		const FVector From = InHero->GetActorLocation() + Dir * 80.f + FVector(0.f, 0.f, 90.f + 35.f * (i % 2));
+		AJamComicCard* Card = GetWorld()->SpawnActor<AJamComicCard>(AJamComicCard::StaticClass(), From, FRotator::ZeroRotator, Params);
+		if (!Card) { continue; }
+		// Velocity is the total travel (the flight eases out): roughly 3-5 m out, a little up.
+		const FVector Travel = Dir * FMath::FRandRange(300.f, 480.f) + FVector(0.f, 0.f, FMath::FRandRange(60.f, 160.f));
+		Card->Launch(Texture, Travel * 2.2f, 0.05f * i, 1.3f, bUltimate ? 260.f : 220.f);
 	}
 }
 

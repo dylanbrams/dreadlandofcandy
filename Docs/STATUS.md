@@ -7,10 +7,12 @@ section there only when a task needs it).
 ## Fixes5 (Nov 15, `Docs/Feedback/Fixes5.txt`)
 
 Done, editor build + Jam tests green, seen in autoplay screenshots (`Saved/Screenshots/WindowsEditor/fixes5*_*.png`):
-- #1 comic cards: all 36 multilingual PNGs imported to `/Game/Art/UI/ComicCards` (`Scripts/import_comic_cards.py`,
-  512 px UI textures, 2.9 MB, under the cooked `/Game/Art`). Every attack throws a burst as HUD images riding the
-  world-bubble path (`AJamGameMode::SpawnComicCards`): basic 3, signature 5, ultimate an 8-card ring; languages cycle
-  so neighbours differ, art variant steps per cycle. Knight MANNERS, barbarian VITAMINS, mage/archer BRUSH.
+- #1 comic cards fly in the game world: all 36 multilingual PNGs imported to `/Game/Art/UI/ComicCards`
+  (`Scripts/import_comic_cards.py`, 512 px effect textures with mips), material `/Game/FX/M_ComicCard`
+  (`Scripts/make_comic_card_material.py`: unlit translucent after DOF, alpha x Fade). `AJamComicCard` is one camera-facing
+  quad: readable for 0.25 s, then a 3D tumble while it flies 3-5 m out, pops in, fades. `AJamGameMode::SpawnComicCards`:
+  basic 3, signature 5, ultimate an 8-card ring; languages cycle so neighbours differ. Knight MANNERS, barbarian
+  VITAMINS, mage/archer BRUSH. Seen at 1080p (`cards3d_c21.png`).
 - #2 help: H / F1 / gamepad View opens Controls over a pause, Back resumes. Hints hide 12 s after they last changed;
   the camera tip shows only for the first 40 s and ends "H: all controls".
 - #3 Resolve bars over every unpacified nuisance within 2600 uu (`AJamHUD::DrawResolveBars`, canvas).
@@ -18,8 +20,6 @@ Not packaged; packaged cook of the cards unverified (smoke test).
 
 **Split off for Dylan (after a clear):**
 - #4 more quest types and more direction options: design + content (quest log step kinds, Jokes.md lines, autoplay).
-- Optional: Niagara-world version of the comic cards (card material + `CARDS` recipe in
-  `Scripts/build_niagara_attacks.py`), only if the HUD version reads wrong in play.
 - Seen in a 70 s autoplay shot: camera inside a giant teal candy prop on the way to The Almond Affair.
 
 ## Fixes4 #1-8 (Nov 15, `Docs/Feedback/Fixes4.txt`)

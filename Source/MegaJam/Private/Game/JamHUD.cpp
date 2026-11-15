@@ -314,18 +314,7 @@ void AJamHUD::BuildView()
 			FVector2D OnScreen;
 			if (Anchor && B.Until > Now && Now >= B.Born && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset + B.Drift * (Now - B.Born), OnScreen, false))
 			{
-				if (B.Card.IsEmpty()) { View.Bubbles.Add({ B.Text, OnScreen, B.bJagged }); continue; }
-				// Cards pop in (overshoot), tumble a little, and fade over their last third.
-				const float Age = Now - B.Born;
-				const float Life = FMath::Max(0.1f, B.Until - B.Born);
-				const float Pop = Age < 0.12f ? FMath::Lerp(0.3f, 1.15f, Age / 0.12f) : FMath::Lerp(1.15f, 1.f, FMath::Clamp((Age - 0.12f) / 0.1f, 0.f, 1.f));
-				FJamHudCard Card;
-				Card.Texture = B.Card;
-				Card.Position = OnScreen;
-				Card.Size = 215.f * Pop;
-				Card.Angle = B.Spin * Age;
-				Card.Opacity = FMath::Clamp((Life - Age) / (Life * 0.35f), 0.f, 1.f);
-				View.Cards.Add(Card);
+				View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
 			}
 		}
 		View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);

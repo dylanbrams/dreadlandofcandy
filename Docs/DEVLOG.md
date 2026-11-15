@@ -478,3 +478,4 @@ Follow camera now swings up over terrain, buildings and tree canopies instead of
 
 ## Nov 15 - Fixes5 #1-3 (Claude)
 Multilingual comic action cards imported (36) and thrown as bursts on every attack via the HUD bubble path, after Dylan asked for several per attack rather than one. Help key (H/F1/View) opens Controls; hints time out at 12 s, camera tip at 40 s. Resolve bars over nuisances. A member named `Cards` shadowed a local in the HUD widget (C4458 as error); renamed `ComicCards`. #4 (quest types) split off.
+Follow-up: Dylan wanted the cards in the game world, not the HUD. Rebuilt as `AJamComicCard` actors (camera-facing quad, own material, 3D tumble after a readable start). Plane UVs run along X: face with MakeFromZX(ToCam, CamRight). First pass was greyed by DOF/exposure (fixed: after-DOF translucency, 1.8x emissive) and too small at 1.1 m (now 2.2 m).
