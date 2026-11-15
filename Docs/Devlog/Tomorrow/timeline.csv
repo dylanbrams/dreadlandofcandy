@@ -1,0 +1,10 @@
+date_time,precision,event,evidence,qualification
+2026-11-14 09:44,recorded,Blocker fixes batch,Docs/DEVLOG.md GAME batch 1,Historical checkpoint
+2026-11-14 10:00,recorded,Controls and XP batch,Docs/DEVLOG.md GAME batch 2,Historical checkpoint
+2026-11-14 14:45,recorded,Quest givers restored as core,Docs/DEVLOG.md Fixes1,Plan changed by Dylan
+2026-11-14,date only,P1 packaged smoke,Docs/DEVLOG.md P1 package,No upload recorded in entry
+2026-11-14,date only,Fixes2 and village verification,Docs/DEVLOG.md Fixes2 entries,Manual checks remained
+2026-11-14,date only,Riverlands redesign,Docs/DEVLOG.md Sugarborough and Riverlands redesign,Manual crossing and cooked delivery unverified at checkpoint
+2026-11-15 00:45,commit,New candy foliage mix,git 690505d,Commit time is not a work duration
+2026-11-15 00:58,commit,Class sound and afterglow,git d1b054f,Not heard live at checkpoint
+2026-11-15 01:25,commit,Class attack effects,git 0cd724b,Not judged in motion at checkpoint
