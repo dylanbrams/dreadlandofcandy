@@ -119,6 +119,10 @@ private:
 	FJamVillageQuestLog VillageQuests;
 	bool bRecruitmentPending = false;
 	bool bVillageExploration = false;
+	/** Fixes3 #16: 0 = errands are safe; 1+ = post-completion errands where nuisances hit back, harder each level. */
+	int32 VillageDanger = 0;
+	bool VillageCombat() const;
+	void VillageDefeat();
 	UPROPERTY(Transient) TObjectPtr<class AJamQuestMarker> QuestMarker;
 	UPROPERTY(Transient) TArray<TObjectPtr<class AJamVillager>> Villagers;
 	UPROPERTY(Transient) TArray<TObjectPtr<class AJamQuestMarker>> VillagerMarkers;

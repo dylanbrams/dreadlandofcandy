@@ -14,6 +14,7 @@
 #include "World/JamWorld.h"
 #include "Components/CapsuleComponent.h"
 #include "Engine/World.h"
+#include "TimerManager.h"
 #include "MegaJam.h"
 #include "Misc/CommandLine.h"
 
@@ -341,7 +342,20 @@ void AJamGameMode::StartVillageStep()
 		Stage.Count = Step.Count;
 		SpawnTargets(Stage, Step.Count, false);
 		// These are noisy constituents. Pacifying them is the errand; no film take or crop timer runs.
-		for (AJamNuisance* N : Nuisances) { if (N) { N->Attack.bAttacks = false; } }
+		// Fixes3 #16: first errands are safe. Repeat errands (relationship level 2+) fight back, harder each level,
+		// and can knock the hero flat (VillageDefeat restarts the step).
+		VillageDanger = FMath::Max(0, VillageQuests.LevelForQuest(Active) - 1);
+		for (AJamNuisance* N : Nuisances)
+		{
+			if (!N) { continue; }
+			if (VillageDanger <= 0) { N->Attack.bAttacks = false; continue; }
+			N->Attack = JamAttack::For(EJamTargetKind::Goblin, false);
+			N->Attack.bAttacks = true;
+			N->Attack.Damage *= 1.f + 0.5f * (VillageDanger - 1);
+			if (bAutoplay) { N->Attack.Damage *= 0.25f; }   // the unattended run must still finish
+			N->Attack.Cooldown = FMath::Max(1.2f, N->Attack.Cooldown - 0.4f * (VillageDanger - 1));
+		}
+		if (AJamGameState* State = GetJamGameState()) { State->Dignity.Reset(); }
 	}
 	UpdateVillageObjective();
 	UE_LOG(LogJam, Log, TEXT("JamQuest: step %d/%d %s"), SpawnedVillageStep + 1, VillageQuests.StepCount(Active), *JamVillageQuests::StepText(Step));
@@ -388,10 +402,34 @@ void AJamGameMode::UpdateVillageObjective()
 	}
 }
 
+bool AJamGameMode::VillageCombat() const
+{
+	return bVillageExploration && VillageDanger > 0 && VillageQuests.Active() != INDEX_NONE;
+}
+
+void AJamGameMode::VillageDefeat()
+{
+	// Knocked flat on a dangerous errand: the step starts over with full Dignity (deferred, since a nuisance's
+	// own tick reports the hit and the restart destroys it).
+	Direct(TEXT("Knocked flat! Dignity: none. The errand starts over. Fenella is pretending she didn't film that."));
+	JamSfx::Play(this, TEXT("Cut_Horn"));
+	GetWorldTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(this, [this]()
+	{
+		if (AJamGameState* State = GetJamGameState()) { State->Dignity.Reset(); }
+		if (VillageQuests.Active() != INDEX_NONE) { StartVillageStep(); }
+	}));
+}
+
 void AJamGameMode::TickVillage(float DeltaSeconds)
 {
 	AJamGameState* GS = GetJamGameState();
 	if (!GS || GS->Phase != EJamFilmPhase::Shooting || !Hero.IsValid()) { return; }
+	if (bVillageExploration)
+	{
+		const bool bFight = VillageCombat();
+		if (bFight) { GS->Dignity.Tick(DeltaSeconds); }
+		GS->bDignityVisible = bFight;
+	}
 	if (bRecruitmentPending || bVillageExploration) { TickOpenWalk(); }
 	if (bVillageExploration && VillageQuests.Active() != INDEX_NONE && VillageQuests.State(VillageQuests.Active()) == EJamVillageQuestState::Active)
 	{

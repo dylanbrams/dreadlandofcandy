@@ -1182,7 +1182,7 @@ bool AJamGameMode::RequestCharge(AJamNuisance* Nuisance, float HeroDistance)
 {
 	const AJamGameState* GS = GetJamGameState();
 	if (!Nuisance || !GS || !Hero.IsValid() || bRunOver) { return false; }
-	if (GS->GetShoot().GetState() != EJamShootState::Rolling || !GS->GetDignity().CanBeHit()) { return false; }
+	if ((GS->GetShoot().GetState() != EJamShootState::Rolling && !VillageCombat()) || !GS->GetDignity().CanBeHit()) { return false; }
 	int32 Charging = 0;
 	for (const AJamNuisance* N : Nuisances) { Charging += (N && N->IsCharging()) ? 1 : 0; }
 	return JamAttack::MayCharge(Nuisance->Attack, !Nuisance->IsPacified() && !Nuisance->IsTreated(), 0.f, HeroDistance, Charging);
@@ -1192,13 +1192,15 @@ bool AJamGameMode::HandleNuisanceHit(AJamNuisance* Nuisance)
 {
 	AJamGameState* GS = GetJamGameState();
 	AJamHero* H = Hero.Get();
-	if (!Nuisance || !GS || !H || GS->Shoot.GetState() != EJamShootState::Rolling || !GS->Dignity.CanBeHit()) { return false; }
+	const bool bVillage = VillageCombat();
+	if (!Nuisance || !GS || !H || (GS->Shoot.GetState() != EJamShootState::Rolling && !bVillage) || !GS->Dignity.CanBeHit()) { return false; }
 	const FJamAttackTuning& A = Nuisance->Attack;
 	const bool bBroke = GS->Dignity.Hit(A.Damage, A.StaggerSeconds);
 	H->TakeHit(Nuisance->GetActorLocation(), A.Knockback, A.StaggerSeconds);
 	++HitsTaken;
 	JamSfx::Play(this, TEXT("Hero_Hit"));
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: %s hit the hero, dignity %.0f"), *Nuisance->GetName(), GS->Dignity.GetValue());
+	if (bBroke && bVillage) { VillageDefeat(); return true; }
 	if (bBroke)
 	{
 		++DignityFails;

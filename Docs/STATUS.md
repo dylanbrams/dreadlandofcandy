@@ -28,11 +28,17 @@ Fenella skips lines naming the wrong creature for the current stage (`FJamNagSch
 19 givers' candy canes raised · 20 big-icon skill HUD · 21 village buildings/peppermint tree · 22 weapon offsets tightened ·
 23/24 trunk collision Pawn-only, camera ignores trunks · 25 attack bubbles.
 
-Open: 3 classes share hit shapes (GAS) · 10b random quest count per villager · 12 archer voice recordings themselves
-(mapping is right; may need regenerating) · 13 cobblestone path · 16 escalating/losable post-quests (no village defeat
-path) · 17 barbarian rig + its Niagara · 18 mage staff not following animation.
+Done after the last package (not in the ZIP yet): 3 per-class hit shapes (`Gas/JamClassShape.h`, ground flash matches) ·
+16 repeat errands (relationship level 2+) fight back, harder per level, Dignity meter shows, defeat restarts the step
+(`VillageDanger`, `VillageDefeat`); autoplay damage x0.25. Village autoplay (420 s cap) turned in 8/10 with 1 hit taken;
+not run to completion. 18 staff already attaches to hand_r on every mage cast (log), likely fixed by 3c6fdc0.
+
+Open: 10b random quest count per villager · 12 archer voice recordings themselves
+(mapping is right; may need regenerating) · 13 cobblestone path · 17 barbarian rig.
 
 ## Next
+
+0. Repackage (package -> smoke -> zip) to ship #3 and #16; run village autoplay to completion (`-autoplay -autovillage`).
 
 1. Dylan playtests the fresh package: attack FX feel (flour density, arrow orientation, peppermint giants), bubbles,
    bugs munching, villager props, WASD after quest accept, walk speed.
