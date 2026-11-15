@@ -45,6 +45,12 @@ def tick(delta):
                     component.set_visibility(False)
                     component.deactivate()
             unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).set_level_viewport_camera_info(camera.get_actor_location(), camera.get_actor_rotation())
+            # Prime the mint mesh/material before Niagara's paused first-frame capture.
+            # A newly imported mesh otherwise appears black while its render resources initialize.
+            if "NS_M02_PeppermintPopfall" in entry["system"]:
+                warm = actors.spawn_actor_from_class(unreal.StaticMeshActor, unreal.Vector(0, 0, -10000))
+                warm.static_mesh_component.set_static_mesh(unreal.load_asset("/Game/FX/Attacks/Meshes/SM_FX_Peppermint"))
+                state["warm_actor"] = warm
             state.update(phase="wait", camera=camera, ready=time.monotonic() + 3, deadline=time.monotonic() + 180)
         elif state["phase"] == "wait" and time.monotonic() >= state["ready"]:
             state["phase"] = "preparing_capture"
@@ -94,6 +100,8 @@ def tick(delta):
             results.append({"attack": attack, "screenshot": filename, "map": entry["map"], "particles": counts,
                             "attributes": attributes})
         elif state["phase"] == "capture" and state["task"].is_task_done():
+            if state.get("warm_actor"):
+                actors.destroy_actor(state.pop("warm_actor"))
             for component in state["components"]:
                 owner = component.get_owner()
                 if not actors.destroy_actor(owner) or unreal.SystemLibrary.is_valid(component):

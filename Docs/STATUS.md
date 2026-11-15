@@ -1,5 +1,11 @@
 # STATUS (rewrite this file; do not prepend)
 
+## Black Sugar box consistency and peppermint work (in progress)
+
+HUD reading panels and the menu caption now use the shared Black Sugar candy border; interaction prompt padding was increased after screenshot review. Editor build and 89 Jam tests pass. Six-screen review captured at `Saved/Screenshots/WindowsEditor/black-sugar-*-1280.png`; the final padding adjustment has not been recaptured. Full 25-screen sweep and gamepad review remain outstanding.
+
+Mage ultimate: Meshy C reshaped to a rounded cylinder (15,000 triangles), imported; both peppermint layers scaled to half size, with tumble and bounce authored. FX pipeline validates 40 systems / 160 VM programs. The isolated review now renders the candy red and white after warming the mesh material resources; `Scripts/render_fx_review.py` primes them for this capture. Bounce and tumbling still need a motion review, and gameplay startup/material readiness remains unverified. The working tree includes broad FX pipeline-generated changes and unrelated user work; do not blindly commit it. No package or upload.
+
 ## River marshmallow density
 
 The river now has 52 drifting marshmallows (formerly 13), at two-thirds the

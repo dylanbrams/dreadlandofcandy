@@ -139,7 +139,11 @@ def emitter(system, name, recipe, duration):
         # delay/spread/height: a late wave of big ones drops after the small ones (Fixes3 #2).
         fall = f"max(0.0, {age}-{recipe.get('delay', 0.0)}-frac(Particles.FXIndex*0.618)*{recipe.get('spread', 0.55)})"
         reach = f"User.Radius*{recipe.get('reach', 1.0)}"
-        pos = f"float3(cos({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),sin({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),max(0.0,{recipe.get('height', 650.0)}-{fall}*{fall}*1100.0))"
+        height = recipe.get("height", 650.0)
+        landing = f"max(0.0,{fall}-sqrt({height}/1100.0))"
+        bounce = f"(max(0.0,1.0-{landing}/0.42)*abs(sin({landing}*12.0))*{recipe.get('bounce', 0.0)})"
+        ground = f"(17.5*{scale})" if recipe.get("tumble") else "0.0"
+        pos = f"float3(cos({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),sin({phase})*{reach}*sqrt(frac(Particles.FXIndex*0.754+0.1)),{ground}+max(0.0,{height}-{fall}*{fall}*1100.0)+{bounce})"
     elif kind == "arrows":
         # Fixes3 #2, archer identity: celery arrows loosed from the bow, arcing into the area ahead, nose first.
         u = f"clamp(({age}-frac(Particles.FXIndex*0.618)*{recipe.get('spread', 0.6)})/{recipe.get('flight', 0.7)},0.0,1.0)"
@@ -184,7 +188,11 @@ def emitter(system, name, recipe, duration):
     if kind == "orbit":
         updates.append(("Particles.MeshOrientation", "quat", f"float4(0.0,0.0,sin(({angle})*0.5),cos(({angle})*0.5))"))
     elif kind == "rain":
-        updates.append(("Particles.MeshOrientation", "quat", "float4(0.0,0.70710678,0.0,0.70710678)"))
+        if recipe.get("tumble"):
+            spin = f"({phase}+{age}*(2.0+frac(Particles.FXIndex*0.37)*3.0))"
+            updates.append(("Particles.MeshOrientation", "quat", f"float4(cos({phase})*0.6*sin({spin}*0.5),sin({phase})*0.6*sin({spin}*0.5),0.8*sin({spin}*0.5),cos({spin}*0.5))"))
+        else:
+            updates.append(("Particles.MeshOrientation", "quat", "float4(0.0,0.70710678,0.0,0.70710678)"))
     elif kind == "arrows":
         updates.append(("Particles.MeshOrientation", "quat", f"float4(0.0,sin(({pitch})*0.5),0.0,cos(({pitch})*0.5))"))
     assign(system, name, "ParticleUpdateScript", updates)
@@ -196,6 +204,8 @@ def emitter(system, name, recipe, duration):
     r = ref(system, name, renderer=renderer.get_editor_property("RendererIndex"))
     if mesh:
         props = {"Meshes": [{"Mesh": refpath(f"{BASE}/Meshes/{mesh}.{mesh}")}], "bCastShadows": False}
+        if mesh == "SM_FX_Peppermint":
+            props.update({"bOverrideMaterials": True, "OverrideMaterials": [{"ExplicitMat": refpath(f"{BASE}/Materials/M_FX_Peppermint.M_FX_Peppermint")}]})
     else:
         material = recipe.get("material", "M_FX_Particle")
         props = {"Material": refpath(f"{BASE}/Materials/{material}.{material}"), "bCastShadows": False,
@@ -212,7 +222,7 @@ RING = {"kind": "ring", "mesh": "SM_FX_Ring", "count": "1"}
 CONE = {"kind": "cone", "size": 70}
 CARDS = {"kind": "cone", "mesh": "SM_FX_Card", "cap": 6, "scale": 1.2}
 SUGAR = {"kind": "volley", "mesh": "SM_FX_SugarCube", "cap": 6, "scale": 1.5}
-CANDY = {"kind": "rain", "mesh": "SM_FX_Peppermint", "cap": 12, "scale": 2.4}
+CANDY = {"kind": "rain", "mesh": "SM_FX_Peppermint", "cap": 12, "scale": 1.2, "bounce": 38.0, "tumble": True}
 CELERY = {"kind": "rain", "mesh": "SM_FX_Celery", "cap": 16, "scale": 1.2}
 PINS = {"kind": "orbit", "mesh": "SM_FX_Pin", "cap": 20, "color": "float3(0.65,0.32,0.12)"}
 FLOUR = {"kind": "dust", "size": 100, "cap": 32, "density": 4, "color": "float3(1.0,0.92,0.78)"}
@@ -224,7 +234,7 @@ IMPACT = {"kind": "impact", "size": 35}
 
 # Fixes3 #2 signature layers: lots more of each class's own props.
 CANDY_SHOWER = dict(CANDY, cap=220, spread=1.0, reach=1.15)
-CANDY_BIG = dict(CANDY, cap=5, scale=9.0, delay=0.9, spread=0.35, height=1500.0, reach=0.6)
+CANDY_BIG = dict(CANDY, cap=5, scale=4.5, delay=0.9, spread=0.35, height=1500.0, reach=0.6)
 ARROW_VOLLEY = {"kind": "arrows", "mesh": "SM_FX_Celery", "cap": 48, "scale": 1.1, "spread": 0.7, "flight": 0.75, "arc": 420.0}
 CELERY_SPRAY = dict(SUGAR, mesh="SM_FX_Celery", cap=14, scale=1.8, fan=160.0, arc=220.0)
 SUGAR_SPRAY = dict(SUGAR, cap=36, scale=1.6, fan=140.0, arc=180.0)

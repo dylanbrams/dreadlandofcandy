@@ -126,7 +126,8 @@ def main():
         surface = mats[key]
         if p.stem == "SM_FX_Arc" and ASSETS.does_asset_exist(f"{DEST}/Materials/MI_FX_ArcReadable"):
             surface = unreal.load_asset(f"{DEST}/Materials/MI_FX_ArcReadable")
-        mesh.set_material(0, surface)
+        if p.stem != "SM_FX_Peppermint":
+            mesh.set_material(0, surface)
         ASSETS.set_metadata_tag(mesh, "FX.Source", "Original procedural geometry; Scripts/build_fx_sources.py")
         ASSETS.save_loaded_asset(mesh)
         records.append({"source": p.name, "asset": mesh.get_path_name(), "material": mats[key].get_path_name()})
