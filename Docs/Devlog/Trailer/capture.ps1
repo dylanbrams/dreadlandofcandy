@@ -12,6 +12,7 @@ param(
   [int]$Skip = 10,             # seconds after the window appears before recording starts (loading, title)
   [string[]]$Extra = @(),
   [int]$Fps = 30,
+  [string]$Map = "",           # e.g. '/Game/World/L_Sugarborough?game=/Script/MegaJam.JamTourGameMode' (tour camera)
   [switch]$Online             # leave the note backend on (improvise, proposals, director's notes call the server)
 )
 $ErrorActionPreference = "Stop"
@@ -33,7 +34,7 @@ public struct POINT { public int X, Y; }
 '@
 [W.U]::SetProcessDPIAware() | Out-Null
 
-$GameArgs = @("-windowed", "-ResX=1600", "-ResY=900", "-WinX=100", "-WinY=60", "-nomusic") + $(if ($Online) { @() } else { @("-nonotes") }) + $Extra
+$GameArgs = @($Map | Where-Object { $_ }) + @("-windowed", "-ResX=1600", "-ResY=900", "-WinX=100", "-WinY=60", "-nomusic") + $(if ($Online) { @() } else { @("-nonotes") }) + $Extra
 Write-Host "Launching: $($GameArgs -join ' ')"
 Start-Process -FilePath $Exe -ArgumentList $GameArgs | Out-Null
 

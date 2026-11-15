@@ -55,5 +55,6 @@ backend/
 *.fbm/
 
 # Gameplay / flythrough footage (large video, shared by the devlog and trailer edits)
-Docs/Devlog/GameFootage/
+Docs/Devlog/GameFootage/*
+!Docs/Devlog/GameFootage/INDEX.md
 Docs/Devlog/Trailer/build/

@@ -88,8 +88,29 @@ class Source:
         return im
 
 
+import json  # noqa: E402
+try:
+    TOASTS = json.loads((FOOT / 'toasts.json').read_text(encoding='utf-8'))
+except OSError:
+    TOASTS = {}
+
+
+def mask_toast(im, name, t):
+    """Discord notifications got drawn over the window's bottom-right corner in some captures (FOOT/toasts.json,
+    detected ranges). Blur that corner around any detected range, with a margin."""
+    if not any(a - 2.0 <= t <= b + 2.0 for a, b in TOASTS.get(name, [])):
+        return im
+    x0, y0 = int(W * 0.885), int(H * 0.905)
+    reg = im[y0:, x0:]
+    small = cv2.resize(reg, (max(1, reg.shape[1] // 16), max(1, reg.shape[0] // 16)), interpolation=cv2.INTER_AREA)
+    im = im.copy()
+    im[y0:, x0:] = cv2.GaussianBlur(cv2.resize(small, (reg.shape[1], reg.shape[0])), (0, 0), 6)
+    return im
+
+
 def footage(path, t, push=0.0, u=0.0):
     im = Source.frame(path if Path(path).is_absolute() else str(FOOT / path), t)
+    im = mask_toast(im, Path(path).name, t)
     if push:
         s = 1.0 + push * u
         M = cv2.getRotationMatrix2D((W / 2, H / 2), 0, s)
@@ -159,6 +180,13 @@ def place(base, fg, a, height, x_right=None, x_center=None, bottom=0):
     return base
 
 
+def soft_blur(im, sigma):
+    """Blur at 1/4 size and scale back: same look as a full-size blur, a fraction of the cost, no banding."""
+    s = cv2.resize(im, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
+    s = cv2.GaussianBlur(s, (0, 0), sigma / 4)
+    return cv2.resize(s, (W, H), interpolation=cv2.INTER_CUBIC)
+
+
 def render_frame(kind, p, u, dur):
     if kind == 'clip':
         im = footage(p['src'], p['in'] + u, p.get('push', 0.0), u / dur)
@@ -166,12 +194,12 @@ def render_frame(kind, p, u, dur):
         im = np.zeros((H, W, 3), np.uint8); im[:] = PLUM
         if p.get('bg'):
             bg = footage(p['bg'], p['bg_in'] + u)
-            bg = cv2.GaussianBlur(bg, (0, 0), 14)
+            bg = soft_blur(bg, 14)
             im = (bg * 0.35 + im * 0.65).astype(np.uint8)
     elif kind in ('cam', 'pip'):
         if kind == 'cam':
             bg = footage(p['bg'], p['bg_in'] + (u if p.get('bg_moves') else 0))
-            im = (cv2.GaussianBlur(bg, (0, 0), 18) * 0.55).astype(np.uint8)
+            im = (soft_blur(bg, 18) * 0.55).astype(np.uint8)
         else:
             im = footage(p['src'], p['in'] + u)
         fg, a = keyed(p['take'], p['t_in'] + u, p.get('wall'))
