@@ -18,7 +18,7 @@ You are assembling Dylan's devlog video for The Dread Land of Candy. You are a d
   - `Docs/Devlog/Checkpoint1/gantt/gantt.png` (full) and `gantt_slide.png`: the updated Gantt. Section 3b needs bar highlights; `build_gantt.py` can be extended to draw a highlighted variant (e.g. dim all but given ids) per beat, rather than drawing boxes by hand.
   - `Docs/Devlog/Tomorrow/assets/` (`morning/` before/after shots, the rat comparison), `Docs/Devlog/CandyPBR/contact.jpg`, `Docs/Devlog/Marshmallows/Marshmallow_contact_sheet.jpg`, `Docs/Design/CandyUI/*.png`, `Docs/Devlog/Screenshots/`, `Saved/Screenshots/WindowsEditor/`.
 - **Voice clips from the game** (for Fenella beats): `vocals/output/fenella/<asset>.wav`, with their text in `vocals/line_inventory.json`.
-- **Gameplay B-roll:** probably none recorded yet. If Dylan has none, cover those beats with stills and slides, and list the missing gameplay shots for him (the trailer's capture list in `Docs/Devlog/Trailer/TRAILER.md` overlaps). If you capture gameplay yourself, run the packaged build (`Builds/Win64-Development`), record only the game window (ffmpeg `gdigrab` with `title=`), never the desktop, and ask Dylan first.
+- **Gameplay B-roll (shared folder):** `Docs/Devlog/GameFootage/` (git-ignored), shared with the trailer/demo edit. It holds Dylan's `LandOfCandyFlythrough.mp4` (4:23, 1280x720, 30 fps, no gameplay HUD needed) and will get the gameplay captures from `Docs/Devlog/Trailer/capture.ps1` (packaged build, game window only). Use it for B-roll; don't move or re-encode files in place, write derived clips to `build/`. The shot list is in `Docs/Devlog/Trailer/DEMO_EDIT.md`.
 
 ## Tools (already verified on this machine)
 

@@ -46,4 +46,4 @@ Alternates: 13-24-31 9.0-13.9 "Elden Ring with a Sweet Shop" (for D3); 12-18-42 
 
 - Gameplay from the packaged build (`capture.ps1`): waiting for Dylan to free the engine. Planned runs: knight, archer,
   mage, barbarian `-autoplay -class=X`; `-autoplay -autovillage`; `-budgetout`; title idle; one `-forcefail` for CUT!.
-- Flythrough: Dylan's, in progress. Location TBD.
+- Flythrough: `Docs/Devlog/GameFootage/LandOfCandyFlythrough.mp4` (4:23, 720p30). All footage lives in that folder.
