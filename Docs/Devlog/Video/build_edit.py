@@ -11,6 +11,7 @@ import json, subprocess
 from pathlib import Path
 
 HERE = Path(__file__).parent
+TOASTS = json.loads((HERE.parent / "GameFootage" / "toasts.json").read_text(encoding="utf-8"))
 BED = "music/{}.mp3".format
 
 S = {}
@@ -125,44 +126,61 @@ S["11"] = dict(title="Post-credits", bed=None, segs=[
     ("PICKUP", "11-theme", "And that's why the theme song was cut.", "C", 3, ""),
 ])
 
-# Gameplay B-roll picks from BROLL_INDEX.md: (substring of the segment's visual, [(file, in, out)], status)
-# status: ok | unconfirmed (frames not clearly showing the named thing) | missing (use a still/slide, capture later)
+# Gameplay B-roll picks from ../GameFootage/INDEX.md (30 fps, 1600x900 re-capture of 18:29): (substring of the
+# segment's visual, [(file, in, out)], status). Index times can be 1-2 s early: scrub edges at render.
+# status: ok | unconfirmed | missing (use a still/slide, capture later)
 GF = "../GameFootage/"
+FLY, PLAY = "LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4"   # Dylan's own; never scanned for toasts -> mask always
 BROLL = [
-    ("molar-hills pan", [("LandOfCandyFlythrough.mp4", 20, 49)], "ok"),
-    ("attack word cards, then non-english", [("knight-run.mp4", 10, 19), ("village-quests.mp4", 10, 19)], "ok"),
-    ("knight placards", [("knight-run.mp4", 10, 24)], "unconfirmed"),
-    ("improvise", [], "missing"),
-    ("typed proposal", [], "missing"),
-    ("encore offer", [("DylanPlaythrough.mp4", 210, 229)], "unconfirmed"),
-    ("film shoot", [("village-quests.mp4", 0, 15)], "ok"),
-    ("cut pitch", [("cut-forcefail.mp4", 15, 19), ("DylanPlaythrough.mp4", 200, 209)], "ok (cardboard boxes missing)"),
-    ("first-hero", [("knight-run.mp4", 0, 9)], "ok (late build, not day one)"),
+    ("molar-hills pan", [("tour-high.mp4", 45, 65), ("knight-run.mp4", 30, 40)], "ok"),
+    ("attack word cards, then non-english", [("knight-run.mp4", 10, 20), ("village-improvise.mp4", 83, 92)], "ok (Turkish card, village-improvise 1:23)"),
+    ("knight placards", [("knight-run.mp4", 10, 20)], "ok (pacify counter 1/3-3/3; no Resolve bar visible)"),
+    ("improvise", [("village-improvise.mp4", 120, 130)], "ok"),
+    ("typed proposal", [("village-propose.mp4", 40, 56)], "ok (silly refusal missing; outcome of proposal unclear)"),
+    ("encore offer", [("village-third.mp4", 35, 45), ("village-third.mp4", 105, 115), (PLAY, 210, 229)], "ok (Crowd, Visit; Rush = clock objective in playthrough)"),
+    ("film shoot", [("knight-run.mp4", 0, 8)], "ok"),
+    ("cut pitch", [("knight-run.mp4", 43, 49), ("typed-note.mp4", 20, 35), ("budget-out.mp4", 10, 20)], "ok (CUT!, typed note, budget boxes)"),
+    ("first-hero", [("hero-close.mp4", 0, 8)], "ok (late build, not day one)"),
     ("early arena", [], "missing"),
-    ("hud, fenella", [("knight-run.mp4", 50, 60)], "ok"),
+    ("hud, fenella", [("knight-run.mp4", 60, 64)], "ok"),
     ("early problem", [], "missing"),
-    ("rat in game", [("knight-run.mp4", 20, 24), ("DylanPlaythrough.mp4", 60, 69)], "ok"),
-    ("world pan", [("LandOfCandyFlythrough.mp4", 0, 19)], "ok"),
-    ("quest givers", [], "missing"),
-    ("village from above", [("LandOfCandyFlythrough.mp4", 110, 129)], "ok (not truly aerial)"),
-    ("village", [("LandOfCandyFlythrough.mp4", 110, 129)], "ok"),
-    ("attack effects", [("knight-run.mp4", 10, 19), ("barbarian-run.mp4", 45, 59), ("mage-run.mp4", 45, 58), ("archer-run.mp4", 10, 24)], "ok"),
-    ("word cards, attacks", [("village-quests.mp4", 10, 19), ("mage-run.mp4", 45, 58)], "ok"),
-    ("celery arrows", [("archer-run.mp4", 10, 24), ("barbarian-run.mp4", 45, 59)], "ok"),
-    ("river, bridge", [("LandOfCandyFlythrough.mp4", 110, 129)], "river/bridge missing"),
-    ("marshmallows drifting", [("LandOfCandyFlythrough.mp4", 75, 85)], "unconfirmed (blurry)"),
-    ("old title", [("title-idle.mp4", 0, 14)], "ok (old title missing)"),
+    ("rat in game", [("knight-run.mp4", 20, 24), ("hero-close.mp4", 19, 24)], "ok"),
+    ("world pan", [("tour-high.mp4", 0, 20)], "ok"),
+    ("quest givers", [("village-improvise.mp4", 35, 45), ("village-improvise.mp4", 100, 115)], "ok (Mayor Bonbon, Baker Crumb)"),
+    ("village from above", [("village-aerial.mp4", 0, 12), ("tour-high.mp4", 95, 105)], "ok"),
+    ("village", [("tour-low.mp4", 90, 105), ("village-improvise.mp4", 25, 30)], "ok"),
+    ("attack effects", [("knight-run.mp4", 10, 20), ("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55), ("mage-run.mp4", 45, 50)], "ok"),
+    ("word cards, attacks", [("knight-run.mp4", 75, 80), ("mage-run.mp4", 45, 50)], "ok"),
+    ("celery arrows", [("archer-run.mp4", 10, 20), ("barbarian-run.mp4", 45, 55)], "ok"),
+    ("river, bridge", [("tour-high.mp4", 25, 35), ("tour-high.mp4", 40, 44)], "ok"),
+    ("marshmallows drifting", [("tour-high.mp4", 25, 35), ("tour-low.mp4", 40, 45)], "ok"),
+    ("old title", [("title-idle.mp4", 0, 14)], "ok (OLD title screen missing)"),
     ("title screen", [("title-idle.mp4", 0, 14)], "ok"),
-    ("river before", [], "missing"),
-    ("camera lifting", [], "missing"),
-    ("compass", [("knight-run.mp4", 50, 60)], "ok (compass not clearly visible)"),
+    ("river before", [(FLY, 58, 61), ("tour-high.mp4", 40, 44)], "partial: pre-fix bridge (flythrough) vs fixed bridge; no before/after river"),
+    ("camera lifting", [], "missing: 18:29 build fades foliage instead of lifting the camera (script line is out of date)"),
+    ("compass", [("knight-run.mp4", 60, 64)], "unconfirmed (compass not clearly visible)"),
+    ("controls", [("controls-screen.mp4", 0, 10)], "ok"),
 ]
+
+def toast_mask(name, i, o):
+    """'always' for Dylan's unscanned recordings, else the toast ranges (+-2 s) that overlap [i, o]."""
+    if name in (FLY, PLAY):
+        return "always"
+    hits = [[a, b] for a, b in TOASTS.get(name, []) if a - 2.0 <= o and b + 2.0 >= i]
+    return hits or None
 
 def broll_for(visual):
     v = visual.lower()
     for key, clips, status in BROLL:
         if key in v:
-            return dict(clips=[dict(src=GF + f, i=a, o=b) for f, a, b in clips], status=status)
+            out = []
+            for f, a, b in clips:
+                c = dict(src=GF + f, i=a, o=b)
+                m = toast_mask(f, a, b)
+                if m:
+                    c["mask_bottom_right"] = m   # blur bottom-right 11.5% x 9.5% of the frame (see Trailer/build_demo.py mask_toast)
+                out.append(c)
+            return dict(clips=out, status=status)
     return None
 
 def clean_clips(pid):
@@ -210,7 +228,7 @@ def main():
     (HERE / "edit.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     cam = sum(g.get("dur", g.get("est", 0)) for s in out for g in s["segments"] if g["frame"] == "C")
     print(f"TOTAL {tot/60:.1f} min ({tot:.0f}s), CAM {cam:.0f}s = {100*cam/tot:.0f}%")
-    miss = sorted({g["visual"][:48] for s in out for g in s["segments"] if g.get("broll", {}).get("status", "").startswith(("missing", "river", "unconf"))})
+    miss = sorted({g["visual"][:48] for s in out for g in s["segments"] if g.get("broll", {}).get("status", "").startswith(("missing", "partial", "unconf"))})
     print("B-roll missing/unconfirmed:", "; ".join(miss))
     print("CAM >8s:", "; ".join(camrun_flags))
 
