@@ -274,3 +274,18 @@ peaks at 29.92 degrees. Repeat import moves zero instances/actors. Both targets,
 66 tests and both packaged modes pass. See ImportSource/Terrain/README_HILL.md,
 hill_sources.json and hill_validation.json. Fresh MolarHillApproach/Overview
 review maps replace old snow-camera placement for checking this elevation.
+
+### Nov 15: Fixes4 #9-10 (Claude, terrain thread)
+
+River: `export_extension.py` now cuts a real channel (bed -260, banks to a +60 lip,
+blend back by 13 m) and the hot chocolate fills it bank to bank at -70. Bridge126
+un-flattened (2000 x 900 x 320 cm, deck at +75) with a hidden Pawn-only walk deck
+and rails; 116 hidden Pawn-only blockers along both lips stop heroes dropping into
+the channel (the banks are too steep to climb). 33 riverside props follow the new
+bank heights. Roads: the ground material's east road now starts at x=10000 (the gap
+east of town is gone); 1,432 tree/grass instances on roads removed; Dentist and Scout
+Tower moved off the 240/120-degree spokes. About 1,930 grass/bush/fern instances
+added along the east road to the river and camp. Script: `Expansion/fixes4_terrain.py`
+(guarded against double-applying), log in `fixes4_report.txt`. Review maps
+L_RiverReview and L_RoadReview were captured and inspected. Not packaged; not walked by hand.
+Item 11 (camera blocked) is GAME code: follow-camera spring arm probes ECC_Camera (JamHero.cpp:625).

@@ -471,3 +471,4 @@ Nov 15 - Black Sugar UI: implemented dark candy menus/HUD/compass, OFL fonts, pe
 
 ## Nov 15 - Fixes4 #1-8 (Claude)
 Title Controls line, Shift signature, level-1 progression with level power/toughness and job-scaled village threat (subagent), flashes dimmed ~5x, barbarian cyclone spin + longer cloud, knight text placards. 85/85 tests. Packaged, not smoked or zipped. Terrain items 9-10 handed to a separate thread.
+- Nov 15 (Claude, terrain): Fixes4 #9-10: deep river channel with banks and wider hot chocolate, un-flattened bridge with walk deck and river-edge blockers, road gap closed, 1,432 road-blocking instances removed, Dentist/Scout Tower moved off paths, ~1,930 brush instances on the east road. Review captures inspected; not packaged.

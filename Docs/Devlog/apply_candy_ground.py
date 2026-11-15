@@ -29,7 +29,7 @@ float d=r>2700?abs(r-3600):100000;
 for(int k=0;k<3;k++){float a=k*2.0943951;float along=dot(p,float2(cos(a),sin(a)));if(along>=0&&along<=10500)d=min(d,abs(dot(p,float2(-sin(a),cos(a)))));}
 float path=max(1-smoothstep(200,280,d),1-smoothstep(950,1050,r));
 path*=1-smoothstep(10300,10700,max(abs(p.x),abs(p.y)));
-float extension=smoothstep(11200,12200,p.x);
+float extension=smoothstep(10000,10500,p.x); // Fixes4: no road gap east of town
 float extpath=1-smoothstep(200,340,abs(p.y));
 path=lerp(path,extpath,extension);
 float plaza=1-smoothstep(950,1100,r);

@@ -1,0 +1,11 @@
+FIXES4 reimported SM_Riverlands <Struct 'Vector' (0x0000014972B61480) {x: 11999.999023, y: -12000.001953, z: -260.000000}> <Struct 'Vector' (0x0000014972B61498) {x: 22000.001953, y: 11999.999023, z: 214.292206}>
+FIXES4 reimported SM_RiverWater <Struct 'Vector' (0x0000014972B648C0) {x: 13880.000000, y: -12000.000977, z: -70.000000}> <Struct 'Vector' (0x0000014972B648D8) {x: 16120.000000, y: 11999.999023, z: -70.000000}>
+FIXES4 first run True
+FIXES4 props shifted to new banks 33
+FIXES4 bridge <Struct 'Vector' (0x00000149835A06F0) {x: 19000.000000, y: 0.000000, z: -81.800060}> edge blockers 116
+FIXES4 road instances removed 1432
+FIXES4 building moved off road Riverlands_Dentist2 SM_Dentist from -1400 -1350 to -1573 -1250 road_d 737 needed 720
+FIXES4 building moved off road Riverlands_ScoutTower4 SM_ScoutTower from -800 1750 to -419 1970 road_d 622 needed 615
+FIXES4 brush pools {'Grass': ['SM_CandyGrassIce', 'SM_CandyGrassMint', 'SM_CandyGrassRose'], 'Bush': ['SM_Rodin_JellybeanBush'], 'Fern': ['SM_Rodin_CandyFlowerClump', 'SM_Rodin_GummySucculent', 'SM_Rodin_SugarFern']}
+FIXES4 brush added {'SM_Rodin_SugarFern': 63, 'SM_CandyGrassMint': 395, 'SM_CandyGrassIce': 409, 'SM_Rodin_CandyFlowerClump': 66, 'SM_Rodin_JellybeanBush': 554, 'SM_Rodin_GummySucculent': 48, 'SM_CandyGrassRose': 399} total 1934
+FIXES4 MAP SAVED

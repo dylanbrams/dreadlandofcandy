@@ -31,6 +31,8 @@ water = material("Riverlands_MintWater", (.24, .76, .78))
 wood = material("WaferBridge_GoldenWafer", (.76, .43, .19))
 railmat = material("WaferBridge_CreamIcing", (.98, .83, .52))
 
+BED, LIP, WATER_Z, WATER_HALF = -260.0, 60.0, -70.0, 620.0
+
 def river(y):
     return 15000 + 500 * math.sin(y / 3500)
 
@@ -45,14 +47,18 @@ def terrain_z(x, y):
     camp_blend = camp_t * camp_t * (3 - 2 * camp_t)
     hills *= camp_blend
     d = abs(x - river(y))
-    # Broad level banks taper into a flat channel bed, with crisp river margins.
-    if d <= 300:
-        return -180
-    if d < 600:
-        return -180 * (1 - (d - 300) / 300)
+    # Fixes4: a real channel. Deep bed, steep candy banks rising to a raised
+    # lip (+60) either side, then blending back into the meadow.
+    def ss(t):
+        t = max(0.0, min(1.0, t)); return t * t * (3 - 2 * t)
+    if d <= 380:
+        return BED
+    if d < 660:
+        return BED + (LIP - BED) * ss((d - 380) / 280)
     if d < 900:
-        t = (d - 600) / 300
-        return hills * t * t * (3 - 2 * t)
+        return LIP
+    if d < 1300:
+        return LIP + (hills - LIP) * ss((d - 900) / 400)
     return hills
 
 def export_mesh(name, verts, faces, mats, face_mats):
@@ -84,8 +90,9 @@ def export_mesh(name, verts, faces, mats, face_mats):
 
 # Grid vertices include the exact seam at x=11000 and 250 cm spacing.
 # Actor placement adds +4000 X, so this seam lands exactly at world X=16000.
-xs = list(range(12000, 22001, 250))
-ys = list(range(-12000, 12001, 250))
+# Fixes4: 80 cm columns through the meander band so the banks stay crisp.
+xs = sorted(set(list(range(12000, 22001, 250)) + list(range(13200, 16801, 80))))
+ys = list(range(-12000, 12001, 160))
 verts = [(x, y, terrain_z(x, y)) for y in ys for x in xs]
 faces, mids = [], []
 for j in range(len(ys)-1):
@@ -94,17 +101,19 @@ for j in range(len(ys)-1):
         faces.append((a, a+1, a+1+len(xs), a+len(xs)))
         xc=(xs[i]+xs[i+1])*.5; yc=(ys[j]+ys[j+1])*.5
         d=abs(xc-river(yc))
-        mids.append(1 if d < 760 and ((i+j)//8)%3 else (2 if d < 760 else (1 if ((i//13+j//11)%7==0) else 0)))
+        mids.append(1 if d < 1000 and ((i+j)//8)%3 else (2 if d < 1000 else (1 if ((i//13+j//11)%7==0) else 0)))
 terrain = export_mesh("SM_Riverlands", verts, faces, [grass,mint,bank], mids)
 
-# A continuous water ribbon centered on the meandering channel, at z=-65.
+# Fixes4: water fills the channel bank to bank; its edges run under the banks.
 wverts=[]
+WCOLS=8
 for y in range(-12000,12001,100):
     cx=river(y)
-    wverts.extend([(cx-225,y,-65),(cx+225,y,-65)])
+    wverts.extend([(cx-WATER_HALF+2*WATER_HALF*k/WCOLS,y,WATER_Z) for k in range(WCOLS+1)])
 wfaces=[]
-for j in range(len(wverts)//2-1):
-    a=j*2; wfaces.append((a,a+1,a+3,a+2))
+for j in range(len(wverts)//(WCOLS+1)-1):
+    for k in range(WCOLS):
+        a=j*(WCOLS+1)+k; wfaces.append((a,a+1,a+WCOLS+2,a+WCOLS+1))
 export_mesh("SM_RiverWater",wverts,wfaces,[water],[0]*len(wfaces))
 
 # Wafer span aligned across the stream (east-west), broad open deck and low icing rails.
