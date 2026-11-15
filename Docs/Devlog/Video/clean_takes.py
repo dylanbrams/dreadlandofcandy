@@ -81,13 +81,21 @@ def spans(words, ranges, drops, complete=True):
                 and not any(x <= words[i]["s"] and words[i]["e"] <= y for x, y in drops)]
         if not kept:
             continue
-        cur = [max(0.0, words[kept[0]]["s"] - PAD_BEFORE), None]
+        f0 = kept[0]
+        gap_b = words[f0]["s"] - words[f0 - 1]["e"] if f0 > 0 else 9.0
+        # contiguous speech: meet the previous beat exactly at the middle of the gap, so joins repeat/lose nothing
+        pad_b = min(PAD_BEFORE, max(gap_b, 0.0) / 2) if gap_b < 0.28 else PAD_BEFORE
+        cur = [max(0.0, words[f0]["s"] - pad_b), None]
         for n, i in enumerate(kept):
             w = words[i]
             nxt = kept[n + 1] if n + 1 < len(kept) else None
             if nxt is None:
-                after = words[i + 1]["s"] - 0.02 if i + 1 < len(words) else w["e"] + TAIL_END
-                cur[1] = min(w["e"] + TAIL_END, after)
+                if i + 1 < len(words):
+                    gap_a = words[i + 1]["s"] - w["e"]
+                    tail = max(gap_a, 0.0) / 2 if gap_a < 0.6 else min(TAIL_END, gap_a - 0.02)
+                else:
+                    tail = TAIL_END
+                cur[1] = w["e"] + min(TAIL_END, tail)
                 break
             gap = words[nxt]["s"] - w["e"]
             hole = any(j not in kept for j in range(i + 1, nxt))        # an um/uh or dropped word sits in the gap

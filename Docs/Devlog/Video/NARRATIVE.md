@@ -46,7 +46,7 @@ Timestamps are the transcript's line ranges. Where a segment needs a word-level 
 | 13-10-07 | 2 | Quests rewritten; ask Fenella to improvise | Use |
 | 13-10-34 | 2 | Write your own; bribe with snacks; honest caveat | Use first 16s |
 | 13-11-11 | 2 | "the AI is on a lead, yeah" | Flub |
-| 13-11-24 | 2 | AI picks tested pieces; works if server's down | **Best** leash take |
+| 13-11-24 | 2 | AI picks tested pieces; works if server's down | **Best** take for the server-fallback beat |
 | 13-12-05 | 2 | Villagers after the set quest line (rambly, no encores) | Weak; pickup instead |
 | 13-12-35 | 2 | Film shoot, director's cut, "reality TV show", highlight reel | Use "the whole thing's a film shoot" + optional highlight-reel idea |
 | 13-13-39 | 3 | I directed and playtested; Claude and ChatGPT alternating | **Best** section 3 |

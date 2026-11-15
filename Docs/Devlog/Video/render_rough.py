@@ -35,9 +35,17 @@ W, H, FPS = 1920, 1080, 30
 TAIL = 0.25
 FONT = "C:/Windows/Fonts/arial.ttf"
 FONT_B = "C:/Windows/Fonts/arialbd.ttf"
-VERSION = "v2"   # bump to invalidate every cached segment
+VERSION = "v2"
+FOOTAGE_REV = "stall1"   # bump to re-render every piece that shows game footage   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
+    ("slide: sound", [HERE / "graphics/slide_sound.png"]),
+    ("slide: bot", [HERE / "graphics/slide_bot.png"]),
+    ("architecture stage 1", [HERE / "graphics/architecture_s1.png"]),
+    ("architecture stage 2", [HERE / "graphics/architecture_s2.png"]),
+    ("architecture stage 3", [HERE / "graphics/architecture_s3.png"]),
+    ("architecture stage 4", [HERE / "graphics/architecture_s4.png"]),
+    ("architecture stage 5", [HERE / "graphics/architecture.png"]),
     ("slide: idea", [HERE / "graphics/slide_idea.png"]),
     ("checkpoint slides", [HERE / "graphics/slide_team.png"]),
     ("declared.md slide", [HERE / "graphics/slide_declared.png"]),
@@ -110,7 +118,7 @@ def voice_parts(g):
     if g["kind"] == "take":
         src = HERE / g["src"]
         words = json.loads(src.with_suffix(".words.json").read_text(encoding="utf-8"))["words"]
-        return [(src, ct.spans(words, [(g["i"], g["o"])], []))]
+        return [(src, ct.spans(words, [(g["i"], g["o"])], [], complete=not g.get("exact")))]
     if g["kind"] == "pickup":
         return [(HERE / p, None) for p in g["recorded"]]
     return []
@@ -200,7 +208,35 @@ def window_mask(name, start, n):
     return [[a, b] for a, b in TOASTS.get(name, []) if a - 2.0 <= start + n and b + 2.0 >= start] or None
 
 
-def plan_windows(clips, D):
+STALLS_FILE = HERE / "build" / "stalls.json"
+STALLS = json.loads(STALLS_FILE.read_text(encoding="utf-8")) if STALLS_FILE.exists() else {}
+STATIC_UI = ("title-idle.mp4", "controls-screen.mp4")          # meant to be still: give them a slow push instead
+KEEP_STALLS = ("improvise", "typed proposal", "encore offer")    # offer screens that wait for the player: holds are real
+
+
+def cut_stalls(name, start, n, sd):
+    """Split [start, start+n] around game stalls (>= 0.5 s of frozen frames): keep 0.08 s of each, drop the rest, and run
+    on further into the source to make up the length. Returns [(start, length), ...]."""
+    stalls = STALLS.get(name, [])
+    parts, cursor, need = [], start, n
+    while need > 0.05 and cursor < sd - 0.1:
+        st = next((s for s in stalls if s[1] > cursor and s[0] < cursor + need), None)
+        if not st:
+            parts.append((cursor, min(need, sd - cursor - 0.05)))
+            break
+        if st[0] <= cursor:                       # we are inside a stall: skip to its end
+            cursor = st[1]
+            continue
+        take = st[0] + 0.08 - cursor
+        if take > 0.05:
+            parts.append((cursor, take))
+            need -= take
+        cursor = st[1]
+    parts = [pt for pt in parts if pt[1] >= 0.35]            # slivers make empty files downstream
+    return parts or [(start, n)]
+
+
+def plan_windows(clips, D, keep_stalls=False):
     """Sub-clips share D in proportion to their length; a window is extended into the source if D is longer."""
     clips = list(clips)
     while len(clips) > 1 and D / len(clips) < 1.5:
@@ -212,14 +248,18 @@ def plan_windows(clips, D):
         n = D * (c["o"] - c["i"]) / tot
         avail = c["o"] - c["i"]
         start = c["i"] if n <= avail else max(0.0, c["i"] - (n - avail) / 2)
-        n = min(n, dur(src) - start - 0.05)
-        out.append((c, src, start, n))
+        sd = dur(src)
+        n = min(n, sd - start - 0.05)
+        if keep_stalls or src.name in STATIC_UI or src.name in UNSCANNED:
+            out.append((c, src, start, n))
+        else:
+            out.extend((c, src, s, l) for s, l in cut_stalls(src.name, start, n, sd))
     return out
 
 
-def footage_video(clips, D, out, tag, blur=False):
+def footage_video(clips, D, out, tag, blur=False, keep_stalls=False):
     files = []
-    for k, (c, src, start, n) in enumerate(plan_windows(clips, D)):
+    for k, (c, src, start, n) in enumerate(plan_windows(clips, D, keep_stalls)):
         mask = window_mask(src.name, start, n)
         if c.get("interp"):
             # drop the repeated frames, then synthesise real in-betweens (motion-compensated) at 30 fps
@@ -227,11 +267,21 @@ def footage_video(clips, D, out, tag, blur=False):
                   f"scale={W}:{H}:flags=lanczos" + mask_filter(mask))
         else:
             vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(mask)
+        if src.name in STATIC_UI:
+            vf = (f"scale={W}:{H}:flags=lanczos,zoompan=z='min(1+0.0005*on,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'"
+                  f":d=1:s={W}x{H}:fps={FPS}")
         if blur:
             vf += ",gblur=sigma=28,eq=brightness=-0.14"
         f = TMP / f"{tag}_{k}.mp4"
         ff("-ss", f"{start:.3f}", "-t", f"{n:.3f}", "-i", src, "-vf", vf, "-an", "-c:v", "libx264", "-crf", "17",
            "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
+        if f.stat().st_size > 2000:                          # an empty result (interpolation had nothing to work with)
+            files.append(f)
+    if not files:                                            # last resort: the plain window, no stall cutting, no interpolation
+        c, src, start, n = plan_windows(clips, D, True)[0]
+        f = TMP / f"{tag}_plain.mp4"
+        ff("-ss", f"{start:.3f}", "-t", f"{n:.3f}", "-i", src, "-vf", f"scale={W}:{H}:flags=lanczos,fps={FPS}", "-an",
+           "-c:v", "libx264", "-crf", "17", "-preset", "veryfast", "-pix_fmt", "yuv420p", f)
         files.append(f)
     return concat_video(files, D, out, tag)
 
@@ -297,7 +347,7 @@ def picture(g, D, out, tag, blur=False):
     b = g.get("broll") or {}
     clips = b.get("clips") or []
     if clips:
-        return footage_video(clips, D, out, tag, blur)
+        return footage_video(clips, D, out, tag, blur, keep_stalls=any(k in v for k in KEEP_STALLS))
     if "fixes4" in v:
         return still_image_video(make_card(TMP / f"{tag}_card.png", "FIXES4.TXT, VERBATIM", FIXES4, body_size=40), D, out, tag, blur)
     if "early" in v and early_stills():
@@ -398,7 +448,8 @@ def migrate_old_names():
 
 # ---------------------------------------------------------------- one segment
 def seg_key(job):
-    return hashlib.sha1((VERSION + json.dumps(job["g"], sort_keys=True, default=str) + job["section"]
+    rev = FOOTAGE_REV if (job["g"].get("broll") or {}).get("clips") else ""
+    return hashlib.sha1((VERSION + rev + json.dumps(job["g"], sort_keys=True, default=str) + job["section"]
                          + json.dumps(job.get("bg"), sort_keys=True, default=str)).encode()).hexdigest()[:10]
 
 

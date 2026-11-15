@@ -1,4 +1,4 @@
-"""Architecture diagram for the devlog ("the AI is on a leash"): graphics/architecture.png (1920x1080).
+"""Architecture diagram for the devlog (how the AI features work): graphics/architecture.png (1920x1080).
 
     python -I make_architecture.py
 
@@ -98,8 +98,8 @@ def paste_fit(im, path, box, flip=False):
     im.alpha_composite(src, (int(x0 + (x1 - x0 - src.width) / 2), int(y1 - src.height)))
 
 
-def main():
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+def main(stage=5, out=OUT):
+    out.parent.mkdir(parents=True, exist_ok=True)
     im = Image.new("RGBA", (W, H), BG + (255,))
     d = ImageDraw.Draw(im)
     for x in range(0, W, 60):
@@ -121,64 +121,70 @@ def main():
     arrow(d, (client[2] + 4, 160), (server[0] - 4, 160), MINT, label="REST/JSON", label_pos=(430, 138))
     arrow(d, (server[2] + 4, 125), (db[0] - 4, 100), BLUE, label="SQL", label_pos=(912, 88), label_color=BLUE)
     arrow(d, (server[2] + 4, 195), (llm[0] - 4, 220), ORANGE, label="HTTPS", label_pos=(912, 248))
-    # fallback: any failure -> the game's own content
-    d.line([(670, 252), (670, 300), (330, 300)], fill=GOLD, width=3)
-    arrow(d, (330, 300), (330, 254), GOLD, width=3, dashed=True)
-    d.text((500, 330), "any failure or timeout: the game plays its authored quests", font=F(MONO, 16), fill=GOLD, anchor="mm")
-    d.text((500, 354), "nothing breaks", font=F(MONO, 16), fill=GOLD, anchor="mm")
-
-    # ---- lower left: the player (knight) talking to a villager; arrow to the client
-    d.rounded_rectangle((60, 390, 900, 1010), radius=10, fill=(24, 24, 30), outline=(60, 60, 74), width=2)
-    corners(d, (60, 390, 900, 1010), MINT)
-    d.text((84, 402), "IN THE GAME", font=F(MONO, 19), fill=MINT)
-    paste_fit(im, ROOT / "ImportSource/Meshy/SK_Knight.png", (110, 560, 330, 990))
-    paste_fit(im, ROOT / "Assets/Incoming/2D/T_Portrait_Farmer/T_Portrait_Farmer.png", (640, 700, 860, 990), flip=True)
-    d.text((120, 995 - 4), "", font=F(MONO, 14), fill=DIM)
-    bubble(im, d, (250, 450, 660, 570),
-           ["Bribe the rats with snacks", "so they go home."], MINT, F(SERIFB, 27), (232, 622))
-    bubble(im, d, (540, 610, 880, 700),
-           ["A Quiet Constituency:", "pacify the rats."], PINK, F(SERIFB, 25), (735, 768))
-    d.text((84, 1012 - 8), "", font=F(MONO, 14), fill=DIM)
-    arrow(d, (150, 390), (150, 256), MINT, width=5, label="typed plan", label_pos=(92, 330), label_color=MINT)
-
     # ---- right: endpoints and the request pipeline
     d.text((1400, 58), "ENDPOINTS", font=F(MONO, 19), fill=PEWTER)
     for k, e in enumerate(["POST /v1/director/note", "POST /v1/director/premiere", "POST /v1/director/quest/branches",
                            "POST /v1/director/quest/propose", "GET  /v1/director/readyz"]):
         d.text((1400, 92 + k * 34), e, font=F(MONO, 19), fill=INK if k < 4 else DIM)
 
-    d.text((960, 352), "EVERY REQUEST PASSES THESE GATES", font=F(MONO, 19), fill=PEWTER)
-    steps = [("1", "validate", "schema, 80 chars"), ("2", "rate limit", "per session + address"), ("3", "screen", "links, contact info"),
-             ("4", "cache", "same note, no model"), ("5", "budget", "one atomic daily cap"), ("6", "model", "Haiku, structured"),
-             ("7", "clamp", "server enforces limits")]
-    x, y = 960, 392
-    for k, (n, name, sub) in enumerate(steps):
-        bx = x + (k % 4) * 232
-        by = y + (k // 4) * 124
-        accent = ORANGE if name == "model" else GOLD if name == "clamp" else PEWTER
-        d.rounded_rectangle((bx, by, bx + 214, by + 104), radius=6, fill=(26, 26, 34), outline=accent, width=2)
-        d.text((bx + 12, by + 8), n, font=F(MONO, 18), fill=accent)
-        d.text((bx + 38, by + 4), name, font=F(SERIFB, 27), fill=INK)
-        d.text((bx + 12, by + 52), sub, font=F(MONO, 14), fill=DIM)
-        if k % 4 < 3 and k != 6:
-            arrow(d, (bx + 216, by + 52), (bx + 230, by + 52), accent, width=2, head=9)
+    if stage >= 2:
+        # ---- lower left: the player (knight) talking to a villager; arrow to the client
+        d.rounded_rectangle((60, 390, 900, 1010), radius=10, fill=(24, 24, 30), outline=(60, 60, 74), width=2)
+        corners(d, (60, 390, 900, 1010), MINT)
+        d.text((84, 402), "IN THE GAME", font=F(MONO, 19), fill=MINT)
+        paste_fit(im, ROOT / "ImportSource/Meshy/SK_Knight.png", (110, 560, 330, 990))
+        paste_fit(im, ROOT / "Assets/Incoming/2D/T_Portrait_Farmer/T_Portrait_Farmer.png", (640, 700, 860, 990), flip=True)
+        d.text((120, 995 - 4), "", font=F(MONO, 14), fill=DIM)
+        bubble(im, d, (250, 450, 660, 570),
+               ["Bribe the rats with snacks", "so they go home."], MINT, F(SERIFB, 27), (232, 622))
+        bubble(im, d, (540, 610, 880, 700),
+               ["A Quiet Constituency:", "pacify the rats."], PINK, F(SERIFB, 25), (735, 768))
+        d.text((84, 1012 - 8), "", font=F(MONO, 14), fill=DIM)
+        arrow(d, (150, 390), (150, 256), MINT, width=5, label="typed plan", label_pos=(92, 330), label_color=MINT)
 
-    # ---- what's new
-    d.text((960, 660), "WHAT'S NEW HERE", font=F(MONO, 19), fill=MINT)
-    cards = [(MINT, "The model proposes.", "The server clamps.", "Every field is forced back inside limits the game was built to handle."),
-             (GOLD, "It can't break the game.", "", "The AI only picks from pieces we built and tested; nonsense is refused in character."),
-             (PINK, "Quests rewrite live.", "", "Pacify the rats, then feed them celery: new routes while you play.")]
-    for k, (c, t1, t2, body) in enumerate(cards):
-        by = 700 + k * 100
-        d.rounded_rectangle((960, by, 1860, by + 88), radius=6, fill=(26, 26, 34), outline=(70, 70, 86), width=2)
-        d.rectangle((960, by, 968, by + 88), fill=c)
-        d.text((986, by + 8), t1 + (" " + t2 if t2 else ""), font=F(SERIFB, 29), fill=INK)
-        d.text((986, by + 50), body, font=F(SANS, 21), fill=DIM)
-    d.text((960, 1012), "Tested against 23 canned notes, 13 of them hostile.", font=F(MONO, 17), fill=DIM)
+    if stage >= 3:
+        d.text((960, 352), "EVERY REQUEST PASSES THESE GATES", font=F(MONO, 19), fill=PEWTER)
+        steps = [("1", "validate", "schema, 80 chars"), ("2", "rate limit", "per session + address"), ("3", "screen", "links, contact info"),
+                 ("4", "cache", "same note, no model"), ("5", "budget", "one atomic daily cap"), ("6", "model", "Haiku, structured"),
+                 ("7", "clamp", "server enforces limits")]
+        x, y = 960, 392
+        for k, (n, name, sub) in enumerate(steps):
+            bx = x + (k % 4) * 232
+            by = y + (k // 4) * 124
+            accent = ORANGE if name == "model" else GOLD if name == "clamp" else PEWTER
+            d.rounded_rectangle((bx, by, bx + 214, by + 104), radius=6, fill=(26, 26, 34), outline=accent, width=2)
+            d.text((bx + 12, by + 8), n, font=F(MONO, 18), fill=accent)
+            d.text((bx + 38, by + 4), name, font=F(SERIFB, 27), fill=INK)
+            d.text((bx + 12, by + 52), sub, font=F(MONO, 14), fill=DIM)
+            if k % 4 < 3 and k != 6:
+                arrow(d, (bx + 216, by + 52), (bx + 230, by + 52), accent, width=2, head=9)
 
-    im.convert("RGB").save(OUT)
-    print("wrote", OUT)
+    if stage >= 4:
+        # fallback: any failure -> the game's own content
+        d.line([(670, 252), (670, 300), (330, 300)], fill=GOLD, width=3)
+        arrow(d, (330, 300), (330, 254), GOLD, width=3, dashed=True)
+        d.text((500, 330), "any failure or timeout: the game plays its authored quests", font=F(MONO, 16), fill=GOLD, anchor="mm")
+        d.text((500, 354), "nothing breaks", font=F(MONO, 16), fill=GOLD, anchor="mm")
+
+    if stage >= 5:
+        # ---- what's new
+        d.text((960, 660), "WHAT'S NEW HERE", font=F(MONO, 19), fill=MINT)
+        cards = [(MINT, "The model proposes.", "The server clamps.", "Every field is forced back inside limits the game was built to handle."),
+                 (GOLD, "It can't break the game.", "", "The AI only picks from pieces we built and tested; nonsense is refused in character."),
+                 (PINK, "Quests rewrite live.", "", "Pacify the rats, then feed them celery: new routes while you play.")]
+        for k, (c, t1, t2, body) in enumerate(cards):
+            by = 700 + k * 100
+            d.rounded_rectangle((960, by, 1860, by + 88), radius=6, fill=(26, 26, 34), outline=(70, 70, 86), width=2)
+            d.rectangle((960, by, 968, by + 88), fill=c)
+            d.text((986, by + 8), t1 + (" " + t2 if t2 else ""), font=F(SERIFB, 29), fill=INK)
+            d.text((986, by + 50), body, font=F(SANS, 21), fill=DIM)
+        d.text((960, 1012), "Tested against 23 canned notes, 13 of them hostile.", font=F(MONO, 17), fill=DIM)
+
+    im.convert("RGB").save(out)
+    print("wrote", out)
 
 
 if __name__ == "__main__":
-    main()
+    for s in range(1, 5):
+        main(s, OUT.with_name(f"architecture_s{s}.png"))
+    main(5, OUT)

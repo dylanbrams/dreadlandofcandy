@@ -14,7 +14,8 @@
     "dur": 4.4,
     "frame": "B",
     "visual": "coldopen beat 1",
-    "note": "hopeful; Dylan re-recorded (Nov 15 evening)"
+    "note": "hopeful; Dylan re-recorded (Nov 15 evening)",
+    "exact": false
    },
    {
     "kind": "take",
@@ -25,7 +26,8 @@
     "dur": 3.0,
     "frame": "B",
     "visual": "coldopen beat 2",
-    "note": "more tired"
+    "note": "more tired",
+    "exact": false
    },
    {
     "kind": "take",
@@ -36,7 +38,8 @@
     "dur": 4.3,
     "frame": "B",
     "visual": "coldopen beat 4",
-    "note": "confident"
+    "note": "confident",
+    "exact": false
    },
    {
     "kind": "take",
@@ -47,7 +50,8 @@
     "dur": 1.4,
     "frame": "B",
     "visual": "coldopen beat 5 card",
-    "note": ""
+    "note": "",
+    "exact": false
    }
   ]
  },
@@ -66,7 +70,8 @@
     "dur": 10.6,
     "frame": "C",
     "visual": "",
-    "note": "opener"
+    "note": "opener",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -104,7 +109,8 @@
     "dur": 2.2,
     "frame": "C",
     "visual": "",
-    "note": "what did I end up with"
+    "note": "what did I end up with",
+    "exact": false
    },
    {
     "kind": "take",
@@ -116,6 +122,7 @@
     "frame": "B",
     "visual": "BROLL attack word cards, then non-English battle cry",
     "note": "check 'talk back'",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -144,6 +151,7 @@
     "frame": "B",
     "visual": "BROLL knight placards, Resolve bar, pacified rat",
     "note": "check 'have health'",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -166,6 +174,7 @@
     "frame": "B",
     "visual": "BROLL improvise screen, two new routes",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -194,6 +203,7 @@
     "frame": "B",
     "visual": "BROLL typed proposal, route, refusal",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -227,9 +237,10 @@
     "i": 0.9,
     "o": 10.4,
     "dur": 9.5,
-    "frame": "B",
-    "visual": "architecture diagram",
-    "note": "AI on a leash: Director service diagram (graphics/architecture.png)"
+    "frame": "C",
+    "visual": "",
+    "note": "AI picks from what we built and tested; works if the server is down",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -294,6 +305,7 @@
     "frame": "B",
     "visual": "BROLL film shoot",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -368,6 +380,372 @@
   ]
  },
  {
+  "section": "A1",
+  "title": "How it works (architecture)",
+  "bed": "music/mystery_take1.mp3",
+  "est_s": 44.8,
+  "segments": [
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "src": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "i": 1.7,
+    "o": 10.4,
+    "dur": 8.7,
+    "frame": "B",
+    "visual": "architecture stage 1",
+    "note": "client -> REST server -> database + LLM",
+    "exact": false
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "src": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "i": 11.2,
+    "o": 15.0,
+    "dur": 3.8,
+    "frame": "B",
+    "visual": "architecture stage 2",
+    "note": "[exact] typed plan goes up as a request",
+    "exact": true
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "src": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "i": 15.2,
+    "o": 24.3,
+    "dur": 9.1,
+    "frame": "B",
+    "visual": "architecture stage 3",
+    "note": "the gates: validate, limit, screen, cache, budget, model",
+    "exact": false
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "src": "raw/pickups2/2026-11-15 22-30-17.mp4",
+    "i": 25.1,
+    "o": 30.5,
+    "dur": 5.4,
+    "frame": "B",
+    "visual": "architecture stage 4",
+    "note": "[exact] any failure: authored quests, nothing breaks",
+    "exact": true
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-01.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-01.mp4",
+    "i": 1.6,
+    "o": 5.1,
+    "dur": 3.5,
+    "frame": "B",
+    "visual": "architecture stage 5",
+    "note": "model proposes, server decides",
+    "exact": false
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-01.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-01.mp4",
+    "i": 7.3,
+    "o": 21.6,
+    "dur": 14.3,
+    "frame": "B",
+    "visual": "architecture stage 5",
+    "note": "room for meaningful player choices",
+    "exact": false
+   }
+  ]
+ },
+ {
+  "section": "A2",
+  "title": "Everything I'd normally have cut",
+  "bed": "music/village_take1.mp3",
+  "est_s": 62.5,
+  "segments": [
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 1.0,
+    "o": 6.9,
+    "dur": 5.9,
+    "frame": "B",
+    "visual": "village from above",
+    "note": "opening",
+    "exact": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-aerial.mp4",
+       "i": 0,
+       "o": 12,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         13.5,
+         14.5
+        ]
+       ]
+      },
+      {
+       "src": "../GameFootage/tour-high.mp4",
+       "i": 95,
+       "o": 105,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         94.5,
+         96.0
+        ],
+        [
+         97.5,
+         98.0
+        ],
+        [
+         105.0,
+         106.0
+        ]
+       ]
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 7.8,
+    "o": 13.0,
+    "dur": 5.2,
+    "frame": "B",
+    "visual": "typed proposal",
+    "note": "[exact] quests that take feedback, with twists",
+    "exact": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/village-propose.mp4",
+       "i": 40,
+       "o": 56,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         38.5,
+         45.5
+        ],
+        [
+         48.5,
+         48.5
+        ],
+        [
+         56.0,
+         56.0
+        ]
+       ]
+      }
+     ],
+     "status": "ok (silly refusal missing; outcome of proposal unclear)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 13.2,
+    "o": 18.3,
+    "dur": 5.1,
+    "frame": "B",
+    "visual": "word cards, attacks",
+    "note": "[exact] 171 cards, 15 languages, 154 translations",
+    "exact": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 75,
+       "o": 80,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         74.5,
+         76.0
+        ]
+       ]
+      },
+      {
+       "src": "../GameFootage/mage-run.mp4",
+       "i": 45,
+       "o": 50,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 19.0,
+    "o": 24.95,
+    "dur": 5.9,
+    "frame": "B",
+    "visual": "slide: sound",
+    "note": "[exact] voiced cast, 47 SFX, ~20 score pieces",
+    "exact": true
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 25.0,
+    "o": 31.4,
+    "dur": 6.4,
+    "frame": "B",
+    "visual": "river, bridge",
+    "note": "materials, trees, shrubs, mountains, river, marshmallows",
+    "exact": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/tour-high.mp4",
+       "i": 25,
+       "o": 35,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/tour-high.mp4",
+       "i": 40,
+       "o": 44,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 33.2,
+    "o": 38.5,
+    "dur": 5.3,
+    "frame": "B",
+    "visual": "attack effects in motion",
+    "note": "particle effects; rigged animated villagers, rats, goblins",
+    "exact": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 10,
+       "o": 20,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/archer-run.mp4",
+       "i": 10,
+       "o": 20,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/barbarian-run.mp4",
+       "i": 45,
+       "o": 55,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/mage-run.mp4",
+       "i": 45,
+       "o": 50,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 38.8,
+    "o": 47.6,
+    "dur": 8.8,
+    "frame": "B",
+    "visual": "hud, fenella captures",
+    "note": "[exact] Black Sugar UI, compass, Resolve bars, gamepad",
+    "exact": true,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 60,
+       "o": 64,
+       "interp": true
+      }
+     ],
+     "status": "ok"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 48.1,
+    "o": 53.3,
+    "dur": 5.2,
+    "frame": "B",
+    "visual": "compass, hud, controls",
+    "note": "OPTIONAL: says the gamepad support is untested, dates the video",
+    "exact": false,
+    "broll": {
+     "clips": [
+      {
+       "src": "../GameFootage/knight-run.mp4",
+       "i": 60,
+       "o": 64,
+       "interp": true
+      },
+      {
+       "src": "../GameFootage/controls-screen.mp4",
+       "i": 0,
+       "o": 8
+      }
+     ],
+     "status": "ok (HUD, controls screen; compass not clearly visible)"
+    }
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 53.0,
+    "o": 57.4,
+    "dur": 4.4,
+    "frame": "B",
+    "visual": "slide: bot",
+    "note": "[exact] the bot and automated testing",
+    "exact": true
+   },
+   {
+    "kind": "take",
+    "take": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "src": "raw/pickups2/2026-11-15 22-31-35.mp4",
+    "i": 58.7,
+    "o": 69.0,
+    "dur": 10.3,
+    "frame": "C",
+    "visual": "",
+    "note": "[exact] closing: 'a very small scale functioning open world RPG'",
+    "exact": true
+   }
+  ]
+ },
+ {
   "section": "01b",
   "title": "How we got here",
   "bed": "music/setting-out_take1.mp3",
@@ -383,6 +761,7 @@
     "frame": "B",
     "visual": "molar-hills pan + caption 'I am older than them thar hills'",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -405,6 +784,7 @@
     "frame": "B",
     "visual": "molar-hills pan",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -427,6 +807,7 @@
     "frame": "B",
     "visual": "slide: MMO list over molar-hills",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -448,7 +829,8 @@
     "dur": 11.1,
     "frame": "C",
     "visual": "",
-    "note": "scope punchline"
+    "note": "scope punchline",
+    "exact": false
    },
    {
     "kind": "take",
@@ -459,7 +841,8 @@
     "dur": 7.3,
     "frame": "B",
     "visual": "slide: idea",
-    "note": "thesis"
+    "note": "thesis",
+    "exact": false
    },
    {
     "kind": "take",
@@ -470,7 +853,8 @@
     "dur": 14.7,
     "frame": "C",
     "visual": "",
-    "note": "cut to molar-hills mid-way (15s)"
+    "note": "cut to molar-hills mid-way (15s)",
+    "exact": false
    }
   ]
  },
@@ -489,7 +873,8 @@
     "dur": 12.7,
     "frame": "B",
     "visual": "checkpoint slides",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -500,7 +885,8 @@
     "dur": 5.1,
     "frame": "B",
     "visual": "checkpoint slides",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -524,7 +910,8 @@
     "dur": 2.2,
     "frame": "C",
     "visual": "",
-    "note": "recording while an AI works"
+    "note": "recording while an AI works",
+    "exact": false
    }
   ]
  },
@@ -532,7 +919,7 @@
   "section": "03b",
   "title": "Reading the chart",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 75.8,
+  "est_s": 73.5,
   "segments": [
    {
     "kind": "take",
@@ -543,7 +930,8 @@
     "dur": 4.0,
     "frame": "P",
     "visual": "gantt full",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -554,7 +942,8 @@
     "dur": 16.2,
     "frame": "P",
     "visual": "gantt: colour key, one bar each",
-    "note": "highlights"
+    "note": "highlights",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -574,11 +963,12 @@
     "take": "13-54-05",
     "src": "raw/original/2026-11-15 13-54-05.mp4",
     "i": 68.2,
-    "o": 80.4,
-    "dur": 12.2,
+    "o": 78.1,
+    "dur": 9.9,
     "frame": "P",
     "visual": "gantt: approximate bars",
-    "note": "trim trailing 'and the'"
+    "note": "[exact] ends after 'estimate'",
+    "exact": true
    },
    {
     "kind": "take",
@@ -589,7 +979,8 @@
     "dur": 18.2,
     "frame": "P",
     "visual": "gantt: dim all but Saturday 18:00 overlap",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -600,7 +991,8 @@
     "dur": 13.8,
     "frame": "C",
     "visual": "",
-    "note": "'what's not on the chart is me'; 14s: cut to PIP over full gantt after 8s"
+    "note": "'what's not on the chart is me'; 14s: cut to PIP over full gantt after 8s",
+    "exact": false
    },
    {
     "kind": "take",
@@ -611,7 +1003,8 @@
     "dur": 8.1,
     "frame": "P",
     "visual": "gantt full",
-    "note": ""
+    "note": "",
+    "exact": false
    }
   ]
  },
@@ -631,6 +1024,7 @@
     "frame": "B",
     "visual": "first-hero and autoplay captures",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -659,6 +1053,7 @@
     "frame": "B",
     "visual": "early arena screenshot",
     "note": "trim stutter",
+    "exact": false,
     "broll": {
      "clips": [],
      "status": "missing"
@@ -674,6 +1069,7 @@
     "frame": "B",
     "visual": "HUD, Fenella captures",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -696,6 +1092,7 @@
     "frame": "B",
     "visual": "early problem screenshots",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [],
      "status": "missing"
@@ -718,7 +1115,8 @@
     "dur": 14.6,
     "frame": "B",
     "visual": "rat comparison card",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -729,7 +1127,8 @@
     "dur": 3.7,
     "frame": "C",
     "visual": "",
-    "note": "'I picked the Rodan rat'; trim 'and then'"
+    "note": "'I picked the Rodan rat'; trim 'and then'",
+    "exact": false
    },
    {
     "kind": "take",
@@ -741,6 +1140,7 @@
     "frame": "B",
     "visual": "rat in game, foliage",
     "note": "check Rodin NPCs claim",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -768,7 +1168,8 @@
     "dur": 5.2,
     "frame": "B",
     "visual": "game camera view",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -779,7 +1180,8 @@
     "dur": 13.7,
     "frame": "B",
     "visual": "BROLL Blender cleanup / mesh view",
-    "note": "needs capture"
+    "note": "needs capture",
+    "exact": false
    }
   ]
  },
@@ -799,6 +1201,7 @@
     "frame": "B",
     "visual": "world pan, compass",
     "note": "trim after 'arena game'?",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -821,6 +1224,7 @@
     "frame": "B",
     "visual": "village",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -859,6 +1263,7 @@
     "frame": "P",
     "visual": "quest givers footage",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -918,7 +1323,8 @@
     "dur": 6.9,
     "frame": "B",
     "visual": "release plan slide",
-    "note": ""
+    "note": "",
+    "exact": false
    }
   ]
  },
@@ -975,6 +1381,7 @@
     "frame": "B",
     "visual": "village from above",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1023,6 +1430,7 @@
     "frame": "B",
     "visual": "village",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1061,6 +1469,7 @@
     "frame": "B",
     "visual": "attack effects in motion",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1101,6 +1510,7 @@
     "frame": "B",
     "visual": "word cards, attacks",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1134,7 +1544,8 @@
     "dur": 2.9,
     "frame": "C",
     "visual": "",
-    "note": "'eat your vegetables!'"
+    "note": "'eat your vegetables!'",
+    "exact": false
    },
    {
     "kind": "take",
@@ -1146,6 +1557,7 @@
     "frame": "B",
     "visual": "celery arrows, flour cloud, card storm",
     "note": "check '15 languages'",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1181,7 +1593,8 @@
     "dur": 15.1,
     "frame": "C",
     "visual": "",
-    "note": "second release candidate; confirm itch upload count; cut to itch page after 8s"
+    "note": "second release candidate; confirm itch upload count; cut to itch page after 8s",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -1206,6 +1619,7 @@
     "frame": "B",
     "visual": "river, bridge, village from above",
     "note": "check river timing",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1266,7 +1680,8 @@
     "dur": 12.7,
     "frame": "B",
     "visual": "marshmallow contact sheet",
-    "note": "trim after 'time frame'"
+    "note": "trim after 'time frame'",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -1290,7 +1705,8 @@
     "dur": 1.7,
     "frame": "B",
     "visual": "UI concepts",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -1301,7 +1717,8 @@
     "dur": 16.4,
     "frame": "B",
     "visual": "UI concept sheet",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -1344,7 +1761,8 @@
     "dur": 2.7,
     "frame": "B",
     "visual": "fixes4.txt on screen",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -1355,7 +1773,8 @@
     "dur": 2.0,
     "frame": "C",
     "visual": "",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -1366,7 +1785,8 @@
     "dur": 3.4,
     "frame": "P",
     "visual": "fixes4 text",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "take",
@@ -1377,7 +1797,8 @@
     "dur": 22.1,
     "frame": "P",
     "visual": "fixes4 quotes text on screen",
-    "note": ""
+    "note": "",
+    "exact": false
    },
    {
     "kind": "pickup",
@@ -1420,6 +1841,7 @@
     "frame": "B",
     "visual": "camera lifting over a canopy",
     "note": "",
+    "exact": false,
     "broll": {
      "clips": [
       {
@@ -1451,7 +1873,8 @@
     "dur": 3.2,
     "frame": "C",
     "visual": "",
-    "note": "'Four days. One dude.'"
+    "note": "'Four days. One dude.'",
+    "exact": false
    }
   ]
  },
@@ -1459,7 +1882,7 @@
   "section": "09",
   "title": "Why do this",
   "bed": "music/emotional-revelation_take1.mp3",
-  "est_s": 58.5,
+  "est_s": 23.9,
   "segments": [
    {
     "kind": "take",
@@ -1470,31 +1893,8 @@
     "dur": 20.1,
     "frame": "C",
     "visual": "",
-    "note": "20s on CAM: cut to B-roll every other sentence"
-   },
-   {
-    "kind": "pickup",
-    "id": "09-lookatwhat",
-    "text": "Look at what's in here.",
-    "frame": "B",
-    "est": 3,
-    "visual": "",
-    "recorded": [
-     "build/clean/09-lookatwhat.mp4"
-    ],
-    "dur": 1.7,
-    "partial": false
-   },
-   {
-    "kind": "take",
-    "take": "13-30-15",
-    "src": "raw/original/2026-11-15 13-30-15.mp4",
-    "i": 132.4,
-    "o": 165.3,
-    "dur": 32.9,
-    "frame": "B",
-    "visual": "one shot per draft-list item",
-    "note": "check list items and 154"
+    "note": "20s on CAM: cut to B-roll every other sentence",
+    "exact": false
    },
    {
     "kind": "pickup",

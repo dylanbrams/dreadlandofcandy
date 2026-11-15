@@ -15,7 +15,7 @@ TOASTS = json.loads((HERE.parent / "GameFootage" / "toasts.json").read_text(enco
 BED = "music/{}.mp3".format
 
 S = {}
-ORDER = ["00", "01", "02", "01b", "03", "03b", "04", "04b", "05", "06", "07", "08", "08b", "09", "10"]
+ORDER = ["00", "01", "02", "A1", "A2", "01b", "03", "03b", "04", "04b", "05", "06", "07", "08", "08b", "09", "10"]
 S["00"] = dict(title="Cold open", bed=None, segs=[
     ("raw/pickups/BuildMeAnMMOPlease.wav", 0.0, 4.43, "B", "coldopen beat 1", "hopeful; Dylan re-recorded (Nov 15 evening)"),
     ("12-16-09", 12.4, 15.4, "B", "coldopen beat 2", "more tired"),
@@ -34,13 +34,33 @@ S["01b"] = dict(title="How we got here", bed=BED("setting-out_take1"), segs=[
     ("12-29-51", 0.3, 7.6, "B", "slide: idea", "thesis"),
     ("12-29-51", 22.5, 37.2, "C", "", "cut to molar-hills mid-way (15s)"),
 ])
+S["A1"] = dict(title="How it works (architecture)", bed=BED("mystery_take1"), segs=[
+    ("raw/pickups2/2026-11-15 22-30-17.mp4", 1.7, 10.4, "B", "architecture stage 1", "client -> REST server -> database + LLM"),
+    ("raw/pickups2/2026-11-15 22-30-17.mp4", 11.2, 15.0, "B", "architecture stage 2", "[exact] typed plan goes up as a request"),
+    ("raw/pickups2/2026-11-15 22-30-17.mp4", 15.2, 24.3, "B", "architecture stage 3", "the gates: validate, limit, screen, cache, budget, model"),
+    ("raw/pickups2/2026-11-15 22-30-17.mp4", 25.1, 30.5, "B", "architecture stage 4", "[exact] any failure: authored quests, nothing breaks"),
+    ("raw/pickups2/2026-11-15 22-31-01.mp4", 1.6, 5.1, "B", "architecture stage 5", "model proposes, server decides"),
+    ("raw/pickups2/2026-11-15 22-31-01.mp4", 7.3, 21.6, "B", "architecture stage 5", "room for meaningful player choices"),
+])
+S["A2"] = dict(title="Everything I'd normally have cut", bed=BED("village_take1"), segs=[
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 1.0, 6.9, "B", "village from above", "opening"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 7.8, 13.0, "B", "typed proposal", "[exact] quests that take feedback, with twists"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 13.2, 18.3, "B", "word cards, attacks", "[exact] 171 cards, 15 languages, 154 translations"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 19.0, 24.95, "B", "slide: sound", "[exact] voiced cast, 47 SFX, ~20 score pieces"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 25.0, 31.4, "B", "river, bridge", "materials, trees, shrubs, mountains, river, marshmallows"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 33.2, 38.5, "B", "attack effects in motion", "particle effects; rigged animated villagers, rats, goblins"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 38.8, 47.6, "B", "hud, fenella captures", "[exact] Black Sugar UI, compass, Resolve bars, gamepad"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 48.1, 53.3, "B", "compass, hud, controls", "OPTIONAL: says the gamepad support is untested, dates the video"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 53.0, 57.4, "B", "slide: bot", "[exact] the bot and automated testing"),
+    ("raw/pickups2/2026-11-15 22-31-35.mp4", 58.7, 69.0, "C", "", "[exact] closing: 'a very small scale functioning open world RPG'"),
+])
 S["02"] = dict(title="Hook montage", bed=BED("standard-combat_take1"), segs=[
     ("13-09-00", 0.3, 2.5, "C", "", "what did I end up with"),
     ("13-09-07", 8.3, 23.9, "B", "BROLL attack word cards, then non-English battle cry", "check 'talk back'"),
     ("13-09-43", 0.3, 12.1, "B", "BROLL knight placards, Resolve bar, pacified rat", "check 'have health'"),
     ("13-10-07", 0.5, 21.2, "B", "BROLL improvise screen, two new routes", ""),
     ("13-10-34", 0.6, 16.5, "B", "BROLL typed proposal, route, refusal", ""),
-    ("13-11-24", 0.9, 10.4, "B", "architecture diagram", "AI on a leash: Director service diagram (graphics/architecture.png)"),
+    ("13-11-24", 0.9, 10.4, "C", "", "AI picks from what we built and tested; works if the server is down"),
     ("PICKUP", "02-encores", "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.", "B", 12, "BROLL encore offer, Rush timer, Crowd swarm"),
     ("13-12-35", 4.5, 5.7, "B", "BROLL film shoot", ""),
     ("PICKUP", "02-filmshoot", "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.", "B", 14, "BROLL CUT pitch, typed note, budget boxes"),
@@ -56,7 +76,7 @@ S["03b"] = dict(title="Reading the chart", bed=BED("setting-out_take1"), segs=[
     ("13-54-05", 4.4, 8.4, "P", "gantt full", ""),
     ("13-54-05", 20.2, 36.4, "P", "gantt: colour key, one bar each", "highlights"),
     ("PICKUP", "03b-warning", "A warning before anyone reads it like a leaderboard.", "C", 4, ""),
-    ("13-54-05", 68.2, 80.4, "P", "gantt: approximate bars", "trim trailing 'and the'"),
+    ("13-54-05", 68.2, 78.1, "P", "gantt: approximate bars", "[exact] ends after 'estimate'"),
     ("13-54-05", 118.8, 137.0, "P", "gantt: dim all but Saturday 18:00 overlap", ""),
     ("13-58-12", 2.0, 15.8, "C", "", "'what's not on the chart is me'; 14s: cut to PIP over full gantt after 8s"),
     ("13-58-41", 49.1, 57.2, "P", "gantt full", ""),
@@ -113,8 +133,6 @@ S["08b"] = dict(title="The river is terrible", bed=BED("boss-battle_take1"), seg
 ])
 S["09"] = dict(title="Why do this", bed=BED("emotional-revelation_take1"), segs=[
     ("13-30-15", 7.7, 27.8, "C", "", "20s on CAM: cut to B-roll every other sentence"),
-    ("PICKUP", "09-lookatwhat", "Look at what's in here.", "B", 3, ""),
-    ("13-30-15", 132.4, 165.3, "B", "one shot per draft-list item", "check list items and 154"),
     ("PICKUP", "09-green", "Every test was green when I wrote 'the river is terrible.'", "C", 4, "river-before on 'the river is terrible'"),
 ])
 S["10"] = dict(title="Ending", bed=BED("victory_take1"), segs=[
@@ -208,7 +226,7 @@ def main():
             else:
                 d = round(s[2] - s[1], 1)
                 segs.append(dict(kind="take", take=s[0], src=(s[0] if s[0].startswith("raw/") else f"raw/original/2026-11-15 {s[0]}.mp4"), i=s[1], o=s[2], dur=d,
-                                 frame=s[3], visual=s[4], note=s[5]))
+                                 frame=s[3], visual=s[4], note=s[5], exact=("[exact]" in s[5])))
             dur += d
         for g in segs:
             if g["frame"] in "BP" and g.get("visual"):

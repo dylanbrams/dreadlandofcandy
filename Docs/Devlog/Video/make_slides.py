@@ -107,6 +107,20 @@ def main():
                 "Does it work at the game camera?"], y + 70, ORANGE, size=54, width=40)
     save(im, "slide_cleanup.png")
 
+    # 7. sound
+    im, d = base(); frame(d, ORANGE); tag(d, "SOUND", ORANGE)
+    y = title(d, "A voiced cast, and a full score.", y=220, size=88, width=26)
+    bullets(d, ["A voiced faerie director: 88 lines", "Voiced heroes, one cast per class", "47 sound effects",
+                "About twenty pieces of orchestral score, two takes each"], y + 60, ORANGE, size=50, width=44)
+    save(im, "slide_sound.png")
+
+    # 8. the bot
+    im, d = base(); frame(d, MINT); tag(d, "TESTING", MINT)
+    y = title(d, "A bot plays the whole game by itself.", y=220, size=88, width=26)
+    bullets(d, ["Every build gets checked, start to credits", "89 automated tests", "A packaged build, smoke-tested"],
+            y + 60, MINT, size=52, width=44)
+    save(im, "slide_bot.png")
+
     # 6. what's in here
     im, d = base(); frame(d, MINT); tag(d, "WHAT'S IN HERE", MINT)
     items = ["154 battle cries in other languages", "A voiced faerie director and a voiced cast",
