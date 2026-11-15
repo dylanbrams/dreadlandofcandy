@@ -1,6 +1,6 @@
 # Dark candy UI — revised direction
 
-Dylan's feedback: the first samples were too kiddie. Explore brooding dark fantasy, with peppermints and gumdrops. This supersedes the bright/cartoon direction. Samples only: no engine, game, build or automation, no runtime source edits.
+Dylan rejected the first samples as too kiddie, then selected **D — Black Sugar / Frostbound** and authorized implementation. The concept boards remain design references. Source implementation is in progress; engine validation is pending the terrain worker's handoff. See `IMPLEMENTATION.md` for the current state.
 
 ## C — Saccharine Reliquary
 

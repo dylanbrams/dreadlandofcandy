@@ -1,7 +1,11 @@
 #include "UI/JamScreenWidget.h"
-#include "UI/JamComicBorder.h"
+#include "UI/JamCandyBorder.h"
+#include "UI/JamUiStyle.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
+#include "Components/Image.h"
+#include "Components/ScaleBox.h"
+#include "Engine/Texture2D.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/HorizontalBox.h"
@@ -17,9 +21,9 @@
 
 namespace
 {
-	const FLinearColor ScreenGold(1.f, 0.82f, 0.3f);
-	const FLinearColor ScreenDim(0.72f, 0.72f, 0.7f);
-	const FLinearColor StampRed(1.f, 0.2f, 0.12f);
+	const FLinearColor ScreenGold = JamUi::Mint();
+	const FLinearColor ScreenDim = JamUi::Dim();
+	const FLinearColor StampRed = JamUi::Ruby();
 	constexpr int32 MaxRows = 4;
 	constexpr int32 MaxQuotes = 6;
 	constexpr int32 MaxOptions = 9;
@@ -41,12 +45,7 @@ namespace
 
 	FSlateBrush ScreenRounded(const FLinearColor& Outline, float Radius, float OutlineWidth)
 	{
-		FSlateBrush B;
-		B.DrawAs = ESlateBrushDrawType::RoundedBox;
-		B.TintColor = FSlateColor(FLinearColor::White);
-		B.OutlineSettings = FSlateBrushOutlineSettings(FVector4(Radius, Radius, Radius, Radius), FSlateColor(Outline), OutlineWidth);
-		B.OutlineSettings.RoundingType = ESlateBrushRoundingType::FixedRadius;
-		return B;
+		return JamUi::Frame(Outline, OutlineWidth);
 	}
 
 	bool IsAny(const FKey& K, std::initializer_list<FKey> Keys)
@@ -71,9 +70,9 @@ TSharedRef<SWidget> UJamScreenWidget::RebuildWidget()
 UTextBlock* UJamScreenWidget::MakeText(int32 Size, const FLinearColor& Colour, bool bBold)
 {
 	UTextBlock* T = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
-	T->SetFont(FCoreStyle::GetDefaultFontStyle(bBold ? "Bold" : "Regular", Size));
-	T->SetColorAndOpacity(FSlateColor(Colour));
-	T->SetShadowOffset(FVector2D(2.f, 2.f));
+	T->SetFont(JamUi::Font(Size, bBold));
+	T->SetColorAndOpacity(FSlateColor(Colour == FLinearColor::White ? JamUi::Ink() : Colour));
+	T->SetShadowOffset(FVector2D(1.f, 1.f));
 	T->SetShadowColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.7f));
 	T->SetJustification(ETextJustify::Center);
 	return T;
@@ -94,11 +93,19 @@ void UJamScreenWidget::BuildTree()
 	WidgetTree->RootWidget = Root;
 
 	Backdrop = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	Backdrop->SetBrushColor(FLinearColor(0.02f, 0.015f, 0.03f, 0.94f));
+	Backdrop->SetBrushColor(JamUi::Surface());
 	{
 		UCanvasPanelSlot* S = Root->AddChildToCanvas(Backdrop);
 		S->SetAnchors(FAnchors(0.f, 0.f, 1.f, 1.f));
 		S->SetOffsets(FMargin(0.f));
+	}
+	MenuShade = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	MenuShade->SetBrushColor(JamUi::Surface(0.72f));
+	MenuShade->SetVisibility(ESlateVisibility::HitTestInvisible);
+	{
+		UCanvasPanelSlot* S = Root->AddChildToCanvas(MenuShade);
+		S->SetAnchors(FAnchors(0.f, 0.f, 0.f, 1.f));
+		S->SetOffsets(FMargin(0.f, 0.f, 980.f, 0.f));
 	}
 
 	Column = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
@@ -112,19 +119,38 @@ void UJamScreenWidget::BuildTree()
 
 	Kicker = MakeText(24, ScreenDim, true);
 	Add(Kicker, FMargin(0.f, 0.f, 0.f, 6.f));
+	USizeBox* CrestSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
+	CrestSize->SetWidthOverride(420.f);
+	CrestSize->SetHeightOverride(64.f);
+	UJamCandyBorder* Crest = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
+	Crest->bCrest = true;
+	Crest->SetVisibility(ESlateVisibility::HitTestInvisible);
+	CrestSize->SetContent(Crest);
+	if (UTexture2D* CrestTexture = LoadObject<UTexture2D>(nullptr, TEXT("/Game/Art/UI/BlackSugar/T_UI_BlackSugarCrest"), nullptr, LOAD_NoWarn | LOAD_Quiet))
+	{
+		UImage* Art = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
+		Art->SetBrushFromTexture(CrestTexture, true);
+		Art->SetVisibility(ESlateVisibility::HitTestInvisible);
+		UScaleBox* Fit = WidgetTree->ConstructWidget<UScaleBox>(UScaleBox::StaticClass());
+		Fit->SetStretch(EStretch::ScaleToFit);
+		Fit->AddChild(Art);
+		CrestSize->SetContent(Fit);
+	}
+	Add(CrestSize, FMargin(0.f, 0.f, 0.f, 8.f));
 
 	// The title, with a rubber stamp slapped across it.
 	UOverlay* TitleStack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
-	Title = MakeText(84, ScreenGold, true);
-	Title->SetShadowOffset(FVector2D(5.f, 5.f));
+	Title = MakeText(64, JamUi::Ink(), true);
+	Title->SetFont(JamUi::Font(64, true, true));
+	Title->SetShadowOffset(FVector2D(2.f, 2.f));
 	Title->SetJustification(ETextJustify::Center);
 	Title->SetWrapTextAt(1760.f);   // a generated title (T16a) can run to 48 characters
 	TitleStack->AddChildToOverlay(Title)->SetHorizontalAlignment(HAlign_Center);
 	Stamp = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	Stamp->SetBrush(ScreenRounded(StampRed, 6.f, 5.f));
+	Stamp->SetBrush(ScreenRounded(StampRed, 2.f, 2.f));
 	Stamp->SetBrushColor(FLinearColor::Transparent);   // outline and ink only; the title reads through it
-	Stamp->SetPadding(FMargin(18.f, 4.f));
-	StampText = MakeText(30, StampRed, true);
+	Stamp->SetPadding(FMargin(10.f, 3.f));
+	StampText = MakeText(22, StampRed, true);
 	StampText->SetShadowOffset(FVector2D::ZeroVector);
 	Stamp->SetContent(StampText);
 	// Dylan: at 45 degrees, a little below and to the right of the title's last word (placed in ApplyView).
@@ -168,7 +194,7 @@ void UJamScreenWidget::BuildTree()
 	QuotesBox = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 	for (int32 i = 0; i < MaxQuotes; ++i)
 	{
-		UTextBlock* Q = MakeText(24, FLinearColor(0.9f, 0.85f, 1.f), false);
+		UTextBlock* Q = MakeText(24, JamUi::Dim(), false);
 		Q->SetWrapTextAt(1400.f);
 		QuotesBox->AddChildToVerticalBox(Q)->SetPadding(FMargin(0.f, 3.f));
 		QuoteTexts.Add(Q);
@@ -196,10 +222,10 @@ void UJamScreenWidget::BuildTree()
 	OptionsBox = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 	for (int32 i = 0; i < MaxOptions; ++i)
 	{
-		UBorder* Row = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+		UBorder* Row = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 		Row->SetPadding(FMargin(30.f, 16.f));
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
-		Size->SetWidthOverride(620.f);
+		Size->SetWidthOverride(700.f);
 		UHorizontalBox* H = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
 		UTextBlock* L = MakeText(32, FLinearColor::White, true);
 		UTextBlock* V = MakeText(28, ScreenDim, false);
@@ -238,18 +264,29 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	if (!Root) { return; }
 	if (View.Screen != ShownScreen) { ShownScreen = View.Screen; ShownAt = RealSeconds; }
 
-	Backdrop->SetBrushColor(View.bOpaque ? FLinearColor(0.02f, 0.015f, 0.03f, 0.95f) : FLinearColor(0.f, 0.f, 0.f, 0.6f));
+	const bool bSideMenu = View.Screen == EJamScreen::Title || View.Screen == EJamScreen::Pause || View.Screen == EJamScreen::Options || View.Screen == EJamScreen::QuitConfirm;
+	Backdrop->SetBrushColor(JamUi::Surface(View.bOpaque ? 0.94f : bSideMenu ? 0.48f : 0.82f));
+	ShowScreenPart(MenuShade, bSideMenu);
+	if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(Column->Slot))
+	{
+		S->SetAnchors(bSideMenu ? FAnchors(0.075f, 0.48f) : FAnchors(0.5f, 0.48f));
+		S->SetAlignment(bSideMenu ? FVector2D(0.f, 0.5f) : FVector2D(0.5f, 0.5f));
+	}
+	Title->SetWrapTextAt(bSideMenu ? 760.f : 1760.f);
+	Subtitle->SetWrapTextAt(bSideMenu ? 740.f : 1300.f);
+	CaptionText->SetWrapTextAt(bSideMenu ? 710.f : 1400.f);
 
 	SetScreenText(Kicker, View.Kicker);
 	ShowScreenPart(Kicker, !View.Kicker.IsEmpty());
 	SetScreenText(Title, View.Title);
 	// The rating card's single letter is huge; everything else is a title.
-	Title->SetFont(FCoreStyle::GetDefaultFontStyle("Bold", View.Screen == EJamScreen::Rating ? 220 : (View.Title.Len() > 36 ? 52 : View.Title.Len() > 26 ? 60 : View.Title.Len() > 18 ? 72 : 84)));
+	const int32 HeadingSize = View.Screen == EJamScreen::Rating ? 180 : (View.Screen == EJamScreen::Title || View.Options.Num() >= 8) ? 50 : (View.Title.Len() > 36 ? 44 : View.Title.Len() > 26 ? 50 : 64);
+	Title->SetFont(JamUi::Font(HeadingSize, true, true));
 	SetScreenText(StampText, View.Stamp);
 	ShowScreenPart(Stamp, !View.Stamp.IsEmpty());
 	// The stamp lands a beat after the title.
 	const float StampT = FMath::Clamp((RealSeconds - ShownAt - 0.5f) / 0.15f, 0.f, 1.f);
-	Stamp->SetRenderScale(FVector2D(FMath::Lerp(2.2f, 1.f, StampT)));
+	Stamp->SetRenderScale(FVector2D(1.f));
 	{
 		// Centre it just past the title's right end and below its baseline. Its size is known from the second frame
 		// (it fades in later than that).
@@ -287,7 +324,7 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 			SetScreenText(CreditTexts[i], View.Body[i]);
 			// Section heads and the real credits read differently from the jokes.
 			const bool bHead = View.Body[i].StartsWith(TEXT("—"));
-			CreditTexts[i]->SetColorAndOpacity(FSlateColor(bHead ? ScreenGold : FLinearColor::White));
+			CreditTexts[i]->SetColorAndOpacity(FSlateColor(bHead ? ScreenGold : JamUi::Ink()));
 		}
 		const float Content = FMath::Min(View.Body.Num(), MaxCredits) * CreditLineHeight;
 		CreditsBox->SetRenderTranslation(FVector2D(0.f, CreditsClipHeight - FMath::Clamp(View.Scroll, 0.f, 1.f) * (CreditsClipHeight + Content)));
@@ -304,17 +341,17 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 		}
 		if (!bOpt) { continue; }
 		// Tall menus need room for their caption and footer as well as every option.
-		OptionRows[i]->SetPadding(FMargin(30.f, ShownOptions >= 8 ? 9.f : 16.f));
-		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::QuestBranches ? 1000.f : View.Screen == EJamScreen::Character ? 900.f : 620.f); }
+		OptionRows[i]->SetPadding(FMargin(30.f, ShownOptions >= 8 ? 6.5f : 14.f));
+		if (USizeBox* Size = Cast<USizeBox>(OptionRows[i]->GetContent())) { Size->SetWidthOverride(View.Screen == EJamScreen::QuestBranches ? 1000.f : View.Screen == EJamScreen::Character ? 900.f : 700.f); }
 		OptionLabels[i]->SetWrapTextAt(View.Screen == EJamScreen::QuestBranches ? 950.f : 0.f);
 		const FJamMenuOption& O = View.Options[i];
 		const bool bSel = i == View.Selected && O.bEnabled;
-		OptionRows[i]->SetBrush(ScreenRounded(bSel ? ScreenGold : FLinearColor(1.f, 1.f, 1.f, 0.15f), 8.f, bSel ? 3.f : 1.f));
-		OptionRows[i]->SetBrushColor(bSel ? FLinearColor(0.25f, 0.18f, 0.04f, 0.85f) : FLinearColor(0.f, 0.f, 0.f, 0.45f));
+		OptionRows[i]->SetBrush(JamUi::Frame(bSel ? JamUi::Mint() : JamUi::Silver().CopyWithNewOpacity(O.bEnabled ? 0.55f : 0.25f), bSel ? 2.f : 1.f));
+		OptionRows[i]->SetBrushColor(bSel ? JamUi::Selection() : JamUi::Surface(0.88f));
 		SetScreenText(OptionLabels[i], bSel ? FString::Printf(TEXT("▶  %s"), *O.Label) : O.Label);
-		OptionLabels[i]->SetColorAndOpacity(FSlateColor(!O.bEnabled ? FLinearColor(0.4f, 0.4f, 0.4f) : (bSel ? ScreenGold : FLinearColor::White)));
+		OptionLabels[i]->SetColorAndOpacity(FSlateColor(!O.bEnabled ? JamUi::Silver() : (bSel ? ScreenGold : JamUi::Ink())));
 		SetScreenText(OptionValues[i], O.Value);
-		OptionValues[i]->SetColorAndOpacity(FSlateColor(O.bEnabled ? ScreenDim : FLinearColor(0.35f, 0.35f, 0.35f)));
+		OptionValues[i]->SetColorAndOpacity(FSlateColor(O.bEnabled ? ScreenDim : JamUi::Silver()));
 	}
 
 	// Credits keep the post-credits pitch for the end of the scroll.
@@ -323,6 +360,16 @@ void UJamScreenWidget::ApplyView(const FJamScreenView& View, float RealSeconds)
 	SetScreenText(CaptionText, View.Caption);
 	SetScreenText(FooterText, View.Footer);
 	ShowScreenPart(FooterText, !View.Footer.IsEmpty());
+
+	// Long quest copy and tall menus must fit above the independent input footer.
+	// Render scaling preserves the real cached mouse geometry and the existing row/action model.
+	const FVector2D RootSize = Root->GetCachedGeometry().GetLocalSize();
+	const FVector2D ContentSize = Column->GetDesiredSize();
+	const float AvailableHeight = FMath::Max(1.f, (RootSize.Y > 0.f ? RootSize.Y : 1080.f) - 160.f);
+	const float AvailableWidth = bSideMenu ? (RootSize.X > 0.f ? RootSize.X : 1920.f) * 0.47f : (RootSize.X > 0.f ? RootSize.X : 1920.f) - 96.f;
+	const float Fit = FMath::Min(1.f, FMath::Min(AvailableHeight / FMath::Max(1.f, ContentSize.Y), AvailableWidth / FMath::Max(1.f, ContentSize.X)));
+	Column->SetRenderTransformPivot(bSideMenu ? FVector2D(0.f, 0.5f) : FVector2D(0.5f, 0.5f));
+	Column->SetRenderScale(FVector2D(Fit, Fit));
 }
 
 int32 UJamScreenWidget::OptionUnder(const FVector2D& ScreenPosition) const

@@ -13,6 +13,7 @@ class UCanvasPanel;
 class UProgressBar;
 class UTextBlock;
 class UOverlay;
+class UImage;
 class UMaterialInstanceDynamic;
 
 /**
@@ -99,6 +100,8 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillKeys;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillNames;
 	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillRanks;
+	UPROPERTY(Transient) TArray<TObjectPtr<UTextBlock>> SkillCooldowns;
+	UPROPERTY(Transient) TArray<TObjectPtr<UImage>> SkillIcons;
 	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInstanceDynamic>> SkillIconMaterials;
 	UPROPERTY(Transient) TArray<TObjectPtr<UBorder>> SkillDamageAccents;
 	TArray<FString> ShownIconPaths;

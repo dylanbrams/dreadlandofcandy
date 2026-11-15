@@ -5,6 +5,7 @@
 #include "Game/JamNuisance.h"
 #include "Game/JamQuestMarker.h"
 #include "UI/JamHudWidget.h"
+#include "UI/JamUiStyle.h"
 #include "UI/JamScreenWidget.h"
 #include "UI/JamNoteEditor.h"
 #include "Engine/Canvas.h"
@@ -342,7 +343,14 @@ void AJamHUD::BuildView()
 			{
 				const TArray<TPair<float, float>> Left = ASC->GetActiveEffectsTimeRemainingAndDuration(
 					FGameplayEffectQuery::MakeQuery_MatchAnyOwningTags(FGameplayTagContainer(CooldownTags[i])));
-				for (const TPair<float, float>& L : Left) { if (L.Value > 0.f) { Slot.Cooldown = FMath::Max(Slot.Cooldown, L.Key / L.Value); } }
+				for (const TPair<float, float>& L : Left)
+				{
+					if (L.Value > 0.f)
+					{
+						Slot.Cooldown = FMath::Max(Slot.Cooldown, L.Key / L.Value);
+						Slot.CooldownSeconds = FMath::Max(Slot.CooldownSeconds, L.Key);
+					}
+				}
 			}
 			View.Skills.Add(Slot);
 		}
@@ -729,17 +737,17 @@ void AJamHUD::DrawCompass()
 	const float Rel = FRotator::NormalizeAxis(To.Rotation().Yaw - CamYaw);   // -180..180, 0 = straight ahead
 
 	// The strip: 120 degrees of view across 900 px; beyond that the marker waits at the edge, pointing on.
-	const float StripW = 900.f * Px, StripY = 46.f * Px, Cx = W * 0.5f;
-	DrawRect(FLinearColor(0.f, 0.f, 0.f, 0.35f), Cx - StripW * 0.5f, StripY - 3.f * Px, StripW, 6.f * Px);
+	const float StripW = 560.f * Px, StripY = 48.f * Px, Cx = W * 0.5f;
+	DrawRect(JamUi::Surface(0.9f), Cx - StripW * 0.5f - 12.f * Px, StripY - 14.f * Px, StripW + 24.f * Px, 30.f * Px);
+	DrawLine(Cx - StripW * 0.5f, StripY, Cx + StripW * 0.5f, StripY, JamUi::Silver(), Px);
 	for (int32 Tick = -60; Tick <= 60; Tick += 15)
 	{
 		const float X = Cx + Tick / 60.f * StripW * 0.5f;
-		DrawRect(FLinearColor(1.f, 1.f, 1.f, Tick == 0 ? 0.8f : 0.35f), X - 1.f * Px, StripY - (Tick == 0 ? 10.f : 6.f) * Px, 2.f * Px, (Tick == 0 ? 20.f : 12.f) * Px);
+		DrawRect(JamUi::Ink().CopyWithNewOpacity(Tick == 0 ? 0.85f : 0.5f), X - 0.5f * Px, StripY - (Tick == 0 ? 8.f : 4.f) * Px, Px, (Tick == 0 ? 16.f : 8.f) * Px);
 	}
 	const float Clamped = FMath::Clamp(Rel, -60.f, 60.f);
 	const float Mx = Cx + Clamped / 60.f * StripW * 0.5f;
-	const float Pulse = 0.55f + 0.45f * (0.5f + 0.5f * FMath::Sin(GetWorld()->GetRealTimeSeconds() * 2.f * PI * 1.5f));
-	const FLinearColor Gold(1.f, 0.83f, 0.3f, Pulse);
+	const FLinearColor Gold = JamUi::Mint();
 	const float S = 14.f * Px;
 	// Match the world pointer: a red/gold cane on the active compass bearing.
 	if (FMath::Abs(Rel) <= 60.f)
@@ -747,14 +755,14 @@ void AJamHUD::DrawCompass()
 		for (int32 Band = 0; Band < 6; ++Band)
 		{
 			const float Y = StripY - S * 2.f + Band * S / 3.f;
-			DrawLine(Mx, Y, Mx, Y + S / 3.f, Band % 2 == 0 ? FLinearColor(1.f, 0.05f, 0.08f, Pulse) : Gold, 5.f * Px);
+			DrawLine(Mx, Y, Mx, Y + S / 3.f, Band % 2 == 0 ? JamUi::Ruby() : JamUi::Ink(), 3.f * Px);
 		}
 		for (int32 Segment = 0; Segment < 8; ++Segment)
 		{
 			const float A = Segment * PI / 8.f, B = (Segment + 1) * PI / 8.f;
 			DrawLine(Mx + S * 0.5f - S * 0.5f * FMath::Cos(A), StripY - S * 2.f - S * 0.5f * FMath::Sin(A),
 				Mx + S * 0.5f - S * 0.5f * FMath::Cos(B), StripY - S * 2.f - S * 0.5f * FMath::Sin(B),
-				Segment % 2 == 0 ? FLinearColor(1.f, 0.05f, 0.08f, Pulse) : Gold, 5.f * Px);
+				Segment % 2 == 0 ? JamUi::Ruby() : JamUi::Ink(), 3.f * Px);
 		}
 		DrawLine(Mx - S * 0.5f, StripY - S * 0.5f, Mx, StripY, Gold, 3.f * Px);
 		DrawLine(Mx + S * 0.5f, StripY - S * 0.5f, Mx, StripY, Gold, 3.f * Px);
@@ -772,6 +780,7 @@ void AJamHUD::DrawCompass()
 	const float Scale = 1.3f * Px;
 	GetTextSize(Label, Tw, Th, Font, Scale);
 	const float Lx = FMath::Clamp(Mx - Tw * 0.5f, 8.f, W - Tw - 8.f);
+	DrawRect(JamUi::Surface(0.94f), Lx - 8.f * Px, StripY + 28.f * Px, Tw + 16.f * Px, Th + 12.f * Px);
 	DrawText(Label, FLinearColor::Black, Lx + 2.f * Px, StripY + 34.f * Px + 2.f * Px, Font, Scale);
 	DrawText(Label, Gold, Lx, StripY + 34.f * Px, Font, Scale);
 

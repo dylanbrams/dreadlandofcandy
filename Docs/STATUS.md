@@ -4,6 +4,16 @@ Keep this page short: current state, what is unverified, what is next. Session h
 `Docs/DEVLOG.md`; the old long-form STATUS is in `Docs/Status/STATUS-archive-to-Nov15.md` (read a
 section there only when a task needs it).
 
+## Black Sugar UI (Nov 15, after terrain handoff)
+
+Implemented the selected dark candy UI. Editor build passes, all 82 Jam tests pass.
+Three UI textures and OFL fonts included; reviewed six initial screens, then fixed
+pause clipping/cooldown overlap and reviewed final pause at 1080p and HUD at 720p.
+Evidence/handoff: `Docs/Design/CandyUI/IMPLEMENTATION.md`. Engine FREE, no running
+editor/game. Existing package/ZIP does not contain this UI; no package or upload
+in this task. Full 25-screen sweep and physical gamepad playtest deferred to
+conserve Dylan's usage.
+
 ## Where things stand (Nov 15, ~08:30 JST / Nov 14 15:30 PST)
 
 - Deadline: **Nov 15, 5:59 PM PST**. Submission ZIP: `Builds/ImaginaryComponent_TheDreadLandOfCandy.zip`

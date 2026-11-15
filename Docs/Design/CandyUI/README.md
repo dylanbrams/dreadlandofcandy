@@ -2,7 +2,9 @@
 
 Design preparation only, requested by Dylan. No engine, game, build, or automation was launched. No runtime files were changed. Open `index.html` locally to compare the two generated concept boards.
 
-## Current direction: dark fantasy
+## Selected direction: D — Black Sugar / Frostbound
+
+Dylan selected Black Sugar and authorized implementation. See `IMPLEMENTATION.md` for the source checkpoint and engine verification still required; font files and provenance are in `FONTS.md`. Earlier recommendations of A or C are superseded.
 
 Dylan rejected A/B as too kiddie. The current exploration is **C — Saccharine Reliquary** and **D — Black Sugar / Frostbound**. See `dark-fantasy.html` and `DARK_FANTASY.md`. A/B remain archived comparisons; their cheerful palette, typography and motion proposals are superseded. The source integration seams and preservation requirements below still apply. The earlier recommendation below is historical.
 

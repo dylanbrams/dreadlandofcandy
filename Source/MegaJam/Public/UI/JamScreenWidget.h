@@ -49,6 +49,7 @@ private:
 
 	UPROPERTY(Transient) TObjectPtr<UCanvasPanel> Root;
 	UPROPERTY(Transient) TObjectPtr<UBorder> Backdrop;
+	UPROPERTY(Transient) TObjectPtr<UBorder> MenuShade;
 	UPROPERTY(Transient) TObjectPtr<UVerticalBox> Column;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> Kicker;
 	UPROPERTY(Transient) TObjectPtr<UTextBlock> Title;

@@ -67,6 +67,19 @@ bool FJamHudInputTest::RunTest(const FString&)
     FJamHudView View;
     JamHud::Sample(TEXT("hud"), View);
     Hud->ApplyView(View, 10.f);
+    TestEqual(TEXT("sample cooldown has readable seconds"), Hud->SkillCooldowns[1]->GetText().ToString(), FString(TEXT("3s")));
+    View.Skills[1].CooldownSeconds = 2.1f;
+    Hud->ApplyView(View, 10.f);
+    TestEqual(TEXT("remaining cooldown rounds up"), Hud->SkillCooldowns[1]->GetText().ToString(), FString(TEXT("3s")));
+    View.Skills[1].CooldownSeconds = 0.f;
+    Hud->ApplyView(View, 10.f);
+    TestEqual(TEXT("ready skill hides time overlay"), Hud->SkillCooldowns[1]->GetVisibility(), ESlateVisibility::Collapsed);
+    View.Skills[1].CooldownSeconds = 3.f;
+    View.Skills[1].bUnlocked = false;
+    Hud->ApplyView(View, 10.f);
+    TestEqual(TEXT("locked skill hides time overlay"), Hud->SkillCooldowns[1]->GetVisibility(), ESlateVisibility::Collapsed);
+    View.Skills[1].bUnlocked = true;
+    Hud->ApplyView(View, 10.f);
     // Diagnose the MID parameters as well as the GAS read: replacing an icon
     // must retain the material and continue updating its radial parameter.
     UMaterialInstanceDynamic* OriginalCooldown = Hud->SkillIconMaterials[1];

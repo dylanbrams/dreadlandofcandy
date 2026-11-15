@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Black Sugar — fonts and production artwork</title>
+<style>
+@font-face{font-family:Cinzel;src:url('../../../Content/UI/Fonts/Cinzel-Medium.ttf')}@font-face{font-family:Cormorant;src:url('../../../Content/UI/Fonts/CormorantGaramond-Medium.ttf');font-weight:500}@font-face{font-family:Cormorant;src:url('../../../Content/UI/Fonts/CormorantGaramond-SemiBold.ttf');font-weight:600}
+*{box-sizing:border-box}body{margin:0;background:#10171a;color:#e1e6df;font:17px/1.6 system-ui,sans-serif}main{max-width:1300px;margin:auto;padding:36px}h1,h2{font-family:Cinzel,Georgia,serif;font-weight:500;line-height:1.3}h1{font-size:clamp(32px,4vw,56px);letter-spacing:.04em}h2{font-size:26px}a{color:#9bc2b7}.note{color:#a9b6b4;max-width:920px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}.card{border:1px solid #849698;padding:24px;background:#151e21}.menu{font:500 32px/1.3 Cormorant,Georgia,serif;padding:12px 24px;border:1px solid #657478;margin:10px 0;position:relative}.selected{background:#293d40;border:2px solid #9bc2b7;color:#9bc2b7}.selected:before{content:'◆';font:16px system-ui;color:#b19cc6;margin-right:14px}.disabled{color:#849698}.caps{font:13px/1.6 system-ui;letter-spacing:.14em;color:#a9b6b4}.subtitle{font:500 30px/1.4 Cormorant,Georgia,serif;color:#e1e6df}.art{background:repeating-conic-gradient(#202729 0 25%,#151b1e 0 50%) 0/28px 28px;padding:20px;min-height:180px;display:grid;place-items:center}.art img{width:100%;max-height:360px;object-fit:contain}figure{margin:0}figcaption{padding:16px 0;font-size:15px;color:#a9b6b4}.swatches{display:flex;gap:12px;flex-wrap:wrap}.swatch{padding:12px;border-bottom:5px solid var(--c);background:#182024}footer{margin:32px 0}code{font-size:14px}
+</style>
+<main>
+<div class="caps">BLACK SUGAR / FROSTBOUND · ENGINE-FREE REVIEW</div>
+<h1>The Dread Land of Candy</h1>
+<p class="note">Actual packaged font files and production artwork, displayed in your browser. This page is a materials and typography specimen; it is not an Unreal capture or proof of the final layout. No engine was used to make it.</p>
+<div class="grid">
+<section class="card"><h2>Lunch</h2><div class="menu selected">Back to work</div><div class="menu">Quest Journal</div><div class="menu">Character Sheet</div><div class="menu disabled">Budget · Low (locked)</div><p class="caps">Cinzel Medium headings · Cormorant Garamond Medium menu text</p></section>
+<section class="card"><h2>Typography &amp; states</h2><p class="subtitle">Fenella: Perfect. Again.</p><p style="font:600 32px Cormorant,Georgia,serif">A firm word. A healthy snack.</p><p>Mouse 1 &nbsp; Mouse 3 &nbsp; R &nbsp; 3s &nbsp; XP 44 / 150</p><p class="note">Small control labels retain the engine font in-game. They use the browser's system font in this specimen.</p><div class="swatches"><span class="swatch" style="--c:#e1e6df">Ivory</span><span class="swatch" style="--c:#9bc2b7">Frozen mint</span><span class="swatch" style="--c:#d38c9c">Peppermint</span><span class="swatch" style="--c:#b19cc6">Gumdrop</span></div></section>
+</div>
+<h2>Production artwork</h2>
+<div class="grid">
+<figure><a class="art" href="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarSkillFrame.png"><img src="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarSkillFrame.png" alt="Transparent worn silver skill frame with peppermint inlays and purple sugar jewel"></a><figcaption>Skill frame · wired in source; import and runtime review pending.</figcaption></figure>
+<figure><a class="art" href="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarCrest.png"><img src="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarCrest.png" alt="Transparent peppermint heraldic crest with silver ornament and violet gumdrop gems"></a><figcaption>Heading crest · aspect-preserving source integration with a procedural fallback.</figcaption></figure>
+<figure><a class="art" href="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarMenuFrame.png"><img src="../../../Assets/Incoming/2D/BlackSugar/T_UI_BlackSugarMenuFrame.png" alt="Transparent cold silver menu frame with peppermint and gumdrop end details"></a><figcaption>Menu frame · prepared for import; final slicing and use depend on engine review. Current source keeps scalable etched frames.</figcaption></figure>
+</div>
+<footer><a href="IMPLEMENTATION.md">Current implementation checkpoint</a> · <a href="FONTS.md">Font licences and provenance</a> · <a href="dark-fantasy.html">Concept boards</a></footer>
+</main>
+</html>

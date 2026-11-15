@@ -1,5 +1,6 @@
 #include "UI/JamHudWidget.h"
-#include "UI/JamComicBorder.h"
+#include "UI/JamCandyBorder.h"
+#include "UI/JamUiStyle.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
 #include "Components/Image.h"
@@ -23,10 +24,10 @@
 
 namespace
 {
-	const FLinearColor PanelDark(0.02f, 0.02f, 0.025f, 0.68f);
-	const FLinearColor Gold(1.f, 0.82f, 0.3f);
-	const FLinearColor RecRed(0.95f, 0.12f, 0.1f);
-	const FLinearColor Dim(0.75f, 0.75f, 0.72f);
+	const FLinearColor PanelDark = JamUi::Surface();
+	const FLinearColor Gold = JamUi::Mint();
+	const FLinearColor RecRed = JamUi::Ruby();
+	const FLinearColor Dim = JamUi::Dim();
 
 	void SetTextIfChanged(UTextBlock* Block, const FString& Text)
 	{
@@ -48,7 +49,7 @@ namespace
 		FSlateBrush B;
 		B.DrawAs = ESlateBrushDrawType::RoundedBox;
 		B.TintColor = FSlateColor(Colour);
-		B.OutlineSettings = FSlateBrushOutlineSettings(FVector4(Radius, Radius, Radius, Radius), FSlateColor(Outline), OutlineWidth);
+		B.OutlineSettings = FSlateBrushOutlineSettings(FVector4(2.f), FSlateColor(Outline), OutlineWidth);
 		B.OutlineSettings.RoundingType = ESlateBrushRoundingType::FixedRadius;
 		return B;
 	}
@@ -66,7 +67,7 @@ TSharedRef<SWidget> UJamHudWidget::RebuildWidget()
 UBorder* UJamHudWidget::MakePanel(const FLinearColor& Colour, float Radius, const FMargin& InPadding)
 {
 	UBorder* B = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-	B->SetBrush(Rounded(FLinearColor::White, Radius));
+	B->SetBrush(Rounded(FLinearColor::White, 2.f, JamUi::Silver().CopyWithNewOpacity(0.45f), 1.f));
 	B->SetBrushColor(Colour);
 	B->SetPadding(InPadding);
 	B->SetVisibility(ESlateVisibility::HitTestInvisible);
@@ -76,9 +77,9 @@ UBorder* UJamHudWidget::MakePanel(const FLinearColor& Colour, float Radius, cons
 UTextBlock* UJamHudWidget::MakeText(int32 Size, const FLinearColor& Colour, bool bBold)
 {
 	UTextBlock* T = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
-	T->SetFont(FCoreStyle::GetDefaultFontStyle(bBold ? "Bold" : "Regular", Size));
-	T->SetColorAndOpacity(FSlateColor(Colour));
-	T->SetShadowOffset(FVector2D(2.f, 2.f));
+	T->SetFont(JamUi::Font(Size, bBold, Size >= 44));
+	T->SetColorAndOpacity(FSlateColor(Colour == FLinearColor::White ? JamUi::Ink() : Colour));
+	T->SetShadowOffset(FVector2D(1.f, 1.f));
 	T->SetShadowColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.7f));
 	return T;
 }
@@ -194,19 +195,20 @@ void UJamHudWidget::BuildTree()
 	DirectionText->SetJustification(ETextJustify::Center);
 	DirectionPanel->SetContent(DirectionText);
 	DirectionPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
-	Place(DirectionPanel, FAnchors(0.5f, 0.f), FVector2D(0.5f, 0.f), FVector2D(0.f, 32.f), 8);
+	Place(DirectionPanel, FAnchors(0.5f, 0.f), FVector2D(0.5f, 0.f), FVector2D(0.f, 148.f), 8);
 
 	// Top centre: objective, meter, and the hint under them.
 	{
 		UVerticalBox* Column = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
-		// Fixes3 #1b: bright jagged comic panels instead of grey boxes.
-		ObjectivePanel = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
-		ObjectivePanel->SetBrush(Rounded(FLinearColor::White, 8.f, FLinearColor(1.f, 0.82f, 0.15f), 3.f));
-		ObjectivePanel->SetBrushColor(FLinearColor(0.42f, 0.05f, 0.5f, 0.93f));
+		ObjectivePanel = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
+		ObjectivePanel->SetBrush(JamUi::Frame(JamUi::Silver()));
+		ObjectivePanel->SetBrushColor(PanelDark);
 		ObjectivePanel->SetPadding(FMargin(30.f, 16.f));
 		ObjectivePanel->SetVisibility(ESlateVisibility::HitTestInvisible);
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 		ObjectiveText = MakeText(28, FLinearColor::White, true);
+		ObjectiveText->SetWrapTextAt(580.f);
+		ObjectiveText->SetJustification(ETextJustify::Center);
 		Box->AddChildToVerticalBox(ObjectiveText)->SetHorizontalAlignment(HAlign_Center);
 		USizeBox* MeterSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 		MeterSize->SetWidthOverride(460.f);
@@ -229,7 +231,7 @@ void UJamHudWidget::BuildTree()
 		UVerticalBoxSlot* HintSlot = Column->AddChildToVerticalBox(HintPanel);
 		HintSlot->SetHorizontalAlignment(HAlign_Center);
 		HintSlot->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
-		Place(Column, FAnchors(0.5f, 0.f), FVector2D(0.5f, 0.f), FVector2D(0.f, 32.f), 5);
+		Place(Column, FAnchors(0.5f, 0.f), FVector2D(0.5f, 0.f), FVector2D(0.f, 148.f), 5);
 	}
 
 	// Centre: the card. An accent bar like the top of a clapperboard, a big title, the line under it.
@@ -259,26 +261,26 @@ void UJamHudWidget::BuildTree()
 	CardPanel->SetRenderTransformPivot(FVector2D(0.5f, 0.5f));
 
 	// Bottom centre: Fenella's caption, film-subtitle style, her name in her colour.
-	CaptionPanel = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
-	CaptionPanel->SetBrush(Rounded(FLinearColor::White, 6.f, FLinearColor(0.35f, 0.95f, 1.f), 3.f));
-	CaptionPanel->SetBrushColor(FLinearColor(0.03f, 0.12f, 0.3f, 0.93f));
+	CaptionPanel = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
+	CaptionPanel->SetBrush(JamUi::Frame(JamUi::Silver()));
+	CaptionPanel->SetBrushColor(PanelDark);
 	CaptionPanel->SetPadding(FMargin(30.f, 16.f));
 	CaptionPanel->SetVisibility(ESlateVisibility::HitTestInvisible);
 	{
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
-		CaptionSpeaker = MakeText(16, FLinearColor(0.8f, 0.6f, 1.f), true);
+		CaptionSpeaker = MakeText(18, JamUi::Amethyst(), true);
 		CaptionSpeaker->SetText(FText::FromString(TEXT("FENELLA")));
 		Box->AddChildToVerticalBox(CaptionSpeaker)->SetHorizontalAlignment(HAlign_Center);
 		CaptionText = MakeText(28, FLinearColor::White, false);
 		CaptionText->SetJustification(ETextJustify::Center);
-		CaptionText->SetWrapTextAt(980.f);
+		CaptionText->SetWrapTextAt(800.f);
 		Box->AddChildToVerticalBox(CaptionText)->SetHorizontalAlignment(HAlign_Center);
 		CaptionPanel->SetContent(Box);
 	}
-	Place(CaptionPanel, FAnchors(0.5f, 1.f), FVector2D(0.5f, 1.f), FVector2D(0.f, -60.f), 15);
+	Place(CaptionPanel, FAnchors(0.66f, 1.f), FVector2D(0.5f, 1.f), FVector2D(0.f, -48.f), 15);
 
 	// CUT!: the note prompt. Her pitch, then two tiles: take (hold) or refuse.
-	NotePanel = MakePanel(FLinearColor(0.07f, 0.01f, 0.01f, 0.92f), 10.f, FMargin(48.f, 0.f, 48.f, 32.f));
+	NotePanel = MakePanel(PanelDark, 2.f, FMargin(48.f, 0.f, 48.f, 32.f));
 	{
 		const FJamCardStyle CutStyle = JamHud::CardStyle(EJamCardKind::Cut);
 		UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
@@ -292,7 +294,7 @@ void UJamHudWidget::BuildTree()
 		Cut->SetText(FText::FromString(TEXT("CUT!")));
 		Cut->SetShadowOffset(FVector2D(4.f, 4.f));
 		Box->AddChildToVerticalBox(Cut)->SetHorizontalAlignment(HAlign_Center);
-		UTextBlock* Has = MakeText(18, FLinearColor(0.8f, 0.6f, 1.f), true);
+		UTextBlock* Has = MakeText(18, JamUi::Amethyst(), true);
 		Has->SetText(FText::FromString(TEXT("FENELLA HAS A NOTE")));
 		Box->AddChildToVerticalBox(Has)->SetHorizontalAlignment(HAlign_Center);
 		NotePitchText = MakeText(30, FLinearColor::White, false);
@@ -310,9 +312,9 @@ void UJamHudWidget::BuildTree()
 		UTextBlock* RefuseSub = nullptr;
 		UTextBlock* WriteKey = nullptr;
 		UTextBlock* WriteSub = nullptr;
-		UBorder* TakeTile = MakeChoiceTile(FLinearColor(0.45f, 1.f, 0.55f), TEXT("TAKE THE NOTE"), TakeKey, TakeSub, &Fill);
-		UBorder* RefuseTile = MakeChoiceTile(FLinearColor(1.f, 0.55f, 0.3f), TEXT("REFUSE"), RefuseKey, RefuseSub, nullptr);
-		UBorder* WriteTile = MakeChoiceTile(FLinearColor(0.75f, 0.55f, 1.f), TEXT("YOUR OWN NOTE"), WriteKey, WriteSub, nullptr);
+		UBorder* TakeTile = MakeChoiceTile(JamUi::Mint(), TEXT("TAKE THE NOTE"), TakeKey, TakeSub, &Fill);
+		UBorder* RefuseTile = MakeChoiceTile(JamUi::Ruby(), TEXT("REFUSE"), RefuseKey, RefuseSub, nullptr);
+		UBorder* WriteTile = MakeChoiceTile(JamUi::Amethyst(), TEXT("YOUR OWN NOTE"), WriteKey, WriteSub, nullptr);
 		WriteKeyText = WriteKey;
 		WriteSub->SetText(FText::FromString(TEXT("Type anything. She'll shoot it.\nProbably.")));
 		TakeKeyText = TakeKey;
@@ -325,7 +327,7 @@ void UJamHudWidget::BuildTree()
 		Tiles->AddChildToHorizontalBox(RefuseTile)->SetPadding(FMargin(14.f, 0.f, 0.f, 0.f));
 		Box->AddChildToVerticalBox(Tiles)->SetHorizontalAlignment(HAlign_Center);
 		NoteTiles = Tiles;
-		NoteReadingText = MakeText(28, FLinearColor(0.8f, 0.6f, 1.f), true);
+		NoteReadingText = MakeText(28, JamUi::Amethyst(), true);
 		NoteReadingText->SetJustification(ETextJustify::Center);
 		NoteReadingText->SetWrapTextAt(1100.f);
 		UVerticalBoxSlot* ReadingSlot = Box->AddChildToVerticalBox(NoteReadingText);
@@ -355,10 +357,10 @@ void UJamHudWidget::BuildTree()
 
 UBorder* UJamHudWidget::MakeChoiceTile(const FLinearColor& Accent, const TCHAR* Title, UTextBlock*& OutKey, UTextBlock*& OutSub, UProgressBar** OutFill)
 {
-	UBorder* Tile = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+	UBorder* Tile = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 	Tile->SetPadding(FMargin(24.f, 18.f));
 	Tile->SetBrush(Rounded(FLinearColor::White, 8.f, Accent, 2.f));
-	Tile->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
+	Tile->SetBrushColor(PanelDark);
 	USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 	Size->SetWidthOverride(400.f);
 	UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
@@ -390,11 +392,11 @@ UBorder* UJamHudWidget::GetBubble(int32 Index)
 {
 	while (Bubbles.Num() <= Index)
 	{
-		UBorder* B = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+		UBorder* B = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 		B->SetPadding(FMargin(22.f, 14.f));
 		B->SetVisibility(ESlateVisibility::HitTestInvisible);
 		B->SetRenderTransformPivot(FVector2D(0.5f, 1.f));
-		UTextBlock* T = MakeText(24, FLinearColor(0.05f, 0.05f, 0.05f), true);
+		UTextBlock* T = MakeText(24, JamUi::Ink(), true);
 		T->SetShadowOffset(FVector2D::ZeroVector);
 		T->SetWrapTextAt(420.f);
 		T->SetJustification(ETextJustify::Center);
@@ -459,7 +461,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		DirectionPanel->SetRenderScale(FVector2D(FMath::Lerp(1.8f, 1.f, Blend)));
 		if (UCanvasPanelSlot* DirectionSlot = Cast<UCanvasPanelSlot>(DirectionPanel->Slot))
 		{
-			DirectionSlot->SetPosition(FVector2D(0.f, FMath::Lerp(Root->GetCachedGeometry().GetLocalSize().Y * 0.42f, 32.f, Blend)));
+			DirectionSlot->SetPosition(FVector2D(0.f, FMath::Lerp(Root->GetCachedGeometry().GetLocalSize().Y * 0.42f, 148.f, Blend)));
 		}
 	}
 	if (bObjective)
@@ -496,14 +498,9 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 		const FJamHudBubble& Data = View.Bubbles[i];
 		UBorder* B = GetBubble(i);
 		Show(B, true);
-		// Fixes3 #1b: shouts are hot yellow comic bursts that wobble; replies are white with a purple edge.
-		B->SetBrush(Data.bJagged ? Rounded(FLinearColor::White, 2.f, RecRed, 3.f) : Rounded(FLinearColor::White, 18.f, FLinearColor(0.6f, 0.4f, 0.9f), 2.f));
-		B->SetBrushColor(Data.bJagged ? FLinearColor(1.f, 0.88f, 0.12f) : FLinearColor::White);
-		const float Wob = RealSeconds * (Data.bJagged ? 9.f : 4.f) + i * 1.7f;
-		FWidgetTransform Pop;
-		Pop.Angle = FMath::Sin(Wob) * (Data.bJagged ? 4.f : 1.5f);
-		Pop.Scale = FVector2D(1.f + (Data.bJagged ? 0.06f : 0.02f) * FMath::Sin(Wob * 1.3f));
-		B->SetRenderTransform(Pop);
+		B->SetBrush(JamUi::Frame(Data.bJagged ? JamUi::Ruby() : JamUi::Amethyst()));
+		B->SetBrushColor(PanelDark);
+		B->SetRenderTransform(FWidgetTransform());
 		SetTextIfChanged(Cast<UTextBlock>(B->GetContent()), Data.Text);
 		if (UCanvasPanelSlot* S = Cast<UCanvasPanelSlot>(B->Slot)) { S->SetPosition(Data.Position); }
 	}
@@ -559,7 +556,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	{
 		if (!bWrapShown) { bWrapShown = true; WrapShownAt = RealSeconds; }
 		const float W = FMath::Clamp((RealSeconds - WrapShownAt) / 0.22f, 0.f, 1.f);
-		const float WS = FMath::Lerp(1.15f, 1.f, FMath::InterpEaseOut(0.f, 1.f, W, 3.f));
+		const float WS = 1.f;
 		WrapPanel->SetRenderScale(FVector2D(WS, WS));
 		WrapPanel->SetRenderOpacity(FMath::Clamp(W * 2.f, 0.f, 1.f));
 	}
@@ -586,7 +583,7 @@ void UJamHudWidget::ApplyView(const FJamHudView& View, float RealSeconds)
 	SetTextIfChanged(CardSubtitle, View.CardSubtitle);
 	Show(CardSubtitle, !View.CardSubtitle.IsEmpty());
 	const float T = FMath::Clamp((RealSeconds - CardShownAt) / 0.18f, 0.f, 1.f);
-	const float Scale = T < 1.f ? FMath::Lerp(1.35f, 1.f, FMath::InterpEaseOut(0.f, 1.f, T, 3.f)) : 1.f;
+	const float Scale = 1.f;
 	CardPanel->SetRenderScale(FVector2D(Scale, Scale));
 	CardPanel->SetRenderOpacity(FMath::Clamp(T * 2.f, 0.f, 1.f));
 }
@@ -602,11 +599,11 @@ namespace
 	{
 		switch (Rarity)
 		{
-		case 0:  return FLinearColor(0.75f, 0.75f, 0.72f);
-		case 1:  return FLinearColor(0.4f, 0.95f, 0.45f);
-		case 2:  return FLinearColor(0.35f, 0.65f, 1.f);
-		case 3:  return FLinearColor(1.f, 0.6f, 0.15f);
-		default: return FLinearColor(0.95f, 0.35f, 0.9f);   // Director's Personal Collection
+		case 0:  return JamUi::Dim();
+		case 1:  return JamUi::Mint();
+		case 2:  return JamUi::Silver();
+		case 3:  return JamUi::Ruby();
+		default: return JamUi::Amethyst();   // Director's Personal Collection
 		}
 	}
 
@@ -616,7 +613,10 @@ namespace
 void UJamHudWidget::BuildWrapPanel()
 {
 	const FJamCardStyle Style = JamHud::CardStyle(EJamCardKind::Wrap);
-	WrapPanel = MakePanel(FLinearColor(0.025f, 0.025f, 0.03f, 0.95f), 12.f, FMargin(44.f, 0.f, 44.f, 26.f));
+	WrapPanel = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
+	WrapPanel->SetBrush(JamUi::Frame(JamUi::Silver()));
+	WrapPanel->SetBrushColor(JamUi::Surface(0.98f));
+	WrapPanel->SetPadding(FMargin(44.f, 0.f, 44.f, 26.f));
 	UVerticalBox* Box = WidgetTree->ConstructWidget<UVerticalBox>(UVerticalBox::StaticClass());
 
 	USizeBox* BarSize = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
@@ -674,7 +674,7 @@ void UJamHudWidget::BuildWrapPanel()
 		Words->AddChildToVerticalBox(Note);
 		UHorizontalBoxSlot* WS = Row->AddChildToHorizontalBox(Words);
 		WS->SetSize(FSlateChildSize(ESlateSizeRule::Fill));
-		UTextBlock* Amount = MakeText(20, FLinearColor(1.f, 0.55f, 0.45f), true);
+		UTextBlock* Amount = MakeText(20, JamUi::Ruby(), true);
 		Row->AddChildToHorizontalBox(Amount)->SetVerticalAlignment(VAlign_Center);
 		Ledger->AddChildToVerticalBox(Row)->SetPadding(FMargin(0.f, 3.f));
 		LedgerRows.Add(Row);
@@ -732,10 +732,10 @@ void UJamHudWidget::BuildWrapPanel()
 
 		// Her stamp, slapped across the card at an angle.
 		UBorder* Stamp = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
-		Stamp->SetBrush(Rounded(FLinearColor::White, 4.f, FLinearColor(0.95f, 0.15f, 0.1f), 4.f));
+		Stamp->SetBrush(Rounded(FLinearColor::White, 2.f, JamUi::Ruby(), 2.f));
 		Stamp->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.35f));
 		Stamp->SetPadding(FMargin(10.f, 4.f));
-		UTextBlock* StampText = MakeText(22, FLinearColor(1.f, 0.2f, 0.12f), true);
+		UTextBlock* StampText = MakeText(22, JamUi::Ruby(), true);
 		StampText->SetJustification(ETextJustify::Center);
 		StampText->SetWrapTextAt(200.f);
 		Stamp->SetContent(StampText);
@@ -774,9 +774,9 @@ void UJamHudWidget::BuildWrapPanel()
 	WrapLevel = MakeText(24, Gold, true);
 	Right->AddChildToVerticalBox(WrapLevel)->SetPadding(FMargin(0.f, 10.f, 0.f, 0.f));
 
-	WrapContinueButton = WidgetTree->ConstructWidget<UJamComicBorder>(UJamComicBorder::StaticClass());
+	WrapContinueButton = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 	WrapContinueButton->SetBrush(Rounded(FLinearColor::White, 0.f, Gold, 3.f));
-	WrapContinueButton->SetBrushColor(FLinearColor(0.22f, 0.12f, 0.015f));
+	WrapContinueButton->SetBrushColor(JamUi::Selection());
 	WrapContinueButton->SetPadding(FMargin(36.f, 22.f));
 	WrapContinue = MakeText(26, Gold, true);
 	WrapContinue->SetJustification(ETextJustify::Center);
@@ -847,7 +847,7 @@ void UJamHudWidget::ApplyWrap(const FJamWrapView& Wrap)
 		const bool bChanged = !FMath::IsNearlyEqual(St.Before, St.After, 0.005f);
 		SetTextIfChanged(StatValues[i], bChanged ? FString::Printf(TEXT("%s  \u2192  %s"), *Fmt(St.Before), *Fmt(St.After)) : Fmt(St.After));
 		const bool bBetter = St.After > St.Before;
-		StatValues[i]->SetColorAndOpacity(FSlateColor(!bChanged ? FLinearColor::White : (bBetter ? FLinearColor(0.45f, 1.f, 0.55f) : FLinearColor(1.f, 0.5f, 0.4f))));
+		StatValues[i]->SetColorAndOpacity(FSlateColor(!bChanged ? JamUi::Ink() : (bBetter ? JamUi::Mint() : JamUi::Ruby())));
 	}
 	Show(WrapLevel, !Wrap.LevelLine.IsEmpty());
 	SetTextIfChanged(WrapLevel, Wrap.LevelLine);
@@ -871,7 +871,7 @@ void UJamHudWidget::BuildSkillBar()
 	XpSize->SetWidthOverride(220.f);
 	XpSize->SetHeightOverride(8.f);
 	XpBar = WidgetTree->ConstructWidget<UProgressBar>(UProgressBar::StaticClass());
-	XpBar->SetFillColorAndOpacity(FLinearColor(0.55f, 0.75f, 1.f));
+	XpBar->SetFillColorAndOpacity(JamUi::Amethyst());
 	XpSize->SetContent(XpBar);
 	UHorizontalBoxSlot* XpSlot = XpRow->AddChildToHorizontalBox(XpSize);
 	XpSlot->SetVerticalAlignment(VAlign_Center);
@@ -879,23 +879,27 @@ void UJamHudWidget::BuildSkillBar()
 	PointsText = MakeText(16, Gold, true);
 	XpRow->AddChildToHorizontalBox(PointsText)->SetVerticalAlignment(VAlign_Center);
 	Box->AddChildToVerticalBox(XpRow)->SetPadding(FMargin(0.f, 0.f, 0.f, 4.f));
-	XpText = MakeText(16, FLinearColor(0.7f, 0.82f, 1.f), false);
+	XpText = MakeText(16, JamUi::Dim(), false);
 	Box->AddChildToVerticalBox(XpText)->SetPadding(FMargin(0.f, 0.f, 0.f, 6.f));
 
 	UHorizontalBox* Tiles = WidgetTree->ConstructWidget<UHorizontalBox>(UHorizontalBox::StaticClass());
+	UTexture2D* SkillFrame = LoadObject<UTexture2D>(nullptr, TEXT("/Game/Art/UI/BlackSugar/T_UI_BlackSugarSkillFrame"), nullptr, LOAD_NoWarn | LOAD_Quiet);
 	for (int32 i = 0; i < JamProgression::ActiveSkills().Num(); ++i)
 	{
 		UOverlay* Stack = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
-		UBorder* Tile = MakePanel(FLinearColor(0.f, 0.f, 0.f, 0.55f), 6.f, FMargin(4.f));
+		UBorder* Tile = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
+		Tile->SetPadding(FMargin(26.f));
+		Tile->SetBrush(JamUi::Frame(JamUi::Silver()));
+		Tile->SetBrushColor(PanelDark);
 		USizeBox* Size = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 		Size->SetWidthOverride(112.f);
 		Size->SetHeightOverride(112.f);
 		UOverlay* Face = WidgetTree->ConstructWidget<UOverlay>(UOverlay::StaticClass());
-		UTextBlock* Key = MakeText(12, Gold, true);
-		UTextBlock* Name = MakeText(11, FLinearColor::White, true);
+		UTextBlock* Key = MakeText(14, JamUi::Ink(), true);
+		UTextBlock* Name = MakeText(14, JamUi::Ink(), true);
 		Name->SetWrapTextAt(104.f);
 		Name->SetJustification(ETextJustify::Center);
-		UTextBlock* Rank = MakeText(9, Gold, false);
+		UTextBlock* Rank = MakeText(12, Gold, false);
 		UImage* Icon = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
 		UMaterialInstanceDynamic* IconMaterial = nullptr;
 		if (UMaterialInterface* Base = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Art/UI/Materials/M_SkillCooldown")))
@@ -904,6 +908,7 @@ void UJamHudWidget::BuildSkillBar()
 			Icon->SetBrushFromMaterial(IconMaterial);
 		}
 		SkillIconMaterials.Add(IconMaterial);
+		SkillIcons.Add(Icon);
 		ShownIconPaths.Add(FString());
 		// The cooldown material is the button's background, rather than a tiny
 		// thumbnail above several rows of text. Labels sit over its edges.
@@ -930,9 +935,26 @@ void UJamHudWidget::BuildSkillBar()
 		UOverlaySlot* FooterSlot = Face->AddChildToOverlay(Footer);
 		FooterSlot->SetHorizontalAlignment(HAlign_Fill);
 		FooterSlot->SetVerticalAlignment(VAlign_Bottom);
+		UTextBlock* CooldownText = MakeText(18, JamUi::Ink(), true);
+		UBorder* CooldownBadge = MakePanel(JamUi::Surface(1.f), 2.f, FMargin(3.f, 1.f));
+		CooldownBadge->SetContent(CooldownText);
+		UOverlaySlot* CooldownSlot = Face->AddChildToOverlay(CooldownBadge);
+		CooldownSlot->SetHorizontalAlignment(HAlign_Right);
+		CooldownSlot->SetVerticalAlignment(VAlign_Top);
+		CooldownSlot->SetPadding(FMargin(2.f));
+		SkillCooldowns.Add(CooldownText);
 		Size->SetContent(Face);
 		Tile->SetContent(Size);
 		Stack->AddChildToOverlay(Tile);
+		if (SkillFrame)
+		{
+			UImage* FrameArt = WidgetTree->ConstructWidget<UImage>(UImage::StaticClass());
+			FrameArt->SetBrushFromTexture(SkillFrame);
+			FrameArt->SetVisibility(ESlateVisibility::HitTestInvisible);
+			UOverlaySlot* FrameSlot = Stack->AddChildToOverlay(FrameArt);
+			FrameSlot->SetHorizontalAlignment(HAlign_Fill);
+			FrameSlot->SetVerticalAlignment(VAlign_Fill);
+		}
 		Tiles->AddChildToHorizontalBox(Stack)->SetPadding(FMargin(i == 0 ? 0.f : 6.f, 0.f, 0.f, 0.f));
 		SkillTiles.Add(Tile);
 		SkillKeys.Add(Key);
@@ -960,7 +982,6 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 	SetTextIfChanged(XpText, FString::Printf(TEXT("%s %d / %d"), View.bEncoreXp ? TEXT("ENCORE EXP") : TEXT("XP"), View.XpEarned, View.XpNeeded));
 	Show(PointsText, View.Points > 0);
 	SetTextIfChanged(PointsText, FString::Printf(TEXT("+%d point%s"), View.Points, View.Points == 1 ? TEXT("") : TEXT("s")));
-	const bool bPulse = FMath::Fmod(RealSeconds, 0.8f) < 0.4f;
 	for (int32 i = 0; i < SkillTiles.Num(); ++i)
 	{
 		const bool bSlot = View.Skills.IsValidIndex(i);
@@ -969,25 +990,29 @@ void UJamHudWidget::ApplySkills(const FJamHudView& View, float RealSeconds)
 		const FJamHudSkill& K = View.Skills[i];
 		SetTextIfChanged(SkillKeys[i], K.Key);
 		SetTextIfChanged(SkillNames[i], K.Name);
+		Show(SkillCooldowns[i], K.bUnlocked && K.CooldownSeconds > 0.f);
+		Show(SkillCooldowns[i]->GetParent(), K.bUnlocked && K.CooldownSeconds > 0.f);
+		SetTextIfChanged(SkillCooldowns[i], FString::Printf(TEXT("%ds"), FMath::CeilToInt(FMath::Max(0.f, K.CooldownSeconds))));
 		FString Pips;
 		for (int32 r = 0; r < K.MaxRank; ++r) { Pips += r < K.Rank ? TEXT("\u25CF") : TEXT("\u25CB"); }
 		SetTextIfChanged(SkillRanks[i], K.bUnlocked ? Pips : FString(TEXT("locked")));
-		const FLinearColor Edge = K.bSpendable ? (bPulse ? Gold : FLinearColor(1.f, 0.95f, 0.7f)) : K.ClassColor.CopyWithNewOpacity(K.bUnlocked ? 0.8f : 0.2f);
+		const FLinearColor Edge = K.bSpendable ? JamUi::Mint() : JamUi::Silver().CopyWithNewOpacity(K.bUnlocked ? 0.9f : 0.35f);
 		SkillTiles[i]->SetBrush(Rounded(FLinearColor::White, 6.f, Edge, K.bSpendable ? 3.f : 1.f));
-		SkillTiles[i]->SetBrushColor(FLinearColor(0.f, 0.f, 0.f, 0.55f));
+		SkillTiles[i]->SetBrushColor(PanelDark);
 		SkillTiles[i]->GetParent()->SetRenderOpacity(K.bUnlocked || K.bSpendable ? 1.f : 0.45f);
 		SkillDamageAccents[i]->SetBrushColor(K.DamageColor);
 		if (UMaterialInstanceDynamic* IconMaterial = SkillIconMaterials[i])
 		{
 			IconMaterial->SetScalarParameterValue(TEXT("Cooldown"), FMath::Clamp(K.Cooldown, 0.f, 1.f));
 			IconMaterial->SetScalarParameterValue(TEXT("Unlocked"), K.bUnlocked ? 1.f : 0.f);
-			if (ShownIconPaths[i] != K.IconPath)
+		}
+		if (ShownIconPaths[i] != K.IconPath)
+		{
+			ShownIconPaths[i] = K.IconPath;
+			if (UTexture2D* Texture = LoadObject<UTexture2D>(nullptr, *K.IconPath))
 			{
-				ShownIconPaths[i] = K.IconPath;
-				if (UTexture2D* Texture = LoadObject<UTexture2D>(nullptr, *K.IconPath))
-				{
-					IconMaterial->SetTextureParameterValue(TEXT("IconTexture"), Texture);
-				}
+				if (SkillIconMaterials[i]) { SkillIconMaterials[i]->SetTextureParameterValue(TEXT("IconTexture"), Texture); }
+				else { SkillIcons[i]->SetBrushFromTexture(Texture); }
 			}
 		}
 	}

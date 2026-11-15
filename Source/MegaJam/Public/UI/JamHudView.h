@@ -34,6 +34,7 @@ struct MEGAJAM_API FJamHudSkill
 	FString IconPath;
 	FLinearColor ClassColor = FLinearColor(1.f, 0.82f, 0.3f);
 	FLinearColor DamageColor = FLinearColor(0.75f, 0.75f, 0.75f);
+	float CooldownSeconds = 0.f; // appended to preserve existing sample aggregate initializers
 };
 
 /** One speech bubble on screen: text over a screen position (already projected, 1920x1080 design units). */

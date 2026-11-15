@@ -1,4 +1,5 @@
 #include "UI/JamHudView.h"
+#include "UI/JamUiStyle.h"
 #include "Film/JamLines.h"
 #include "Film/JamShoot.h"
 
@@ -12,15 +13,15 @@ FString JamHud::Timecode(float Seconds)
 
 FJamCardStyle JamHud::CardStyle(EJamCardKind Kind)
 {
-	const FLinearColor Dark(0.02f, 0.02f, 0.025f, 0.82f);
+	const FLinearColor Dark = JamUi::Surface();
 	switch (Kind)
 	{
-	case EJamCardKind::Slate:  return { FLinearColor(0.95f, 0.95f, 0.92f), Dark };
-	case EJamCardKind::Action: return { FLinearColor(1.f, 0.82f, 0.18f), Dark };
-	case EJamCardKind::Cut:    return { FLinearColor(1.f, 0.25f, 0.2f), FLinearColor(0.08f, 0.01f, 0.01f, 0.9f) };
-	case EJamCardKind::Retake: return { FLinearColor(1.f, 0.45f, 0.1f), Dark };
-	case EJamCardKind::Wrap:   return { FLinearColor(0.45f, 1.f, 0.55f), Dark };
-	default:                   return { FLinearColor(0.85f, 0.9f, 1.f), Dark };
+	case EJamCardKind::Slate:  return { JamUi::Ink(), Dark };
+	case EJamCardKind::Action: return { JamUi::Mint(), Dark };
+	case EJamCardKind::Cut:    return { JamUi::Ruby(), Dark };
+	case EJamCardKind::Retake: return { JamUi::Amethyst(), Dark };
+	case EJamCardKind::Wrap:   return { JamUi::Frost(), Dark };
+	default:                   return { JamUi::Amethyst(), Dark };
 	}
 }
 
@@ -35,6 +36,7 @@ namespace
 			{ TEXT("Lecture"), TEXT("Mouse 1"), 2, 4, true, 0.f, true },
 			{ TEXT("Form A Line"), TEXT("Mouse 3"), 1, 3, true, 0.6f, true },
 			{ TEXT("Good Manners"), TEXT("R"), 1, 1, true, 0.f, false } };
+		V.Skills[1].CooldownSeconds = 3.f;
 		const TCHAR* Icons[] = { TEXT("T_Skill_Lecture"), TEXT("T_Skill_FormALine"), TEXT("T_Skill_LastJudgment") };
 		for (int32 i = 0; i < V.Skills.Num(); ++i) { V.Skills[i].IconPath = FString(TEXT("/Game/Art/UI/Icons/")) + Icons[i]; }
 	}

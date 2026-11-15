@@ -1,0 +1,67 @@
+{
+  "generator": "OpenAI built-in image generation",
+  "date": "2026-11-15",
+  "status": "Source artwork; import and engine validation pending",
+  "assets": [
+    {
+      "file": "T_UI_BlackSugarCrest.png",
+      "size": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        2172,
+        724
+      ],
+      "centre_alpha": 253,
+      "sha256": "5ef9c1f65d7803f36c18014650f6da78f98a97b8304be7931b16425a7d4040b3"
+    },
+    {
+      "file": "T_UI_BlackSugarMenuFrame.png",
+      "size": [
+        2172,
+        724
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        8,
+        9,
+        2162,
+        724
+      ],
+      "centre_alpha": 0,
+      "sha256": "1deb5a9fd4fdf6ee62649273e3c08b4618ede50555b56229415078653509ca52"
+    },
+    {
+      "file": "T_UI_BlackSugarSkillFrame.png",
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1238,
+        1241
+      ],
+      "centre_alpha": 0,
+      "sha256": "ed4823f501fd796de770230059bacdd7262f93205a3280ffa94a68cc7ee9962f"
+    }
+  ]
+}

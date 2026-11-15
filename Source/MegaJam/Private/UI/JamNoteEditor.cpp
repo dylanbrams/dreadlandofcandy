@@ -1,4 +1,6 @@
 #include "UI/JamNoteEditor.h"
+#include "UI/JamCandyBorder.h"
+#include "UI/JamUiStyle.h"
 #include "Blueprint/WidgetTree.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
@@ -15,18 +17,13 @@
 
 namespace
 {
-	const FLinearColor NoteViolet(0.78f, 0.58f, 1.f);
-	const FLinearColor NoteDim(0.75f, 0.75f, 0.72f);
-	const FLinearColor NoteGold(1.f, 0.82f, 0.3f);
+	const FLinearColor NoteViolet = JamUi::Amethyst();
+	const FLinearColor NoteDim = JamUi::Dim();
+	const FLinearColor NoteGold = JamUi::Mint();
 
 	FSlateBrush NoteRoundedBrush(float Radius, const FLinearColor& Outline, float OutlineWidth)
 	{
-		FSlateBrush B;
-		B.DrawAs = ESlateBrushDrawType::RoundedBox;
-		B.TintColor = FSlateColor(FLinearColor::White);
-		B.OutlineSettings = FSlateBrushOutlineSettings(FVector4(Radius, Radius, Radius, Radius), FSlateColor(Outline), OutlineWidth);
-		B.OutlineSettings.RoundingType = ESlateBrushRoundingType::FixedRadius;
-		return B;
+		return JamUi::Frame(Outline, OutlineWidth);
 	}
 }
 
@@ -50,16 +47,16 @@ void UJamNoteEditor::BuildTree()
 	auto MakeText = [this](int32 Size, const FLinearColor& Colour, bool bBold)
 	{
 		UTextBlock* T = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass());
-		T->SetFont(FCoreStyle::GetDefaultFontStyle(bBold ? "Bold" : "Regular", Size));
-		T->SetColorAndOpacity(FSlateColor(Colour));
+		T->SetFont(JamUi::Font(Size, bBold, Size >= 44));
+		T->SetColorAndOpacity(FSlateColor(Colour == FLinearColor::White ? JamUi::Ink() : Colour));
 		T->SetShadowOffset(FVector2D(2.f, 2.f));
 		T->SetShadowColorAndOpacity(FLinearColor(0.f, 0.f, 0.f, 0.7f));
 		return T;
 	};
 
-	UBorder* Panel = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	UBorder* Panel = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 	Panel->SetBrush(NoteRoundedBrush(12.f, NoteViolet, 3.f));
-	Panel->SetBrushColor(FLinearColor(0.05f, 0.02f, 0.09f, 0.96f));
+	Panel->SetBrushColor(JamUi::Surface(0.98f));
 	Panel->SetPadding(FMargin(48.f, 30.f));
 	USizeBox* Width = WidgetTree->ConstructWidget<USizeBox>(USizeBox::StaticClass());
 	Width->SetWidthOverride(1080.f);
@@ -78,13 +75,19 @@ void UJamNoteEditor::BuildTree()
 	PitchSlot->SetPadding(FMargin(0.f, 4.f, 0.f, 18.f));
 
 	// The text box, in a frame that lights up when it is the selected row.
-	TextFrame = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+	TextFrame = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 	TextFrame->SetBrush(NoteRoundedBrush(8.f, NoteGold, 3.f));
-	TextFrame->SetPadding(FMargin(6.f));
+	TextFrame->SetPadding(FMargin(24.f, 8.f));
 	TextBox = WidgetTree->ConstructWidget<UEditableTextBox>(UEditableTextBox::StaticClass());
 	FEditableTextBoxStyle Style = TextBox->GetWidgetStyle();
-	Style.SetFont(FCoreStyle::GetDefaultFontStyle("Regular", 30));
-	Style.SetForegroundColor(FSlateColor(FLinearColor(0.08f, 0.04f, 0.12f)));
+	Style.SetFont(JamUi::Font(30));
+	Style.SetForegroundColor(FSlateColor(JamUi::Ink()));
+	Style.BackgroundImageNormal = JamUi::Frame(FLinearColor::Transparent, 0.f);
+	Style.BackgroundImageNormal.TintColor = FSlateColor(JamUi::Surface());
+	Style.BackgroundImageHovered = Style.BackgroundImageNormal;
+	Style.BackgroundImageFocused = Style.BackgroundImageNormal;
+	Style.BackgroundImageFocused.TintColor = FSlateColor(JamUi::Surface());
+	Style.BackgroundImageReadOnly = Style.BackgroundImageNormal;
 	TextBox->SetWidgetStyle(Style);
 	TextBox->SetHintText(FText::FromString(TEXT("Make the rats enormous and ashamed.")));
 	TextBox->OnTextChanged.AddDynamic(this, &UJamNoteEditor::OnTextChanged);
@@ -109,7 +112,7 @@ void UJamNoteEditor::BuildTree()
 	{
 		UButton* Button = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass());
 		Button->SetStyle(Plain);
-		UBorder* Row = WidgetTree->ConstructWidget<UBorder>(UBorder::StaticClass());
+		UBorder* Row = WidgetTree->ConstructWidget<UJamCandyBorder>(UJamCandyBorder::StaticClass());
 		Row->SetBrush(NoteRoundedBrush(8.f, NoteGold, 0.f));
 		Row->SetPadding(FMargin(20.f, 10.f));
 		Row->SetHorizontalAlignment(HAlign_Left);
@@ -166,12 +169,17 @@ void UJamNoteEditor::Select(int32 Row)
 
 void UJamNoteEditor::Refresh()
 {
-	if (TextFrame) { TextFrame->SetBrushColor(Selection == 0 ? FLinearColor(1.f, 1.f, 1.f, 0.95f) : FLinearColor(0.6f, 0.6f, 0.65f, 0.6f)); }
+	if (TextFrame)
+	{
+		TextFrame->SetBrush(JamUi::Frame(Selection == 0 ? JamUi::Mint() : JamUi::Silver(), Selection == 0 ? 2.f : 1.f));
+		TextFrame->SetBrushColor(JamUi::Surface());
+	}
 	for (int32 i = 0; i < Rows.Num(); ++i)
 	{
 		const bool bOn = Selection == i + 1;
-		Rows[i]->SetBrushColor(bOn ? FLinearColor(0.45f, 0.25f, 0.75f, 0.95f) : FLinearColor(1.f, 1.f, 1.f, 0.06f));
-		RowTexts[i]->SetColorAndOpacity(FSlateColor(bOn ? FLinearColor::White : NoteDim));
+		Rows[i]->SetBrush(JamUi::Frame(bOn ? JamUi::Mint() : JamUi::Silver(), bOn ? 2.f : 1.f));
+		Rows[i]->SetBrushColor(bOn ? JamUi::Selection() : JamUi::Surface());
+		RowTexts[i]->SetColorAndOpacity(FSlateColor(bOn ? JamUi::Ink() : NoteDim));
 		Rows[i]->SetVisibility(Suggested.IsValidIndex(i) ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
 	}
 	const int32 Len = TextBox ? TextBox->GetText().ToString().Len() : 0;
