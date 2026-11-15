@@ -19,6 +19,38 @@ Read naturally; slide prompts are cues. Each section is a **take** you can recor
 | 9 Why do this | `music/emotional-revelation_take1.mp3` | The sincere bit |
 | 10 Ending | `music/victory_take1.mp3` under the last words, then `music/credits_take1.mp3` | |
 
+**Picture: you're on screen about a quarter of the time.** Shoot every take on the green screen, reading the whole section straight through. In the edit, your voice runs continuously while the picture cuts away from your face. Three framings:
+
+- **CAM**: you, full frame or keyed over a blurred game shot. Use it for openers, jokes you deliver, and the personal beats.
+- **PIP**: you keyed small in a bottom corner over game footage or a slide, about a quarter of the frame height.
+- **B-ROLL**: game footage, slides or screenshots only, with your voice over them.
+
+Rule of thumb: stay on CAM for no more than 6–8 seconds, then cut away for at least 10. Cut on the start of a sentence, not mid-word.
+
+| Take | CAM | Cut away to (PIP or B-ROLL) |
+| --- | --- | --- |
+| 1 Cold open | First two sentences; "my sense of reasonable scope may be a little compromised" | B-ROLL: Molar Hills pan with the "older than them thar hills" caption under the whole MMO list |
+| 2 Premise | "This is The Dread Land of Candy" | B-ROLL: Fenella, a CUT!, the budget-out boxes. PIP on "You're trying to get a usable take" |
+| 3 Setup | First sentence | B-ROLL: Gantt chart, then the checkpoint slides |
+| 4 Day one | None | B-ROLL throughout: first-hero and autoplay captures, early screenshots |
+| 4b Asset audition | "I picked the Rodin rat" (react to it) | B-ROLL: rat comparison card, then the rat in game |
+| 5 World bigger | "And then I changed the plan" | B-ROLL: the world and the village; PIP over the quest givers |
+| 6 Playtest | Your playtest surprise | B-ROLL: compass, HUD and controls captures |
+| 7 Long night | None | B-ROLL: attack effects in motion, a village encore |
+| 8 Sunday morning | "Instead, three things happened at once"; "Nobody needed this" | B-ROLL: PBR contact sheet → village from above → marshmallow sheet → marshmallows drifting → UI concepts → Black Sugar title |
+| 8b River | Reading the Fixes4 quotes aloud (PIP over the text on screen) | B-ROLL: river before/after, camera lifting over a canopy |
+| 9 Why do this | Most of it; this is the personal one. "The real limit" on CAM | B-ROLL under the draft list (one shot per item); river-before under "the river is terrible" |
+| 10 Ending | Your closing words | B-ROLL: title screen, itch page |
+| 11 Post-credits | Both lines, deadpan | Black screen for the clip |
+
+**Green screen: yes, keep it.** It lets you be keyed in small (PIP) over the game, which is what makes the regular cutaways feel natural instead of jumpy. Tips:
+- Light the screen evenly and separately from yourself, and stand 1–2 m in front of it to avoid green spill.
+- **Don't wear mint or green.** Half this game is mint, and so is the screen.
+- Lock focus, exposure and white balance.
+- Record a few seconds of the empty screen first, to help the key.
+
+If the key comes out ragged (uneven light, hair edges), drop the PIP framing, shoot in front of something plain, and use straight cuts between CAM and B-ROLL instead.
+
 ## 1. Cold open — an unreasonable idea
 
 I wanted to make a game in a game jam. Somewhere along the way the conversation started sounding suspiciously like I wanted to make an MMO. In a few days. With AI collaborators.
