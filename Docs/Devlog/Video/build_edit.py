@@ -153,8 +153,8 @@ BROLL = [
     ("old title", [("title-idle.mp4", 0, 14)], "ok (OLD title screen missing)"),
     ("title screen", [("title-idle.mp4", 0, 14)], "ok"),
     ("river before", [(FLY, 58, 61), ("tour-high.mp4", 40, 44)], "partial: pre-fix bridge (flythrough) vs fixed bridge; no before/after river"),
-    ("camera lifting", [], "missing: 18:29 build fades foliage instead of lifting the camera (script line is out of date)"),
-    ("compass", [("knight-run.mp4", 60, 64)], "unconfirmed (compass not clearly visible)"),
+    ("camera lifting", [("tour-low.mp4", 90, 97)], "ok: camera inside foliage (the bug); the 18:29 build fades foliage instead of lifting the camera"),
+    ("compass", [("knight-run.mp4", 60, 64), ("controls-screen.mp4", 0, 8)], "ok (HUD, controls screen; compass not clearly visible)"),
     ("controls", [("controls-screen.mp4", 0, 10)], "ok"),
 ]
 

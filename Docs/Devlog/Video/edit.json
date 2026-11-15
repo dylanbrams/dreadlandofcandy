@@ -947,9 +947,14 @@
        "i": 60,
        "o": 64,
        "interp": true
+      },
+      {
+       "src": "../GameFootage/controls-screen.mp4",
+       "i": 0,
+       "o": 8
       }
      ],
-     "status": "unconfirmed (compass not clearly visible)"
+     "status": "ok (HUD, controls screen; compass not clearly visible)"
     }
    }
   ]
@@ -1416,8 +1421,25 @@
     "visual": "camera lifting over a canopy",
     "note": "",
     "broll": {
-     "clips": [],
-     "status": "missing: 18:29 build fades foliage instead of lifting the camera (script line is out of date)"
+     "clips": [
+      {
+       "src": "../GameFootage/tour-low.mp4",
+       "i": 90,
+       "o": 97,
+       "interp": true,
+       "mask_bottom_right": [
+        [
+         91.5,
+         91.5
+        ],
+        [
+         97.5,
+         99.5
+        ]
+       ]
+      }
+     ],
+     "status": "ok: camera inside foliage (the bug); the 18:29 build fades foliage instead of lifting the camera"
     }
    },
    {

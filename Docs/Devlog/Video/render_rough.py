@@ -38,6 +38,12 @@ FONT_B = "C:/Windows/Fonts/arialbd.ttf"
 VERSION = "v2"   # bump to invalidate every cached segment
 
 STILLS = [  # (substring of visual, [images])
+    ("slide: idea", [HERE / "graphics/slide_idea.png"]),
+    ("checkpoint slides", [HERE / "graphics/slide_team.png"]),
+    ("declared.md slide", [HERE / "graphics/slide_declared.png"]),
+    ("release plan slide", [HERE / "graphics/slide_release.png"]),
+    ("blender cleanup", [HERE / "graphics/slide_cleanup.png"]),
+    ("one shot per draft-list item", [HERE / "graphics/slide_inside.png"]),
     ("architecture diagram", [HERE / "graphics/architecture.png"]),
     ("gantt", [DEVLOG / "Checkpoint1/gantt/gantt_slide.png"]),
     ("rat comparison", [DEVLOG / "Tomorrow/assets/generation-comparison.jpg"]),
@@ -182,26 +188,45 @@ def mask_filter(clip_mask):
             f"[a][bb]overlay={x0}:{y0}")
 
 
-def footage_video(clips, D, out, tag, blur=False):
-    """Sub-clips share D in proportion to their length; windows are extended into the source if D is longer."""
+TOASTS = json.loads((DEVLOG / "GameFootage" / "toasts.json").read_text(encoding="utf-8"))
+UNSCANNED = ("LandOfCandyFlythrough.mp4", "DylanPlaythrough.mp4")
+
+
+def window_mask(name, start, n):
+    """Discord-toast blur for the window ACTUALLY used (start..start+n): 'always' for Dylan's unscanned recordings,
+    else the toast ranges (+-2 s) overlapping it."""
+    if name in UNSCANNED:
+        return "always"
+    return [[a, b] for a, b in TOASTS.get(name, []) if a - 2.0 <= start + n and b + 2.0 >= start] or None
+
+
+def plan_windows(clips, D):
+    """Sub-clips share D in proportion to their length; a window is extended into the source if D is longer."""
     clips = list(clips)
     while len(clips) > 1 and D / len(clips) < 1.5:
         clips.pop()
     tot = sum(c["o"] - c["i"] for c in clips)
-    files = []
-    for k, c in enumerate(clips):
+    out = []
+    for c in clips:
         src = DEVLOG / c["src"].replace("../", "")
         n = D * (c["o"] - c["i"]) / tot
         avail = c["o"] - c["i"]
-        sd = dur(src)
         start = c["i"] if n <= avail else max(0.0, c["i"] - (n - avail) / 2)
-        n = min(n, sd - start - 0.05)
+        n = min(n, dur(src) - start - 0.05)
+        out.append((c, src, start, n))
+    return out
+
+
+def footage_video(clips, D, out, tag, blur=False):
+    files = []
+    for k, (c, src, start, n) in enumerate(plan_windows(clips, D)):
+        mask = window_mask(src.name, start, n)
         if c.get("interp"):
             # drop the repeated frames, then synthesise real in-betweens (motion-compensated) at 30 fps
             vf = (f"scale=1280:720,mpdecimate,minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1,"
-                  f"scale={W}:{H}:flags=lanczos" + mask_filter(c.get("mask_bottom_right")))
+                  f"scale={W}:{H}:flags=lanczos" + mask_filter(mask))
         else:
-            vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(c.get("mask_bottom_right"))
+            vf = f"scale={W}:{H}:flags=lanczos,fps={FPS}" + mask_filter(mask)
         if blur:
             vf += ",gblur=sigma=28,eq=brightness=-0.14"
         f = TMP / f"{tag}_{k}.mp4"
@@ -360,7 +385,7 @@ def composite(mode, person, bg, wav, D, out, wall):
 def migrate_old_names():
     """One-off: pieces rendered under position numbers (NNN.*) are renamed to their content hash (read from NNN.key)."""
     for k in sorted(SEG.glob("[0-9][0-9][0-9].key")):
-        key = k.read_text().strip()
+        key = k.read_text().strip().replace("m2:", "")
         for ext in ("mp4", "wav"):
             src, dst = k.with_suffix("." + ext), SEG / f"{key}.{ext}"
             if src.exists() and not dst.exists():
@@ -390,7 +415,7 @@ def render_segment(job):
         D = math.ceil((dur(DEVLOG / g["text"]) + 0.3) * FPS) / FPS
         ff("-i", DEVLOG / g["text"], "-af", f"apad=whole_dur={D:.5f},atrim=0:{D:.5f}", "-ar", 48000, "-ac", 2, "-c:a", "pcm_s16le", out_w)
         picture({"visual": "black"}, D, out_v, tag)
-        stamp.write_text(key)
+        stamp.write_text("m2:" + key)      # m2 = toast blur follows the window actually used
         return idx, D
     mode = g["frame"]
     video = mode in "CP"
@@ -398,7 +423,7 @@ def render_segment(job):
     D = math.ceil((dur(raw) + TAIL) * FPS) / FPS
     finish_voice(raw, out_w, D)
     if sec == "00":                      # cold open: only the voice is needed, the picture is coldopen.html
-        stamp.write_text(key)
+        stamp.write_text("m2:" + key)      # m2 = toast blur follows the window actually used
         out_v.write_bytes(b"")
         return idx, D
     if mode == "B":
@@ -411,7 +436,7 @@ def render_segment(job):
         else:
             bgv = picture(g, D, TMP / f"{tag}_bg.mp4", tag + "bg")
         composite(mode, raw, bgv, out_w, D, out_v, wall_x_for(g))
-    stamp.write_text(key)
+    stamp.write_text("m2:" + key)      # m2 = toast blur follows the window actually used
     return idx, D
 
 
