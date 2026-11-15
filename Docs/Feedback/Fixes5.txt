@@ -1,0 +1,32 @@
+1) The multilingual speech bubbles in Assets/Incoming/2D/ComicCards never got attached to the attacks like I had wanted. 
+2) Sometimes the hints at the top regarding movement and camera stuff is there too long. Maybe a help button that brings up an overlay and talks about the keyboard shortcuts?
+3) Health bars over enemies is a good idea; hard to implement?
+4) Add more quest types and handle / suggest more direction options?
+5) Rig the rats and other enemy mobs
+6) Rig the villagers and have them do idle animations.
+7) Idle animations or smoke or something animated happening with the houses.
+
+--- Open after the Nov 15 session (Claude) ---
+- "Bubbles" / "Words go here" placeholder popups: seen by Dylan, not found in source, assets, backend text or logs. Need a screenshot / when it shows.
+- HUD: the controls tip at the top sits under the objective banner (Saved/Screenshots/WindowsEditor/cardsizes_a.png).
+- Not tried by hand: Gentle (one hit restarts the step) and Rush timing (15 s + 4/pickup, 25 s + 9/target).
+- Small comic cards may be too small (95-135 vs big 290/320); tune after a playtest.
+
+--- Juice ideas (Claude, pick any; none started) ---
+Cheap (under 30 min each, code only):
+1) Hit-stop: freeze 40-60 ms on the pacify that finishes a nuisance (global time dilation 0.05), longer on ultimates.
+2) Camera kick: small shake on big comic card spawn and on pacify; bigger on ultimate. Respect a "reduce shake" option if one exists.
+3) Pacify pop: the nuisance squashes/stretches (scale 1.25 -> 0.85 -> 1) over 0.25 s and a puff of confetti/sugar.
+4) Sprinkle counter: the reward number ticks up on the HUD with a little bounce instead of jumping; coin-like sfx per tick.
+5) Quest turn-in: a short confetti burst over the giver plus their marker doing a spin before it hides.
+6) Rush clock: hint text pulses red under 5 s; a ticking sfx in the last 3 s.
+7) Gentle: on a hit, a brief screen-edge vignette in pink and Fenella's "Ow" line (already there) shown big for half a second.
+8) Visit arrival: the quest marker pops (scale up and fade) and a chime, so arriving reads instantly.
+9) Level-up with a villager: their name plate flashes and a heart/emote card flies up (could reuse the comic card actor with a new texture).
+Medium (an hour or so):
+10) Footstep sugar dust on the hero when running on paths; denser on the brick road.
+11) Nuisances leave a candy wrapper or crumb on pacify that fades after 10 s (world reads as "we did stuff here").
+12) Fenella reacts to big combos: 3+ pacifies within 4 s triggers a one-liner from a small pool ("That's a montage!").
+13) Ultimate: slow-motion 0.3 s at launch, then the card ring bursts out at full speed.
+14) Wind sway on candy foliage (material WPO) if not already present; cheap and makes stills feel alive.
+Avoid overlapping ChatGPT's current batch: idle animations, chimney smoke, rigging/animation fixes.
