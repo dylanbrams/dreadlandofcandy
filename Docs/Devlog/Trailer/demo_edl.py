@@ -71,9 +71,7 @@ clip('tour-high.mp4', 31.6, 2.2, [(0.1, ANN / 'A07_openworld.mp3', 0.0)])
 clip(FLY, 60.0, 2.5, push=0.04)  # river and marshmallows; tour-high 37.7 flies through blurred foliage
 clip('village-improvise.mp4', 121.2, 2.8, [(0.3, ANN / 'A11_negotiate.mp3', -0.7)])
 clip(FLY, 120.0, 2.8, push=0.04)
-# 6. CUT!, the sad-rats rewrite, budget boxes.
-clip('knight-run.mp4', 46.9, 1.5, [(0.1, FEN / 'VO_CutPitch_04.mp3', 0.0)])
-clip('typed-note.mp4', 25.5, 3.0)
+# 6. Budget boxes. (CUT! / "I asked two rats" and its typed-note rewrite cut for the 60 s limit, Dylan Nov 16.)
 clip('budget-out.mp4', 10.25, 3.9, [(0.2, FEN / 'VO_BudgetOut_02.mp3', 0.0)])
 # 7. Premiere.
 m3 = clip('budget-out.mp4', 24.6, 3.6, [(0.3, FEN / 'VO_Premiere_02.mp3', 0.0)])
