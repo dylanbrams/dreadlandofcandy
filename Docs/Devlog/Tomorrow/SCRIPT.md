@@ -10,6 +10,7 @@ Read naturally; slide prompts are cues. Section 0 is a screen recording of `cold
 | 1 Unreasonable idea | `music/title-theme_take1.mp3`, hitting on the first word after the prompt screen | The title music, utterly sincere |
 | 2 Hook montage | `music/standard-combat_take1.mp3`, ducked under voice, up in the gaps | Energy for the features |
 | 3 Collaboration | `music/setting-out_take1.mp3` | The journey begins |
+| 3b Reading the chart | `music/setting-out_take1.mp3` continued, low | |
 | 4 Day one | `music/quest-accepted_take1.mp3` | |
 | 4b Asset audition | `music/mystery_take1.mp3` | Three rats, one choice |
 | 5 World gets bigger | `music/open-world-exploration_take1.mp3` | |
@@ -33,7 +34,8 @@ Rule of thumb: stay on CAM for no more than 6–8 seconds, then cut away for at 
 | 0 Prompt screen | None: screen only | The prompt screen full frame |
 | 1 Unreasonable idea | "That's pretty much the story of the last four days"; "my sense of reasonable scope may be a little compromised" | B-ROLL: Molar Hills pan with the "older than them thar hills" caption under the whole MMO list |
 | 2 Hook montage | "So what did I end up with?"; "The AI is on a leash"; "You're trying to get a usable take" | B-ROLL with game audio up after every beat: cards and battle cries, Resolve and pacified rat, improvise screen, typed proposal, encores, CUT!, typed note, budget boxes |
-| 3 Setup | First sentence | B-ROLL: Gantt chart, then the checkpoint slides |
+| 3 Setup | First sentence | B-ROLL: checkpoint slides |
+| 3b Reading the chart | "A warning before anyone reads it like a leaderboard"; "what's not on the chart is me" | PIP over the Gantt the whole time, with highlights on the bars named |
 | 4 Day one | None | B-ROLL throughout: first-hero and autoplay captures, early screenshots |
 | 4b Asset audition | "I picked the Rodin rat" (react to it) | B-ROLL: rat comparison card, then the rat in game |
 | 5 World bigger | "And then I changed the plan" | B-ROLL: the world and the village; PIP over the quest givers |
@@ -128,6 +130,36 @@ I directed and playtested. Claude and ChatGPT worked across planning, code, art,
 Some setup and design work existed before the jam and is declared. A caution about the chart: a commit records a snapshot, not how long somebody worked. The bars are estimates.
 
 [Gantt; point out events and overlap, not a leaderboard.]
+
+## 3b. Reading the chart — who built what, hour by hour
+
+*A pickup take, recorded separately (`03b`), so the section 3 you already recorded still stands. Picture: the Gantt (`../Checkpoint1/gantt/gantt.png`) almost full screen, with you in PIP. Slow pan down one day at a time; when you name a bar, highlight it (a box or a dim on everything else). Bed: continue `music/setting-out_take1.mp3`, low.*
+
+This is the whole jam on one chart. Each row is a kind of work: design, assets, terrain, art, backend, game code, docs. Each bar is a stretch of work, orange for Claude, green for ChatGPT and Codex. The times come from git: two hundred and twenty-nine commits over five days.
+
+[Highlight the colour key, then one bar of each colour.]
+
+A warning before anyone reads it like a leaderboard. A commit tells you when something was finished, not when it started, so the start of most bars is an estimate. And where a commit doesn't say which AI made it, I've marked it as a best guess.
+
+[Point at a hatched or approximate bar, or put a caption on screen: "68 bars · 42 from commit times · 26 estimated".]
+
+Here's what I find interesting. It looks like a team working side by side. It mostly isn't. Add it up and there are only about four hours where both were working at the same time. It's a relay race: one picks up when the other stops.
+
+[Dim everything except the overlapping bars on Saturday evening, around 18:00.]
+
+Some of that is just quota. Saturday evening, Claude ran out, and Codex took over all eight open fixes until Claude came back after midnight.
+
+[Highlight Saturday 18:00 to midnight: the green G19 and G20 bars, the gap in orange.]
+
+You can also see who's good at what, or at least who I handed what to. Claude spent most of its time in game code. ChatGPT did the terrain, the big generated world, overnight on Thursday, and a lot of the art.
+
+[Highlight Friday's long green Terrain bar, G06, then Claude's dense Game row.]
+
+And what's not on the chart is me. I'm the one bar that runs the whole length, playing it, writing the fix lists, and deciding what we keep.
+
+[Pull back to the full chart. Hold for a beat.]
+
+*Numbers: from `Checkpoint1/gantt/work_log.csv` as of Nov 15 noon, about 45 bar-hours for Claude and 32 for ChatGPT/Codex, but don't say these as hours worked; the bar lengths are estimates. The four hours of overlap is computed from the same bars, so it's approximate too; "about four hours" is fair, anything more precise isn't.*
 
 ## 4. Day one — get a film on its feet
 

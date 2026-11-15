@@ -10,12 +10,12 @@ You are assembling Dylan's devlog video for The Dread Land of Candy. You are a d
 
 ## Inputs
 
-- **Dylan's takes:** recorded on a green screen. Ask Dylan where they are if `raw/` is empty, then copy (don't move) them into `raw/`, named by section (`00.wav`, `01.mp4` … `08b.mp4` … `11.mp4`). He recorded "most of the dialogue": list which sections are missing.
+- **Dylan's takes:** recorded on a green screen. Ask Dylan where they are if `raw/` is empty, then copy (don't move) them into `raw/`, named by section (`00.wav`, `01.mp4` … `03b.mp4` … `08b.mp4` … `11.mp4`). Section 3b (reading the Gantt) was added after most takes were recorded, so it may be missing; it's a separate pickup. He recorded "most of the dialogue": list which sections are missing.
 - **Music beds:** `music/*.mp3` (ACE Studio score), assigned per section in the script's table. **Never use `theme-song.mp3` or anything from `D:\AudacityRecordings\BigRockCandyMountain\` except the blooper below**: its guitar is the 1928 McClintock recording, still under US copyright.
 - **Post-credits blooper:** `Docs/Devlog/Tomorrow/assets/blooper/BigRockCandyMountain_Blooper_8s.mp3`, the only theme-song audio allowed.
 - **Graphics:**
   - `Docs/Devlog/Tomorrow/index.html` + `slides.js`: an HTML slide deck. Add a `?slide=N&rec` URL parameter so one slide can be rendered without its UI chrome.
-  - `Docs/Devlog/Checkpoint1/gantt/gantt_slide.png`: the updated Gantt.
+  - `Docs/Devlog/Checkpoint1/gantt/gantt.png` (full) and `gantt_slide.png`: the updated Gantt. Section 3b needs bar highlights; `build_gantt.py` can be extended to draw a highlighted variant (e.g. dim all but given ids) per beat, rather than drawing boxes by hand.
   - `Docs/Devlog/Tomorrow/assets/` (`morning/` before/after shots, the rat comparison), `Docs/Devlog/CandyPBR/contact.jpg`, `Docs/Devlog/Marshmallows/Marshmallow_contact_sheet.jpg`, `Docs/Design/CandyUI/*.png`, `Docs/Devlog/Screenshots/`, `Saved/Screenshots/WindowsEditor/`.
 - **Voice clips from the game** (for Fenella beats): `vocals/output/fenella/<asset>.wav`, with their text in `vocals/line_inventory.json`.
 - **Gameplay B-roll:** probably none recorded yet. If Dylan has none, cover those beats with stills and slides, and list the missing gameplay shots for him (the trailer's capture list in `Docs/Devlog/Trailer/TRAILER.md` overlaps). If you capture gameplay yourself, run the packaged build (`Builds/Win64-Development`), record only the game window (ffmpeg `gdigrab` with `title=`), never the desktop, and ask Dylan first.
