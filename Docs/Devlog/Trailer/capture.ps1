@@ -2,7 +2,7 @@
   Records one gameplay clip from the packaged build: the game window only (gdigrab title=), never the desktop.
   Video only; trailer music and Fenella lines go on in the edit.
   .\Docs\Devlog\Trailer\capture.ps1 -Name knight-fight -Seconds 40 -Skip 12 -Extra "-autoplay","-class=knight"
-  Clips land in Docs\Devlog\Video\raw\broll\ (git-ignored).
+  Clips land in Docs\Devlog\GameFootage\ (git-ignored, shared with the devlog edit).
 #>
 param(
   [Parameter(Mandatory)] [string]$Name,
@@ -14,7 +14,7 @@ param(
 $ErrorActionPreference = "Stop"
 $Root = (Resolve-Path "$PSScriptRoot\..\..\..").Path
 $Exe = Join-Path $Root "Builds\Win64-Development\TheDreadLandOfCandy.exe"
-$OutDir = Join-Path $Root "Docs\Devlog\Video\raw\broll"
+$OutDir = Join-Path $Root "Docs\Devlog\GameFootage"
 New-Item -ItemType Directory -Force $OutDir | Out-Null
 $Out = Join-Path $OutDir "$Name.mp4"
 
