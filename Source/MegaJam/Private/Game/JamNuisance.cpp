@@ -202,6 +202,7 @@ void AJamNuisance::ApplyBodySquash(float Squash)
 
 void AJamNuisance::HandlePacified(AActor* /*Pacified*/)
 {
+	PopAt = GetWorld()->GetTimeSeconds();
 	SetState(EJamNuisanceState::Pacified);
 }
 
@@ -412,7 +413,12 @@ void AJamNuisance::Tick(float DeltaSeconds)
     {
         const float Settle = FMath::SmoothStep(0.f, 0.3f, StateTime);
         const float Breathe = FMath::Sin(StateTime * 2.f * PI * 0.7f) * 0.018f * Settle;
-        ApplyBodySquash(FMath::Lerp(1.f, 0.55f, Settle) + Breathe);
+        // B3: the pop on top of the settle: 1.25 -> 0.85 -> 1.0 over a quarter second.
+        const float PopT = (GetWorld()->GetTimeSeconds() - PopAt) / 0.25f;
+        const float Pop = PopT >= 1.f || PopT < 0.f ? 1.f
+            : (PopT < 0.5f ? FMath::Lerp(1.25f, 0.85f, FMath::SmoothStep(0.f, 1.f, PopT * 2.f))
+                           : FMath::Lerp(0.85f, 1.f, FMath::SmoothStep(0.f, 1.f, PopT * 2.f - 1.f)));
+        ApplyBodySquash((FMath::Lerp(1.f, 0.55f, Settle) + Breathe) * Pop);
     }
 	else if (SinceRecoil < 0.35f)
 	{

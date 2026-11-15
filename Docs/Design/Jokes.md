@@ -480,3 +480,12 @@ Scroll, deadpan, real declarations at the end.
 ## Video cut (30 to 60 seconds, for the submission)
 
 1. Narration interrupted (4 s). 2. Sword fakeout, full (6 s). 3. "Perfect. Again." (5 s). 4. CUT! prompt and the bigger goblin (8 s). 5. Ledger scrolling down to a tiny Hero's Cut (6 s). 6. Budget runs out (8 s). 7. Title stamp (3 s).
+
+## Combo lines (Feedback6 B6)
+
+Fenella, when the hero pacifies three in four seconds (at most one per 12 s). Text only, no voice; mirrored in `JamGameFeel.cpp`.
+
+- Three in four seconds! Do that again, but slower, and with feeling.
+- A montage! I did not ask for a montage, and I am delighted.
+- Please stop being so efficient. The audience needs time to gasp.
+- That is what I call a combo. I call everything that, but this time it is true.

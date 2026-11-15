@@ -133,6 +133,11 @@ private:
 	float RushLeft = -1.f;
 	/** Fixes5 #4: what Fenella says before "Next: ..." when a step finishes (a visit's arrival line). */
 	FString NextStepIntro;
+	/** Feedback6 C1-C3 (JamVillageFeel.cpp): marker pop on arrival, confetti and a spinning marker on turn-in, a heart on a villager level-up. */
+	void PlayVisitArrivalFeel();
+	/** `-feeldemo`: 3 s in, plays the turn-in and level-up effects on the nearest villager and a finisher pop, for screenshots. */
+	void FeelDemo();
+	void PlayTurnInFeel(int32 GiverIndex, bool bLevelUp);
 	/** Fixes5 #4: visit arrivals and the Rush clock, during an active step. */
 	void TickVillageStep(float DeltaSeconds);
 	UPROPERTY(Transient) TObjectPtr<class AJamQuestMarker> QuestMarker;
@@ -151,6 +156,20 @@ private:
 	void PrepareTreatStage(const FJamStageDef& Stage);
 	void SpawnPickups(int32 Count);
 	void HandlePacified(AActor* Pacified);
+
+	// Feedback6 B: combat feel (JamGameFeel.cpp).
+	void PlayFinisherFeel();
+	void BeginUltimateOpening();
+	void PushTimeDilation(float Dilation, float RealSeconds);
+	void RestoreTimeDilation();
+	static constexpr float UltimateSlowDilation = 0.25f;
+	static constexpr float UltimateSlowRealSeconds = 0.3f;
+	bool bDilationHeld = false;
+	float BaseDilation = 1.f;
+	FTimerHandle DilationTimer;
+	double LastUltimateRealAt = -100.0;
+	double LastComboLineAt = -100.0;
+	TArray<double> RecentPacifyTimes;
 	void FinishRun(bool bPass, const FString& Why);
 	void TickAutoplay(float DeltaSeconds);
 	void TickAutoplayAfterRun(float DeltaSeconds);

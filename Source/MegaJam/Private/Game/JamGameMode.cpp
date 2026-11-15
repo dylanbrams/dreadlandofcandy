@@ -171,6 +171,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 	const TCHAR* Cmd = FCommandLine::Get();
 	bAutoplay = FParse::Param(Cmd, TEXT("autoplay"));
 	bAutoVillage = bAutoplay && FParse::Param(Cmd, TEXT("autovillage"));
+	if (FParse::Param(Cmd, TEXT("feeldemo"))) { FTimerHandle Demo; GetWorldTimerManager().SetTimer(Demo, this, &AJamGameMode::FeelDemo, 3.f, true, 1.f); }
 	bForceBudgetOut = FParse::Param(Cmd, TEXT("budgetout"));   // the beat as soon as the finale's last stage rolls
 	if (FParse::Param(Cmd, TEXT("forcefail")))
 	{
@@ -414,6 +415,7 @@ void AJamGameMode::HandlePacified(AActor* Pacified)
 {
 	AJamGameState* GS = GetJamGameState();
 	JamSfx::Play(this, TEXT("Pacify"));
+	PlayFinisherFeel();
 	const FJamStageDef* Stage = GS ? GS->Shoot.GetStage() : nullptr;
 	if (bVillageExploration)
 	{
@@ -1095,6 +1097,11 @@ void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
 	const float BaseYaw = InHero->GetActorRotation().Yaw;
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	// Feedback6 B4: the ultimate opens in 0.3 s of slow motion; the cards wait it out (card delays run in game time)
+	// and then burst at full speed. B2: a camera kick as the big cards land, bigger on the ultimate.
+	float OpeningDelay = 0.f;
+	if (bUltimate) { BeginUltimateOpening(); OpeningDelay = UltimateSlowRealSeconds * UltimateSlowDilation; }
+	InHero->AddShake(bUltimate ? 20.f : 7.f, OpeningDelay);
 	for (int32 i = 0; i < Count; ++i)
 	{
 		const FCardLanguage& Language = Pool[Languages[i % Languages.Num()]];
@@ -1112,7 +1119,7 @@ void AJamGameMode::SpawnComicCards(AJamHero* InHero, EJamSkill Skill)
 		const FVector Travel = Dir * FMath::FRandRange(300.f, 480.f) * (bBig ? 0.8f : 1.1f) + FVector(0.f, 0.f, FMath::FRandRange(60.f, 160.f));
 		const float Size = bBig ? (bUltimate ? 320.f : 290.f) : FMath::FRandRange(95.f, 135.f);
 		// Big cards land first and stay a little longer.
-		Card->Launch(Texture, Travel * 2.2f, bBig ? 0.f : 0.05f * (i + 1), bBig ? 1.5f : 1.2f, Size);
+		Card->Launch(Texture, Travel * 2.2f, OpeningDelay + (bBig ? 0.f : 0.05f * (i + 1)), bBig ? 1.5f : 1.2f, Size);
 	}
 }
 

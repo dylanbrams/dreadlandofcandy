@@ -159,6 +159,8 @@ private:
 	float SlowFactor = 1.f;
 	FVector2D RecoilVelocity = FVector2D::ZeroVector;
 	float RecoilAt = -100.f;
+	/** Feedback6 B3: when it was pacified, for the pop (stretch 1.25, squash 0.85, settle 1.0 over 0.25 s). */
+	float PopAt = -100.f;
 	float SlowUntil = -1.f;
 	float StateTime = 0.f;
 	FVector2D WanderTarget = FVector2D::ZeroVector;

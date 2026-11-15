@@ -268,6 +268,7 @@ bool AJamGameMode::HandleVillageInteract(AJamHero* InHero)
 			ApplyHeroStats();
 		}
 		ClearStageActors();
+		PlayTurnInFeel(Target, VillageQuests.Level(Target) > LevelBefore);
 		UpdateVillageObjective();
 		JamSfx::Play(this, TEXT("Stage_Complete"));
 		const int32 LevelNow = VillageQuests.Level(Target);
@@ -521,6 +522,7 @@ void AJamGameMode::TickVillageStep(float DeltaSeconds)
 	{
 		if (Distance > JamVillageQuests::VisitRadius(Step.Destination) || !VillageQuests.Report(EJamStageVerb::Visit)) { return; }
 		JamSfx::Play(this, TEXT("Quest_Accept"));
+		PlayVisitArrivalFeel();
 		UE_LOG(LogJam, Log, TEXT("JamQuest: visited %s"), *Step.Destination.ToString());
 		if (VillageQuests.State(Active) == EJamVillageQuestState::Ready) { Direct(Step.Arrival + TEXT(" Return to ") + VillageQuests.Offer(Active).GiverName + TEXT(".")); }
 		else { NextStepIntro = Step.Arrival; }

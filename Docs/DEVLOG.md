@@ -504,3 +504,6 @@ autoplay made close inspection difficult. No package or upload. Provenance and c
 commands are in Docs/Devlog/NpcMotion-generation.md and Scripts/review_npc_motion.ps1.
 Also added nine ideas and realistic Terra effort/priority estimates to Fixes5.txt;
 the recommended first bundle is 2-3.5 hours with a shared verification pass.
+
+## Feedback6 Groups B and C, written, not yet built
+B1-B4, B6: JamGameFeel.cpp (hit-stop via world time dilation with a restore timer, kicks, ultimate slow-mo with the cards delayed to match, Fenella combo line pool; mirrored in Jokes.md), nuisance pop in JamNuisance. C1-C3: JamVillageFeel.cpp (marker pop and spin as throwaway AJamQuestMarker copies, new AJamConfetti, a transient drawn heart on AJamComicCard). Left for a playtest: B5 card sizes, C4 third routes.

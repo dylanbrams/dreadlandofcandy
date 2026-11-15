@@ -79,7 +79,7 @@ AJamQuestMarker* AJamQuestMarker::FindActive(UWorld* World)
 	float Distance = FMath::Square(200.f);
 	for (TActorIterator<AJamQuestMarker> It(World); It; ++It)
 	{
-		if (It->IsHidden()) { continue; }
+		if (It->IsHidden() || It->bFarewell) { continue; }
 		const float D = FVector::DistSquared2D(It->TargetLocation(), GS->CompassTarget);
 		if (D < Distance || (D == Distance && (!Best || It->GetUniqueID() < Best->GetUniqueID())))
 		{
@@ -99,9 +99,43 @@ void AJamQuestMarker::PointAt(const FVector& Ground, AActor* InAnchor, float Hei
 	SetActorHiddenInGame(false);
 }
 
+AJamQuestMarker* AJamQuestMarker::SpawnFarewell(UWorld* World, const FVector& Where, bool bSpin)
+{
+	if (!World) { return nullptr; }
+	FActorSpawnParameters Params;
+	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	AJamQuestMarker* Ghost = World->SpawnActor<AJamQuestMarker>(AJamQuestMarker::StaticClass(), Where, FRotator::ZeroRotator, Params);
+	if (!Ghost) { return nullptr; }
+	Ghost->bFarewell = true;
+	Ghost->bFarewellSpin = bSpin;
+	Ghost->SetActorHiddenInGame(false);
+	return Ghost;
+}
+
+void AJamQuestMarker::TickFarewell(float DeltaSeconds)
+{
+	FarewellAge += DeltaSeconds;
+	const float Duration = bFarewellSpin ? 0.9f : 0.5f;
+	const float T = FMath::Clamp(FarewellAge / Duration, 0.f, 1.f);
+	if (T >= 1.f) { Destroy(); return; }
+	// Arrival: swell and fade. Turn-in: a fast spin that accelerates, rising a little, shrinking away at the end.
+	const float Scale = bFarewellSpin ? 0.85f * (1.f + 0.15f * T) * (1.f - FMath::Square(FMath::Max(0.f, (T - 0.6f) / 0.4f)))
+		: 0.85f * (1.f + 1.0f * FMath::InterpEaseOut(0.f, 1.f, T, 2.f));
+	const float Opacity = bFarewellSpin ? 1.f - FMath::Max(0.f, (T - 0.7f) / 0.3f) : 1.f - T * T;
+	if (RedMaterial) { RedMaterial->SetScalarParameterValue(TEXT("Opacity"), Opacity); }
+	if (PaleMaterial) { PaleMaterial->SetScalarParameterValue(TEXT("Opacity"), Opacity); }
+	SetActorScale3D(FVector(FMath::Max(Scale, 0.01f)));
+	const APlayerCameraManager* Camera = UGameplayStatics::GetPlayerCameraManager(this, 0);
+	const float Facing = Camera ? (Camera->GetCameraLocation() - GetActorLocation()).Rotation().Yaw + 90.f : 0.f;
+	const float Spin = bFarewellSpin ? 1080.f * T * T : 100.f * FarewellAge;
+	SetActorRotation(FRotator(0, Facing + Spin, 0));
+	if (bFarewellSpin) { AddActorWorldOffset(FVector(0, 0, 60.f * DeltaSeconds)); }
+}
+
 void AJamQuestMarker::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	if (bFarewell) { TickFarewell(DeltaSeconds); return; }
 	if (IsHidden()) { return; }
 	Age += DeltaSeconds;
 	const bool bActive = FindActive(GetWorld()) == this;
