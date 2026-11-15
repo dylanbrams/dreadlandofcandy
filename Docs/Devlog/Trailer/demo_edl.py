@@ -46,24 +46,24 @@ seg('cam', 3.9, [(0.0, tk('12-16-09'), 2.0, 0.55, 3.8)],
 # 2. The land, the hero, the lecture.
 m1 = clip('tour-high.mp4', 75.0, 4.6, [(0.5, ANN / 'A01_land.mp3', 0.0)])
 clip('hero-close.mp4', 0.3, 3.2, [(0.2, ANN / 'A02_hero.mp3', 0.0)])
-clip('hero-close.mp4', 9.0, 4.3, [(0.3, ANN / 'A03_armed.mp3', 0.0)])
-clip('knight-run.mp4', 10.0, 3.4, [(0.2, FEN / 'VO_LectureCast_02.mp3', 0.0)])
+clip('knight-run.mp4', 10.0, 4.3, [(0.3, ANN / 'A03_armed.mp3', 0.0)])
+clip('barbarian-run.mp4', 9.0, 3.4, [(0.2, FEN / 'VO_LectureCast_02.mp3', 0.0)])
 # 3. Dylan in the corner over the giant celery.
-seg('pip', 4.5, [(0.0, tk('13-09-43'), 2.0, 0.2, 4.4)], take='13-09-43', t_in=0.2, src='hero-close.mp4', **{'in': 19.6})
+seg('pip', 4.5, [(0.0, tk('13-09-43'), 2.0, 0.2, 4.4)], take='13-09-43', t_in=0.2, src='hero-close.mp4', **{'in': 20.8})
 # 4. Music kicks in: manners, vegetables, a fast montage of all four classes.
-m2 = clip('hero-close.mp4', 13.3, 2.4, [(0.3, ANN / 'A05_manners.mp3', 0.0)])
+m2 = clip('typed-note.mp4', 15.0, 2.4, [(0.3, ANN / 'A05_manners.mp3', 0.0)])
 clip('typed-note.mp4', 30.0, 2.6, [(0.3, ANN / 'A06_vegetables.mp3', 0.0)])
-for src, t in (('archer-run.mp4', 15.0), ('barbarian-run.mp4', 12.3), ('mage-run.mp4', 45.0),
-               ('barbarian-run.mp4', 9.0), ('knight-run.mp4', 77.6)):
+for src, t in (('archer-run.mp4', 15.0), ('barbarian-run.mp4', 15.3), ('archer-run.mp4', 11.5),
+               ('barbarian-run.mp4', 13.0), ('knight-run.mp4', 78.1)):
     clip(src, t, 1.3)
 # 5. The world: chocolate river from above, the bridge, quests in the village.
 clip('tour-high.mp4', 30.0, 3.6, [(0.3, ANN / 'A07_openworld.mp3', 0.0)])
 clip('tour-high.mp4', 40.0, 2.6, push=0.04)
-clip('village-improvise.mp4', 120.2, 3.4, [(0.3, ANN / 'A08_quests.mp3', 0.0)])
+clip('village-improvise.mp4', 121.2, 2.8, [(0.3, ANN / 'A08_quests.mp3', 0.0)])
 clip('tour-high.mp4', 100.0, 2.8, push=0.04)
 # 6. CUT!, the sad-rats rewrite, budget boxes.
-clip('knight-run.mp4', 46.9, 3.9, [(0.1, FEN / 'VO_CutPitch_04.mp3', 0.0)])
-clip('typed-note.mp4', 25.5, 2.4)
+clip('knight-run.mp4', 46.9, 1.5, [(0.1, FEN / 'VO_CutPitch_04.mp3', 0.0)])
+clip('typed-note.mp4', 25.5, 3.0)
 clip('budget-out.mp4', 10.0, 3.9, [(0.2, FEN / 'VO_BudgetOut_02.mp3', 0.0)])
 # 7. Premiere.
 m3 = clip('budget-out.mp4', 24.6, 3.6, [(0.3, FEN / 'VO_Premiere_02.mp3', 0.0)])
