@@ -2,12 +2,12 @@
 
 Read naturally; slide prompts are cues. Each section is a **take** you can record on its own: it opens with a music bed and ends on a clean beat, so the takes can be cut together in any order. Sections 1–6 come from ChatGPT's Nov 15 01:45 draft, lightly tightened. Section 7 covers the long night, and sections 8 and 8b reconstruct Sunday morning, 05:00–11:00 project time, from git and `Docs/DEVLOG.md`. The ending is still open. About 9–11 minutes in all.
 
-**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. Check `theme-song.mp3` for vocals before talking over it; if it has them, use it only under titles and the ending.
+**Music.** Everything in `music/` is the game's own score, generated in ACE Studio from `music/RPG-music-prompts.md`, which asked for epic music played completely straight: the comedy comes from heroic orchestras over rats and candy. Put the beds below under your voice at roughly −18 to −22 dB, and bring them up between takes. They are the mp3 masters, so nothing needs ripping from the game. The exception is `theme-song.mp3`, the vocal song you made in ACE Studio that riffs on "Big Rock Candy Mountain". Never talk over it: give it the screen on its own, under the title card and the end credits.
 
 | Take | Bed | Why |
 | --- | --- | --- |
 | 1 Cold open | `music/title-theme_take1.mp3` | The title music, utterly sincere |
-| 2 Premise | `music/theme-song.mp3` (titles only), then `music/village_take1.mp3` | Introduces the game |
+| 2 Premise | `music/theme-song.mp3` alone under the title card (no voice), then `music/village_take1.mp3` | Introduces the game |
 | 3 Collaboration | `music/setting-out_take1.mp3` | The journey begins |
 | 4 Day one | `music/quest-accepted_take1.mp3` | |
 | 4b Asset audition | `music/mystery_take1.mp3` | Three rats, one choice |
@@ -17,7 +17,7 @@ Read naturally; slide prompts are cues. Each section is a **take** you can recor
 | 8 Sunday morning | `music/village_take2.mp3`; `music/feeding-candy_take1.mp3` under the marshmallows | The candy world gets a coat of paint |
 | 8b "The river is terrible" | `music/boss-battle_take1.mp3` | A bug list scored as a boss fight |
 | 9 Why do this | `music/emotional-revelation_take1.mp3` | The sincere bit |
-| 10 Ending | `music/victory_take1.mp3` → `music/credits_take1.mp3` | |
+| 10 Ending | `music/victory_take1.mp3` under the last words, then `music/theme-song.mp3` over the end credits | Bookends the video with the song |
 
 ## 1. Cold open — an unreasonable idea
 
@@ -161,3 +161,5 @@ That's the real limitation of AI here. It's hard to get multiple points of view,
 ## 10. Ending — to be written
 
 [Fill in after the remaining work: the final build, the jam submission, what survived, what broke, and how you feel about it. Add the itch.io link when it's live.]
+
+[End credits: roll `music/theme-song.mp3` at full volume with no voice. Optional lead-in line: "And yes, the game has a theme song. I made it in ACE Studio, riffing on Big Rock Candy Mountain. Here it is."]
