@@ -1862,6 +1862,20 @@ void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
 	const float VillageYaw = FMath::RadiansToDegrees(FMath::Atan2(-Start.Y, -Start.X));
 	NewHero->SetActorRotation(FRotator(0.f, VillageYaw, 0.f));
 	NewHero->EnableFollowCamera(VillageYaw);
+	// -heroat=X,Y: start the hero somewhere else (screenshots of a spot in the world); dropped onto the ground.
+	FString HeroAt;
+	if (FParse::Value(Cmd, TEXT("heroat="), HeroAt))
+	{
+		FString XS, YS;
+		if (HeroAt.Split(TEXT(","), &XS, &YS))
+		{
+			const FVector Top(FCString::Atof(*XS), FCString::Atof(*YS), 5000.f);
+			FHitResult Ground;
+			FCollisionQueryParams GroundParams(SCENE_QUERY_STAT(JamHeroAt), false, NewHero);
+			const bool bGround = GetWorld()->LineTraceSingleByChannel(Ground, Top, Top - FVector(0.f, 0.f, 10000.f), ECC_Pawn, GroundParams);
+			NewHero->SetActorLocation((bGround ? Ground.ImpactPoint : FVector(Top.X, Top.Y, 200.f)) + FVector(0.f, 0.f, 100.f), false, nullptr, ETeleportType::TeleportPhysics);
+		}
+	}
 	float CamYaw = 0.f, CamPitch = -14.f;
 	const bool bYaw = FParse::Value(Cmd, TEXT("camyaw="), CamYaw);
 	const bool bPitch = FParse::Value(Cmd, TEXT("campitch="), CamPitch);

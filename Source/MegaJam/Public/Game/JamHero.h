@@ -117,12 +117,25 @@ private:
 	float CameraTurn = 0.f;
 	float CameraZoomOffset = 0.f;
 	float CameraPitchFollow = -14.f;
-	// Fixes4 #11: extra downward pitch (degrees) while terrain or a building sits between the hero and the camera.
-	float CameraTerrainLift = 0.f;
-	bool IsCameraViewBlocked(float Pitch) const;
-	// Tall instanced foliage (trees, gumdrops): their canopies have no collision, so the lift checks instance bounds.
+	// Tall instanced foliage (trees, gumdrops): their canopies have no collision, so the fade checks instance bounds.
 	TArray<TWeakObjectPtr<class UInstancedStaticMeshComponent>> CameraOccluderFoliage;
 	void GatherCameraOccluderFoliage();
+	// Dylan, Nov 15: no automatic camera lift. A foliage instance between the hero and the camera is shrunk away
+	// and a faint translucent ghost of it drawn in its place; it comes back once the line has been clear a moment.
+	struct FCameraFade
+	{
+		TWeakObjectPtr<class UInstancedStaticMeshComponent> Foliage;
+		int32 Index = INDEX_NONE;
+		FTransform Original;
+		FSphere Bounds;   // world space, from the original transform
+		TWeakObjectPtr<class UStaticMeshComponent> Ghost;
+		float LastBlocked = 0.f;
+	};
+	TArray<FCameraFade> CameraFades;
+	void TickCameraFoliageFade();
+	void RestoreCameraFade(FCameraFade& Fade);
+	UPROPERTY(Transient) TObjectPtr<class UMaterialInterface> GhostBaseMaterial;
+	UPROPERTY(Transient) TObjectPtr<class UMaterialInstanceDynamic> GhostMaterial;
 	FVector2D StickLook = FVector2D::ZeroVector;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> LookAction;

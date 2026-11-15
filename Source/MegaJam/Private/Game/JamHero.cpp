@@ -71,15 +71,12 @@ namespace JamHeroTuning
 	constexpr float MouseYawSpeed = 0.6f;        // degrees per mouse count
 	constexpr float StickYawSpeed = 160.f;       // degrees per second at full stick
 	constexpr float BotTurnSpeed = 4.f;          // how fast the camera swings behind the bot's aim
-	// Fixes4 #11: terrain lift (degrees of extra downward pitch while the view is blocked).
-	constexpr float TerrainLiftMax = 55.f;
-	constexpr float TerrainLiftRaiseSpeed = 140.f;   // per second; fast, so the hero is hidden for a frame or two at most
-	constexpr float TerrainLiftRelaxSpeed = 25.f;    // per second; slow, so it does not bob on bumpy ground
-	constexpr float TerrainLiftHysteresis = 6.f;     // must be clear this much lower before it eases down
-	constexpr float TerrainLiftPitchFloor = -75.f;
-	constexpr float TerrainLiftProbeRadius = 30.f;
-	constexpr float TerrainLiftFoliageRadius = 60.f;
-	constexpr float TerrainLiftFoliageMinHeight = 250.f;
+	// Dylan, Nov 15: foliage between the hero and the camera fades instead of the camera lifting over it.
+	constexpr float FoliageFadeRadius = 60.f;        // thickness of the sight line tested against instance bounds
+	constexpr float FoliageFadeMinHeight = 250.f;    // only tall things; grass and flowers never hide the hero
+	constexpr float FoliageFadeHoldSeconds = 0.4f;   // clear this long before it comes back, so it does not flicker
+	constexpr float FoliageGhostOpacity = 0.15f;
+	constexpr int32 FoliageFadeMax = 24;
 	// Fixes4 #11: the hero snagged on carved banks and terrain seams.
 	constexpr float WalkableFloorAngle = 52.f;
 	constexpr float MaxStepHeight = 60.f;
@@ -110,6 +107,8 @@ AJamHero::AJamHero()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraArm, USpringArmComponent::SocketName);
 	Camera->FieldOfView = 55.f;
+	static ConstructorHelpers::FObjectFinder<UMaterialInterface> GhostMat(TEXT("/Game/FX/M_FxUnlit.M_FxUnlit"));
+	GhostBaseMaterial = GhostMat.Object;
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cylinder(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
@@ -676,28 +675,102 @@ void AJamHero::TickFollowCamera(float DeltaSeconds)
 	{
 		CameraYaw = FMath::FixedTurn(CameraYaw, AimOverride.Rotation().Yaw, JamHeroTuning::BotTurnSpeed * 45.f * DeltaSeconds);
 	}
-	// Fixes4 #11: when a hill or a building cuts the line from the hero to the camera, swing the camera up
-	// over it instead of letting the arm's probe pull it into the hero's back; ease back down once clear.
-	// Pinned shots (scene takes) keep their framing; the arm's own probe still guards them.
-	if (!bCameraPinned)
+	// Dylan, Nov 15: the pitch is the player's alone (the Fixes4 #11 terrain lift fought it). Hills and buildings
+	// pull the arm in through its Camera-channel probe; tall foliage on the sight line fades out instead.
+	CameraArm->SetWorldRotation(FRotator(CameraPitchFollow, CameraYaw, 0.f));
+	TickCameraFoliageFade();
+}
+
+namespace
+{
+	// Closest distance from a point to the segment A-B.
+	float DistToSegment(const FVector& P, const FVector& A, const FVector& B)
 	{
-		const float LiftedPitch = CameraPitchFollow - CameraTerrainLift;
-		if (IsCameraViewBlocked(LiftedPitch))
+		return FMath::Sqrt(FMath::PointDistToSegmentSquared(P, A, B));
+	}
+}
+
+void AJamHero::TickCameraFoliageFade()
+{
+	UWorld* World = GetWorld();
+	if (!World || !Camera || !CameraArm) { return; }
+	const float Now = World->GetTimeSeconds();
+	const FVector Origin = GetActorLocation() + CameraArm->TargetOffset;
+	const FVector End = Camera->GetComponentLocation();
+	const float R = JamHeroTuning::FoliageFadeRadius;
+
+	// Faded instances are shrunk, so test them against their original bounds, not the live instance.
+	for (FCameraFade& Fade : CameraFades)
+	{
+		if (DistToSegment(Fade.Bounds.Center, Origin, End) <= Fade.Bounds.W + R) { Fade.LastBlocked = Now; }
+	}
+
+	// New occluders: sample spheres along the sight line (stopping short of the lens) against instance bounds.
+	const float Length = FVector::Dist(Origin, End);
+	const int32 Samples = FMath::Clamp(FMath::CeilToInt(Length / 100.f), 2, 24);
+	for (int32 s = 1; s <= Samples && CameraFades.Num() < JamHeroTuning::FoliageFadeMax; ++s)
+	{
+		const FVector Sample = FMath::Lerp(Origin, End, 0.95f * s / Samples);
+		for (const TWeakObjectPtr<UInstancedStaticMeshComponent>& Weak : CameraOccluderFoliage)
 		{
-			if (CameraTerrainLift <= 0.f) { UE_LOG(LogJam, Log, TEXT("CameraLift: engaged at %s"), *GetActorLocation().ToCompactString()); }
-			CameraTerrainLift = FMath::Min(CameraTerrainLift + JamHeroTuning::TerrainLiftRaiseSpeed * DeltaSeconds, JamHeroTuning::TerrainLiftMax);
-		}
-		else if (CameraTerrainLift > 0.f && !IsCameraViewBlocked(LiftedPitch + JamHeroTuning::TerrainLiftHysteresis))
-		{
-			CameraTerrainLift = FMath::Max(CameraTerrainLift - JamHeroTuning::TerrainLiftRelaxSpeed * DeltaSeconds, 0.f);
+			UInstancedStaticMeshComponent* Foliage = Weak.Get();
+			if (!Foliage || !Foliage->IsVisible() || !Foliage->Bounds.GetBox().ExpandBy(R).IsInside(Sample)) { continue; }
+			for (const int32 Index : Foliage->GetInstancesOverlappingSphere(Sample, R, true))
+			{
+				if (CameraFades.ContainsByPredicate([Foliage, Index](const FCameraFade& F) { return F.Foliage.Get() == Foliage && F.Index == Index; })) { continue; }
+				if (CameraFades.Num() >= JamHeroTuning::FoliageFadeMax) { break; }
+				FCameraFade& Fade = CameraFades.AddDefaulted_GetRef();
+				Fade.Foliage = Foliage;
+				Fade.Index = Index;
+				Fade.LastBlocked = Now;
+				Foliage->GetInstanceTransform(Index, Fade.Original, true);
+				const FBoxSphereBounds MeshBounds = Foliage->GetStaticMesh()->GetBounds();
+				Fade.Bounds = FSphere(Fade.Original.TransformPosition(MeshBounds.Origin), MeshBounds.SphereRadius * Fade.Original.GetMaximumAxisScale());
+				// A faint unlit ghost in its place, so the player still sees where the tree is.
+				if (GhostBaseMaterial)
+				{
+					if (!GhostMaterial)
+					{
+						GhostMaterial = UMaterialInstanceDynamic::Create(GhostBaseMaterial, this);
+						GhostMaterial->SetVectorParameterValue(TEXT("Color"), FLinearColor(1.f, 0.92f, 0.96f));
+						GhostMaterial->SetScalarParameterValue(TEXT("Opacity"), JamHeroTuning::FoliageGhostOpacity);
+					}
+					UStaticMeshComponent* Ghost = NewObject<UStaticMeshComponent>(this);
+					Ghost->SetStaticMesh(Foliage->GetStaticMesh());
+					Ghost->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+					Ghost->SetCastShadow(false);
+					Ghost->SetUsingAbsoluteLocation(true);
+					Ghost->SetUsingAbsoluteRotation(true);
+					Ghost->SetUsingAbsoluteScale(true);
+					Ghost->RegisterComponent();
+					Ghost->SetWorldTransform(Fade.Original);
+					for (int32 m = 0; m < Ghost->GetNumMaterials(); ++m) { Ghost->SetMaterial(m, GhostMaterial); }
+					Fade.Ghost = Ghost;
+				}
+				FTransform Hidden = Fade.Original;
+				Hidden.SetScale3D(FVector(0.001f));
+				Foliage->UpdateInstanceTransform(Index, Hidden, true, true, true);
+			}
 		}
 	}
-	else
+
+	for (int32 i = CameraFades.Num() - 1; i >= 0; --i)
 	{
-		CameraTerrainLift = 0.f;
+		if (Now - CameraFades[i].LastBlocked > JamHeroTuning::FoliageFadeHoldSeconds)
+		{
+			RestoreCameraFade(CameraFades[i]);
+			CameraFades.RemoveAtSwap(i);
+		}
 	}
-	const float Pitch = FMath::Max(CameraPitchFollow - CameraTerrainLift, JamHeroTuning::TerrainLiftPitchFloor);
-	CameraArm->SetWorldRotation(FRotator(Pitch, CameraYaw, 0.f));
+}
+
+void AJamHero::RestoreCameraFade(FCameraFade& Fade)
+{
+	if (UInstancedStaticMeshComponent* Foliage = Fade.Foliage.Get())
+	{
+		if (Foliage->IsValidInstance(Fade.Index)) { Foliage->UpdateInstanceTransform(Fade.Index, Fade.Original, true, true, true); }
+	}
+	if (UStaticMeshComponent* Ghost = Fade.Ghost.Get()) { Ghost->DestroyComponent(); }
 }
 
 void AJamHero::GatherCameraOccluderFoliage()
@@ -712,42 +785,13 @@ void AJamHero::GatherCameraOccluderFoliage()
 			const UStaticMesh* FoliageMesh = Component->GetStaticMesh();
 			if (!FoliageMesh || Component->GetInstanceCount() == 0) { continue; }
 			// Only tall things hide the hero; grass and flowers stay out (their instance scale is close to 1).
-			if (FoliageMesh->GetBounds().BoxExtent.Z * 2.f * Component->GetComponentScale().Z >= JamHeroTuning::TerrainLiftFoliageMinHeight)
+			if (FoliageMesh->GetBounds().BoxExtent.Z * 2.f * Component->GetComponentScale().Z >= JamHeroTuning::FoliageFadeMinHeight)
 			{
 				CameraOccluderFoliage.Add(Component);
 			}
 		}
 	}
-	UE_LOG(LogJam, Log, TEXT("CameraLift: %d tall foliage components"), CameraOccluderFoliage.Num());
-}
-
-bool AJamHero::IsCameraViewBlocked(float Pitch) const
-{
-	UWorld* World = GetWorld();
-	if (!World || !CameraArm) { return false; }
-	const FVector Origin = GetActorLocation() + CameraArm->TargetOffset;
-	const FRotator View(FMath::Max(Pitch, JamHeroTuning::TerrainLiftPitchFloor), CameraYaw, 0.f);
-	// Stop a little short of the camera: only what hides the hero matters, not a wall behind the lens.
-	const FVector End = Origin - View.Vector() * CameraArm->TargetArmLength * 0.95f;
-	FCollisionQueryParams Params(SCENE_QUERY_STAT(JamCameraLift), false, this);
-	FHitResult Hit;
-	// Tree canopies and big candy props have no collision: sample spheres along the line against instance bounds.
-	const float R = JamHeroTuning::TerrainLiftFoliageRadius;
-	for (const float T : { 0.35f, 0.55f, 0.75f, 0.95f })
-	{
-		const FVector Sample = FMath::Lerp(Origin, End, T);
-		for (const TWeakObjectPtr<UInstancedStaticMeshComponent>& Weak : CameraOccluderFoliage)
-		{
-			const UInstancedStaticMeshComponent* Foliage = Weak.Get();
-			if (!Foliage || !Foliage->IsVisible() || !Foliage->Bounds.GetBox().ExpandBy(R).IsInside(Sample)) { continue; }
-			if (!Foliage->GetInstancesOverlappingSphere(Sample, R, true).IsEmpty()) { return true; }
-		}
-	}
-	// A probe that starts inside something (under the bridge, in a doorway) cannot be fixed by pitch: ignore it.
-	// Visibility, not the arm's Camera channel: trees and big candy props ignore Camera (so the arm does not
-	// snap into them) but still hide the hero, and rising over them is the right answer.
-	return World->SweepSingleByChannel(Hit, Origin, End, FQuat::Identity, ECC_Visibility,
-		FCollisionShape::MakeSphere(JamHeroTuning::TerrainLiftProbeRadius), Params) && !Hit.bStartPenetrating;
+	UE_LOG(LogJam, Log, TEXT("CameraFade: %d tall foliage components"), CameraOccluderFoliage.Num());
 }
 
 void AJamHero::OnLecture(const FInputActionValue& /*Value*/)
