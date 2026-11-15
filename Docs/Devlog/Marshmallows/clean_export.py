@@ -3,7 +3,8 @@ from pathlib import Path
 from mathutils import Vector
 
 BASE=Path(__file__).resolve().parent
-NAMES=("MM_CreamClassic","MM_TwistedCream","MM_SquashedCream")
+import os
+NAMES=tuple(os.environ.get("MM_ONLY","MM_CreamClassic,MM_TwistedCream,MM_SquashedCream").split(","))
 TARGET_TRIANGLES=4800
 TARGET_LENGTH=0.22
 REPORT=[]
@@ -45,7 +46,10 @@ def set_camera_and_render(obj, name):
 
 for name in NAMES:
     bpy.ops.object.select_all(action='SELECT');bpy.ops.object.delete(use_global=False)
-    bpy.ops.import_scene.gltf(filepath=str(BASE/(name+'.glb')))
+    # MM_SquashedCream's generated GLB is a broken shell (mixed inside-out faces, ~10% of the expected signed volume):
+    # with the one-sided marshmallow material it renders as a hole in the underside. Build it from the watertight
+    # MM_CreamClassic GLB instead and squash it in the squash step below.
+    bpy.ops.import_scene.gltf(filepath=str(BASE/(('MM_CreamClassic' if name=='MM_SquashedCream' else name)+'.glb')))
     meshes=[o for o in bpy.context.scene.objects if o.type=='MESH']
     if not meshes: raise RuntimeError(name+' has no mesh objects')
     # Join generated submeshes, then remove unreferenced mesh fragments and duplicate vertices.
@@ -61,6 +65,14 @@ for name in NAMES:
     removed_loose=len(loose)
     if loose:bmesh.ops.delete(bm,geom=loose,context='VERTS')
     bmesh.ops.recalc_face_normals(bm,faces=bm.faces);bm.to_mesh(obj.data);bm.free();obj.data.update()
+    if name=='MM_SquashedCream':
+        from mathutils import Matrix
+        me=obj.data;zs=[v.co.z for v in me.vertices];z0,z1=min(zs),max(zs)
+        for v in me.vertices:
+            t=(v.co.z-z0)/(z1-z0)            # 0 bottom .. 1 top
+            k=1.18-0.30*t                    # fat at the base, narrower on top
+            v.co.x*=k*1.08;v.co.y*=k*0.88;v.co.z=z0+(v.co.z-z0)*0.80
+        me.transform(Matrix.Rotation(0.12,4,'X'));me.update()
     smooth=obj.modifiers.new('SoftConfection','SMOOTH');smooth.factor=0.22 if name!='MM_SquashedCream' else 0.1;smooth.iterations=2
     bpy.context.view_layer.objects.active=obj;bpy.ops.object.modifier_apply(modifier=smooth.name)
     tri_count=sum(max(0,len(p.vertices)-2) for p in obj.data.polygons)

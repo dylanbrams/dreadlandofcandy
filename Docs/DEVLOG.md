@@ -514,3 +514,11 @@ stronger for the ultimate. Editor build and 86 Jam tests passed. The autoplay
 screenshot initially timed out during Unreal startup. A retry captured gameplay
 and the HUD, but caught the skills cooling; the pulse still needs visual review.
 
+# Nov 15: more river marshmallows
+
+Expanded the river from 13 to 52 nonblocking marshmallows at two-thirds scale,
+with seeded yaw, lateral spacing and varied curved flow paths. Applied to the
+existing world without reimporting the existing mesh variants. Review capture:
+`Saved/Screenshots/WindowsEditor/marshmallow-density.png`; the broad river is
+visible. A helper also rebuilt water and steam assets; left in place per Dylan.
+

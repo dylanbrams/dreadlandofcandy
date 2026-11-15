@@ -190,10 +190,11 @@ def marshmallow_instances(mesh, bounds):
     rng = random.Random(SEED + 3)
     instances = []
     dimensions = bounds.max - bounds.min
-    for y in range(-9600, 9601, 1600):
-        x = 4000.0 + river_local_x(float(y)) + rng.uniform(-100.0, 100.0)
-        radius = rng.uniform(25.0, 40.0)
-        height = rng.uniform(45.0, 60.0)
+    for index in range(52):
+        y = -10000.0 + index * 400.0 + rng.uniform(-120.0, 120.0)
+        x = 4000.0 + river_local_x(float(y)) + rng.uniform(-125.0, 125.0)
+        radius = rng.uniform(25.0, 40.0) * (2.0 / 3.0)
+        height = rng.uniform(45.0, 60.0) * (2.0 / 3.0)
         scale_x = radius * 2.0 / dimensions.x
         scale_y = radius * 2.0 / dimensions.y
         scale_z = height / dimensions.z
@@ -202,7 +203,7 @@ def marshmallow_instances(mesh, bounds):
         instances.append(
             make_transform(
                 x,
-                float(y) + rng.uniform(-180.0, 180.0),
+                float(y),
                 center_z,
                 rng.uniform(0.0, 360.0),
                 scale_x,
@@ -297,7 +298,7 @@ def main():
         for index,actor in enumerate(mallows):
             mesh=variants[index%len(variants)]
             b=mesh.get_bounding_box();d=b.max-b.min
-            height=48+(index%4)*4;width=65+(index%3)*8
+            height=(48+(index%4)*4)*2.0/3.0;width=(65+(index%3)*8)*2.0/3.0
             scale=u.Vector(width/d.x,width/d.y,height/d.z)
             actor.static_mesh_component.set_static_mesh(mesh)
             actor.set_actor_scale3d(scale)

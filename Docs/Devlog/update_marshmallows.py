@@ -19,17 +19,18 @@ for index,file in enumerate(files):
  assert len(found)==1
  mesh=found[0]
  meshes.append(mesh)
-exec(compile((HERE/'candy_water.py').read_text(),str(HERE/'candy_water.py'),'exec'),{'__file__':str(HERE/'candy_water.py')})
+exec(compile((HERE/'candy_water.py').read_text(),str(HERE/'candy_water.py'),'exec'),{'__file__':str(HERE/'candy_water.py'),'__name__':'__main__'})
 material=u.load_asset('/Game/World/Expansion/M_Marshmallow')
 world=u.EditorLoadingAndSavingUtils.load_map('/Game/World/L_Sugarborough')
 actors=u.get_editor_subsystem(u.EditorActorSubsystem)
-targets=sorted([a for a in actors.get_all_level_actors() if a.get_actor_label().startswith('CandyLandscapeDressing_River_Marshmallows_')],key=lambda a:a.get_actor_label())
-assert len(targets)==13,len(targets)
+prefix='CandyLandscapeDressing_River_Marshmallows_'
+targets=sorted([a for a in actors.get_all_level_actors() if a.get_actor_label().startswith(prefix)],key=lambda a:int(a.get_actor_label()[len(prefix):]))
+assert len(targets)==52,len(targets)
 for index,actor in enumerate(targets):
  mesh=meshes[index%len(meshes)]
  box=mesh.get_bounding_box();dim=box.max-box.min
- width=65+(index%3)*8
- height=48+(index%4)*4
+ width=(65+(index%3)*8)*2.0/3.0
+ height=(48+(index%4)*4)*2.0/3.0
  scale=u.Vector(width/dim.x,width/dim.y,height/dim.z)
  comp=actor.static_mesh_component
  comp.set_static_mesh(mesh)

@@ -178,8 +178,11 @@ def build_marshmallow_material(mat):
         mat,
         """float oldY = P.y;
 float newY = fmod(fmod(oldY + T * 45.0 + 11500.0, 23000.0) + 23000.0, 23000.0) - 11500.0;
-float oldCenter = sin(oldY / 3500.0);
-float newCenter = sin(newY / 3500.0);
+// Offset the curve by lane, so nearby marshmallows do not follow identical paths.
+float lane = P.x - (19000.0 + 500.0 * sin(oldY / 3500.0));
+float phase = clamp(lane * 0.0012, -0.2, 0.2);
+float oldCenter = sin(oldY / 3500.0 + phase);
+float newCenter = sin(newY / 3500.0 + phase);
 float dx = 500.0 * (newCenter - oldCenter);
 float dz = 5.0 * sin(T * 2.0 + oldY * .001);
 return float3(dx, newY - oldY, dz);""",
@@ -250,4 +253,5 @@ def assign_material():
     u.log("CANDY HOT CHOCOLATE MATERIAL PASS " + MATERIAL_PATH + " -> " + MESH_PATH)
 
 
-assign_material()
+if __name__ == '__main__':
+    assign_material()

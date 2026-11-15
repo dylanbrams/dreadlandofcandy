@@ -1,5 +1,14 @@
 # STATUS (rewrite this file; do not prepend)
 
+## River marshmallow density
+
+The river now has 52 drifting marshmallows (formerly 13), at two-thirds the
+previous dimensions, with seeded random yaw and varied curved lanes. The saved
+world includes the earlier squashed-marshmallow mesh repair. A separate review view,
+`Saved/Screenshots/WindowsEditor/marshmallow-density.png`, shows the broad river
+and the new distribution. A helper also rebuilt the water and steam assets as a
+side effect; those assets were left in place at Dylan's request.
+
 ## Skill-ready flourish (Fixes5 idea 15)
 
 The skill HUD now pulses its border once when a cooldown finishes, with a stronger
