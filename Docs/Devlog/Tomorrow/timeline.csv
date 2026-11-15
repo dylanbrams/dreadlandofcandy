@@ -8,3 +8,15 @@ date_time,precision,event,evidence,qualification
 2026-11-15 00:45,commit,New candy foliage mix,git 690505d,Commit time is not a work duration
 2026-11-15 00:58,commit,Class sound and afterglow,git d1b054f,Not heard live at checkpoint
 2026-11-15 01:25,commit,Class attack effects,git 0cd724b,Not judged in motion at checkpoint
+2026-11-15 02:30,recorded,Package + smoke + ZIP 737.7 MB,Docs/DEVLOG.md ~02:30 entry,Not playtested
+2026-11-15 05:12,commit,Encores (2-4 per villager) and seven review fixes,git cac48cf e92d51f,Claude
+2026-11-15 07:46,commit,Devlog script and deck started,git 0d5e107,ChatGPT draft
+2026-11-15 08:28,commit,Release candidate: package + smoke PASS + village autoplay 3 main / 10 side,git 634ec22,Claude
+2026-11-15 08:44,commit,Four candy UI directions mocked up,git 57b3406 e2ccf3b,Dylan picked Black Sugar
+2026-11-15 08:46,commit,Candy PBR ground + hot chocolate river,git 084030d,ChatGPT; editor captures only
+2026-11-15 08:49,commit,Encore EXP past level 10,git 247af6f,Claude; not seen live
+2026-11-15 09:17,commit,Generated drifting marshmallows,git 4cc1ac3,No Claude trailer; confirm author
+2026-11-15 09:36,commit,Black Sugar UI implemented,git 05e5721,No Claude trailer; confirm author; partial screen review
+2026-11-15 10:22,commit,Fixes4 #1-8 (controls label / Shift / level 1 / flashes / cyclone / placards),git 8a4ece6,Claude; 85 tests; packaged not smoked
+2026-11-15 10:39,commit,Fixes4 #9-10 river channel / bridge / roads / brush,git 6da7023,Claude; not packaged
+2026-11-15 11:00,commit,Fixes4 #11 camera lift over canopies,git 1dd9094,Claude; not packaged
