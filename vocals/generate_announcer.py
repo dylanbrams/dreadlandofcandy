@@ -31,6 +31,7 @@ LINES = {
     'A07_openworld': 'An open world. Of chocolate.',
     'A08_quests': 'Quests that rewrite themselves.',
     'A09_title': 'The Dread Land of Candy.',
+    'A10_fight': 'And fight for Truth, Toothbrushes, Vegetables, and Table Manners.',  # Dylan, Nov 15
 }
 
 

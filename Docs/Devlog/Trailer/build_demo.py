@@ -189,7 +189,7 @@ def soft_blur(im, sigma):
 
 def render_frame(kind, p, u, dur):
     if kind == 'clip':
-        im = footage(p['src'], p['in'] + u, p.get('push', 0.0), u / dur)
+        im = footage(p['src'], p['in'] + min(u, p.get('hold', 1e9)), p.get('push', 0.0), u / dur)  # hold: freeze there
     elif kind == 'card':
         im = np.zeros((H, W, 3), np.uint8); im[:] = PLUM
         if p.get('bg'):
@@ -285,7 +285,7 @@ def render_audio(path, total):
         elif v_fade and s_dur:
             fades = f',afade=t=out:st={max(0, s_dur - v_fade)}:d={v_fade}'
         voice_fx = ''
-        if str(f).startswith(str(TAKES)):
+        if str(f).startswith(str(TAKES)) or Path(f).parent == ROOT / 'Docs/Devlog/Video':  # Dylan's takes and pickups
             # Dylan's raw takes differ in level from take to take (around -42 to -49 LUFS) and carry room tone:
             # clean each line, then bring it to exactly the announcer's level (two-pass, see prepare_take).
             f, s_in, s_dur = prepare_take(f, s_in, s_dur), 0.0, None
