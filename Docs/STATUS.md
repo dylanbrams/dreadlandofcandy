@@ -40,6 +40,34 @@ hits). Not packaged.
   **not deployed: Dylan deploys it**; until then proposals still fall back (improvise fix is client-only).
 - Seen in a 70 s autoplay shot: camera inside a giant teal candy prop on the way to The Almond Affair.
 
+## Fixes5 #5-7 / Feedback6 Group E: NPC and village motion
+
+Implemented: Meshy skeletal rigs plus Idle/Walk for villagers, upright rats and goblins;
+distance-driven scurry/skitter/wobble for all nuisances; villager weight shifts/nods with
+their role props; bobbing/turning collectible art; recycled drifting steam on six occupied
+village roofs (30 puffs). Gameplay actor positions and collision are unchanged.
+Existing static art remains the fallback if a rig or compatible clips are unavailable.
+Lolly bugs and almonds use procedural motion, not humanoid skeletons.
+
+Approved Rodin originals preserved; local Blender inputs reduced from 500k to about 25k
+triangles each, then Meshy used 33 credits total. Provenance:
+`Docs/Devlog/NpcMotion-generation.md`. Importer: `Scripts/import_npc_rigs.py`;
+three rigs and all clips imported successfully under `/Game/Art/NPC`, textures capped at 1K.
+Editor build and 86/86 Jam tests passed for the motion changes. Runtime village/idle pairs
+and first two scenes captured in `Saved/Screenshots/WindowsEditor/npc-motion*.png`;
+the first two scenes wrapped successfully. Camera/scenery obscures some captures.
+Reproducible unobstructed actor review: template map, `-backlot -artreview=motion`.
+Final lineup inspected: `npc-motion-lineup.png`; meshes are coloured and grounded.
+Headwear still follows the body pivot rather than a head bone and can drift during
+skeletal idles; a socket attachment pass is suggested in Fixes5. Latest editor rebuild
+passed including Group A source; the waiting Claude now owns further testing.
+No package/zip/upload in this task; Group A source changes are owned by the waiting Claude.
+
+Added nine further juice ideas and Terra effort/priority estimates for Claude's fourteen
+ideas to `Docs/Feedback/Fixes5.txt`. First suggested bundle: turn-in/arrival feedback,
+Rush warnings and reward count-up, about 2-3.5 hours with shared verification. These
+ideas were not implemented by Group E. Further suggestions: `Docs/Design/LIVELINESS.md`.
+
 ## Fixes4 #1-8 (Nov 15, `Docs/Feedback/Fixes4.txt`)
 
 Done, committed (8a4ece6, 0c33a50), editor build + 85/85 Jam tests green, **not yet seen live**: title Controls line,

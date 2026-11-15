@@ -15,6 +15,7 @@ class MEGAJAM_API AJamPickup : public AActor
 public:
 	AJamPickup();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	FLinearColor Colour = FLinearColor(0.55f, 0.35f, 0.18f);   // almond brown
 	FString ArtMesh = TEXT("SM_Almond");
@@ -25,4 +26,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> Art;
+
+	FTransform ArtBaseTransform;
+	float AnimationTime = 0.f;
+	float AnimationPhase = 0.f;
 };

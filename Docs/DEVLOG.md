@@ -487,3 +487,17 @@ the third routes paid out 4 jobs (Crowd, Visit, Rush) before the bot snagged on 
 Then player plans: the backend learned "visit" (signpost, villagers, film sets) and Rush/Gentle/Crowd twists, and two
 contract mismatches turned up (improvise sending three routes; the backend missing two camps, which had quietly broken
 every proposal). Both fixed; backend needs a deploy.
+
+## Nov 15 - Fixes5 #5-7 / Feedback6 Group E (ChatGPT)
+Animated village life: actual Meshy rigs/idle/walk for the approved upright rat, goblin
+and villager; distance-driven nuisance gaits, villager body/prop motion, floating pickups,
+and bounded recycled rooftop steam. A 500k-triangle villager input exceeded Meshy's limit;
+Blender made separate 25k inputs for all three, preserving originals. Three successful
+rig/clip jobs cost 33 credits. Imported under /Game/Art/NPC with 1K texture limits and
+root-locked animation; runtime checks skeleton compatibility before hiding static art.
+Build and 86 tests passed, both early scenes wrapped in autoplay, runtime captures
+reviewed. Added an isolated -artreview=motion actor lineup because scenery and fast
+autoplay made close inspection difficult. No package or upload. Provenance and capture
+commands are in Docs/Devlog/NpcMotion-generation.md and Scripts/review_npc_motion.ps1.
+Also added nine ideas and realistic Terra effort/priority estimates to Fixes5.txt;
+the recommended first bundle is 2-3.5 hours with a shared verification pass.

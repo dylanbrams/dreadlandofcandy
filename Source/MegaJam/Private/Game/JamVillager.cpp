@@ -6,26 +6,34 @@
 #include "Camera/PlayerCameraManager.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Materials/MaterialInstanceDynamic.h"
+#include "JamNpcMotion.h"
+#include "Engine/World.h"
 
 AJamVillager::AJamVillager()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("Root")));
+	MotionPivot = CreateDefaultSubobject<USceneComponent>(TEXT("IdleMotion"));
+	MotionPivot->SetupAttachment(RootComponent);
 	SetActorEnableCollision(false);
 	Art = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Villager"));
-	Art->SetupAttachment(RootComponent);
+	Art->SetupAttachment(MotionPivot);
 	Art->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Fallback(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
 	Art->SetStaticMesh(Fallback.Object);
 	Art->SetRelativeLocation(FVector(0, 0, 85));
 	Art->SetRelativeScale3D(FVector(0.6f, 0.6f, 1.7f));
+	Rig = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("VillagerRig"));
+	Rig->SetupAttachment(Art);
+	Rig->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Rig->SetHiddenInGame(true);
 	RoleProp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TradeProp"));
-	RoleProp->SetupAttachment(RootComponent);
+	RoleProp->SetupAttachment(MotionPivot);
 	RoleProp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Sphere(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
 	static ConstructorHelpers::FObjectFinder<UMaterialInterface> ShapeMaterial(TEXT("/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial"));
 	HatPuff = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HatPuff"));
-	HatPuff->SetupAttachment(RootComponent);
+	HatPuff->SetupAttachment(MotionPivot);
 	HatPuff->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	HatPuff->SetStaticMesh(Sphere.Object);
 	HatPuff->SetMaterial(0, ShapeMaterial.Object);
@@ -44,7 +52,16 @@ AJamVillager::AJamVillager()
 void AJamVillager::BeginPlay()
 {
 	Super::BeginPlay();
+	MotionPhase = FMath::Fmod(FMath::Abs(GetActorLocation().X * 0.017f + GetActorLocation().Y * 0.031f), 2.f * PI);
 	JamArt::Apply(Art, TEXT("SM_Villager"), JamArt::Height(TEXT("SM_Villager")));
+	UAnimSequence* Idle = nullptr;
+	UAnimSequence* Walk = nullptr;
+	if (JamNpcMotion::Load(Rig, Art, TEXT("Villager"), Idle, Walk))
+	{
+		IdleAnimation = Idle;
+		WalkAnimation = Walk;
+		Rig->SetPosition(MotionPhase / (2.f * PI) * Idle->GetPlayLength(), false);
+	}
 }
 
 void AJamVillager::SetName(const FString& Name) { Label->SetText(FText::FromString(Name)); }
@@ -81,6 +98,12 @@ void AJamVillager::SetRole(FName Giver)
 void AJamVillager::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	const float T = GetWorld()->GetTimeSeconds() + MotionPhase;
+	// Slow weight shifts and a brief conversational nod, with props following the same pivot.
+	const float Gesture = FMath::Square(FMath::Max(0.f, FMath::Sin(T * 0.68f)));
+	MotionPivot->SetRelativeRotation(FRotator(Gesture * FMath::Sin(T * 5.f) * 3.f,
+		FMath::Sin(T * 0.55f) * 7.f, FMath::Sin(T * 1.3f) * 1.8f));
+	MotionPivot->SetRelativeScale3D(FVector(1.f, 1.f, 1.f + FMath::Sin(T * 2.f) * 0.012f));
 	if (const APlayerCameraManager* Camera = UGameplayStatics::GetPlayerCameraManager(this, 0))
 	{
 		Label->SetWorldRotation((Camera->GetCameraLocation() - Label->GetComponentLocation()).Rotation());

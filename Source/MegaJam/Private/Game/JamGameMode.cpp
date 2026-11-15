@@ -6,6 +6,7 @@
 #include "Film/JamNoteClamp.h"
 #include "Game/JamBacklot.h"
 #include "Game/JamOpenWorld.h"
+#include "Game/JamAmbientMotion.h"
 #include "Game/JamOpenTuning.h"
 #include "World/JamWorld.h"
 #include "Game/JamArtReview.h"
@@ -226,7 +227,7 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 		{
 			Review->Build(FVector(JamBacklot::HeroMark(FirstSceneIndex) + FVector2D(700.f, 0.f), GroundZ));
 		}
-		NewHero->SetCameraDistance(ReviewArg.Equals(TEXT("close")) ? 2300.f : 4600.f);   // close: the first row, the cast
+		NewHero->SetCameraDistance(ReviewArg.Equals(TEXT("close")) || ReviewArg.Equals(TEXT("motion")) ? 2300.f : 4600.f);
 		SetPhase(EJamFilmPhase::Shooting);
 		UE_LOG(LogJam, Log, TEXT("JamGameMode: -artreview lineup"));
 		return;
@@ -1821,6 +1822,10 @@ void AJamGameMode::StartOpenWorld(AJamHero* NewHero, const TCHAR* Cmd)
 		}
 	}
 	JamLook::Apply(GetWorld(), true);
+	if (!UGameplayStatics::GetActorOfClass(this, AJamAmbientMotion::StaticClass()))
+	{
+		GetWorld()->SpawnActor<AJamAmbientMotion>(AJamAmbientMotion::StaticClass(), FTransform::Identity);
+	}
 	NewHero->TeleportTo(FVector(Start, GroundZ + NewHero->GetCapsuleComponent()->GetScaledCapsuleHalfHeight() + 2.f), FRotator::ZeroRotator);
 	UE_LOG(LogJam, Log, TEXT("JamGameMode: open mode on %s (%s), %d locations"), *MapPath,
 		JamOpenWorld::IsFallbackMap(MapPath) ? TEXT("flat fallback") : TEXT("terrain map"), JamWorld::Def().Locations.Num());

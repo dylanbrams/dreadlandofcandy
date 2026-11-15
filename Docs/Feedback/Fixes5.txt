@@ -30,3 +30,97 @@ Medium (an hour or so):
 13) Ultimate: slow-motion 0.3 s at launch, then the card ring bursts out at full speed.
 14) Wind sway on candy foliage (material WPO) if not already present; cheap and makes stills feel alive.
 Avoid overlapping ChatGPT's current batch: idle animations, chimney smoke, rigging/animation fixes.
+
+--- Terra effort / priority review (ChatGPT, Nov 15) ---
+These are rough elapsed-time estimates for one Terra implementation session in this
+checkout, with existing assets, a free Unreal slot, and normal build/test turnaround.
+They include a focused in-game check; approval waits, paid generation queues, a full
+package/cook, and substantial failed attempts are extra. Several changes can share
+one build/test pass, so do not simply add the high ends. These are estimates, not
+measured Terra benchmarks. "Code only" still needs validation in motion.
+
+Claude's ideas, in the order above:
+1) Hit-stop: 30-60 min. Medium priority. Use a short local visual pause first;
+   global dilation affects movement, timers, audio and autoplay and needs care when
+   several targets pacify together. Not my first release-day pick.
+2) Camera kick: 15-30 min to tune the existing per-class attack shake, 45-75 min
+   if adding a persistent reduce-motion setting across all shake sources. Existing
+   attack shake is already wired; avoid stacking more shakes on the same impact.
+3) Pacify pop + sugar puff: 25-45 min. High priority. Recoil, grounded squash
+   and calm breathing already exist; enhance that transition rather than replace it.
+4) Reward counter count-up/bounce: 30-50 min. High priority. Animate the display,
+   keep authoritative currency immediate, and rate-limit sounds for large rewards.
+5) Quest turn-in confetti/marker flourish: 45-75 min reusing existing FX; 1-2 h
+   if a new confetti emitter/material is needed. Highest priority. Reuse
+   existing FX and cue once after a successful turn-in, before hiding the marker.
+6) Rush clock warning: 30-45 min for the visual cue, 45-75 min with ticking
+   audio and restart checks. High priority. Pulse a small clock/icon rather
+   than the whole screen; handle timeout/restart and avoid repeated ticking sounds.
+7) Gentle hit vignette: 30-50 min. Medium priority. Give its restart a distinct
+   cue, but check the objective/caption overlap first. Avoid a new strong flash.
+8) Visit arrival pop + chime: 20-35 min. High priority. Small, readable feedback
+   for the new quest type. Ensure it triggers once and does not compete with turn-in.
+9) Relationship-level heart/emote: 35-60 min with a simple existing shape/card;
+   60-100 min with new art. Medium priority; distinguish it from hero level-up.
+10) Footstep sugar dust: 45-90 min. High priority for a simple speed/distance-driven
+    emitter; add 45-90 min for reliable path/ground-material variation across both
+    terrain meshes and instanced props. Dust must stop when blocked or in menus.
+11) Temporary wrapper/crumb aftermath: 35-60 min. Medium priority. Pool/cap the
+    props and fade them; do not clutter treatment targets or create collision.
+12) Fenella combo reactions: 45-75 min for text using the existing caption queue;
+    1.5-3 h with new voiced lines and interruption tuning. Medium priority.
+    New authored lines belong in Docs/Design/Jokes.md before wiring.
+13) Ultimate slow-motion: 45-90 min. Low priority for this release: global timing
+    interacts with skill animation, FX, audio, quest clocks and overlapping casts.
+14) Foliage wind: 1.5-3 h for a restrained pass on selected tree/grass materials,
+    3-5 h for the whole foliage mix. High visual value, higher integration risk:
+    mask roots, preserve collision, expand animated bounds, inspect near/far views.
+
+My suggested first bundle: #5 + #8 + #6 + #4, roughly 2-3.5 h together including
+one shared build/test/visual pass. Then #10 if time remains. Tune #2 rather than
+adding another camera effect. Defer #1/#13 until the movement and clocks can be
+playtested by hand. Current rigging/idle/smoke work is separate and already underway;
+do not assign those same files or the Unreal slot to a second implementation session.
+
+--- Additional juice ideas (ChatGPT; suggestions, not started) ---
+15) Skill-ready flourish: one small pulse around a skill icon when its cooldown
+    finishes, with a stronger cue for the ultimate. No repeating idle flashes.
+    Terra: 25-45 min. HIGH; useful feedback on every fight, no new asset needed.
+16) Enemy charge telegraph: a short ground wedge/arrow that fills during wind-up
+    and vanishes when the charge commits or gets interrupted. Existing red quiver
+    stays as the body reaction. Terra: 45-90 min. HIGH; improves readability as
+    well as motion. Check slopes, giant enemies and simultaneous charges.
+17) UI entrance motion: objective banners settle with a small overshoot; dialogue
+    panels ease in/out; selected quest buttons give one gentle nudge. Keep text
+    readable immediately. Terra: 45-90 min for two selected surfaces, 2-3 h for
+    a consistent screen-wide pass. MEDIUM; avoid moving active click targets.
+18) Bakery-specific animation: warm oven/window glow and occasional flour puffs;
+    a swinging shop sign on one suitable building. Complements generic rooftop
+    steam. Terra: 1-2 h for one reviewed building, 2-4 h for several. MEDIUM;
+    requires authored attachment positions and checking the actual house meshes.
+19) Ambient candy butterflies/fireflies: small groups near flowers/riverbanks,
+    gentle loops and wing flutter, strict count/distance caps. Terra: 1-2 h with
+    a simple procedural silhouette; 2-4 h with new textured assets. MEDIUM;
+    strong atmosphere, keep away from enemy silhouettes and objective markers.
+20) River interaction: faint expanding ripples/wakes behind the drifting
+    marshmallows, especially under bridges. Terra: 1.5-3 h with existing river
+    materials, 3-5 h if their motion must be refactored to expose positions.
+    LOW for deadline, nice for the environment video.
+21) Hero idle personality: after standing still, glance around, shift the weapon,
+    or do a brief class-specific idle, blending back immediately on input.
+    Terra: 45-90 min with compatible existing clips; 2-4 h if clips must be
+    generated/retargeted, plus queue time. MEDIUM; do not disturb weapon grips.
+22) Quest-step progress trail: a few tiny stars travel from the final treated
+    nuisance/collected object toward the objective area, then the step checkmark
+    pops once. Terra: 45-90 min. MEDIUM; cap particles and hide the trail when
+    menus open or the target is offscreen. Keep the actual step completion immediate.
+
+For the biggest visible improvement per hour, I would choose #15 and #16 from my
+additions, then one ambient item (#18 or #19). I would not try to ship all of this
+before the deadline: finishing and checking a smaller consistent set is better.
+
+23) Follow-up from the rig review: attach villager hats/tools to the new head/hand
+    bones, then fit their socket offsets per role. They currently follow the shared
+    body-motion pivot; head movement can make the chef hat drift beside the head.
+    Terra: 30-60 min for all five roles including close-up checks. HIGH polish
+    priority before adding more villager gestures. No new generation needed.

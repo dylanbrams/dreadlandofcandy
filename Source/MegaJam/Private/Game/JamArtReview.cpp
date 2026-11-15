@@ -5,6 +5,11 @@
 #include "Engine/StaticMesh.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "UObject/ConstructorHelpers.h"
+#include "Game/JamNuisance.h"
+#include "Game/JamVillager.h"
+#include "Engine/World.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 
 namespace
 {
@@ -24,6 +29,33 @@ AJamArtReview::AJamArtReview()
 void AJamArtReview::Build(const FVector& Origin)
 {
 	SetActorLocation(Origin);
+	FString Review;
+	FParse::Value(FCommandLine::Get(), TEXT("artreview="), Review);
+	if (Review == TEXT("motion"))
+	{
+		// The actual game actors on an uncluttered floor, away from foliage and autoplay attacks.
+		const TCHAR* Kinds[] = { TEXT("SM_Rat"), TEXT("SM_Goblin"), TEXT("SM_LollyBug"), TEXT("SM_Almond") };
+		for (int32 i = 0; i < 4; ++i)
+		{
+			const FVector At = Origin + FVector(0.f, (i - 1.5f) * 300.f, 70.f);
+			AJamNuisance* N = GetWorld()->SpawnActorDeferred<AJamNuisance>(AJamNuisance::StaticClass(), FTransform(At),
+				nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+			if (!N) { continue; }
+			N->ArtMesh = Kinds[i];
+			N->ArtHeight = JamArt::Height(Kinds[i]);
+			N->SetBounds = FBox2D(FVector2D(At) - FVector2D(70.f), FVector2D(At) + FVector2D(70.f));
+			N->Speed = 50.f;
+			N->WanderSpeedScale = 1.f;
+			N->FleeRadius = 0.f;
+			N->FinishSpawning(FTransform(At));
+		}
+		if (AJamVillager* V = GetWorld()->SpawnActor<AJamVillager>(Origin + FVector(0.f, 800.f, 0.f), FRotator(0.f, 180.f, 0.f)))
+		{
+			V->SetName(TEXT("Idle villager"));
+			V->SetRole(TEXT("GiverBaker"));
+		}
+		return;
+	}
 	const TArray<FString>& Names = JamArt::AllNames();
 	constexpr int32 Columns = 6;
 	constexpr float Spacing = 520.f;

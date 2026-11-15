@@ -394,3 +394,9 @@ Technical metadata and hashes: `Assets/Incoming/2D/BlackSugar/manifest.json`.
 - Nov 15: fal PATINA generated 15 seamless candy ground PBR sets (75 maps), plus Unreal procedural hot chocolate, marshmallow and steam materials; sources and selected variants in Docs/Devlog/CandyPBR.
 
 - Nov 15: three fal-generated marshmallow mesh variants, cleaned in Blender for the hot chocolate river; provenance in Docs/Devlog/Marshmallows.
+
+- Nov 15: existing approved Rodin villager, goblin and upright rat meshes reduced
+  locally in Blender for Meshy rigging; new Meshy humanoid rigs and Idle/Walk
+  animations. Originals preserved. Sources, triangle counts and generation results:
+  Docs/Devlog/NpcMotion-generation.md. Runtime rooftop steam and procedural NPC/
+  pickup motion use existing project meshes and materials.

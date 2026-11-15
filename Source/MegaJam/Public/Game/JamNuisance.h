@@ -170,4 +170,11 @@ private:
 	TWeakObjectPtr<AActor> FoodTarget;
 	FVector BodyBaseScale = FVector::OneVector;
 	FVector BodyBaseLocation = FVector::ZeroVector;
+	FRotator BodyBaseRotation = FRotator::ZeroRotator;
+	float GaitPhase = 0.f;
+	bool bBudgetBox = false;
+	UPROPERTY() TObjectPtr<class USkeletalMeshComponent> Rig;
+	UPROPERTY() TObjectPtr<class UAnimSequence> IdleAnimation;
+	UPROPERTY() TObjectPtr<class UAnimSequence> WalkAnimation;
+	bool bRigWalking = false;
 };

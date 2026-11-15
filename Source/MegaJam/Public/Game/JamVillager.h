@@ -15,6 +15,11 @@ public:
 	void SetName(const FString& Name);
 	void SetRole(FName Giver);
 private:
+	UPROPERTY() TObjectPtr<class USceneComponent> MotionPivot;
+	float MotionPhase = 0.f;
+	UPROPERTY() TObjectPtr<class USkeletalMeshComponent> Rig;
+	UPROPERTY() TObjectPtr<class UAnimSequence> IdleAnimation;
+	UPROPERTY() TObjectPtr<class UAnimSequence> WalkAnimation;
 	UPROPERTY() TObjectPtr<class UStaticMeshComponent> Art;
 	UPROPERTY() TObjectPtr<class UStaticMeshComponent> RoleProp;
 	UPROPERTY() TObjectPtr<class UStaticMeshComponent> HatPuff;

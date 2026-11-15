@@ -21,6 +21,7 @@
 #include "Materials/MaterialInterface.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Game/JamSfx.h"
+#include "JamNpcMotion.h"
 
 namespace
 {
@@ -73,6 +74,10 @@ AJamNuisance::AJamNuisance()
 	if (Cylinder.Succeeded()) { Body->SetStaticMesh(Cylinder.Object); }
 	if (ShapeMaterial.Succeeded()) { Body->SetMaterial(0, ShapeMaterial.Object); }
 	Body->SetRelativeScale3D(FVector(0.8f, 0.8f, 1.4f));
+	Rig = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("NuisanceRig"));
+	Rig->SetupAttachment(Body);
+	Rig->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Rig->SetHiddenInGame(true);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> Cube(TEXT("/Engine/BasicShapes/Cube.Cube"));
 	BoxMesh = Cube.Object;
@@ -143,7 +148,21 @@ void AJamNuisance::BeginPlay()
 	}
 	BodyBaseScale = Body->GetRelativeScale3D();
 	BodyBaseLocation = Body->GetRelativeLocation();
+	BodyBaseRotation = Body->GetRelativeRotation();
+	GaitPhase = FMath::Fmod(FMath::Abs(GetActorLocation().X * 0.017f + GetActorLocation().Y * 0.031f), 2.f * PI);
 	BodyMaterial = Body->CreateAndSetMaterialInstanceDynamic(0);
+	if (ArtMesh == TEXT("SM_Goblin") || ArtMesh == TEXT("SM_Rat"))
+	{
+		UAnimSequence* Idle = nullptr;
+		UAnimSequence* Walk = nullptr;
+		if (JamNpcMotion::Load(Rig, Body, ArtMesh == TEXT("SM_Rat") ? TEXT("Rat") : TEXT("Goblin"), Idle, Walk))
+		{
+			IdleAnimation = Idle;
+			WalkAnimation = Walk;
+			Rig->SetOverlayMaterial(StateOverlay);
+			Rig->SetPosition(GaitPhase / (2.f * PI) * Idle->GetPlayLength(), false);
+		}
+	}
 	// Max first: PreAttributeChange clamps Resolve to it.
 	AbilitySystem->SetNumericAttributeBase(UJamResolveAttributeSet::GetMaxResolveAttribute(), MaxResolveValue);
 	AbilitySystem->SetNumericAttributeBase(UJamResolveAttributeSet::GetResolveAttribute(), MaxResolveValue);
@@ -225,6 +244,9 @@ void AJamNuisance::UpdateStateOverlay()
 
 void AJamNuisance::BecomeBox(const FString& Label)
 {
+	bBudgetBox = true;
+	Rig->SetHiddenInGame(true);
+	Body->SetHiddenInGame(false, false);
 	Body->SetOverlayMaterial(nullptr);
 	StateOverlay = nullptr;
 	Body->EmptyOverrideMaterials();
@@ -372,6 +394,8 @@ void AJamNuisance::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	StateTime += DeltaSeconds;
+	const FVector BeforeMove = GetActorLocation();
+	Body->SetRelativeRotation(bBudgetBox ? FRotator::ZeroRotator : BodyBaseRotation);
 
 	// Fixes3 #14: bob a small arrow over anything waiting for a brush or a celery stick.
 	const bool bWantsArrow = IsPacified();
@@ -464,7 +488,39 @@ void AJamNuisance::Tick(float DeltaSeconds)
 		break;
 	}
 
+	// Distance-driven gait: feet stop bouncing when steering is blocked. Cosmetic offsets never move the capsule.
+	if (!bBudgetBox && !IsPacified() && !IsTreated() && SinceRecoil >= 0.35f
+		&& State != EJamNuisanceState::Charge)
+	{
+		const float Distance = FVector::Dist2D(BeforeMove, GetActorLocation());
+		const float Moving = FMath::Clamp(Distance / FMath::Max(DeltaSeconds * 100.f, 0.01f), 0.f, 1.f);
+		const bool bBug = ArtMesh.Contains(TEXT("Bug"));
+		const bool bRat = ArtMesh.Contains(TEXT("Rat"));
+		const bool bAlmond = ArtMesh.Contains(TEXT("Almond"));
+		GaitPhase += Distance * (bBug ? 0.11f : bRat ? 0.085f : 0.06f);
+		const float Step = FMath::Sin(GaitPhase);
+		const float Idle = FMath::Sin(GetWorld()->GetTimeSeconds() * 2.5f + GaitPhase);
+		ApplyBodySquash(1.f + (Moving * FMath::Cos(GaitPhase * 2.f) * 0.055f + (1.f - Moving) * Idle * 0.018f));
+		Body->AddRelativeLocation(FVector(0.f, 0.f, FMath::Abs(Step) * Moving * (bBug ? 8.f : bRat ? 5.f : 11.f)));
+		// Mesh fronts are corrected by JamArt; compose in actor space so every kind leans forward.
+		const FRotator Sway(bRat ? Step * Moving * 5.f : Moving * -3.f,
+			(1.f - Moving) * Idle * 3.f, Step * Moving * (bAlmond ? 14.f : bBug ? 7.f : 4.f));
+		Body->SetRelativeRotation((Sway.Quaternion() * BodyBaseRotation.Quaternion()).Rotator());
+	}
+
 	// Development aid: state label (debug draws are compiled out of Shipping).
+	if (IdleAnimation && WalkAnimation && !bBudgetBox)
+	{
+		const float ActualSpeed = FVector::Dist2D(BeforeMove, GetActorLocation()) / FMath::Max(DeltaSeconds, 0.001f);
+		const bool bWalking = ActualSpeed > 15.f && !IsPacified() && !IsTreated();
+		if (bWalking != bRigWalking)
+		{
+			bRigWalking = bWalking;
+			Rig->PlayAnimation(bWalking ? WalkAnimation.Get() : IdleAnimation.Get(), true);
+		}
+		Rig->SetPlayRate(bWalking ? FMath::Clamp(ActualSpeed / 140.f, 0.5f, 2.5f) : 1.f);
+	}
+
 	// Only with -debuglabels: the jam ships a Development build, where debug draws are visible.
 	static const bool bLabels = FParse::Param(FCommandLine::Get(), TEXT("debuglabels"));
 	if (bLabels) { DrawDebugString(GetWorld(), FVector(0.f, 0.f, 110.f), NameOf(State), this, ColourFor(State, BaseColour).ToFColor(true), 0.f, true, 1.1f); }

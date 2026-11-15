@@ -1,0 +1,11 @@
+{
+  "rig_task": "01a1deff-4d3e-747e-9429-34c888118b4a",
+  "anims": {
+    "Idle": {
+      "anim_task": "01a1deff-cc91-7555-a075-03e1fc59c17c"
+    },
+    "Walk": {
+      "anim_task": "01a1deff-cc92-736e-94b3-35377d080a5a"
+    }
+  }
+}
