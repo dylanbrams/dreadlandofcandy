@@ -1,4 +1,6 @@
 #include "Game/JamGameMode.h"
+#include "GameFramework/SpectatorPawn.h"
+#include "GameFramework/FloatingPawnMovement.h"
 #include "Game/JamComicCard.h"
 #include "Engine/Texture2D.h"
 #include "Game/JamNoteClient.h"
@@ -185,6 +187,27 @@ void AJamGameMode::HandleStartingNewPlayer_Implementation(APlayerController* New
 		bAutoNoteTake = !AutoNote.Equals(TEXT("refuse"), ESearchCase::IgnoreCase);
 		bAutoSuggest = AutoNote.Equals(TEXT("suggest"), ESearchCase::IgnoreCase);
 		if (AutoNote.StartsWith(TEXT("typed:"))) { AutoTypedNote = AutoNote.RightChop(6).Replace(TEXT("_"), TEXT(" ")); }
+	}
+	// -skycam[=speed]: once the world is up, a free-flying spectator takes over the view (WASD, mouse, Space/Ctrl for height).
+	// The hero is left where it stands, so combine with -autoplay to fly over a live run.
+	float SkyCamSpeed = 4000.f;
+	if (FParse::Param(Cmd, TEXT("skycam")) || FParse::Value(Cmd, TEXT("skycam="), SkyCamSpeed))
+	{
+		FTimerHandle SkyCamTimer;
+		GetWorldTimerManager().SetTimer(SkyCamTimer, FTimerDelegate::CreateWeakLambda(this, [this, NewPlayer, NewHero, SkyCamSpeed]()
+		{
+			if (!NewPlayer || !NewHero) { return; }
+			FActorSpawnParameters Params;
+			Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			const FVector At = NewHero->GetActorLocation() + FVector(0.f, 0.f, 1500.f);
+			if (ASpectatorPawn* Sky = GetWorld()->SpawnActor<ASpectatorPawn>(ASpectatorPawn::StaticClass(), At, FRotator(-35.f, NewHero->GetActorRotation().Yaw, 0.f), Params))
+			{
+				if (UFloatingPawnMovement* Move = Cast<UFloatingPawnMovement>(Sky->GetMovementComponent())) { Move->MaxSpeed = SkyCamSpeed; }
+				NewPlayer->Possess(Sky);
+				NewPlayer->SetControlRotation(Sky->GetActorRotation());
+				UE_LOG(LogJam, Log, TEXT("JamGameMode: -skycam, free camera at speed %.0f"), SkyCamSpeed);
+			}
+		}), 1.f, false);
 	}
 	int32 SceneArg = 1;
 	FParse::Value(Cmd, TEXT("scene="), SceneArg);
