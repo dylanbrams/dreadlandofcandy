@@ -91,7 +91,7 @@ FJamScreenView JamScreens::Controls(const FJamMenuSettings& S)
 		TEXT("Left stick: move    Right stick: camera"),
 		TEXT("RT: basic    RB: signature    LB: ultimate"),
 		TEXT("Hold A: use / take note    B: refuse note"),
-		TEXT("Y: write directions    Menu: pause"),
+		TEXT("Y: write directions    Menu: pause    View: this list"),
 		TEXT("Pause > Character Sheet: spend skill points"),
 		TEXT("D-pad: menu selection    A: choose    B: back") }
 		: TArray<FString>{
@@ -99,7 +99,7 @@ FJamScreenView JamScreens::Controls(const FJamMenuSettings& S)
 		TEXT("Mouse 2 drag: camera    Mouse wheel: zoom"),
 		TEXT("Mouse 1 / Space: basic    Mouse 3 / Shift: signature    R: ultimate"),
 		TEXT("Hold F: use / take note    X: refuse    T: write directions"),
-		TEXT("Esc: pause    Click level / points: character sheet"),
+		TEXT("Esc: pause    H / F1: this list    Click level / points: character sheet"),
 		TEXT("Click controls to use them    F / Enter: menu selection") };
 	V.Options = { Opt(EJamMenuAction::Back, TEXT("Back")) };
 	V.Footer = MenuFooter(S);

@@ -479,6 +479,8 @@ void AJamHero::CreateInput()
 	PauseAction = NewObject<UInputAction>(this, TEXT("IA_Pause"));
 	WriteAction = NewObject<UInputAction>(this, TEXT("IA_WriteNote"));
 	PauseAction->ValueType = EInputActionValueType::Boolean;
+	HelpAction = NewObject<UInputAction>(this, TEXT("IA_Help"));
+	HelpAction->ValueType = EInputActionValueType::Boolean;
 	for (int32 i = 0; i < 3; ++i)
 	{
 		SkillActions[i] = NewObject<UInputAction>(this, *FString::Printf(TEXT("IA_Skill%d"), i + 2));
@@ -540,6 +542,9 @@ void AJamHero::CreateInput()
 	InputContext->MapKey(SkillActions[2], EKeys::R);
 	InputContext->MapKey(WriteAction, EKeys::Gamepad_FaceButton_Top);
 	InputContext->MapKey(PauseAction, EKeys::Gamepad_Special_Right);
+	InputContext->MapKey(HelpAction, EKeys::H);
+	InputContext->MapKey(HelpAction, EKeys::F1);
+	InputContext->MapKey(HelpAction, EKeys::Gamepad_Special_Left);
 }
 
 void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -563,6 +568,7 @@ void AJamHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		Input->BindAction(InteractAction, ETriggerEvent::Completed, this, &AJamHero::OnInteractReleased);
 		Input->BindAction(RefuseAction, ETriggerEvent::Started, this, &AJamHero::OnRefuse);
 		Input->BindAction(PauseAction, ETriggerEvent::Started, this, &AJamHero::OnPause);
+		Input->BindAction(HelpAction, ETriggerEvent::Started, this, &AJamHero::OnHelp);
 		Input->BindAction(WriteAction, ETriggerEvent::Started, this, &AJamHero::OnWrite);
 		Input->BindAction(SkillActions[0], ETriggerEvent::Started, this, &AJamHero::OnSkill2);
 		Input->BindAction(SkillActions[1], ETriggerEvent::Started, this, &AJamHero::OnSkill3);
@@ -1256,6 +1262,14 @@ void AJamHero::OnPause(const FInputActionValue& /*Value*/)
 	if (APlayerController* PC = Cast<APlayerController>(GetController()))
 	{
 		if (AJamHUD* HUD = Cast<AJamHUD>(PC->GetHUD())) { HUD->RequestPause(); }
+	}
+}
+
+void AJamHero::OnHelp(const FInputActionValue& /*Value*/)
+{
+	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	{
+		if (AJamHUD* HUD = Cast<AJamHUD>(PC->GetHUD())) { HUD->RequestHelp(); }
 	}
 }
 

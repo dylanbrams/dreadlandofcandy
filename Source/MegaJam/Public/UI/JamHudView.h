@@ -45,6 +45,16 @@ struct MEGAJAM_API FJamHudBubble
 	bool bJagged = false;   // lecture bubbles; the faerie's are round
 };
 
+/** Fixes5 #1: a flying comic action card (MANNERS!, BRUSH, VITAMINS in eight languages). */
+struct MEGAJAM_API FJamHudCard
+{
+	FString Texture;        // object path, e.g. /Game/Art/UI/ComicCards/T_Comic_Manners_fr.T_Comic_Manners_fr
+	FVector2D Position = FVector2D::ZeroVector;
+	float Size = 220.f;     // design pixels
+	float Angle = 0.f;
+	float Opacity = 1.f;
+};
+
 /**
  * Everything the HUD widget draws, as plain data. Built from the game state each frame, or from a named sample
  * for `-uiscreen`, so layout can be checked without playing to that moment. The widget holds no game values.
@@ -115,6 +125,7 @@ struct MEGAJAM_API FJamHudView
 	float FailFlash = 0.f;
 
 	TArray<FJamHudBubble> Bubbles;
+	TArray<FJamHudCard> Cards;
 
 	/** Fenella's caption, bottom centre (never over the objective). Empty = none. */
 	FString Caption;

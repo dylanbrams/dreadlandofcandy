@@ -84,6 +84,9 @@ public:
 		/** Fixes4 #7: knight placards fly out from him; the offset grows by Drift (uu/s) since Born. */
 		FVector Drift = FVector::ZeroVector;
 		float Born = 0.f;
+		/** Fixes5 #1: a multilingual comic action card (texture object path) instead of text; Spin in degrees/s. */
+		FString Card;
+		float Spin = 0.f;
 	};
 	TArray<FWorldBubble> Bubbles;
 

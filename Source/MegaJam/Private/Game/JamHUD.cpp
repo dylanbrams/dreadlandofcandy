@@ -3,6 +3,8 @@
 #include "Game/JamHero.h"
 #include "Film/JamCast.h"
 #include "Game/JamNuisance.h"
+#include "Gas/JamResolveAttributeSet.h"
+#include "EngineUtils.h"
 #include "Game/JamQuestMarker.h"
 #include "UI/JamHudWidget.h"
 #include "UI/JamUiStyle.h"
@@ -168,6 +170,7 @@ void AJamHUD::Tick(float DeltaSeconds)
 void AJamHUD::DrawHUD()
 {
 	Super::DrawHUD();
+	DrawResolveBars();
 	DrawCompass();
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	uint8 Weather = GS && GS->Phase == EJamFilmPhase::Shooting && !GS->bBudgetOut ? GS->Weather : 0;
@@ -237,6 +240,22 @@ void AJamHUD::TickNoteEditor()
 	if (NoteEditor->GetVisibility() != Vis) { NoteEditor->SetVisibility(Vis); }
 }
 
+FString AJamHUD::TimedHint(const FString& Raw, bool bCameraTip)
+{
+	// Fixes5 #2: a hint stays up for a while after it changes, then gets out of the way; H / F1 brings up the controls.
+	constexpr double HintSeconds = 12.0;
+	constexpr double CameraTipSeconds = 40.0;
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (FirstPlayAt < 0.0) { FirstPlayAt = Now; }
+	if (Raw != LastHint) { LastHint = Raw; HintChangedAt = Now; }
+	FString Out = Now - HintChangedAt < HintSeconds ? Raw : FString();
+	if (bCameraTip && Now - FirstPlayAt < CameraTipSeconds)
+	{
+		Out += (Out.IsEmpty() ? TEXT("") : TEXT("   ")) + FString(TEXT("Mouse 2 drag / Q-E: camera; wheel: zoom; H: all controls"));
+	}
+	return Out;
+}
+
 void AJamHUD::BuildView()
 {
 	View = FJamHudView();
@@ -256,11 +275,8 @@ void AJamHUD::BuildView()
 		View.Take = Shoot.GetTake();
 		View.bRolling = State == EJamShootState::Rolling;
 		View.FilmSeconds = GS->FilmSeconds;
-		View.Hint = GS->Hint;
-		if (const AJamHero* H = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr)
-		{
-			if (H->IsFollowCamera() && !H->IsUsingGamepad()) { View.Hint += TEXT("   Mouse 2 drag / Q-E: camera; wheel: zoom"); }
-		}
+		const AJamHero* HintHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
+		View.Hint = TimedHint(GS->Hint, HintHero && HintHero->IsFollowCamera() && !HintHero->IsUsingGamepad());
 
 		View.bDignityVisible = GS->bDignityVisible;
 		View.DignityFraction = GS->GetDignity().GetFraction();
@@ -296,9 +312,20 @@ void AJamHUD::BuildView()
 		{
 			const AActor* Anchor = B.Anchor.Get();
 			FVector2D OnScreen;
-			if (Anchor && B.Until > Now && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset + B.Drift * (Now - B.Born), OnScreen, false))
+			if (Anchor && B.Until > Now && Now >= B.Born && UWidgetLayoutLibrary::ProjectWorldLocationToWidgetPosition(PlayerOwner, Anchor->GetActorLocation() + B.Offset + B.Drift * (Now - B.Born), OnScreen, false))
 			{
-				View.Bubbles.Add({ B.Text, OnScreen, B.bJagged });
+				if (B.Card.IsEmpty()) { View.Bubbles.Add({ B.Text, OnScreen, B.bJagged }); continue; }
+				// Cards pop in (overshoot), tumble a little, and fade over their last third.
+				const float Age = Now - B.Born;
+				const float Life = FMath::Max(0.1f, B.Until - B.Born);
+				const float Pop = Age < 0.12f ? FMath::Lerp(0.3f, 1.15f, Age / 0.12f) : FMath::Lerp(1.15f, 1.f, FMath::Clamp((Age - 0.12f) / 0.1f, 0.f, 1.f));
+				FJamHudCard Card;
+				Card.Texture = B.Card;
+				Card.Position = OnScreen;
+				Card.Size = 215.f * Pop;
+				Card.Angle = B.Spin * Age;
+				Card.Opacity = FMath::Clamp((Life - Age) / (Life * 0.35f), 0.f, 1.f);
+				View.Cards.Add(Card);
 			}
 		}
 		View.FailFlash = FMath::Clamp(1.f - (GetWorld()->GetTimeSeconds() - GS->TakeFailedAt) / 0.8f, 0.f, 1.f);
@@ -375,7 +402,7 @@ void AJamHUD::BuildView()
 	{
 		const AJamHero* TravelHero = PlayerOwner ? Cast<AJamHero>(PlayerOwner->GetPawn()) : nullptr;
 		View.bGamepad = TravelHero && TravelHero->IsUsingGamepad();
-		View.Hint = GS->Hint;
+		View.Hint = TimedHint(GS->Hint, false);
 		if (!GS->VillagePrompt.IsEmpty() && GS->VillagePromptAnchor.IsValid())
 		{
 			FVector2D OnScreen;
@@ -536,6 +563,7 @@ void AJamHUD::UpdateInputMode(int32 Want)
 void AJamHUD::SetPaused(bool bPause)
 {
 	bPaused = bPause;
+	bHelpDirect = false;
 	bLevelUpCharacter = false;
 	SubScreen = EJamScreen::None;
 	Selected = 0;
@@ -551,6 +579,18 @@ void AJamHUD::RequestPause()
 	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
 	if (!GS || GS->Phase != EJamFilmPhase::Shooting || bPaused) { return; }
 	SetPaused(true);
+}
+
+void AJamHUD::RequestHelp()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	if (!GS || GS->Phase != EJamFilmPhase::Shooting || bPaused) { return; }
+	SetPaused(true);
+	ControlsParent = EJamScreen::None;
+	ControlsParentSelected = 0;
+	SubScreen = EJamScreen::Controls;
+	Selected = 0;
+	bHelpDirect = true;
 }
 
 void AJamHUD::Adjust(const FJamMenuOption& Option, int32 Delta)
@@ -600,7 +640,8 @@ void AJamHUD::Activate(const FJamMenuOption& Option)
 	case EJamMenuAction::WalkOffSet:     ParentSelected = Selected; SubScreen = EJamScreen::QuitConfirm; Selected = 1; break;
 	case EJamMenuAction::Fine:
 	case EJamMenuAction::Back:
-		if (SubScreen == EJamScreen::Controls) { Selected = ControlsParentSelected; SubScreen = ControlsParent; }
+		if (SubScreen == EJamScreen::Controls && bHelpDirect) { SetPaused(false); }
+		else if (SubScreen == EJamScreen::Controls) { Selected = ControlsParentSelected; SubScreen = ControlsParent; }
 		else if (SubScreen == EJamScreen::Character && bLevelUpCharacter) { SetPaused(false); }
 		else { Selected = ParentSelected; SubScreen = EJamScreen::None; }
 		break;
@@ -719,6 +760,46 @@ void AJamHUD::TickMusic()
 		Music->bIsUISound = true;   // keeps playing under the pause menu
 		Music->FadeIn(1.5f, 1.f);
 		UE_LOG(LogJam, Log, TEXT("JamMusic: %s take %d"), *Cue.ToString(), Take);
+	}
+}
+
+// ---- Resolve bars (Fixes5 #3) ------------------------------------------------------------------------------------
+
+void AJamHUD::DrawResolveBars()
+{
+	const AJamGameState* GS = GetWorld()->GetGameState<AJamGameState>();
+	const APawn* Pawn = PlayerOwner ? PlayerOwner->GetPawn() : nullptr;
+	if (!Canvas || !GS || !Pawn || bPaused || GS->Phase != EJamFilmPhase::Shooting || GS->bBudgetOut) { return; }
+	if (Screen && Screen->GetVisibility() == ESlateVisibility::Visible) { return; }
+	constexpr float MaxDistance = 2600.f;
+	const float Px = Canvas->ClipY / 1080.f;
+	const FVector From = Pawn->GetActorLocation();
+	for (TActorIterator<AJamNuisance> It(GetWorld()); It; ++It)
+	{
+		const AJamNuisance* N = *It;
+		if (!IsValid(N) || N->IsHidden() || N->IsPacified() || N->IsTreated()) { continue; }
+		const UJamResolveAttributeSet* Set = N->GetResolveSet();
+		const float Max = Set ? Set->GetMaxResolve() : 0.f;
+		if (Max <= 0.f) { continue; }
+		const float Distance = FVector::Dist(From, N->GetActorLocation());
+		if (Distance > MaxDistance) { continue; }
+		const FVector Head = N->GetActorLocation() + FVector(0.f, 0.f, N->GetSimpleCollisionHalfHeight() + 45.f);
+		FVector2D OnScreen;
+		if (!PlayerOwner->ProjectWorldLocationToScreen(Head, OnScreen)) { continue; }
+		const float Fraction = FMath::Clamp(N->GetResolve() / Max, 0.f, 1.f);
+		// Shrink a little with distance and fade out over the last stretch, so a crowd stays readable.
+		const float Near = 1.f - 0.35f * FMath::Clamp(Distance / MaxDistance, 0.f, 1.f);
+		const float Alpha = FMath::Clamp((MaxDistance - Distance) / 500.f, 0.f, 1.f);
+		const float Width = 84.f * Px * Near * FMath::Clamp(N->GetActorScale3D().X, 1.f, 1.6f);
+		const float Height = FMath::Max(4.f, 9.f * Px * Near);
+		const float Edge = FMath::Max(1.f, 2.f * Px);
+		const float X = OnScreen.X - Width * 0.5f;
+		const float Y = OnScreen.Y - Height * 0.5f;
+		DrawRect(FLinearColor(0.05f, 0.02f, 0.04f, 0.85f * Alpha), X - Edge, Y - Edge, Width + 2.f * Edge, Height + 2.f * Edge);
+		DrawRect(FLinearColor(0.25f, 0.08f, 0.14f, 0.9f * Alpha), X, Y, Width, Height);
+		// Candy pink when fresh, sugar gold as it wavers.
+		const FLinearColor Fill = FMath::Lerp(FLinearColor(1.f, 0.78f, 0.18f, Alpha), FLinearColor(1.f, 0.3f, 0.62f, Alpha), Fraction);
+		DrawRect(Fill, X, Y, Width * Fraction, Height);
 	}
 }
 

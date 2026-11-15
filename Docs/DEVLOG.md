@@ -475,3 +475,6 @@ Title Controls line, Shift signature, level-1 progression with level power/tough
 
 ## Nov 15 - Fixes4 #11 camera (Claude)
 Follow camera now swings up over terrain, buildings and tree canopies instead of pulling into the hero or sitting inside foliage. Canopies have no collision, so the check uses instance bounds of tall HISMs. First pass on the Camera channel missed props and trees, which ignore Camera; Visibility plus bounds fixed it. Walkable floor 52 degrees, step 60.
+
+## Nov 15 - Fixes5 #1-3 (Claude)
+Multilingual comic action cards imported (36) and thrown as bursts on every attack via the HUD bubble path, after Dylan asked for several per attack rather than one. Help key (H/F1/View) opens Controls; hints time out at 12 s, camera tip at 40 s. Resolve bars over nuisances. A member named `Cards` shadowed a local in the HUD widget (C4458 as error); renamed `ComicCards`. #4 (quest types) split off.

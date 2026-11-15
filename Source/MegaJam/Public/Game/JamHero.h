@@ -132,6 +132,8 @@ private:
 	void OnRefuse(const FInputActionValue& Value);
 	void OnInteractPressed(const FInputActionValue& Value);
 	void OnPause(const FInputActionValue& Value);
+	/** Fixes5 #2: H / F1 / gamepad View opens the Controls screen over a pause. */
+	void OnHelp(const FInputActionValue& Value);
 	void OnSkill2(const FInputActionValue& Value);
 	void OnSkill3(const FInputActionValue& Value);
 	void OnSkill4(const FInputActionValue& Value);
@@ -244,6 +246,8 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> PauseAction;
+	UPROPERTY(Transient)
+	TObjectPtr<UInputAction> HelpAction;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UInputAction> WriteAction;

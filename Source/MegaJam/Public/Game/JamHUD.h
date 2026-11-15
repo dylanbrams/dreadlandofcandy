@@ -28,6 +28,8 @@ public:
 
 	/** Esc / Start in play: pause and open the Pause menu. */
 	void RequestPause();
+	/** Fixes5 #2: pause straight onto the Controls screen; Back resumes play. */
+	void RequestHelp();
 	bool IsCharacterSheetOpen() const { return bPaused && SubScreen == EJamScreen::Character; }
 
 	/** CUT!: open the note editor (T12b). False unless the note prompt is up and she is not already reading one. */
@@ -39,6 +41,12 @@ public:
 private:
 	EJamScreen ControlsParent = EJamScreen::None;
 	int32 ControlsParentSelected = 0;
+	bool bHelpDirect = false;
+	/** Fixes5 #2: hints fade after a while; the camera reminder only shows for the first stretch of play. */
+	FString LastHint;
+	double HintChangedAt = -1000.0;
+	double FirstPlayAt = -1.0;
+	FString TimedHint(const FString& Raw, bool bCameraTip);
 	void BuildView();
 	/** The music (T18): one cue per moment, a random take, crossfaded, at the "Fenella" volume. */
 	void TickMusic();
@@ -48,6 +56,8 @@ private:
 	void TickEffects();
 	/** Open mode (R4): a compass strip at the top, the next film set's marker, name and distance. */
 	void DrawCompass();
+	/** Fixes5 #3: a small Resolve bar over every nuisance near the hero that still has fight in it. */
+	void DrawResolveBars();
 	UPROPERTY(Transient)
 	TObjectPtr<class UAudioComponent> Ambience;
 	int32 SeenLevel = 0;
