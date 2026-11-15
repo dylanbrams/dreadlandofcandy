@@ -1036,14 +1036,19 @@ void AJamGameMode::NotifySkillCast(AJamHero* InHero, EJamSkill Skill)
 		const AJamGameState* GS = GetJamGameState();
 		const bool bSad = GS && GS->GetShoot().IsSulking();
 		const EJamLineTrigger Pool = GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : (bSad ? EJamLineTrigger::BubbleSadder : EJamLineTrigger::BubbleDefault);
-		Bubble(Pool, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+		// Only the knight actually lectures; the mage's volley, the archer's arrows and the barbarian's kneading stay silent.
+		if (Cast == 0) { Bubble(Pool, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true); }
 	}
 	else
 	{
+		// Fixes3 #25 put a lecture bubble on every attack; bubbles are for lecture-style attacks only
+		// (the knight's lecture and her Form a Line).
 		++SkillCasts;
-		// Fixes3 #25: every attack, every class, gets its jagged shout.
-		const AJamGameState* GS = GetJamGameState();
-		Bubble(GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+		if (Skill == EJamSkill::FormALine && Cast == 0)
+		{
+			const AJamGameState* GS = GetJamGameState();
+			Bubble(GS && GS->bBudgetOut ? EJamLineTrigger::BubbleBudget : EJamLineTrigger::BubbleDefault, InHero, FVector(0.f, 0.f, 190.f), 1.4f, true);
+		}
 	}
 	if (InHero && InHero->GetCastIndex() == 0) { SpawnKnightPlacards(InHero, Skill); }
 	if (InHero) { SpawnComicCards(InHero, Skill); }
