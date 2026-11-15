@@ -1,0 +1,23 @@
+# 15-06-27  (118s)
+[0.7-4.8] So, today, I was like, let's make the in -game stuff a little prettier.
+[5.6-7.2] I wanted a hot chocolate river.
+[7.5-15.4] I've never heard of a hot chocolate river, but there's kind of one in Willy Wonka, but once I had that concept, I was like, I want one in my game.
+[16.1-16.8] And I was like, alright,
+[17.7-26.3] make me some marshmallows, make me a chocolate river, put it in, we'll make a bridge, and then you, you know, you have it cleaned up in blender and it's done in half an hour.
+[26.5-28.7] That's very different from the traditional time frame.
+[28.7-37.5] The marshmallows started with cylinders, they didn't work, and I said, look, I want more variety in my foliage.
+[38.4-42.3] So I generate eight more foliage models from random stuff.
+[42.9-44.7] I asked chatgpts for a list of foreign treats.
+[44.9-46.4] I was thinking, Knafa Bushes,
+[47.4-48.3] Knafa Bushes.
+[49.0-50.2] But it didn't give me that.
+[50.4-56.5] It should have generated a Knafa Bush, I think, yeah, it should have generated a Knafa Bush.
+[56.5-64.5] I ended up with gumdrop bushes and jellybean bushes and it just all kind of ends up in the game and then I wanted the UI.
+[65.0-70.7] What I want is Elden Ring with a sweet shop or Dark Skulls or Darkest Dungeon with a sweet shop feel.
+[71.1-74.2] That's the core concept of Free Land, Dreadland.
+[76.1-90.7] That's the core concept of the Dreadland of Candy, a very dark serious overtone on a game that's ultimately incredibly silly, which honestly is the polar opposite where do you normally have a game that's incredibly silly?
+[93.0-94.9] Well, no, I mean, I guess that's what it is.
+[95.0-96.2] I mean, dark games.
+[96.3-98.3] I mean, I feel like Ellen Ring is kind of,
+[99.7-101.4] I would never say that.
+[109.9-112.6] The big contrast is really the goal.

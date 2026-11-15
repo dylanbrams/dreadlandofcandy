@@ -7,7 +7,7 @@ Pickup:  ("PICKUP", id, text, frame, est_seconds, visual)
 Times are seconds in the source take; a pickup is a take Dylan still has to record (raw/pickups/<id>.mp4).
 Within a segment, pauses over 0.35 s between words are tightened and um/uh spans (transcripts/fillers.json) cut at render time.
 """
-import json
+import json, subprocess
 from pathlib import Path
 
 HERE = Path(__file__).parent
@@ -125,6 +125,15 @@ S["11"] = dict(title="Post-credits", bed=None, segs=[
     ("PICKUP", "11-theme", "And that's why the theme song was cut.", "C", 3, ""),
 ])
 
+def clean_clips(pid):
+    """build/clean/<pid>*.mp4 -> [(relative path, seconds)], so recorded pickups replace the placeholder."""
+    res = []
+    for f in sorted((HERE / "build" / "clean").glob(pid + "*.mp4")):
+        d = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(f)],
+                                 capture_output=True, text=True).stdout.strip())
+        res.append((f"build/clean/{f.name}", round(d, 1)))
+    return res
+
 def main():
     out, tot, camrun_flags = [], 0.0, []
     for sid, sec in S.items():
@@ -132,7 +141,13 @@ def main():
         for s in sec["segs"]:
             if s[0] in ("PICKUP", "BLOOPER"):
                 d = s[4]
-                segs.append(dict(kind=s[0].lower(), id=s[1], text=s[2], frame=s[3], est=d, visual=s[5]))
+                g = dict(kind=s[0].lower(), id=s[1], text=s[2], frame=s[3], est=d, visual=s[5])
+                clips = clean_clips(s[1]) if s[0] == "PICKUP" else []
+                if clips:
+                    g["recorded"] = [c[0] for c in clips]
+                    d = g["dur"] = round(sum(c[1] for c in clips), 1)
+                    g["partial"] = "partial" in clips[0][0]
+                segs.append(g)
             else:
                 d = round(s[2] - s[1], 1)
                 segs.append(dict(kind="take", take=s[0], src=f"raw/original/2026-11-15 {s[0]}.mp4", i=s[1], o=s[2], dur=d,

@@ -1,0 +1,8 @@
+# 15-03-59  (29s)
+[0.5-8.3] So, controls is called controls now, the flashes are about five times dimmer, the river got carved into a real channel with break, banks,
+[9.4-9.6] banks,
+[10.5-12.6] the bridge stopped being flat, and
+[13.7-17.8] 1432 things growing in the middle of the roads were removed.
+[18.6-20.5] Ooh, that's a lot.
+[23.1-23.5] okay, well,
+[24.6-27.9] something else was looking in the logs more carefully than me for that one.

@@ -1,0 +1,14 @@
+# 15-10-46  (73s)
+[0.4-2.5] I've done several game jams.
+[3.2-7.6] The ones on itch are just the ones I participated in and have managed to finish.
+[8.1-13.5] There were others I didn't, because I picked a target game that ended up being too complicated for me to do and the time allotted.
+[14.2-16.3] And even the ones I did finish, I got bogged down.
+[16.7-23.4] I always wanted to make one specific cool mechanic and I get bogged down with it and end up with a game that was kind of cool but not very playable.
+[23.8-29.8] The only game I ever made in a jam that ended up being fun was one where I chopped everything creative out except the core concept.
+[30.2-32.7] Try and stop a bulldozer from running over your house.
+[33.2-39.3] You pick out stuff up, you move it around, it's simple, it's fun, but it's not something that I would play for more than 5 or 10 minutes.
+[39.8-41.1] And it couldn't really be expanded.
+[41.6-49.7] So despite all that time and experience, and working very hard to learn Unity and Unreal, my interest in mechanics bogged me down when it came to building a playable, interesting game.
+[50.4-57.0] That connects to this one, in that having AI has allowed me to make kind of cool mechanics
+[58.8-67.3] and finish that to a point where it's got a real demo and a real like it's inserted into the game in
+[68.4-70.7] a way that that's not been done in the past

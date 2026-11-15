@@ -140,7 +140,7 @@
   "section": "02",
   "title": "Hook montage",
   "bed": "music/standard-combat_take1.mp3",
-  "est_s": 106.9,
+  "est_s": 94.0,
   "segments": [
    {
     "kind": "take",
@@ -214,7 +214,12 @@
     "text": "And the villagers keep coming back. Two to four encore jobs each, with twists: a time limit, a crowd, rats that fight back. Then a goodbye.",
     "frame": "B",
     "est": 12,
-    "visual": "BROLL encore offer, Rush timer, Crowd swarm"
+    "visual": "BROLL encore offer, Rush timer, Crowd swarm",
+    "recorded": [
+     "build/clean/02-encores.mp4"
+    ],
+    "dur": 7.7,
+    "partial": false
    },
    {
     "kind": "take",
@@ -233,7 +238,12 @@
     "text": "Quests are scenes. Fenella yells CUT! and pitches rewrites. You can type director's notes mid-scene, and the scene changes. And when the budget runs out, the rats are replaced by cardboard boxes.",
     "frame": "B",
     "est": 14,
-    "visual": "BROLL CUT pitch, typed note, budget boxes"
+    "visual": "BROLL CUT pitch, typed note, budget boxes",
+    "recorded": [
+     "build/clean/02-filmshoot-partial.mp4"
+    ],
+    "dur": 6.2,
+    "partial": true
    },
    {
     "kind": "pickup",
@@ -241,7 +251,12 @@
     "text": "You're not saving the day. You're trying to get a usable take.",
     "frame": "C",
     "est": 4,
-    "visual": ""
+    "visual": "",
+    "recorded": [
+     "build/clean/02-usabletake.mp4"
+    ],
+    "dur": 3.2,
+    "partial": false
    }
   ]
  },
@@ -249,7 +264,7 @@
   "section": "03",
   "title": "The setup",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 25.0,
+  "est_s": 23.3,
   "segments": [
    {
     "kind": "take",
@@ -279,7 +294,12 @@
     "text": "Some setup and design work existed before the jam, and it's declared.",
     "frame": "B",
     "est": 5,
-    "visual": "Declared.md slide"
+    "visual": "Declared.md slide",
+    "recorded": [
+     "build/clean/03-declared.mp4"
+    ],
+    "dur": 3.3,
+    "partial": false
    },
    {
     "kind": "take",
@@ -298,7 +318,7 @@
   "section": "03b",
   "title": "Reading the chart",
   "bed": "music/setting-out_take1.mp3",
-  "est_s": 76.5,
+  "est_s": 75.5,
   "segments": [
    {
     "kind": "take",
@@ -328,7 +348,12 @@
     "text": "A warning before anyone reads it like a leaderboard.",
     "frame": "C",
     "est": 4,
-    "visual": ""
+    "visual": "",
+    "recorded": [
+     "build/clean/03b-warning.mp4"
+    ],
+    "dur": 3.0,
+    "partial": false
    },
    {
     "kind": "take",
@@ -547,7 +572,7 @@
   "section": "06",
   "title": "Playtest",
   "bed": "music/standard-combat_take2.mp3",
-  "est_s": 12.0,
+  "est_s": 12.1,
   "segments": [
    {
     "kind": "pickup",
@@ -555,7 +580,12 @@
     "text": "This is where a list of finished tasks starts being a game. A green test can't tell me whether an attack feels funny, or whether walking across the river is any fun.",
     "frame": "B",
     "est": 12,
-    "visual": "BROLL compass, HUD, controls (optional section)"
+    "visual": "BROLL compass, HUD, controls (optional section)",
+    "recorded": [
+     "build/clean/06-playtest.mp4"
+    ],
+    "dur": 12.1,
+    "partial": false
    }
   ]
  },
@@ -637,7 +667,7 @@
   "section": "08",
   "title": "Sunday morning",
   "bed": "music/village_take2.mp3",
-  "est_s": 106.7,
+  "est_s": 105.5,
   "segments": [
    {
     "kind": "take",
@@ -656,7 +686,12 @@
     "text": "That's the point where a sensible person stops adding things. Instead, three things happened at once.",
     "frame": "C",
     "est": 6,
-    "visual": ""
+    "visual": "",
+    "recorded": [
+     "build/clean/08-three.mp4"
+    ],
+    "dur": 6.2,
+    "partial": false
    },
    {
     "kind": "take",
@@ -675,7 +710,12 @@
     "text": "ChatGPT generated fifteen candy PBR materials, and I picked mine from a review page.",
     "frame": "B",
     "est": 6,
-    "visual": "PBR contact sheet"
+    "visual": "PBR contact sheet",
+    "recorded": [
+     "build/clean/08-pbr.mp4"
+    ],
+    "dur": 6.9,
+    "partial": false
    },
    {
     "kind": "take",
@@ -694,7 +734,12 @@
     "text": "Thirteen cylinders had been standing in for marshmallows. Now there are three generated ones, drifting downstream. Nobody needed this.",
     "frame": "C",
     "est": 9,
-    "visual": "marshmallows drifting under bridge (feeding-candy bed)"
+    "visual": "marshmallows drifting under bridge (feeding-candy bed)",
+    "recorded": [
+     "build/clean/08-marshmallows.mp4"
+    ],
+    "dur": 6.0,
+    "partial": false
    },
    {
     "kind": "take",
@@ -724,7 +769,13 @@
     "text": "Four UI directions were mocked up. I picked Black Sugar: pewter frames, peppermint enamel, proper serif fonts. I cut the full review short to save usage. The collaborators have a budget too.",
     "frame": "B",
     "est": 16,
-    "visual": "old title -> Black Sugar title"
+    "visual": "old title -> Black Sugar title",
+    "recorded": [
+     "build/clean/08-blacksugar-a.mp4",
+     "build/clean/08-blacksugar-b.mp4"
+    ],
+    "dur": 16.7,
+    "partial": false
    }
   ]
  },
@@ -732,7 +783,7 @@
   "section": "08b",
   "title": "The river is terrible",
   "bed": "music/boss-battle_take1.mp3",
-  "est_s": 79.9,
+  "est_s": 82.5,
   "segments": [
    {
     "kind": "take",
@@ -784,7 +835,12 @@
     "text": "So: Controls is called Controls now. The flashes are about five times dimmer. The river got carved into a real channel with banks, the bridge stopped being flat, and fourteen hundred and thirty-two things growing in the middle of roads were removed.",
     "frame": "B",
     "est": 16,
-    "visual": "river before/after"
+    "visual": "river before/after",
+    "recorded": [
+     "build/clean/08b-fixed.mp4"
+    ],
+    "dur": 18.6,
+    "partial": false
    },
    {
     "kind": "take",
@@ -814,7 +870,7 @@
   "section": "09",
   "title": "Why do this",
   "bed": "music/emotional-revelation_take1.mp3",
-  "est_s": 109.0,
+  "est_s": 106.9,
   "segments": [
    {
     "kind": "take",
@@ -833,7 +889,12 @@
     "text": "Look at what's in here.",
     "frame": "B",
     "est": 3,
-    "visual": ""
+    "visual": "",
+    "recorded": [
+     "build/clean/09-lookatwhat.mp4"
+    ],
+    "dur": 1.4,
+    "partial": false
    },
    {
     "kind": "take",
@@ -874,7 +935,12 @@
     "text": "Every test was green when I wrote 'the river is terrible.'",
     "frame": "C",
     "est": 4,
-    "visual": "river-before on 'the river is terrible'"
+    "visual": "river-before on 'the river is terrible'",
+    "recorded": [
+     "build/clean/09-green.mp4"
+    ],
+    "dur": 3.5,
+    "partial": false
    },
    {
     "kind": "take",
@@ -893,7 +959,7 @@
   "section": "10",
   "title": "Ending",
   "bed": "music/victory_take1.mp3",
-  "est_s": 20.0,
+  "est_s": 10.4,
   "segments": [
    {
     "kind": "pickup",
@@ -901,7 +967,12 @@
     "text": "That's the Dread Land of Candy. It's on itch.io, link below. It isn't an MMO. But you can lecture a rat, and your hero shouts in a hundred and fifty-four translations, and I'd call that a start.",
     "frame": "B",
     "est": 20,
-    "visual": "title screen, itch page; then credits_take1"
+    "visual": "title screen, itch page; then credits_take1",
+    "recorded": [
+     "build/clean/10-ending.mp4"
+    ],
+    "dur": 10.4,
+    "partial": false
    }
   ]
  },
@@ -909,7 +980,7 @@
   "section": "11",
   "title": "Post-credits",
   "bed": null,
-  "est_s": 20.5,
+  "est_s": 19.5,
   "segments": [
    {
     "kind": "take",
@@ -947,7 +1018,12 @@
     "text": "And that's why the theme song was cut.",
     "frame": "C",
     "est": 3,
-    "visual": ""
+    "visual": "",
+    "recorded": [
+     "build/clean/11-theme.mp4"
+    ],
+    "dur": 2.0,
+    "partial": false
    }
   ]
  }

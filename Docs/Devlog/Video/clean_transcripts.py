@@ -12,8 +12,11 @@ import json, re
 from pathlib import Path
 
 HERE = Path(__file__).parent
-SRC = HERE / "raw" / "original"
-OUT = HERE / "transcripts"
+import sys
+# python -I clean_transcripts.py pickups  -> raw/pickups -> transcripts/pickups
+SUB = sys.argv[1] if len(sys.argv) > 1 else "original"
+SRC = HERE / "raw" / SUB
+OUT = HERE / "transcripts" / ("" if SUB == "original" else SUB)
 FILLERS = {"um", "uh", "uhm", "umm", "uhh", "er", "erm", "ah", "hmm", "mm", "hm", "eh"}
 GAP = 0.8  # seconds of silence that starts a new line
 

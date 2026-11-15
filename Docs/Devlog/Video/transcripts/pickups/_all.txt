@@ -1,0 +1,191 @@
+## 14-57-36 (4s, 0 fillers)
+
+
+## 14-57-42 (21s, 1 fillers)
+[0.9-3.7] So, one of the things that I
+[5.5-11.0] was thinking about while I'm making this was that when I watched the Heron and Miyazaki,
+[11.9-19.4] there's a biography about, well, essentially, a short video about how Ghibli...
+
+## 14-58-04 (15s, 0 fillers)
+[1.1-12.2] So, one of the things that struck me about the Heron and Miyazaki is that one of his, one of his co -workers said that they would love to keep working with him because he had always wanted,
+[13.3-14.0] because he...
+[14.3-14.6] We'll be right back.
+
+## 14-58-21 (34s, 0 fillers)
+[0.4-6.6] One of the things that struck me about the Heron in Miyazaki when I watched it was that one of his co -workers said that
+[7.5-12.8] he wanted Miyazaki to show him things he had not seen before and
+[17.1-18.9] that's what I want to do.
+[20.6-23.0] That's kind of what drives me here and
+[23.8-31.5] that's a core piece of what can be done with AI that I think people are not working really hard to do yet.
+
+## 14-59-12 (16s, 1 fillers)
+[1.5-3.2] And the villagers keep coming back.
+[4.0-6.0] Two to four on -car jobs, each with twists.
+[6.7-10.9] A time limit, a crowd, rats that find back, fight back, then a goodbye.
+[13.3-14.4] and you can modify all those.
+
+## 14-59-37 (14s, 1 fillers)
+[6.0-12.0] you type the director's notes mid -scene and the scene changes, and when the budget runs out, the rats are replaced by cardboard boxes.
+
+## 14-59-53 (7s, 0 fillers)
+[1.0-2.4] You're not saving the day.
+[2.7-4.0] You're trying to get a usable take.
+
+## 15-00-01 (8s, 0 fillers)
+[0.4-1.9] You're not saving the day.
+[2.1-3.4] You're trying to get a usable take.
+[3.8-4.0] Come
+[6.9-7.5] to that life.
+
+## 15-01-07 (6s, 0 fillers)
+[0.9-5.4] Some set -up and design work existed before the...
+[5.4-5.9] Look at that.
+
+## 15-01-15 (5s, 0 fillers)
+[0.3-3.5] Some setup and design work existed before the jam, and it's declared.
+
+## 15-01-23 (13s, 0 fillers)
+[0.6-3.5] A warning before anybody reads it like a leaderboard.
+
+## 15-01-39 (16s, 0 fillers)
+[0.8-4.6] This is where a list of finished tasks becomes a game.
+[5.3-13.3] A green test can't tell me whether an attack feels funny or whether walking across the river is cool and interesting.
+
+## 15-02-09 (10s, 0 fillers)
+[0.9-5.3] That's the point where the AI tells me a sensible person would have stopped adding things.
+[5.7-7.6] Instead, three things happened.
+
+## 15-02-27 (9s, 0 fillers)
+[0.6-7.4] JGPT generated 15 PBR candy texter textures or something, and I picked them from a review page.
+
+## 15-02-55 (8s, 0 fillers)
+[0.7-6.5] Thirteen cylinders stood in for marshmallows, another three drifting down the river, and nobody really needed this.
+
+## 15-03-11 (12s, 0 fillers)
+[0.6-3.7] I mocked up four UIs, two were Kitty,
+[4.6-5.6] two were Elden Ring,
+[6.4-8.9] and I picked what was called Black Sugar.
+
+## 15-03-31 (18s, 3 fillers)
+[1.1-5.3] Black Sugar has pewter frames, peppermint enamel, serif fonts.
+[9.4-10.6] I didn't do the full thing.
+[11.0-16.1] It doesn't, like, it doesn't have everything that was in Black Sugar, but, I mean, I, we're all on a budget.
+
+## 15-03-59 (29s, 1 fillers)
+[0.5-8.3] So, controls is called controls now, the flashes are about five times dimmer, the river got carved into a real channel with break, banks,
+[9.4-9.6] banks,
+[10.5-12.6] the bridge stopped being flat, and
+[13.7-17.8] 1432 things growing in the middle of the roads were removed.
+[18.6-20.5] Ooh, that's a lot.
+[23.1-23.5] okay, well,
+[24.6-27.9] something else was looking in the logs more carefully than me for that one.
+
+## 15-04-43 (5s, 0 fillers)
+[0.7-2.0] Look at what's in here.
+
+## 15-04-50 (6s, 0 fillers)
+[0.5-3.8] Every test was green when I wrote, The River is Terrible.
+
+## 15-04-58 (8s, 0 fillers)
+[1.2-2.9] That's the Dreadland of Candy.
+[3.3-6.8] It's on Ishtayo .io, buh buh buh buh buh buh buh buh buh buh.
+
+## 15-05-07 (19s, 0 fillers)
+[0.6-3.1] So, that's the Dreadland of Candy.
+[4.0-4.5] It's on itch.
+[4.9-6.0] There's a link down here below.
+[6.8-11.9] It's not an MMO, but you can lecture a rat and your hero shouts in 154 translations.
+[13.3-14.1] And that's a start.
+
+## 15-05-28 (4s, 0 fillers)
+[1.2-3.1] That's why the theme song was cut.
+
+## 15-05-41 (36s, 1 fillers)
+[3.2-14.7] My dream when I started out was, hey, look, we've got Skyrim in Candyland with this kind of Elden Ring guy and he's brushing the teeth of rats with a giant toothbrush and then he stuffs them celery in them.
+[15.7-16.3] it's ridiculous.
+[17.1-25.9] And walking into Candyland was not something served by a 45 degree Diabolo -style viewpoint and a game that was supposed to be open -ended.
+[25.9-34.0] like that was the concept was an open -ended thing and not a like you know arena on rails
+
+## 15-06-27 (118s, 0 fillers)
+[0.7-4.8] So, today, I was like, let's make the in -game stuff a little prettier.
+[5.6-7.2] I wanted a hot chocolate river.
+[7.5-15.4] I've never heard of a hot chocolate river, but there's kind of one in Willy Wonka, but once I had that concept, I was like, I want one in my game.
+[16.1-16.8] And I was like, alright,
+[17.7-26.3] make me some marshmallows, make me a chocolate river, put it in, we'll make a bridge, and then you, you know, you have it cleaned up in blender and it's done in half an hour.
+[26.5-28.7] That's very different from the traditional time frame.
+[28.7-37.5] The marshmallows started with cylinders, they didn't work, and I said, look, I want more variety in my foliage.
+[38.4-42.3] So I generate eight more foliage models from random stuff.
+[42.9-44.7] I asked chatgpts for a list of foreign treats.
+[44.9-46.4] I was thinking, Knafa Bushes,
+[47.4-48.3] Knafa Bushes.
+[49.0-50.2] But it didn't give me that.
+[50.4-56.5] It should have generated a Knafa Bush, I think, yeah, it should have generated a Knafa Bush.
+[56.5-64.5] I ended up with gumdrop bushes and jellybean bushes and it just all kind of ends up in the game and then I wanted the UI.
+[65.0-70.7] What I want is Elden Ring with a sweet shop or Dark Skulls or Darkest Dungeon with a sweet shop feel.
+[71.1-74.2] That's the core concept of Free Land, Dreadland.
+[76.1-90.7] That's the core concept of the Dreadland of Candy, a very dark serious overtone on a game that's ultimately incredibly silly, which honestly is the polar opposite where do you normally have a game that's incredibly silly?
+[93.0-94.9] Well, no, I mean, I guess that's what it is.
+[95.0-96.2] I mean, dark games.
+[96.3-98.3] I mean, I feel like Ellen Ring is kind of,
+[99.7-101.4] I would never say that.
+[109.9-112.6] The big contrast is really the goal.
+
+## 15-10-36 (8s, 0 fillers)
+[0.9-3.0] I've done several game jams.
+[3.9-5.3] The ones I missed are just the man's 100.
+
+## 15-10-46 (73s, 0 fillers)
+[0.4-2.5] I've done several game jams.
+[3.2-7.6] The ones on itch are just the ones I participated in and have managed to finish.
+[8.1-13.5] There were others I didn't, because I picked a target game that ended up being too complicated for me to do and the time allotted.
+[14.2-16.3] And even the ones I did finish, I got bogged down.
+[16.7-23.4] I always wanted to make one specific cool mechanic and I get bogged down with it and end up with a game that was kind of cool but not very playable.
+[23.8-29.8] The only game I ever made in a jam that ended up being fun was one where I chopped everything creative out except the core concept.
+[30.2-32.7] Try and stop a bulldozer from running over your house.
+[33.2-39.3] You pick out stuff up, you move it around, it's simple, it's fun, but it's not something that I would play for more than 5 or 10 minutes.
+[39.8-41.1] And it couldn't really be expanded.
+[41.6-49.7] So despite all that time and experience, and working very hard to learn Unity and Unreal, my interest in mechanics bogged me down when it came to building a playable, interesting game.
+[50.4-57.0] That connects to this one, in that having AI has allowed me to make kind of cool mechanics
+[58.8-67.3] and finish that to a point where it's got a real demo and a real like it's inserted into the game in
+[68.4-70.7] a way that that's not been done in the past
+
+## 15-12-06 (5s, 0 fillers)
+[1.3-3.2] The eye makes a little...
+[3.2-4.2] blah, blah, blah, blah.
+
+## 15-12-13 (89s, 0 fillers)
+[0.5-5.1] So, the AI tends to make a lot of small visual and sort of
+[6.6-12.9] fake 3D space mistakes that I hopefully might not have made.
+[13.6-13.9] Okay?
+[14.2-18.3] Is the AI fixing them more time -consuming than me fixing them?
+[18.5-18.7] No.
+[19.3-21.5] Is having them all there for me to look at more time -consuming?
+[21.9-22.2] Yes.
+[23.1-34.2] Programmers really hate AI mistakes, but I've worked as a programmer and I worked QA before that and as a QA tooling Tech 2, and it's obvious to me that programmers do stuff I don't want, and these are just more programmers.
+[35.4-39.2] So I get to look at the problems and say, look, this just doesn't work visually.
+[41.6-50.2] And of course, you know, even then, my broad strokes view of the visuals isn't anywhere near the detail orientation that my artist wife would give it.
+[50.2-53.3] It's just not as good, and I am a generalist, you know.
+[53.3-55.0] but to make a better game,
+[57.0-59.6] I would probably need the input of specialists.
+[59.8-63.0] And that's one thing I really think people should take from this video.
+[63.7-67.2] You don't need just AI input, you need input from other people.
+[67.8-70.8] And if I had more people helping, I think I would make a better game.
+[71.5-76.8] You can figure out how to work with other people, you slow down the production process in some ways, but the end result is often better.
+[77.3-81.7] To a point, you know, there is a point where committees do kill everything.
+[81.7-81.7] Thank you.
+
+## 15-14-00 (51s, 2 fillers)
+[0.8-3.7] It looks a lot like a team, and it mostly isn't.
+[4.2-11.9] Added up in there only about four hours where Claude and ChatGPT are overlapping their work, until today, when my quota's all reset.
+[21.4-22.9] that's because of my usage limit.
+[23.8-25.3] I'm, I'm on the basic subscriptions,
+[30.1-33.5] about 20 bucks a month for each, as opposed to the $200 thing.
+[33.7-38.3] So, I use up all the quota on one, and then I move to the other, and the AIs are kind of fighting for credit.
+[38.7-45.5] chat TPC GPT says Claude's taking too much credit I don't know what to do I'm just shrugging and saying look this is the game we got built
+
+## 15-15-01 (26s, 1 fillers)
+[1.0-3.9] I was a master crafter in Star Wars Galaxies.
+[5.1-9.4] I was the best starship manufacturer in the entire Hazy Galaxy.
+[11.3-14.1] And being that good at it,
+[15.5-21.0] is kind of what gave me the confidence and the framework to believe I could go get my second degree in electrical engineering.
+[23.0-23.2] Ta -da!
