@@ -150,6 +150,12 @@ I originally wanted an MMO, and I didn't get it. But I got a playable chunk that
 
 The whole game is something of a joke. I went for maximum ridiculousness on a lot of levels. But the core experiment was serious: make something huge, make it work pretty well, and see what happens.
 
+**The real limit.** Every time I open the game, I see several things I want to improve. That's the nature of a jam, but it also tells me I really should have more people working with me. I'd love a full team. At the same time, a full team brings communication overhead and discussions. It would make a better game, in more time.
+
+That's the real limitation of AI here. It's hard to get multiple points of view, and AI doesn't play the game as critically as I do on the human side of things. Every test was green when I wrote "the river is terrible." Playtesting, and players, are a core requirement for making a good game.
+
+[This is the thesis of the video. Hold on it, and let the music swell after the last line. If you want a callback, cut to the river-before shot on "the river is terrible".]
+
 [Optional, about quest length. There's solid research that people value what they put effort into, the "IKEA effect" (Norton, Mochon and Ariely, 2011), and it only held when people finished the thing. I found no study that measures attachment to longer quests in games, so say it as your hunch, backed by that research, not as a games finding. Something like: "People value what they work for, as long as they get to finish it. That's why the villagers keep coming back with more jobs."]
 
 ## 10. Ending — to be written
